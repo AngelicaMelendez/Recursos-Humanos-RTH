@@ -1,0 +1,45 @@
+<template>
+  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path :d="iconPath" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</template>
+
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  name: {
+    type: String,
+    required: true
+  }
+});
+
+const iconMap = {
+  grid: "M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 7v-7h7v7h-7Z",
+  calendar: "M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z",
+  hierarchy: "M12 4v4m0 0H7m5 0h5M7 8v5m10-5v5M4 18h6v-5H4v5Zm10 0h6v-5h-6v5Z",
+  users: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m16 0v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75M12 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
+  file: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6",
+  shield: "M12 3l7 3v6c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V6l7-3Z",
+  briefcase: "M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-9 3h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Zm7 0v2",
+  door: "M5 21h14M7 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M10 12h.01",
+  graduation: "M2 10 12 4l10 6-10 6-10-6Zm4 2.4v4.2c0 .8 2.7 2.4 6 2.4s6-1.6 6-2.4v-4.2",
+  lock: "M7 11V8a5 5 0 0 1 10 0v3m-11 0h12a2 2 0 0 1 2 2v7H4v-7a2 2 0 0 1 2-2Z",
+  activity: "M3 12h4l2-5 4 10 2-5h6",
+  menu: "M4 7h16M4 12h16M4 17h16",
+  notifications: "M18 8a6 6 0 0 0-12 0v5a2 2 0 0 1-2 2h16a2 2 0 0 1-2-2V8ZM13.73 21a2 2 0 0 1-3.46 0",
+  mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2l8 6 8-6",
+  help: "M12 18h.01M9.09 9a3 3 0 1 1 5.82 0c0 1.5-1.5 2.25-1.5 2.25M12 15h.01",
+  logout: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9"
+};
+
+const iconPath = computed(() => iconMap[props.name] || iconMap.grid);
+</script>
+
+<style scoped>
+.icon {
+  width: 20px;
+  height: 20px;
+}
+</style>
+

@@ -1,0 +1,15 @@
+import { validationResult } from "express-validator";
+
+export const validateRequest = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: "La solicitud contiene datos inválidos.",
+      errors: errors.array()
+    });
+  }
+
+  return next();
+};
+
