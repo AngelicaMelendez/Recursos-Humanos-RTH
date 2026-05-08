@@ -1,0 +1,17 @@
+{
+  "name": "rh-radio-television-hidalgo-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "detect:vue": "npm --prefix front_end run detect:vue",
+    "dev:front_end": "npm --prefix front_end run dev",
+    "build:front_end": "npm --prefix front_end run build",
+    "preview:front_end": "npm --prefix front_end run preview",
+    "lint:front_end": "npm --prefix front_end run lint",
+    "dev:back_end": "npm --prefix Back-end run dev",
+    "start:back_end": "npm --prefix Back-end run start"
+  },
+  "dependencies": {
+    "vue3-org-chart": "^0.2.5"
+  }
+}

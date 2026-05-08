@@ -1,0 +1,63 @@
+const jwt = require('jsonwebtoken');
+const db = require('../models');
+
+const roleLabels = {
+  admin_rh: 'Administrador RH',
+  direccion: 'Direccion',
+  jefe_area: 'Jefe de Area',
+  empleado: 'Empleado',
+  recepcion: 'Recepcion',
+};
+
+function signUser(usuario) {
+  return jwt.sign(
+    { id: usuario.id, rol: usuario.rol, empleado_id: usuario.empleado_id },
+    process.env.JWT_SECRET || 'dev-secret',
+    { expiresIn: '8h' }
+  );
+}
+
+function toFrontendUser(usuario) {
+  return {
+    id: usuario.id,
+    empleado_id: usuario.empleado_id,
+    nombre: usuario.empleado?.nombre || 'Usuario',
+    rol: roleLabels[usuario.rol] || usuario.rol,
+  };
+}
+
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const usuario = await db.Usuario.findOne({
+      include: [{
+        model: db.Empleado,
+        as: 'empleado',
+        where: { curp: email },
+        attributes: ['id', 'nombre', 'curp'],
+      }],
+    });
+
+    if (!usuario || !(await usuario.validPassword(password))) {
+      return res.status(401).json({ error: 'Credenciales invalidas' });
+    }
+
+    res.json({ token: signUser(usuario), user: toFrontendUser(usuario) });
+  } catch (error) {
+    res.status(500).json({ error: 'No se pudo iniciar sesion' });
+  }
+};
+
+exports.me = async (req, res) => {
+  try {
+    const usuario = await db.Usuario.findByPk(req.user.id, {
+      include: [{ model: db.Empleado, as: 'empleado', attributes: ['id', 'nombre', 'curp'] }],
+    });
+
+    if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
+    res.json({ user: toFrontendUser(usuario) });
+  } catch (error) {
+    res.status(500).json({ error: 'No se pudo obtener el perfil' });
+  }
+};
