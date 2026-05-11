@@ -1,14 +1,14 @@
 export const navigationItems = [
-  { label: "Dashboard", route: "/", icon: "grid" },
-  { label: "Calendario", route: "/calendario", icon: "calendar" },
-  { label: "Organigrama", route: "/organigrama", icon: "hierarchy" },
-  { label: "Directorio", route: "/directorio", icon: "users" },
-  { label: "Solicitudes", route: "/solicitudes", icon: "file" },
-  { label: "Normatividad", route: "/normatividad", icon: "shield" },
-  { label: "Vacantes", route: "/vacantes", icon: "briefcase" },
-  { label: "Visitantes", route: "/visitantes", icon: "door" },
-  { label: "Pasantes", route: "/pasantes", icon: "graduation" },
-  { label: "Control de accesos", route: "/control-accesos", icon: "lock" },
+  { label: "Dashboard", route: "/", icon: "grid", module: "dashboard" },
+  { label: "Calendario", route: "/calendario", icon: "calendar", module: "calendar" },
+  { label: "Organigrama", route: "/organigrama", icon: "hierarchy", module: "organigram" },
+  { label: "Directorio", route: "/directorio", icon: "users", module: "directory" },
+  { label: "Solicitudes", route: "/solicitudes", icon: "file", module: "requests" },
+  { label: "Normatividad", route: "/normatividad", icon: "shield", module: "normativity" },
+  { label: "Vacantes", route: "/vacantes", icon: "briefcase", module: "vacancies" },
+  { label: "Visitantes", route: "/visitantes", icon: "door", module: "visitors" },
+  { label: "Pasantes", route: "/pasantes", icon: "graduation", module: "interns" },
+  { label: "Control de accesos", route: "/control-accesos", icon: "lock", module: "accessControl" },
   { label: "Auditoría", route: "/auditoria", icon: "activity" }
 ];
 

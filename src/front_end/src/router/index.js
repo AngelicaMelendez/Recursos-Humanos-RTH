@@ -15,6 +15,7 @@ import AccessControlPage from "@/pages/AccessControlPage.vue";
 import AuditPage from "@/pages/AuditPage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 import { useAuthStore } from "@/store/auth";
+import { canAccessModule } from "@/utils/permissions";
 
 const routes = [
   {
@@ -27,21 +28,22 @@ const routes = [
     path: "/",
     component: MainLayout,
     children: [
-      { path: "", name: "dashboard", component: DashboardPage },
-      { path: "calendario", name: "calendar", component: CalendarPage },
-      { path: "organigrama", name: "organigram", component: OrganigramPage },
-      { path: "directorio", name: "directory", component: DirectoryPage },
-      { path: "solicitudes", name: "requests", component: RequestsPage },
-      { path: "normatividad", name: "normativity", component: NormativityPage },
-      { path: "vacantes", name: "vacancies", component: VacanciesPage },
-      { path: "visitantes", name: "visitors", component: VisitorsPage },
-      { path: "pasantes", name: "interns", component: InternsPage },
+      { path: "", name: "dashboard", component: DashboardPage, meta: { module: "dashboard" } },
+      { path: "calendario", name: "calendar", component: CalendarPage, meta: { module: "calendar" } },
+      { path: "organigrama", name: "organigram", component: OrganigramPage, meta: { module: "organigram" } },
+      { path: "directorio", name: "directory", component: DirectoryPage, meta: { module: "directory" } },
+      { path: "solicitudes", name: "requests", component: RequestsPage, meta: { module: "requests" } },
+      { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },
+      { path: "vacantes", name: "vacancies", component: VacanciesPage, meta: { module: "vacancies" } },
+      { path: "visitantes", name: "visitors", component: VisitorsPage, meta: { module: "visitors" } },
+      { path: "pasantes", name: "interns", component: InternsPage, meta: { module: "interns" } },
       {
         path: "control-accesos",
         name: "access-control",
-        component: AccessControlPage
+        component: AccessControlPage,
+        meta: { module: "accessControl" }
       },
-      { path: "auditoria", name: "audit", component: AuditPage }
+      { path: "auditoria", name: "audit", component: AuditPage, meta: { module: "audit" } }
     ]
   },
   {
@@ -69,6 +71,10 @@ router.beforeEach(async (to) => {
 
   if (!to.meta.public && !authStore.isAuthenticated) {
     return { name: "login" };
+  }
+
+  if (to.meta.module && !canAccessModule(authStore.user?.rol, to.meta.module)) {
+    return { name: "dashboard" };
   }
 
   if (to.name === "login" && authStore.isAuthenticated) {

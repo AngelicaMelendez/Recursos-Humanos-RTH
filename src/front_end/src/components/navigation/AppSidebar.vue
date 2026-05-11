@@ -10,7 +10,7 @@
 
     <nav class="sidebar__nav">
       <router-link
-        v-for="item in navigationItems"
+        v-for="item in visibleNavigationItems"
         :key="item.route"
         :to="item.route"
         class="sidebar__link"
@@ -27,7 +27,10 @@
 <script setup>
 import IconSymbol from "@/components/ui/IconSymbol.vue";
 import logodorado2 from "@/assets/logodorado2.png";
+import { computed } from "vue";
 import { navigationItems } from "@/utils/constants";
+import { filterNavigationByRole } from "@/utils/permissions";
+import { useAuthStore } from "@/store/auth";
 
 defineProps({
   open: {
@@ -37,6 +40,12 @@ defineProps({
 });
 
 defineEmits(["close"]);
+
+const authStore = useAuthStore();
+
+const visibleNavigationItems = computed(() =>
+  filterNavigationByRole(navigationItems, authStore.user?.rol)
+);
 </script>
 
 <style scoped>

@@ -2,7 +2,7 @@
   <BaseCard title="Accesos rápidos" subtitle="Atajos operativos para tareas recurrentes.">
     <div class="quick-actions">
       <router-link
-        v-for="action in actions"
+        v-for="action in visibleActions"
         :key="action.title"
         :to="action.route"
         class="quick-actions__item"
@@ -16,13 +16,31 @@
 
 <script setup>
 import BaseCard from "@/components/ui/BaseCard.vue";
+import { computed } from "vue";
+import { canAccessModule } from "@/utils/permissions";
+import { useAuthStore } from "@/store/auth";
 
-defineProps({
+const props = defineProps({
   actions: {
     type: Array,
     required: true
   }
 });
+
+const moduleByRoute = {
+  "/visitantes": "visitors",
+  "/solicitudes": "requests",
+  "/pasantes": "interns",
+  "/normatividad": "normativity",
+  "/vacantes": "vacancies",
+  "/directorio": "directory"
+};
+
+const authStore = useAuthStore();
+
+const visibleActions = computed(() =>
+  props.actions.filter((action) => canAccessModule(authStore.user?.rol, action.module || moduleByRoute[action.route]))
+);
 </script>
 
 <style scoped>

@@ -30,7 +30,14 @@ const iconMap = {
   notifications: "M18 8a6 6 0 0 0-12 0v5a2 2 0 0 1-2 2h16a2 2 0 0 1-2-2V8ZM13.73 21a2 2 0 0 1-3.46 0",
   mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2l8 6 8-6",
   help: "M12 18h.01M9.09 9a3 3 0 1 1 5.82 0c0 1.5-1.5 2.25-1.5 2.25M12 15h.01",
-  logout: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9"
+  logout: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9",
+  plus: "M12 5v14M5 12h14",
+  edit: "M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Zm12-14 3 3",
+  archive: "M4 7h16M6 7v13h12V7M9 11h6M8 4h8l1 3H7l1-3Z",
+  check: "M20 6 9 17l-5-5",
+  x: "M6 6l12 12M18 6 6 18",
+  upload: "M12 16V4m0 0-5 5m5-5 5 5M4 20h16",
+  tag: "M20 13 13 20 4 11V4h7l9 9ZM7.5 7.5h.01"
 };
 
 const iconPath = computed(() => iconMap[props.name] || iconMap.grid);
