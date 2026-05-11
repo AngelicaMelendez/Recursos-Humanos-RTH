@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar" :class="{ 'sidebar--open': open }">
     <div class="sidebar__brand">
-      <img :src="logoHidalgo" alt="Gobierno de Hidalgo" />
+      <img src="@/assets/logodorado2.png" alt="Logo" />
       <div>
         <strong>Recursos Humanos</strong>
         <span>Radio y Televisión de Hidalgo</span>
@@ -26,7 +26,7 @@
 
 <script setup>
 import IconSymbol from "@/components/ui/IconSymbol.vue";
-import logoHidalgo from "@/assets/logo-hidalgo.svg";
+import logodorado2 from "@/assets/logodorado2.png";
 import { navigationItems } from "@/utils/constants";
 
 defineProps({
