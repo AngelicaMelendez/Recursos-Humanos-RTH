@@ -77,7 +77,7 @@
         </button>
       </div>
 
-      <div class="announcement-filters">
+      <div v-if="canManageAnnouncements" class="announcement-filters">
         <label>
           Area
           <select v-model="selectedArea">
@@ -93,6 +93,10 @@
           </select>
         </label>
       </div>
+
+      <p v-else class="announcement-note">
+        La vista publica muestra solo los comunicados asignados por administracion o jefatura.
+      </p>
 
       <article v-if="latestAnnouncement" class="featured-announcement">
         <div class="featured-announcement__top">
@@ -785,6 +789,11 @@ button:not(:disabled):hover {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 18px;
+}
+
+.announcement-note {
+  margin: 18px 0 0;
+  color: var(--color-text-soft);
 }
 
 label {

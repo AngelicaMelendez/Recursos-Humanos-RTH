@@ -23,6 +23,8 @@ function toFrontendUser(usuario) {
     empleado_id: usuario.empleado_id,
     nombre: usuario.empleado?.nombre || 'Usuario',
     rol: roleLabels[usuario.rol] || usuario.rol,
+    rol_clave: usuario.rol,
+    area_id: usuario.empleado?.area_id,
   };
 }
 
@@ -35,7 +37,7 @@ exports.login = async (req, res) => {
         model: db.Empleado,
         as: 'empleado',
         where: { curp },
-        attributes: ['id', 'nombre', 'curp'],
+        attributes: ['id', 'nombre', 'curp', 'area_id'],
       }],
     });
 
@@ -52,7 +54,7 @@ exports.login = async (req, res) => {
 exports.me = async (req, res) => {
   try {
     const usuario = await db.Usuario.findByPk(req.user.id, {
-      include: [{ model: db.Empleado, as: 'empleado', attributes: ['id', 'nombre', 'curp'] }],
+      include: [{ model: db.Empleado, as: 'empleado', attributes: ['id', 'nombre', 'curp', 'area_id'] }],
     });
 
     if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });

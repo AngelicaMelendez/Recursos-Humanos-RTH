@@ -1,17 +1,15 @@
 <template>
   <div class="asistencia-page">
     <PageHeader
-      eyebrow="Gestión de personal"
+      eyebrow="Gestion de personal"
       title="Registro de Asistencia"
-      description="Controla tu entrada y salida del día. El sistema valida automáticamente la puntualidad."
+      description="Controla tu entrada y salida del dia. El sistema valida automaticamente la puntualidad."
     />
 
-    <!-- Notificación -->
     <div v-if="notificacion" :class="['notificacion', `tipo-${notificacion.tipo}`]">
       {{ notificacion.mensaje }}
     </div>
 
-    <!-- Check-in/Check-out -->
     <CheckInCheckOut
       :asistencia-hoy="asistenciaStore.asistenciaHoy"
       :ultimo-registro="asistenciaStore.ultimoRegistro"
@@ -21,7 +19,6 @@
       @salida="registrarSalida"
     />
 
-    <!-- Historial de asistencia -->
     <div class="seccion-historial">
       <h3>Mi historial de asistencia</h3>
 
@@ -32,31 +29,31 @@
       />
     </div>
 
-    <!-- Panel de administrador -->
-    <div v-if="isAdmin" class="seccion-admin">
-      <h3>Panel de Administración</h3>
+    <div v-if="canReviewAttendance" class="seccion-admin">
+      <h3>Panel de supervision</h3>
 
       <div class="tabs">
         <button
-          @click="tabAdmin = 'resumen'"
-          :class="{ activo: tabAdmin === 'resumen' }"
+          type="button"
           class="tab"
+          :class="{ activo: tabAdmin === 'resumen' }"
+          @click="tabAdmin = 'resumen'"
         >
           Resumen Mensual
         </button>
         <button
-          @click="tabAdmin = 'empleados'"
-          :class="{ activo: tabAdmin === 'empleados' }"
+          type="button"
           class="tab"
+          :class="{ activo: tabAdmin === 'empleados' }"
+          @click="tabAdmin = 'empleados'"
         >
           Asistencia por Empleado
         </button>
       </div>
 
-      <!-- Resumen mensual -->
       <div v-if="tabAdmin === 'resumen'" class="contenido-tab">
         <div class="filtro-resumen">
-          <button @click="cargarResumenMes" class="btn-recargar">
+          <button type="button" class="btn-recargar" @click="cargarResumenMes">
             ↻ Recargar resumen del mes
           </button>
         </div>
@@ -68,7 +65,7 @@
         <div v-else class="tabla-resumen">
           <div class="encabezado">
             <div class="col-empleado">Empleado</div>
-            <div class="col-area">Área</div>
+            <div class="col-area">Area</div>
             <div class="col-fecha">Fecha</div>
             <div class="col-entrada">Entrada</div>
             <div class="col-salida">Salida</div>
@@ -99,7 +96,6 @@
         </div>
       </div>
 
-      <!-- Asistencia por empleado -->
       <div v-if="tabAdmin === 'empleados'" class="contenido-tab">
         <div class="selector-empleado">
           <input
@@ -119,13 +115,13 @@
             v-for="empleado in empleadosFiltrados"
             :key="empleado.empleado_id"
             class="item-empleado"
-            @click="verAsistenciaEmpleado(empleado.empleado_id)"
             :class="{ activo: empleadoSeleccionadoId === empleado.empleado_id }"
+            @click="verAsistenciaEmpleado(empleado.empleado_id)"
           >
             <div class="nombre">{{ empleado.nombre }}</div>
-            <div class="area">{{ empleado.area?.nombre || "Sin área" }}</div>
+            <div class="area">{{ empleado.area?.nombre || "Sin area" }}</div>
             <div class="fecha-ultima">
-              Última entrada: {{ empleado.ultima_entrada || "Sin registros" }}
+              Ultima entrada: {{ empleado.ultima_entrada || "Sin registros" }}
             </div>
           </div>
         </div>
@@ -135,12 +131,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import PageHeader from "@/components/shared/PageHeader.vue";
 import CheckInCheckOut from "@/components/asistencia/CheckInCheckOut.vue";
 import HistoricoAsistencia from "@/components/asistencia/HistoricoAsistencia.vue";
 import { useAsistenciaStore } from "@/store/asistencia";
 import { useAuthStore } from "@/store/auth";
+import { hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
 
 const asistenciaStore = useAsistenciaStore();
 const authStore = useAuthStore();
@@ -150,11 +147,11 @@ const tabAdmin = ref("resumen");
 const empleadoBuscado = ref("");
 const empleadoSeleccionadoId = ref(null);
 
-const isAdmin = computed(() => authStore.user?.rol === "Administrador");
+const canReviewAttendance = computed(() =>
+  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+);
 
-const resumenMesAgrupado = computed(() => {
-  return asistenciaStore.resumenMes;
-});
+const resumenMesAgrupado = computed(() => asistenciaStore.resumenMes);
 
 const empleadosFiltrados = computed(() => {
   if (!empleadoBuscado.value) {
@@ -172,17 +169,15 @@ const formatFecha = (fechaString) => {
     year: "numeric",
     month: "short",
     day: "numeric",
-    weekday: "short",
+    weekday: "short"
   }).format(fecha);
 };
 
-const formatHora = (horaString) => {
-  return horaString.slice(0, 5);
-};
+const formatHora = (horaString) => horaString.slice(0, 5);
 
-const etiquetaEstatus = (estatus, minutos_retardo) => {
+const etiquetaEstatus = (estatus, minutosRetardo) => {
   if (estatus === "a_tiempo") return "A tiempo";
-  if (estatus === "retardo") return `Retardo (${minutos_retardo}m)`;
+  if (estatus === "retardo") return `Llego tarde (${minutosRetardo}m)`;
   if (estatus === "ausente") return "Ausente";
   if (estatus === "licencia") return "Licencia";
   return estatus;
@@ -190,7 +185,7 @@ const etiquetaEstatus = (estatus, minutos_retardo) => {
 
 const mostrarNotificacion = (mensaje, tipo) => {
   notificacion.value = { mensaje, tipo };
-  setTimeout(() => {
+  window.setTimeout(() => {
     notificacion.value = null;
   }, 4000);
 };
@@ -242,15 +237,13 @@ const verAsistenciaEmpleado = async (empleadoId) => {
 };
 
 onMounted(async () => {
-  // Cargar mi asistencia
   try {
     await asistenciaStore.obtenerMiAsistencia();
   } catch (error) {
     console.error("Error cargando asistencia:", error);
   }
 
-  // Si es admin, cargar resumen mensual
-  if (isAdmin.value) {
+  if (canReviewAttendance.value) {
     try {
       await asistenciaStore.obtenerResumenMes();
     } catch (error) {
@@ -334,11 +327,6 @@ onMounted(async () => {
   font-size: 14px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.tab:hover {
-  color: #b38e5d;
 }
 
 .tab.activo {
@@ -364,12 +352,6 @@ onMounted(async () => {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-recargar:hover {
-  background: rgba(98, 17, 50, 0.4);
-  border-color: #b38e5d;
 }
 
 .input-buscar {
@@ -424,10 +406,6 @@ onMounted(async () => {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.fila:hover {
-  background: rgba(26, 26, 46, 0.4);
-}
-
 .fila:last-child {
   border-bottom: none;
 }
@@ -475,12 +453,6 @@ onMounted(async () => {
   border-radius: 8px;
   padding: 12px 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.item-empleado:hover {
-  background: rgba(26, 26, 46, 0.8);
-  border-color: rgba(176, 142, 93, 0.4);
 }
 
 .item-empleado.activo {
@@ -530,11 +502,6 @@ onMounted(async () => {
     border-radius: 8px;
     margin-bottom: 8px;
     padding: 12px;
-  }
-
-  .fila:last-child {
-    margin-bottom: 0;
-    border-bottom: 1px solid rgba(176, 142, 93, 0.2);
   }
 }
 </style>

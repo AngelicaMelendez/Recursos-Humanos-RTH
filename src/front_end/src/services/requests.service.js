@@ -15,6 +15,10 @@ export default {
     const { data } = await api.patch(`/solicitudes/${normalizeId(id)}/aprobar`);
     return data;
   },
+  async remove(id) {
+    const { data } = await api.delete(`/solicitudes/${normalizeId(id)}`);
+    return data;
+  },
   async reject(id) {
     const { data } = await api.patch(`/solicitudes/${normalizeId(id)}/rechazar`);
     return data;

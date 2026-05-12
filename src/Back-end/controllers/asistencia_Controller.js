@@ -1,12 +1,13 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 
-// Función para calcular estatus de puntualidad (asume entrada a las 8:00 AM)
+const rolesRevisionAsistencia = ['admin_rh', 'jefe_area'];
+
 const calcularEstatusPuntualidad = (horaEntrada) => {
   if (!horaEntrada) return 'ausente';
 
   const horaEntradaObj = new Date(`1970-01-01 ${horaEntrada}`);
-  const horaLimite = new Date(`1970-01-01 08:00:00`);
+  const horaLimite = new Date('1970-01-01 08:00:00');
 
   if (horaEntradaObj <= horaLimite) {
     return 'a_tiempo';
@@ -19,7 +20,7 @@ const calcularMinutosRetardo = (horaEntrada) => {
   if (!horaEntrada) return 0;
 
   const horaEntradaObj = new Date(`1970-01-01 ${horaEntrada}`);
-  const horaLimite = new Date(`1970-01-01 08:00:00`);
+  const horaLimite = new Date('1970-01-01 08:00:00');
 
   if (horaEntradaObj > horaLimite) {
     return Math.round((horaEntradaObj - horaLimite) / 60000);
@@ -28,14 +29,25 @@ const calcularMinutosRetardo = (horaEntrada) => {
   return 0;
 };
 
-// Realizar Check-in (entrada)
+const obtenerEtiquetaEntrada = (estatusEntrada, minutosRetardo) => {
+  if (estatusEntrada === 'a_tiempo') return 'A tiempo';
+  if (estatusEntrada === 'retardo') return `Retardo de ${minutosRetardo} minuto(s)`;
+  return 'Sin registro';
+};
+
+const obtenerEtiquetaSalida = (estatusSalida) => {
+  if (estatusSalida === 'normal') return 'A tiempo';
+  if (estatusSalida === 'temprano') return 'Salio antes de su horario';
+  if (estatusSalida === 'tarde') return 'Salio despues de su horario';
+  return 'Sin registro';
+};
+
 exports.registrarEntrada = async (req, res) => {
   try {
     const empleado_id = req.user.empleado_id;
     const hoy = new Date().toISOString().split('T')[0];
     const horaActual = new Date().toTimeString().split(' ')[0];
 
-    // Verificar si ya tiene registro de entrada hoy
     const asistenciaExistente = await db.Asistencia.findOne({
       where: {
         empleado_id,
@@ -69,7 +81,7 @@ exports.registrarEntrada = async (req, res) => {
     }
 
     res.status(201).json({
-      mensaje: `Entrada registrada a las ${horaActual}`,
+      mensaje: `Entrada registrada a las ${horaActual}. Estatus: ${obtenerEtiquetaEntrada(estatusEntrada, minutosRetardo)}.`,
       estatus: estatusEntrada,
       minutos_retardo: minutosRetardo,
       asistencia,
@@ -79,7 +91,6 @@ exports.registrarEntrada = async (req, res) => {
   }
 };
 
-// Realizar Check-out (salida)
 exports.registrarSalida = async (req, res) => {
   try {
     const empleado_id = req.user.empleado_id;
@@ -101,10 +112,9 @@ exports.registrarSalida = async (req, res) => {
       return res.status(400).json({ error: 'Ya tiene un registro de salida para hoy' });
     }
 
-    // Determinar estatus de salida (asume salida a las 17:00 o 5:00 PM)
     let estatusSalida = 'normal';
     const horaActualObj = new Date(`1970-01-01 ${horaActual}`);
-    const horaSalida = new Date(`1970-01-01 17:00:00`);
+    const horaSalida = new Date('1970-01-01 17:00:00');
 
     if (horaActualObj < horaSalida) {
       estatusSalida = 'temprano';
@@ -118,7 +128,7 @@ exports.registrarSalida = async (req, res) => {
     });
 
     res.json({
-      mensaje: `Salida registrada a las ${horaActual}`,
+      mensaje: `Salida registrada a las ${horaActual}. Estatus: ${obtenerEtiquetaSalida(estatusSalida)}.`,
       estatus_salida: estatusSalida,
       asistencia,
     });
@@ -127,18 +137,17 @@ exports.registrarSalida = async (req, res) => {
   }
 };
 
-// Obtener asistencia de un empleado (rango de fechas)
 exports.obtenerAsistencia = async (req, res) => {
   try {
-    const { empleado_id, fecha_inicio, fecha_fin } = req.query;
+    const empleadoId = parseInt(req.params.empleado_id || req.query.empleado_id, 10);
+    const { fecha_inicio, fecha_fin } = req.query;
     const usuarioActual = req.user;
 
-    // Validar que el usuario tenga permiso
-    if (usuarioActual.rol !== 'admin_rh' && usuarioActual.empleado_id !== parseInt(empleado_id)) {
-      return res.status(403).json({ error: 'No tienes permiso para ver esta información' });
+    if (!rolesRevisionAsistencia.includes(usuarioActual.rol) && usuarioActual.empleado_id !== empleadoId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta informacion' });
     }
 
-    const where = { empleado_id };
+    const where = { empleado_id: empleadoId };
 
     if (fecha_inicio && fecha_fin) {
       where.fecha = {
@@ -171,7 +180,6 @@ exports.obtenerAsistencia = async (req, res) => {
   }
 };
 
-// Obtener asistencia del usuario actual
 exports.obtenerMiAsistencia = async (req, res) => {
   try {
     const empleado_id = req.user.empleado_id;
@@ -196,7 +204,6 @@ exports.obtenerMiAsistencia = async (req, res) => {
   }
 };
 
-// Obtener resumen de asistencia del mes actual (Admin)
 exports.obtenerResumenMes = async (req, res) => {
   try {
     const hoy = new Date();

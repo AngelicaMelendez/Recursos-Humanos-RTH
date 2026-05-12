@@ -3,7 +3,7 @@
     <PageHeader
       eyebrow="Flujo de autorizaciones"
       title="Solicitudes e incidencias"
-      description="Motor de solicitudes para vacaciones, permisos, incapacidades, maternidad, paternidad, comisiones y reposiciones con flujo Empleado -> Jefe -> RH."
+      description="Todos pueden consultar el modulo. Las aprobaciones quedan restringidas a administracion y jefaturas."
     >
       <RoleActionBar :actions="headerActions" @select="selectAction" />
     </PageHeader>
@@ -20,7 +20,7 @@
       </div>
     </section>
 
-    <BaseCard title="Solicitudes activas" subtitle="Gestiona el ciclo completo: captura, consulta y resolucion.">
+    <BaseCard title="Solicitudes activas" subtitle="Crea, consulta y da seguimiento al flujo operativo.">
       <template #header-actions>
         <button class="ghost-button" type="button" @click="loadRequests">
           <IconSymbol name="activity" />
@@ -114,7 +114,13 @@
           </dl>
           <footer class="modal-actions">
             <button class="secondary-button" type="button" @click="closeModal">Cancelar</button>
-            <button class="primary-button" type="button" :class="{ 'primary-button--danger': modal.mode === 'reject' }" :disabled="saving" @click="confirmResolution">
+            <button
+              class="primary-button"
+              type="button"
+              :class="{ 'primary-button--danger': ['reject', 'delete'].includes(modal.mode) }"
+              :disabled="saving"
+              @click="confirmResolution"
+            >
               {{ saving ? "Procesando..." : modal.confirmLabel }}
             </button>
           </footer>
@@ -133,32 +139,11 @@ import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
-import { getRoleActions } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
-const rows = ref([
-  {
-    id: "SOL-201",
-    empleado_id: "EMP-015",
-    tipo: "Vacaciones",
-    fecha_inicio: "2026-06-01",
-    fecha_fin: "2026-06-05",
-    motivo: "Periodo vacacional programado",
-    estatus: "pendiente",
-    aprobado_por: "Jefatura pendiente"
-  },
-  {
-    id: "SOL-202",
-    empleado_id: "EMP-009",
-    tipo: "Comision",
-    fecha_inicio: "2026-05-15",
-    fecha_fin: "2026-05-16",
-    motivo: "Cobertura institucional",
-    estatus: "aprobada",
-    aprobado_por: "RH"
-  }
-]);
+const rows = ref([]);
 
 const saving = ref(false);
 const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
@@ -189,8 +174,16 @@ const columns = [
   { key: "acciones", label: "Acciones" }
 ];
 
-const roleActions = computed(() => getRoleActions(authStore.user?.rol, "requests"));
-const headerActions = computed(() => roleActions.value.filter((action) => action.key === "createRequest" || action.key === "viewRequests"));
+const roleActions = computed(() => getRoleActions(authStore.user, "requests"));
+const headerActions = computed(() =>
+  roleActions.value.filter((action) => ["createRequest", "viewRequests"].includes(action.key))
+);
+const currentEmployeeId = computed(() =>
+  authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
+);
+const canApproveRequests = computed(() =>
+  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.DIRECCION, ROLE_KEYS.JEFE_AREA])
+);
 
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
@@ -203,7 +196,7 @@ const showToast = (title, message, tone = "success") => {
   toast.title = title;
   toast.message = message;
   toast.tone = tone;
-  window.setTimeout(() => {
+  globalThis.setTimeout(() => {
     toast.visible = false;
   }, 3200);
 };
@@ -211,6 +204,7 @@ const showToast = (title, message, tone = "success") => {
 const normalizeRow = (row) => ({
   ...row,
   id: row.id?.startsWith?.("SOL-") ? row.id : `SOL-${row.id}`,
+  tipo: row.tipo ? row.tipo.charAt(0).toUpperCase() + row.tipo.slice(1) : "Otro",
   estatus: row.estatus === "aprobado" ? "aprobada" : row.estatus === "rechazado" ? "rechazada" : row.estatus,
   aprobado_por: row.aprobado_por || "Pendiente"
 });
@@ -220,17 +214,44 @@ const loadRequests = async () => {
     const data = await requestsService.list();
     rows.value = data.map(normalizeRow);
     showToast("Solicitudes actualizadas", "Se cargo la informacion mas reciente.");
-  } catch (error) {
+  } catch {
     showToast("Modo demo activo", "No se pudo conectar al API, se mantienen datos locales.", "warning");
+    if (!rows.value.length) {
+      rows.value = [
+        normalizeRow({
+          id: "SOL-201",
+          empleado_id: "EMP-015",
+          tipo: "vacaciones",
+          fecha_inicio: "2026-06-01",
+          fecha_fin: "2026-06-05",
+          motivo: "Periodo vacacional programado",
+          estatus: "pendiente",
+          aprobado_por: "Jefatura pendiente"
+        }),
+        normalizeRow({
+          id: "SOL-202",
+          empleado_id: "EMP-009",
+          tipo: "comision",
+          fecha_inicio: "2026-05-15",
+          fecha_fin: "2026-05-16",
+          motivo: "Cobertura institucional",
+          estatus: "aprobada",
+          aprobado_por: "RH"
+        })
+      ];
+    }
   }
 };
 
 const actionsForRow = (row) => {
   const pending = row.estatus === "pendiente";
+  const isOwner = row.empleado_id === currentEmployeeId.value;
+
   return roleActions.value.filter((action) => {
-    if (action.key === "createRequest") return false;
-    if (["approveRequest", "rejectRequest"].includes(action.key)) return pending;
-    return action.key === "viewRequests" || action.key === "manageIncident";
+    if (action.key === "createRequest" || action.key === "viewRequests") return false;
+    if (action.key === "deleteRequest") return pending && isOwner;
+    if (["approveRequest", "rejectRequest"].includes(action.key)) return pending && canApproveRequests.value;
+    return action.key === "manageIncident" && canApproveRequests.value;
   });
 };
 
@@ -250,6 +271,11 @@ const selectAction = (action, row = null) => {
     return;
   }
 
+  if (action.key === "deleteRequest") {
+    openResolutionModal("delete", row);
+    return;
+  }
+
   showToast(action.label, row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.");
 };
 
@@ -265,14 +291,32 @@ const openCreateModal = () => {
 };
 
 const openResolutionModal = (mode, row) => {
+  const config = {
+    approve: {
+      eyebrow: "Autorizacion",
+      title: "Aprobar solicitud",
+      message: "Vas a aprobar la solicitud",
+      confirmLabel: "Aprobar"
+    },
+    reject: {
+      eyebrow: "Resolucion",
+      title: "Rechazar solicitud",
+      message: "Vas a rechazar la solicitud",
+      confirmLabel: "Rechazar"
+    },
+    delete: {
+      eyebrow: "Eliminacion",
+      title: "Eliminar solicitud",
+      message: "Vas a eliminar la solicitud",
+      confirmLabel: "Eliminar"
+    }
+  };
+
   Object.assign(modal, {
     visible: true,
     mode,
-    eyebrow: mode === "approve" ? "Autorizacion" : "Resolucion",
-    title: mode === "approve" ? "Aprobar solicitud" : "Rechazar solicitud",
-    message: mode === "approve" ? "Vas a aprobar la solicitud" : "Vas a rechazar la solicitud",
-    confirmLabel: mode === "approve" ? "Aprobar" : "Rechazar",
-    row
+    row,
+    ...config[mode]
   });
 };
 
@@ -288,15 +332,16 @@ const submitRequest = async () => {
     const created = await requestsService.create(payload);
     rows.value.unshift(normalizeRow(created));
     showToast("Solicitud creada", "La solicitud quedo pendiente de revision.");
-  } catch (error) {
-    rows.value.unshift({
-      id: `SOL-${Date.now().toString().slice(-5)}`,
-      empleado_id: authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : "EMP-DEMO",
-      ...payload,
-      tipo: payload.tipo.charAt(0).toUpperCase() + payload.tipo.slice(1),
-      estatus: "pendiente",
-      aprobado_por: "Pendiente"
-    });
+  } catch {
+    rows.value.unshift(
+      normalizeRow({
+        id: `SOL-${Date.now().toString().slice(-5)}`,
+        empleado_id: currentEmployeeId.value || "EMP-DEMO",
+        ...payload,
+        estatus: "pendiente",
+        aprobado_por: "Pendiente"
+      })
+    );
     showToast("Solicitud creada en demo", "Cuando el API este activo se podra guardar en BD.", "warning");
   } finally {
     saving.value = false;
@@ -309,18 +354,31 @@ const confirmResolution = async () => {
   saving.value = true;
 
   try {
-    const updated = modal.mode === "approve"
-      ? await requestsService.approve(modal.row.id)
-      : await requestsService.reject(modal.row.id);
-    replaceRow(normalizeRow(updated));
-    showToast("Solicitud actualizada", `${modal.row.id} fue ${modal.mode === "approve" ? "aprobada" : "rechazada"}.`);
-  } catch (error) {
-    replaceRow({
-      ...modal.row,
-      estatus: modal.mode === "approve" ? "aprobada" : "rechazada",
-      aprobado_por: authStore.user?.nombre || authStore.user?.rol || "Usuario actual"
-    });
-    showToast("Cambio aplicado en demo", "No se pudo guardar en API, pero la vista ya refleja la accion.", "warning");
+    if (modal.mode === "approve") {
+      const updated = await requestsService.approve(modal.row.id);
+      replaceRow(normalizeRow(updated));
+      showToast("Solicitud actualizada", `${modal.row.id} fue aprobada.`);
+    } else if (modal.mode === "reject") {
+      const updated = await requestsService.reject(modal.row.id);
+      replaceRow(normalizeRow(updated));
+      showToast("Solicitud actualizada", `${modal.row.id} fue rechazada.`);
+    } else if (modal.mode === "delete") {
+      await requestsService.remove(modal.row.id);
+      rows.value = rows.value.filter((row) => row.id !== modal.row.id);
+      showToast("Solicitud eliminada", `${modal.row.id} fue eliminada correctamente.`);
+    }
+  } catch {
+    if (modal.mode === "delete") {
+      rows.value = rows.value.filter((row) => row.id !== modal.row.id);
+      showToast("Eliminacion en demo", "La vista ya retiro la solicitud.", "warning");
+    } else {
+      replaceRow({
+        ...modal.row,
+        estatus: modal.mode === "approve" ? "aprobada" : "rechazada",
+        aprobado_por: authStore.user?.nombre || authStore.user?.rol || "Usuario actual"
+      });
+      showToast("Cambio aplicado en demo", "No se pudo guardar en API, pero la vista ya refleja la accion.", "warning");
+    }
   } finally {
     saving.value = false;
     closeModal();
@@ -401,7 +459,8 @@ onMounted(loadRequests);
   color: var(--color-success);
 }
 
-.icon-action--rejectRequest {
+.icon-action--rejectRequest,
+.icon-action--deleteRequest {
   background: rgba(157, 45, 62, 0.12);
   color: var(--color-danger);
 }

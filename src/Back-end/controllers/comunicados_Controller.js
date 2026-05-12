@@ -1,22 +1,59 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 
-// Obtener comunicados activos segmentados por área
+const rolesGestores = ['admin_rh', 'jefe_area'];
+
+function esGestorComunicados(rol) {
+  return rolesGestores.includes(rol);
+}
+
+async function obtenerUsuarioConArea(usuarioId) {
+  return db.Usuario.findByPk(usuarioId, {
+    include: [
+      {
+        model: db.Empleado,
+        as: 'empleado',
+        attributes: ['id', 'area_id'],
+      },
+    ],
+  });
+}
+
+async function construirFiltroVisibilidad(req) {
+  const where = {
+    estatus: 'activo',
+    [Op.or]: [
+      { fecha_vencimiento: { [Op.gte]: new Date() } },
+      { fecha_vencimiento: null },
+    ],
+  };
+
+  if (esGestorComunicados(req.user.rol)) {
+    if (req.query.area_id) {
+      where.area_id = req.query.area_id;
+    }
+
+    return where;
+  }
+
+  const usuario = await obtenerUsuarioConArea(req.user.id);
+  const areaId = usuario?.empleado?.area_id || null;
+  where[Op.and] = [
+    {
+      [Op.or]: [
+        { area_id: null },
+        ...(areaId ? [{ area_id: areaId }] : []),
+      ],
+    },
+  ];
+
+  return where;
+}
+
+// Obtener comunicados activos segmentados por area
 exports.obtenerComunicados = async (req, res) => {
   try {
-    const { area_id } = req.query;
-    
-    const where = {
-      estatus: 'activo',
-      [Op.or]: [
-        { fecha_vencimiento: { [Op.gte]: new Date() } },
-        { fecha_vencimiento: null },
-      ],
-    };
-
-    if (area_id) {
-      where.area_id = area_id;
-    }
+    const where = await construirFiltroVisibilidad(req);
 
     const comunicados = await db.Comunicado.findAll({
       where,
@@ -34,22 +71,10 @@ exports.obtenerComunicados = async (req, res) => {
   }
 };
 
-// Obtener más reciente por área
+// Obtener mas reciente por area
 exports.obtenerMasReciente = async (req, res) => {
   try {
-    const { area_id } = req.query;
-    
-    const where = {
-      estatus: 'activo',
-      [Op.or]: [
-        { fecha_vencimiento: { [Op.gte]: new Date() } },
-        { fecha_vencimiento: null },
-      ],
-    };
-
-    if (area_id) {
-      where.area_id = area_id;
-    }
+    const where = await construirFiltroVisibilidad(req);
 
     const comunicado = await db.Comunicado.findOne({
       where,
@@ -67,14 +92,14 @@ exports.obtenerMasReciente = async (req, res) => {
   }
 };
 
-// Crear comunicado (Admin/Jefe de Área)
+// Crear comunicado (Admin/Jefe de Area)
 exports.crearComunicado = async (req, res) => {
   try {
     const { titulo, contenido, area_id, fecha_vencimiento } = req.body;
     const usuario_id = req.user.id;
 
     if (!titulo || !contenido) {
-      return res.status(400).json({ error: 'Título y contenido son requeridos' });
+      return res.status(400).json({ error: 'Titulo y contenido son requeridos' });
     }
 
     const comunicado = await db.Comunicado.create({
@@ -92,7 +117,7 @@ exports.crearComunicado = async (req, res) => {
   }
 };
 
-// Editar comunicado (Admin/Autor)
+// Editar comunicado (Admin/Jefe de Area)
 exports.editarComunicado = async (req, res) => {
   try {
     const { id } = req.params;
@@ -116,7 +141,7 @@ exports.editarComunicado = async (req, res) => {
   }
 };
 
-// Eliminar comunicado (Admin)
+// Eliminar comunicado (Admin/Jefe de Area)
 exports.eliminarComunicado = async (req, res) => {
   try {
     const { id } = req.params;
@@ -133,7 +158,7 @@ exports.eliminarComunicado = async (req, res) => {
   }
 };
 
-// Agregar reacción (Like)
+// Agregar reaccion (Like)
 exports.agregarReaccion = async (req, res) => {
   try {
     const { id } = req.params;
@@ -150,7 +175,7 @@ exports.agregarReaccion = async (req, res) => {
 
     if (reaccionExistente) {
       await reaccionExistente.destroy();
-      return res.json({ mensaje: 'Reacción removida' });
+      return res.json({ mensaje: 'Reaccion removida' });
     }
 
     const reaccion = await db.ReaccionComunicado.create({
@@ -161,7 +186,7 @@ exports.agregarReaccion = async (req, res) => {
 
     res.status(201).json(reaccion);
   } catch (error) {
-    res.status(500).json({ error: 'No se pudo agregar reacción', details: error.message });
+    res.status(500).json({ error: 'No se pudo agregar reaccion', details: error.message });
   }
 };
 

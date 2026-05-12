@@ -1,33 +1,31 @@
 <template>
   <div class="comunicados-page">
     <PageHeader
-      eyebrow="Comunicación interna"
+      eyebrow="Comunicacion interna"
       title="Comunicados y Avisos"
-      description="Mantente informado con los últimos comunicados de tu área."
+      description="Consulta los comunicados activos de tu area. Solo administracion y jefaturas pueden filtrar por area."
     >
       <RoleActionBar :actions="actions" @select="selectAction" />
     </PageHeader>
 
-    <!-- Notificación de éxito -->
     <div v-if="notificacion" :class="['notificacion', `tipo-${notificacion.tipo}`]">
       {{ notificacion.mensaje }}
     </div>
 
-    <!-- Diálogo para crear/editar -->
     <div v-if="showModal" class="modal-overlay" @click.self="cerrarModal">
       <div class="modal">
         <div class="modal-header">
           <h2>{{ editando ? "Editar comunicado" : "Nuevo comunicado" }}</h2>
-          <button @click="cerrarModal" class="btn-cerrar">✕</button>
+          <button type="button" class="btn-cerrar" @click="cerrarModal">×</button>
         </div>
 
         <div class="modal-body">
           <div class="form-group">
-            <label>Título</label>
+            <label>Titulo</label>
             <input
               v-model="formulario.titulo"
               type="text"
-              placeholder="Título del comunicado"
+              placeholder="Titulo del comunicado"
               class="input"
             />
           </div>
@@ -44,83 +42,94 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label>Área (Opcional)</label>
+              <label>Area</label>
               <select v-model="formulario.area_id" class="select">
-                <option :value="null">Todas las áreas</option>
-                <option v-for="area in areas" :key="area.id" :value="area.id">
+                <option :value="null">Todas las areas</option>
+                <option v-for="area in areasDisponibles" :key="area.id" :value="area.id">
                   {{ area.nombre }}
                 </option>
               </select>
             </div>
 
             <div class="form-group">
-              <label>Fecha de vencimiento (Opcional)</label>
-              <input
-                v-model="formulario.fecha_vencimiento"
-                type="date"
-                class="input"
-              />
+              <label>Fecha de vencimiento</label>
+              <input v-model="formulario.fecha_vencimiento" type="date" class="input" />
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button @click="cerrarModal" class="btn btn-secundario">Cancelar</button>
-          <button @click="guardarComunicado" class="btn btn-primario" :disabled="loading">
+          <button type="button" class="btn btn-secundario" @click="cerrarModal">Cancelar</button>
+          <button type="button" class="btn btn-primario" :disabled="loading" @click="guardarComunicado">
             {{ editando ? "Actualizar" : "Publicar" }}
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Contenido principal -->
+    <div v-if="canFilterByArea && areasDisponibles.length" class="filtro-panel">
+      <label class="filtro-campo">
+        <span>Filtrar por area</span>
+        <select v-model="selectedAreaId" class="select">
+          <option value="">Todas las areas</option>
+          <option v-for="area in areasDisponibles" :key="area.id" :value="String(area.id)">
+            {{ area.nombre }}
+          </option>
+        </select>
+      </label>
+    </div>
+
     <div class="contenedor">
-      <!-- Más reciente destacado -->
       <div v-if="masReciente" class="seccion">
         <ComunicadoDestacado
           :comunicado="masReciente"
-          :yu-a-reaccionaste="yuaReaccionaste(masReciente.id)"
+          :yua-reaccionaste="yaReaccionaste(masReciente.id)"
           @editar="editarComunicado(masReciente)"
           @eliminar="eliminarComunicado(masReciente.id)"
           @toggle-reaccion="toggleReaccion(masReciente.id)"
         />
 
+        <div v-if="otrosComunicados.length" class="mas-acciones">
+          <button type="button" class="btn-ver-mas" @click="showMore = !showMore">
+            {{ showMore ? "Ocultar" : "Ver mas" }}
+          </button>
+        </div>
+
         <ComunicadosLista
-          v-if="otrosComunicados.length > 0"
+          v-if="showMore && otrosComunicados.length > 0"
           :comunicados="otrosComunicados"
           @seleccionar="verDetalle"
         />
       </div>
 
-      <!-- Sin comunicados -->
       <div v-else class="sin-contenido">
         <div class="icono">📢</div>
         <p>No hay comunicados disponibles en este momento</p>
       </div>
     </div>
 
-    <!-- Panel de administrador (historial y reacciones) -->
     <div v-if="isAdmin" class="seccion-admin">
-      <h3>Panel de Administración</h3>
+      <h3>Panel de Administracion</h3>
 
       <div class="tabs">
         <button
-          @click="tabActual = 'historial'"
-          :class="{ activo: tabActual === 'historial' }"
+          type="button"
           class="tab"
+          :class="{ activo: tabActual === 'historial' }"
+          @click="tabActual = 'historial'"
         >
           Historial de Comunicados
         </button>
         <button
-          @click="tabActual = 'reacciones'"
-          :class="{ activo: tabActual === 'reacciones' }"
+          type="button"
           class="tab"
+          :class="{ activo: tabActual === 'reacciones' }"
+          @click="tabActual = 'reacciones'"
         >
           Detalle de Reacciones
         </button>
       </div>
 
-      <!-- Historial -->
       <div v-if="tabActual === 'historial'" class="contenido-tab">
         <div v-if="comunicadosStore.historial.length === 0" class="vacio">
           No hay comunicados en el historial
@@ -128,8 +137,8 @@
 
         <div v-else class="tabla-historial">
           <div class="encabezado">
-            <div class="col-titulo">Título</div>
-            <div class="col-fecha">Publicación</div>
+            <div class="col-titulo">Titulo</div>
+            <div class="col-fecha">Publicacion</div>
             <div class="col-estatus">Estatus</div>
             <div class="col-reacciones">Reacciones</div>
           </div>
@@ -138,7 +147,9 @@
             <div class="col-titulo">{{ com.titulo }}</div>
             <div class="col-fecha">{{ formatDate(com.createdAt) }}</div>
             <div class="col-estatus">
-              <span :class="['badge', `estatus-${com.estatus}`]">{{ com.estatus }}</span>
+              <span :class="['badge', `estatus-${estatusHistorial(com)}`]">
+                {{ estatusHistorial(com) }}
+              </span>
             </div>
             <div class="col-reacciones">
               <span class="count">{{ com.reacciones?.length || 0 }} 👍</span>
@@ -147,16 +158,11 @@
         </div>
       </div>
 
-      <!-- Reacciones -->
       <div v-if="tabActual === 'reacciones'" class="contenido-tab">
         <div class="selector-comunicado">
           <select v-model="comunicadoSeleccionadoId" class="select">
             <option :value="null">Selecciona un comunicado</option>
-            <option
-              v-for="com in comunicadosStore.historial"
-              :key="com.id"
-              :value="com.id"
-            >
+            <option v-for="com in comunicadosStore.historial" :key="com.id" :value="com.id">
               {{ com.titulo }}
             </option>
           </select>
@@ -183,15 +189,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import ComunicadoDestacado from "@/components/comunicados/ComunicadoDestacado.vue";
 import ComunicadosLista from "@/components/comunicados/ComunicadosLista.vue";
 import { useComunicadosStore } from "@/store/comunicados";
 import { useAuthStore } from "@/store/auth";
-import { getRoleActions } from "@/utils/permissions";
 import comunicadosService from "@/services/comunicados.service";
+import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
 
 const comunicadosStore = useComunicadosStore();
 const authStore = useAuthStore();
@@ -203,29 +209,47 @@ const notificacion = ref(null);
 const tabActual = ref("historial");
 const comunicadoSeleccionadoId = ref(null);
 const reaccionesDetalle = ref([]);
-const areas = ref([]);
+const selectedAreaId = ref("");
+const showMore = ref(false);
 
 const formulario = ref({
   titulo: "",
   contenido: "",
   area_id: null,
-  fecha_vencimiento: null,
+  fecha_vencimiento: null
 });
 
 const formularioOriginal = ref(null);
 
-const isAdmin = computed(() => authStore.user?.rol === "Administrador");
+const isAdmin = computed(() => hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH]));
+const canManageAnnouncements = computed(() =>
+  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+);
+const canFilterByArea = computed(() => canManageAnnouncements.value);
 
-const actions = computed(() => getRoleActions(authStore.user?.rol, "comunicados"));
+const actions = computed(() => getRoleActions(authStore.user, "comunicados"));
+const masReciente = computed(() => comunicadosStore.masReciente?.id ? comunicadosStore.masReciente : null);
 
-const masReciente = computed(() => comunicadosStore.masReciente);
-
-const otrosComunicados = computed(() => {
-  return comunicadosStore.comunicados.filter((c) => c.id !== masReciente.value?.id);
+const areasDisponibles = computed(() => {
+  const mapa = new Map();
+  [masReciente.value, ...comunicadosStore.comunicados, ...comunicadosStore.historial].forEach((com) => {
+    if (com?.area?.id) {
+      mapa.set(com.area.id, com.area);
+    }
+  });
+  return [...mapa.values()].sort((a, b) => a.nombre.localeCompare(b.nombre));
 });
 
-const yuaReaccionaste = (comunicadoId) => {
-  const comunicado = comunicadosStore.comunicados.find((c) => c.id === comunicadoId);
+const otrosComunicados = computed(() =>
+  comunicadosStore.comunicados.filter((c) => c.id !== masReciente.value?.id)
+);
+
+const areaFiltroActual = computed(() =>
+  canFilterByArea.value && selectedAreaId.value ? selectedAreaId.value : null
+);
+
+const yaReaccionaste = (comunicadoId) => {
+  const comunicado = comunicadosStore.comunicados.find((c) => c.id === comunicadoId) || masReciente.value;
   return comunicado?.reacciones?.some((r) => r.usuario_id === authStore.user?.id) || false;
 };
 
@@ -236,8 +260,17 @@ const formatDate = (dateString) => {
     month: "short",
     day: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   }).format(date);
+};
+
+const estatusHistorial = (comunicado) => {
+  if (!comunicado?.fecha_vencimiento) {
+    return comunicado?.estatus || "activo";
+  }
+
+  const vencio = new Date(`${comunicado.fecha_vencimiento}T23:59:59`).getTime() < Date.now();
+  return vencio ? "vencido" : comunicado?.estatus || "activo";
 };
 
 const selectAction = (action) => {
@@ -248,11 +281,12 @@ const selectAction = (action) => {
 
 const abrirModal = () => {
   editando.value = false;
+  formularioOriginal.value = null;
   formulario.value = {
     titulo: "",
     contenido: "",
-    area_id: null,
-    fecha_vencimiento: null,
+    area_id: selectedAreaId.value ? Number(selectedAreaId.value) : null,
+    fecha_vencimiento: null
   };
   showModal.value = true;
 };
@@ -268,9 +302,36 @@ const editarComunicado = (comunicado) => {
     titulo: comunicado.titulo,
     contenido: comunicado.contenido,
     area_id: comunicado.area_id,
-    fecha_vencimiento: comunicado.fecha_vencimiento,
+    fecha_vencimiento: comunicado.fecha_vencimiento
   };
   showModal.value = true;
+};
+
+const cargarHistorial = async () => {
+  if (!isAdmin.value) {
+    return;
+  }
+
+  await comunicadosStore.obtenerHistorial();
+};
+
+const cargarReacciones = async () => {
+  if (!comunicadoSeleccionadoId.value) {
+    reaccionesDetalle.value = [];
+    return;
+  }
+
+  try {
+    reaccionesDetalle.value = await comunicadosService.getReactions(comunicadoSeleccionadoId.value);
+  } catch (error) {
+    reaccionesDetalle.value = [];
+  }
+};
+
+const cargarComunicados = async () => {
+  await comunicadosStore.obtenerMasReciente(areaFiltroActual.value);
+  await comunicadosStore.obtenerComunicados(areaFiltroActual.value);
+  await cargarHistorial();
 };
 
 const guardarComunicado = async () => {
@@ -286,79 +347,59 @@ const guardarComunicado = async () => {
     }
 
     cerrarModal();
-    await comunicadosStore.obtenerMasReciente();
-    await comunicadosStore.obtenerComunicados();
+    await cargarComunicados();
   } catch (error) {
-    mostrarNotificacion(error.message, "error");
+    mostrarNotificacion(error.response?.data?.error || error.message, "error");
   } finally {
     loading.value = false;
   }
 };
 
 const eliminarComunicado = async (id) => {
-  if (confirm("¿Estás seguro de que deseas eliminar este comunicado?")) {
-    try {
-      await comunicadosStore.eliminarComunicado(id);
-      mostrarNotificacion("Comunicado eliminado correctamente", "exito");
-      await comunicadosStore.obtenerMasReciente();
-      await comunicadosStore.obtenerComunicados();
-    } catch (error) {
-      mostrarNotificacion(error.message, "error");
-    }
+  if (!confirm("¿Estas seguro de que deseas eliminar este comunicado?")) {
+    return;
+  }
+
+  try {
+    await comunicadosStore.eliminarComunicado(id);
+    mostrarNotificacion("Comunicado eliminado correctamente", "exito");
+    showMore.value = false;
+    await cargarComunicados();
+  } catch (error) {
+    mostrarNotificacion(error.response?.data?.error || error.message, "error");
   }
 };
 
 const toggleReaccion = async (comunicadoId) => {
   try {
     await comunicadosStore.toggleReaction(comunicadoId, authStore.user?.id);
+    await cargarHistorial();
   } catch (error) {
-    mostrarNotificacion(error.message, "error");
+    mostrarNotificacion(error.response?.data?.error || error.message, "error");
   }
 };
 
 const verDetalle = (comunicado) => {
-  // Podría abrir un modal con el detalle
-  console.log("Ver detalle:", comunicado);
+  comunicadosStore.masReciente = comunicado;
+  showMore.value = false;
 };
 
 const mostrarNotificacion = (mensaje, tipo) => {
   notificacion.value = { mensaje, tipo };
-  setTimeout(() => {
+  window.setTimeout(() => {
     notificacion.value = null;
   }, 4000);
 };
 
-const cargarHistorial = async () => {
-  try {
-    await comunicadosStore.obtenerHistorial();
-  } catch (error) {
-    console.error("Error cargando historial:", error);
-  }
-};
+watch(selectedAreaId, async () => {
+  showMore.value = false;
+  await cargarComunicados();
+});
 
-const cargarReacciones = async () => {
-  if (!comunicadoSeleccionadoId.value) {
-    reaccionesDetalle.value = [];
-    return;
-  }
-
-  try {
-    reaccionesDetalle.value = await comunicadosService.getReactions(
-      comunicadoSeleccionadoId.value
-    );
-  } catch (error) {
-    console.error("Error cargando reacciones:", error);
-    reaccionesDetalle.value = [];
-  }
-};
+watch(comunicadoSeleccionadoId, cargarReacciones);
 
 onMounted(async () => {
-  await comunicadosStore.obtenerMasReciente();
-  await comunicadosStore.obtenerComunicados();
-
-  if (isAdmin.value) {
-    await cargarHistorial();
-  }
+  await cargarComunicados();
 });
 </script>
 
@@ -400,6 +441,28 @@ onMounted(async () => {
   }
 }
 
+.filtro-panel {
+  padding: 16px 18px;
+  border: 1px solid rgba(176, 142, 93, 0.18);
+  border-radius: 10px;
+  background: rgba(26, 26, 46, 0.5);
+}
+
+.filtro-campo {
+  display: grid;
+  gap: 8px;
+  max-width: 340px;
+}
+
+.filtro-campo span,
+label {
+  color: #b38e5d;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -411,16 +474,6 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 .modal {
@@ -433,18 +486,6 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .modal-header {
@@ -468,11 +509,6 @@ onMounted(async () => {
   color: rgba(255, 255, 255, 0.6);
   font-size: 24px;
   cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.btn-cerrar:hover {
-  color: #ffffff;
 }
 
 .modal-body {
@@ -489,16 +525,6 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-}
-
-label {
-  display: block;
-  color: #b38e5d;
-  font-weight: 600;
-  font-size: 13px;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .input,
@@ -540,17 +566,12 @@ label {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
   border: none;
 }
 
 .btn-primario {
   background: #621132;
   color: #ffffff;
-}
-
-.btn-primario:hover:not(:disabled) {
-  background: #7a1640;
 }
 
 .btn-primario:disabled {
@@ -564,11 +585,6 @@ label {
   border: 1px solid rgba(176, 142, 93, 0.3);
 }
 
-.btn-secundario:hover {
-  background: rgba(176, 142, 93, 0.25);
-  border-color: #b38e5d;
-}
-
 .contenedor {
   display: flex;
   flex-direction: column;
@@ -578,7 +594,22 @@ label {
 .seccion {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
+}
+
+.mas-acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-ver-mas {
+  padding: 8px 14px;
+  border: 1px solid rgba(176, 142, 93, 0.3);
+  border-radius: 999px;
+  background: rgba(176, 142, 93, 0.12);
+  color: #b38e5d;
+  cursor: pointer;
+  font-weight: 700;
 }
 
 .sin-contenido {
@@ -621,11 +652,6 @@ label {
   font-size: 14px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.tab:hover {
-  color: #b38e5d;
 }
 
 .tab.activo {
@@ -664,11 +690,13 @@ label {
   letter-spacing: 0.5px;
 }
 
-.tabla-historial .encabezado {
+.tabla-historial .encabezado,
+.tabla-historial .fila {
   grid-template-columns: 2fr 1fr 1fr 1fr;
 }
 
-.tabla-reacciones .encabezado {
+.tabla-reacciones .encabezado,
+.tabla-reacciones .fila {
   grid-template-columns: 2fr 1fr;
 }
 
@@ -678,14 +706,6 @@ label {
   padding: 12px 16px;
   border-bottom: 1px solid rgba(176, 142, 93, 0.15);
   color: rgba(255, 255, 255, 0.8);
-}
-
-.tabla-historial .fila {
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-}
-
-.tabla-reacciones .fila {
-  grid-template-columns: 2fr 1fr;
 }
 
 .fila:last-child {
@@ -735,10 +755,7 @@ label {
     max-height: 95vh;
   }
 
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
+  .form-row,
   .tabla-historial .encabezado,
   .tabla-historial .fila,
   .tabla-reacciones .encabezado,

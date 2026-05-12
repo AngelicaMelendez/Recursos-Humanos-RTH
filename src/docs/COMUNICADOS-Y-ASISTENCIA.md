@@ -43,6 +43,7 @@ Panel exclusivo para administradores con:
 
 ### Modelos de Base de Datos
 
+
 #### Tabla: `comunicados`
 
 ```sql

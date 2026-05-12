@@ -7,14 +7,14 @@
           {{ formatDate(comunicado.createdAt) }}
         </time>
       </div>
-      <div v-if="isAdmin" class="acciones">
-        <button class="btn-icon" @click="$emit('editar')" title="Editar">
+      <div v-if="canManage" class="acciones">
+        <button class="btn-icon" type="button" @click="$emit('editar')" title="Editar">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
           </svg>
         </button>
-        <button class="btn-icon btn-danger" @click="$emit('eliminar')" title="Eliminar">
+        <button class="btn-icon btn-danger" type="button" @click="$emit('eliminar')" title="Eliminar">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -31,6 +31,7 @@
       <button
         class="btn-reaccion"
         :class="{ activa: yuaReaccionaste }"
+        type="button"
         @click="$emit('toggle-reaccion')"
       >
         <span class="icono">👍</span>
@@ -46,21 +47,26 @@
 <script setup>
 import { computed } from "vue";
 import { useAuthStore } from "@/store/auth";
+import { hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
 
-const props = defineProps({
+defineEmits(["editar", "eliminar", "toggle-reaccion"]);
+
+defineProps({
   comunicado: {
     type: Object,
-    required: true,
+    required: true
   },
   yuaReaccionaste: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 });
 
 const authStore = useAuthStore();
 
-const isAdmin = computed(() => authStore.user?.rol === "Administrador");
+const canManage = computed(() =>
+  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+);
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -69,11 +75,9 @@ const formatDate = (dateString) => {
     month: "short",
     day: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   }).format(date);
 };
-
-defineEmits(["editar", "eliminar", "toggle-reaccion"]);
 </script>
 
 <style scoped>

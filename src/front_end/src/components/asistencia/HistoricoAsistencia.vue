@@ -72,7 +72,7 @@
 <script setup>
 import { ref } from "vue";
 
-const props = defineProps({
+defineProps({
   historicoAsistencia: {
     type: Array,
     default: () => [],
@@ -104,16 +104,16 @@ const formatHora = (horaString) => {
 
 const etiquetaEstatus = (estatus, minutos_retardo) => {
   if (estatus === "a_tiempo") return "A tiempo";
-  if (estatus === "retardo") return `Retardo (${minutos_retardo}m)`;
+  if (estatus === "retardo") return `Llego tarde (${minutos_retardo}m)`;
   if (estatus === "ausente") return "Ausente";
   if (estatus === "licencia") return "Licencia";
   return estatus;
 };
 
 const etiquetaEstatusSalida = (estatus) => {
-  if (estatus === "normal") return "Normal";
-  if (estatus === "temprano") return "Temprano";
-  if (estatus === "tarde") return "Horas extra";
+  if (estatus === "normal") return "A tiempo";
+  if (estatus === "temprano") return "Salio antes";
+  if (estatus === "tarde") return "Salio despues";
   if (estatus === "sin_registro") return "Sin registro";
   return estatus;
 };

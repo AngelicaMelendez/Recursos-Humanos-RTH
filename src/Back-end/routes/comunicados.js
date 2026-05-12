@@ -13,11 +13,11 @@ router.post('/:id/reacciones', auth, ctrl.agregarReaccion);
 // Crear comunicado (Admin y Jefe de Área)
 router.post('/', auth, roles(['admin_rh', 'jefe_area']), ctrl.crearComunicado);
 
-// Editar comunicado (Admin y autor)
-router.patch('/:id', auth, ctrl.editarComunicado);
+// Editar comunicado (Admin y Jefe de Area)
+router.patch('/:id', auth, roles(['admin_rh', 'jefe_area']), ctrl.editarComunicado);
 
-// Eliminar comunicado (Solo Admin)
-router.delete('/:id', auth, roles(['admin_rh']), ctrl.eliminarComunicado);
+// Eliminar comunicado (Admin y Jefe de Area)
+router.delete('/:id', auth, roles(['admin_rh', 'jefe_area']), ctrl.eliminarComunicado);
 
 // Historial y reacciones (Solo Admin)
 router.get('/admin/historial', auth, roles(['admin_rh']), ctrl.obtenerHistorial);

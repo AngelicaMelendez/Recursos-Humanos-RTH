@@ -17,19 +17,45 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import AppSidebar from "@/components/navigation/AppSidebar.vue";
 import AppTopbar from "@/components/navigation/AppTopbar.vue";
 import { useAuthStore } from "@/store/auth";
+import { useNotificationsStore } from "@/store/notificaciones";
 
 const sidebarOpen = ref(false);
 const authStore = useAuthStore();
+const notificationsStore = useNotificationsStore();
 const router = useRouter();
 
+const syncNotifications = async (userId) => {
+  if (!userId || !authStore.isAuthenticated) {
+    notificationsStore.clear();
+    return;
+  }
+
+  try {
+    await notificationsStore.fetchNotifications(true);
+  } catch (error) {
+    notificationsStore.clear();
+  }
+};
+
 const handleLogout = () => {
+  notificationsStore.clear();
   authStore.logout();
   router.push({ name: "login" });
 };
-</script>
 
+watch(
+  () => authStore.user?.id,
+  (userId) => {
+    syncNotifications(userId);
+  }
+);
+
+onMounted(() => {
+  syncNotifications(authStore.user?.id);
+});
+</script>

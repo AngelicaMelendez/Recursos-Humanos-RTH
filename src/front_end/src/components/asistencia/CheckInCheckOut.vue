@@ -111,9 +111,9 @@ const etiquetaEstatus = (estatus, minutos_retardo) => {
 };
 
 const etiquetaEstatusSalida = (estatus) => {
-  if (estatus === "normal") return "Normal";
-  if (estatus === "temprano") return "Salida temprana";
-  if (estatus === "tarde") return "Horas extra";
+  if (estatus === "normal") return "A tiempo";
+  if (estatus === "temprano") return "Salio antes";
+  if (estatus === "tarde") return "Salio despues";
   return estatus;
 };
 </script>
