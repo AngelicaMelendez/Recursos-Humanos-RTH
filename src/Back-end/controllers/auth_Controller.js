@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../models');
 
 const roleLabels = {
-  admin_rh: 'Administrador RH',
+  admin_rh: 'Administrador',
   direccion: 'Direccion',
   jefe_area: 'Jefe de Area',
   empleado: 'Empleado',
@@ -27,14 +27,14 @@ function toFrontendUser(usuario) {
 }
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { curp, password } = req.body;
 
   try {
     const usuario = await db.Usuario.findOne({
       include: [{
         model: db.Empleado,
         as: 'empleado',
-        where: { curp: email },
+        where: { curp },
         attributes: ['id', 'nombre', 'curp'],
       }],
     });

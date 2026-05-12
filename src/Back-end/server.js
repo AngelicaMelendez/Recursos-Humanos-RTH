@@ -23,6 +23,8 @@ app.use('/api/visitantes', require('./routes/visitantes'));
 app.use('/api/pasantes', require('./routes/pasantes'));
 app.use('/api/control-accesos', require('./routes/control-accesos'));
 app.use('/api/auditoria', require('./routes/auditoria'));
+app.use('/api/comunicados', require('./routes/comunicados'));
+app.use('/api/asistencia', require('./routes/asistencia'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'Recursos Humanos RTH API' });

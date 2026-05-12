@@ -10,8 +10,8 @@
 
       <form class="login-form" @submit.prevent="submitLogin">
         <label>
-          Correo institucional
-          <input v-model="form.email" type="email" placeholder="rh@hidalgo.gob.mx" required />
+          CURP
+          <input v-model="form.curp" type="text" placeholder="ABCD123456HDFRRN01" required />
         </label>
         <label>
           Contraseña
@@ -22,7 +22,7 @@
         </button>
       </form>
 
-      <small>Usuario demo sugerido: `admin@hidalgo.gob.mx`</small>
+      <small>Usuario demo sugerido (CURP): `ADMIN1234567890123`</small>
     </div>
   </section>
 </template>
@@ -35,7 +35,7 @@ import { useAuthStore } from "@/store/auth";
 const router = useRouter();
 const authStore = useAuthStore();
 const form = reactive({
-  email: "admin@hidalgo.gob.mx",
+  curp: "ADMIN1234567890123",
   password: "Password123!"
 });
 
