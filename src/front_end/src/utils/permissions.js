@@ -31,7 +31,9 @@ const moduleByRoute = {
   "/visitantes": "visitors",
   "/pasantes": "interns",
   "/control-accesos": "accessControl",
-  "/auditoria": "audit"
+  "/auditoria": "audit",
+  "/comunicados": "comunicados",
+  "/asistencia": "attendance"
 };
 
 export const roleLabels = {
@@ -53,7 +55,9 @@ export const modulePermissions = {
   visitors: [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.RECEPCION],
   interns: [ROLE_KEYS.ADMIN_RH],
   accessControl: [ROLE_KEYS.ADMIN_RH],
-  audit: [ROLE_KEYS.ADMIN_RH]
+  audit: [ROLE_KEYS.ADMIN_RH],
+  comunicados: [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.DIRECCION, ROLE_KEYS.JEFE_AREA, ROLE_KEYS.EMPLEADO],
+  attendance: [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.DIRECCION, ROLE_KEYS.JEFE_AREA, ROLE_KEYS.EMPLEADO]
 };
 
 const actionCatalog = {
@@ -80,7 +84,14 @@ const actionCatalog = {
   registerVisitorExit: { label: "Registrar salida", icon: "check", operation: "U" },
   assignBadge: { label: "Asignar gafete", icon: "tag", operation: "U" },
   viewVisitors: { label: "Visitantes activos", icon: "door", operation: "R" },
-  fullAudit: { label: "Auditoria completa", icon: "activity", operation: "R" }
+  fullAudit: { label: "Auditoria completa", icon: "activity", operation: "R" },
+  crearComunicado: { label: "Publicar comunicado", icon: "plus", operation: "C" },
+  editarComunicado: { label: "Editar comunicado", icon: "edit", operation: "U" },
+  eliminarComunicado: { label: "Eliminar comunicado", icon: "trash", operation: "D" },
+  verComunicados: { label: "Ver comunicados", icon: "send", operation: "R" },
+  reaccionarComunicado: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
+  verHistorialAsistencia: { label: "Ver historial", icon: "activity", operation: "R" },
+  registrarAsistencia: { label: "Registrar asistencia", icon: "check", operation: "C" }
 };
 
 export const roleActionsByModule = {
@@ -105,6 +116,18 @@ export const roleActionsByModule = {
   visitors: {
     [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
     [ROLE_KEYS.RECEPCION]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors"]
+  },
+  comunicados: {
+    [ROLE_KEYS.ADMIN_RH]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.DIRECCION]: ["crearComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.JEFE_AREA]: ["crearComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"]
+  },
+  attendance: {
+    [ROLE_KEYS.ADMIN_RH]: ["registrarAsistencia", "verHistorialAsistencia"],
+    [ROLE_KEYS.DIRECCION]: ["verHistorialAsistencia"],
+    [ROLE_KEYS.JEFE_AREA]: ["verHistorialAsistencia"],
+    [ROLE_KEYS.EMPLEADO]: ["registrarAsistencia", "verHistorialAsistencia"]
   }
 };
 
