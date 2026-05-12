@@ -10,7 +10,6 @@ import RequestsPage from "@/pages/RequestsPage.vue";
 import NormativityPage from "@/pages/NormativityPage.vue";
 import VacanciesPage from "@/pages/VacanciesPage.vue";
 import VisitorsPage from "@/pages/VisitorsPage.vue";
-import InternsPage from "@/pages/InternsPage.vue";
 import AccessControlPage from "@/pages/AccessControlPage.vue";
 import AuditPage from "@/pages/AuditPage.vue";
 import ComunicadosPage from "@/pages/ComunicadosPage.vue";
@@ -38,7 +37,6 @@ const routes = [
       { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },
       { path: "vacantes", name: "vacancies", component: VacanciesPage, meta: { module: "vacancies" } },
       { path: "visitantes", name: "visitors", component: VisitorsPage, meta: { module: "visitors" } },
-      { path: "pasantes", name: "interns", component: InternsPage, meta: { module: "interns" } },
       {
         path: "control-accesos",
         name: "access-control",

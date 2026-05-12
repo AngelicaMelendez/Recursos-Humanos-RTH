@@ -7,13 +7,12 @@
       class="role-actions__button"
       :class="`role-actions__button--${action.operation.toLowerCase()}`"
       @click="$emit('select', action)"
-      :title="`${action.operation} - ${action.label}`"
+      :title="action.label"
     >
       <span class="role-actions__icon">
         <IconSymbol :name="action.icon" />
       </span>
       <span>{{ action.label }}</span>
-      <small>{{ action.operation }}</small>
     </button>
   </div>
 </template>
@@ -77,25 +76,13 @@ defineEmits(["select"]);
   color: var(--color-primary);
 }
 
-.role-actions__button small {
-  display: inline-grid;
-  place-items: center;
-  min-width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: rgba(98, 17, 50, 0.08);
-  color: var(--color-primary);
-  font-size: 0.72rem;
-}
-
 .role-actions__button--c {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #fff;
 }
 
-.role-actions__button--c .role-actions__icon,
-.role-actions__button--c small {
+.role-actions__button--c .role-actions__icon {
   background: rgba(255, 255, 255, 0.18);
   color: #fff;
 }

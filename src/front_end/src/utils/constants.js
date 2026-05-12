@@ -7,7 +7,6 @@ export const navigationItems = [
   { label: "Normatividad", route: "/normatividad", icon: "shield", module: "normativity" },
   { label: "Vacantes", route: "/vacantes", icon: "briefcase", module: "vacancies" },
   { label: "Visitantes", route: "/visitantes", icon: "door", module: "visitors" },
-  { label: "Pasantes", route: "/pasantes", icon: "graduation", module: "interns" },
   { label: "Control de accesos", route: "/control-accesos", icon: "lock", module: "accessControl" },
   { label: "Auditoría", route: "/auditoria", icon: "activity" }
 ];
@@ -17,7 +16,6 @@ export const dashboardFallback = {
     { label: "Empleados activos", value: 184, delta: "+6", tone: "primary" },
     { label: "Exempleados", value: 37, delta: "Histórico", tone: "neutral" },
     { label: "Visitantes hoy", value: 21, delta: "+4", tone: "accent" },
-    { label: "Pasantes activos", value: 13, delta: "2 por vencer", tone: "primary" },
     { label: "Vacantes abiertas", value: 9, delta: "3 urgentes", tone: "accent" },
     { label: "Solicitudes pendientes", value: 17, delta: "6 RH", tone: "warning" },
     { label: "Incidencias del mes", value: 28, delta: "-3", tone: "neutral" },
@@ -65,7 +63,6 @@ export const dashboardFallback = {
   quickActions: [
     { title: "Registrar visitante", route: "/visitantes" },
     { title: "Nueva solicitud", route: "/solicitudes" },
-    { title: "Alta de pasante", route: "/pasantes" },
     { title: "Subir normatividad", route: "/normatividad" }
   ]
 };

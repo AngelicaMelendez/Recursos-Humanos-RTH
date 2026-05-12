@@ -9,14 +9,8 @@
     </div>
 
     <nav class="sidebar__nav">
-      <router-link
-        v-for="item in visibleNavigationItems"
-        :key="item.route"
-        :to="item.route"
-        class="sidebar__link"
-        active-class="sidebar__link--active"
-        @click="$emit('close')"
-      >
+      <router-link v-for="item in visibleNavigationItems" :key="item.route" :to="item.route" class="sidebar__link"
+        active-class="sidebar__link--active" @click="$emit('close')">
         <IconSymbol :name="item.icon" />
         <span>{{ item.label }}</span>
       </router-link>
@@ -35,8 +29,8 @@ import { useAuthStore } from "@/store/auth";
 defineProps({
   open: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 defineEmits(["close"]);
@@ -44,7 +38,7 @@ defineEmits(["close"]);
 const authStore = useAuthStore();
 
 const visibleNavigationItems = computed(() =>
-  filterNavigationByRole(navigationItems, authStore.user?.rol)
+  filterNavigationByRole(navigationItems, authStore.user?.rol),
 );
 </script>
 
@@ -128,4 +122,3 @@ const visibleNavigationItems = computed(() =>
   }
 }
 </style>
-
