@@ -578,16 +578,18 @@ onMounted(() => {
 .hero-panel p,
 .module-heading p {
   margin: 8px 0 0;
-  color: #9fb2d7;
-  line-height: 1.55;
+  color: #0c0b0b;
+  line-height: 1.5
+  ;
 }
 
 .hero-panel__eyebrow,
 .module-kicker {
-  color: #4fd8ff;
+  color: #621132;
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
+  line-height: 2;
 }
 
 .role-chip,
@@ -598,30 +600,30 @@ onMounted(() => {
   min-height: 28px;
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(79, 216, 255, 0.34);
-  background: rgba(79, 216, 255, 0.1);
-  color: #d8f6ff;
+  border: 1px solid #621132;
+  background: #7d2342;
+  color: #ffffff;
   font-size: 0.82rem;
   font-weight: 800;
   white-space: nowrap;
 }
 
 .status-pill.success {
-  border-color: rgba(61, 224, 153, 0.35);
-  background: rgba(61, 224, 153, 0.12);
-  color: #9dffd0;
+  border-color: #BC955B;
+  background: #DDC9A3;
+  color: #ffffff;
 }
 
 .status-pill.warning {
-  border-color: rgba(255, 196, 87, 0.42);
-  background: rgba(255, 196, 87, 0.12);
-  color: #ffe0a0;
+  border-color: #6f7271;
+  background: #98989A;
+  color: #ffffff;
 }
 
 .status-pill.danger {
-  border-color: rgba(255, 91, 128, 0.42);
-  background: rgba(255, 91, 128, 0.13);
-  color: #ffb6c7;
+  border-color: #6f7271;
+  background: #98989A;
+  color: #ffffff;
 }
 
 .module-section {
@@ -700,17 +702,71 @@ onMounted(() => {
 }
 
 .electric-button {
-  background: linear-gradient(135deg, #1f7aff, #4fd8ff);
-  color: #03101f;
+  background: var(--color-primary);
+  color: white;
+}
+
+.electric-button:hover {
+  background: var(--color-primary-soft);
+}
+
+.ghost-button {
+  background: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.ghost-button:hover {
+  background: rgba(98, 17, 50, 0.1);
+}
+
+.danger-button {
+  background: var(--color-danger);
+  color: white;
+}
+
+.danger-button:hover {
+  background: #6d6c6c;
+}
+
+.reaction-button {
+  background: transparent;
+  border-color: var(--color-text-soft);
+  color: var(--color-text-soft);
+}
+
+.reaction-button:hover {
+  background: rgba(106, 90, 99, 0.1);
+}
+
+.reaction-button.active {
+  background: var(--color-primary);
+  color: white;
+}
+
+.electric-button {
+  background: linear-gradient(135deg, #7d2342), #621132;
+  color: #ffffff;
   padding: 10px 16px;
 }
 
-.ghost-button,
-.reaction-button,
+.ghost-button{
+  background: #7d2342;
+  border-color: #621132;
+  color: #ffffff;
+  padding: 10px 14px;
+
+}
+.reaction-button{
+  background: #BC955B;
+  border-color: #DDC9A3;
+  color: #ffffff;
+  padding: 10px 14px;
+}
 .icon-button {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(123, 154, 255, 0.25);
-  color: #eef5ff;
+  background: #621132;
+  border-color: #7d2342;
+  color: #ffffff;
   padding: 10px 14px;
 }
 
@@ -722,9 +778,9 @@ onMounted(() => {
 }
 
 .danger-button {
-  background: rgba(255, 91, 128, 0.12);
-  border-color: rgba(255, 91, 128, 0.28);
-  color: #ffb6c7;
+  background: #7d2342 ;
+  border-color: #621132;
+  color: #ffffff;
 }
 
 .reaction-button {
@@ -734,8 +790,8 @@ onMounted(() => {
 }
 
 .reaction-button.active {
-  border-color: rgba(61, 224, 153, 0.45);
-  color: #9dffd0;
+  border-color: #BC955B;
+  color: #ffffff;
 }
 
 button:disabled {
