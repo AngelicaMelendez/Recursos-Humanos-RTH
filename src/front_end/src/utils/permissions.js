@@ -29,7 +29,6 @@ const moduleByRoute = {
   "/normatividad": "normativity",
   "/vacantes": "vacancies",
   "/visitantes": "visitors",
-  "/pasantes": "interns",
   "/control-accesos": "accessControl",
   "/auditoria": "audit"
 };
@@ -51,7 +50,6 @@ export const modulePermissions = {
   normativity: [ROLE_KEYS.ADMIN_RH],
   vacancies: [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.DIRECCION],
   visitors: [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.RECEPCION],
-  interns: [ROLE_KEYS.ADMIN_RH],
   accessControl: [ROLE_KEYS.ADMIN_RH],
   audit: [ROLE_KEYS.ADMIN_RH]
 };
