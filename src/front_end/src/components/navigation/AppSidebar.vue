@@ -52,8 +52,8 @@ const visibleNavigationItems = computed(() =>
   height: 100vh;
   padding: 24px 18px;
   background:
-    linear-gradient(180deg, rgba(98, 17, 50, 0.98), rgba(68, 10, 33, 0.98)),
-    var(--color-primary);
+  linear-gradient(180deg, rgba(98, 17, 50, 0.98), rgba(68, 10, 33, 0.98)),
+  var(--color-primary);
   color: #fff;
 }
 

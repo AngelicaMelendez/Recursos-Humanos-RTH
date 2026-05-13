@@ -770,45 +770,45 @@ onMounted(() => {
 }
 
 .electric-button {
-  background: var(--color-primary);
+  background: #0c0b0b;
   color: white;
 }
 
 .electric-button:hover {
-  background: var(--color-primary-soft);
+  background: #7d2342;
 }
 
 .ghost-button {
-  background: transparent;
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background: #621132;
+  border-color: #7d2342;
+  color: #ffffff
 }
 
 .ghost-button:hover {
-  background: rgba(98, 17, 50, 0.1);
+  background: #7d2342;
 }
 
 .danger-button {
-  background: var(--color-danger);
+  background: #621132;
   color: white;
 }
 
 .danger-button:hover {
-  background: #6d6c6c;
+  background: #7d2342;
 }
 
 .reaction-button {
-  background: transparent;
-  border-color: var(--color-text-soft);
-  color: var(--color-text-soft);
+  background: #621132;
+  border-color: #7d2342;
+  color: #ffffff;
 }
 
 .reaction-button:hover {
-  background: rgba(106, 90, 99, 0.1);
+  background: #BC955B;
 }
 
 .reaction-button.active {
-  background: var(--color-primary);
+  background: #BC955B;
   color: white;
 }
 
