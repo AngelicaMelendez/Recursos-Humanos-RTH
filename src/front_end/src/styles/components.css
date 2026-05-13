@@ -49,7 +49,7 @@
 
 .pill.neutral {
   background: rgba(106, 90, 99, 0.12);
-  color: var(--color-text-soft);
+  color: var(--color-neutral);
 }
 
 .table-responsive {

@@ -4,8 +4,8 @@
       <IconSymbol name="menu" />
     </button>
     <div>
-      <strong class="topbar__title">Sistema Integral de RH</strong>
-      <p class="topbar__subtitle">Gestion institucional con trazabilidad administrativa.</p>
+      <strong class="topbar__title">Sistema Integral de Recursos Humanos</strong>
+      <p class="topbar__subtitle">Gestion institucional con manejo administrativa.</p>
     </div>
     <div class="topbar__user">
       <div class="topbar__icons">
@@ -63,10 +63,10 @@
         </button>
       </div>
       <div class="user-profile">
-        <img :src="user?.avatar || '/default-avatar.png'" alt="Perfil" class="profile-image" />
+        <img :src="user?.avatar || iconoPerfil" alt="Perfil" class="profile-image" />
         <div>
-          <strong>{{ user?.nombre || "Usuario institucional" }}</strong>
-          <span>{{ user?.rol || "Administrador RH" }}</span>
+          <strong class= "user-name">{{ user?.nombre || "Usuario institucional" }}</strong>
+          <span>{{ user?.rol || "Administrador" }}</span>
         </div>
       </div>
       <button class="topbar__logout" type="button" @click="$emit('logout')">
@@ -80,6 +80,7 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
 import { useNotificationsStore } from "@/store/notificaciones";
+import iconoPerfil from "@/assets/icono.png";
 
 defineProps({
   user: {
@@ -186,17 +187,27 @@ onBeforeUnmount(() => {
   margin: 4px 0 0;
   color: var(--color-text-soft);
   font-size: 0.9rem;
+  gap: 18px;
 }
 
 .topbar__user {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-right: 12px;
+
+}
+
+.user-name {
+  display: block;
+  gap: 12px;
+  margin-right: 6px;
 }
 
 .topbar__icons {
   display: flex;
   gap: 8px;
+
 }
 
 .notifications-wrap {
@@ -210,6 +221,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   padding: 8px;
   border-radius: 4px;
+  margin-right: 15px;
 }
 
 .icon-button:hover {
@@ -302,6 +314,8 @@ onBeforeUnmount(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 .topbar__logout {

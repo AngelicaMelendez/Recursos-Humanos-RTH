@@ -9,6 +9,19 @@
       <span class="role-chip">{{ authStore.user?.rol || "Colaborador" }}</span>
     </section>
 
+    <section class="hero-banner">
+      <div class="hero-banner__content">
+        <span class="hero-banner__eyebrow">Espacio de anuncio</span>
+        <h3>Banner personalizado</h3>
+        <p>Este es el lugar para mostrar una imagen, un mensaje de bienvenida o un aviso importante al usuario.</p>
+      </div>
+      <div class="hero-banner__image">
+        <!-- Agrega tu imagen aquí -->
+        <!-- <img src="/ruta/a/tu-imagen.jpg" alt="Banner de bienvenida" /> -->
+        <div class="hero-banner__image-placeholder">Tu imagen va aquí</div>
+      </div>
+    </section>
+
     <section class="module-section attendance-module">
       <div class="module-heading">
         <div>
@@ -69,8 +82,8 @@
       <div class="module-heading">
         <div>
           <span class="module-kicker">Comunicados</span>
-          <h3>Lectura segmentada</h3>
-          <p>Filtra por area u oficina. Los comunicados vencidos se ocultan de la vista publica.</p>
+          <h3>Aviso</h3>
+          <p>Apartado en el que encontraras noticias o anuncios importantes referentes a tu area o a todo publico.</p>
         </div>
         <button v-if="canManageAnnouncements" class="electric-button" type="button" @click="startCreateAnnouncement">
           Nuevo comunicado
@@ -570,6 +583,52 @@ onMounted(() => {
   padding: 28px;
 }
 
+.hero-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
+  gap: 18px;
+  align-items: center;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 12px 40px var(--color-shadow);
+}
+
+.hero-banner__content {
+  display: grid;
+  gap: 10px;
+}
+
+.hero-banner__eyebrow {
+  color: #621132;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 2;
+}
+
+.hero-banner__image {
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  padding: 18px;
+}
+
+.hero-banner__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-soft);
+  padding: 18px;
+  text-align: center;
+}
+
 .hero-panel h2,
 .module-heading h3,
 .history-list h4,
@@ -611,6 +670,11 @@ onMounted(() => {
   font-weight: 800;
   white-space: nowrap;
 }
+.status-pill.neutral {
+  border-color: #6f7271;
+  background: #98989A;
+  color: #ffffff;
+} 
 
 .status-pill.success {
   border-color: #BC955B;
