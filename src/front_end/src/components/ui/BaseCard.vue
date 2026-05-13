@@ -27,8 +27,17 @@ defineProps({
 </script>
 
 <style scoped>
+
+.card.base-card{
+  width: 100%;
+  max-width: none;
+
+}
 .base-card {
   padding: 22px;
+    width: 100%;
+  max-width: none;
+
 }
 
 .base-card__header {
@@ -47,6 +56,18 @@ defineProps({
   margin: 0;
   color: var(--color-text-soft);
   line-height: 1.5;
+}
+
+.base-card__content {
+  width: 100%;
+  max-width: none;
+}
+.card {
+  display: flex;
+  width: fit-content;
+  width: 100%;
+  width: max-content;
+  
 }
 </style>
 
