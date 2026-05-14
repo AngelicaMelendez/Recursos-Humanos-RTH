@@ -2,7 +2,6 @@
   <BaseCard class="stat-card">
     <div class="stat-card__top">
       <span class="pill" :class="item.tone">{{ item.label }}</span>
-      <strong class="stat-card__delta">{{ item.delta }}</strong>
     </div>
     <div class="stat-card__value">{{ item.value }}</div>
   </BaseCard>

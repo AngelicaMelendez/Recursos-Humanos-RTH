@@ -87,7 +87,7 @@
           </div>
           <label>
             Motivo
-            <textarea v-model="form.motivo" rows="4" required placeholder="Describe brevemente la solicitud" />
+            <textarea v-model="form.motivo" rows="4" required placeholder="Describe brevemente el motivo de la solicitud o incidencia" />
           </label>
           <footer class="modal-actions">
             <button class="secondary-button" type="button" @click="closeModal">Cancelar</button>

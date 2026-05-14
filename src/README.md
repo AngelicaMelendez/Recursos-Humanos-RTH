@@ -133,9 +133,8 @@ Esto permite navegar el frontend y validar el flujo visual sin bloquear el arran
 6. Normatividad en PDF
 7. Vacantes
 8. Visitantes
-9. Pasantes
-10. Control de accesos por roles
-11. Auditoría
+9. Control de accesos por roles
+10. Auditoría
 
 ## Identidad visual aplicada
 
