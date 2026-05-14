@@ -7,15 +7,16 @@
     />
     <div class="main-card">
       <div class="calendar-layout">
+        <div class="fc-toolbar-title">
 
 
 
         <div class="calendar-section">
         <div class="section-header">
         </div>
+        </div>
         <IncidenceCalendar :events="events" />
       </div>
-
 
 
 
