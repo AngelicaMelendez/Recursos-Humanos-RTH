@@ -2,8 +2,8 @@
   <div class="page-container">
     <PageHeader
       eyebrow="Agenda institucional"
-      title="Calendario de incidencias"
-      description="Planeación anual y seguimiento visual de vacaciones, incapacidades, comisiones, eventos y fechas relevantes."
+      title="Calendario de Incidencias"
+      description="Planeación anual y seguimiento visual de vacaciones, incapacidades, comisiones, eventos institucionales y fechas relevantes."
     />
     <div class="main-card">
       <div class="calendar-layout">
