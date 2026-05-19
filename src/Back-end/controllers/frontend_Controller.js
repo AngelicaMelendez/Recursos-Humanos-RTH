@@ -123,6 +123,12 @@ const fallback = {
   ],
 };
 
+const eventosFijos = [
+  { title: "Día Naranja", start: "2026-06-10", color: "#F97316" },
+  { title: "Entrega de Informes", start: "2026-06-15", color: "#0ea5e9" },
+  { title: "Día para Realizar Actividad", start: "2026-06-20", color: "#16a34a" },
+];
+
 function statusToFrontend(status) {
   const map = { activo: 'activa', aprobado: 'aprobada', rechazado: 'rechazada', abierta: 'activa' };
   return map[status] || status;
@@ -207,6 +213,29 @@ exports.calendario = async (req, res) => {
       return nextDate.toISOString().slice(0, 10);
     };
 
+    const createMonthlyEvents = (title, day, color, year) => {
+      const events = [];
+      for (let month = 0; month < 12; month += 1) {
+        const date = new Date(Date.UTC(year, month, day));
+        if (date.getUTCDate() !== day) continue;
+        events.push({
+          id: `${title.replace(/[^a-zA-Z0-9]/g, '-').toUpperCase()}-${year}-${String(month + 1).padStart(2, '0')}`,
+          title,
+          start: date.toISOString().slice(0, 10),
+          allDay: true,
+          color,
+        });
+      }
+      return events;
+    };
+
+    const currentYear = new Date().getUTCFullYear();
+    const monthlyFixedEvents = [
+      ...createMonthlyEvents('Día Naranja', 25, '#F97316', currentYear),
+      ...createMonthlyEvents('Entrega de Informes', 14, '#0ea5e9', currentYear),
+      ...createMonthlyEvents('Día para Realizar Actividad', 9, '#16a34a', currentYear),
+    ];
+
     const [incidents, solicitudes] = await Promise.all([
       db.Incidencia.findAll({
         where: { estatus: 'aprobado' },
@@ -246,6 +275,7 @@ exports.calendario = async (req, res) => {
           end: addOneDay(item.fecha_fin),
           color: colorPorTipo[item.tipo] || colorPorTipo.otro,
         })),
+        ...monthlyFixedEvents,
       ],
     });
   } catch (error) {
@@ -255,6 +285,7 @@ exports.calendario = async (req, res) => {
     });
   }
 };
+
 
 exports.organigrama = async (req, res) => withFallback(res, fallback.organigram, async () => {
   const areas = await db.Area.findAll({ include: [{ association: 'empleados' }] });

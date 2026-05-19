@@ -40,7 +40,7 @@ const PORT = process.env.PORT || 3000;
 async function connectDatabase() {
   try {
     await db.sequelize.authenticate();
-    await db.sequelize.sync({ alter: true });
+    await db.sequelize.sync(); // create missing tables without altering existing schema
     await seedDatabase(db);
     console.log('Base de datos conectada');
   } catch (error) {
