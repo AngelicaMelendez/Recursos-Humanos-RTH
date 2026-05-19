@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader
-      eyebrow="Control de ingreso"
+      eyebrow="Control de Ingreso"
       title="Visitantes"
       description="Registro de accesos institucionales, motivo de visita, persona de destino y control de gafetes."
     >

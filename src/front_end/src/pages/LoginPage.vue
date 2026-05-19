@@ -22,7 +22,7 @@
         </button>
       </form>
 
-      <small>Usuario demo sugerido (CURP): `ADMIN1234567890123`</small>
+      <small>Usuario administrador sugerido (CURP): `DUTM880514MHGRRN03`</small>
     </div>
   </section>
 </template>
@@ -35,8 +35,8 @@ import { useAuthStore } from "@/store/auth";
 const router = useRouter();
 const authStore = useAuthStore();
 const form = reactive({
-  curp: "ADMIN1234567890123",
-  password: "Password123!"
+  curp: "DUTM880514MHGRRN03",
+  password: "123456"
 });
 
 const submitLogin = async () => {
@@ -44,15 +44,7 @@ const submitLogin = async () => {
     await authStore.login(form);
     router.push({ name: "dashboard" });
   } catch (error) {
-    console.warn("No fue posible autenticar con el backend todavía.", error);
-    authStore.token = "demo-token";
-    authStore.user = {
-      nombre: "Administrador RH",
-      rol: "Administrador RH"
-    };
-    localStorage.setItem("rh_hidalgo_token", "demo-token");
-    localStorage.setItem("rh_hidalgo_user", JSON.stringify(authStore.user));
-    router.push({ name: "dashboard" });
+    console.warn("No fue posible autenticar con el backend.", error);
   }
 };
 </script>

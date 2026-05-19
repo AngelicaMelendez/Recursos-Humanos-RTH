@@ -12,6 +12,32 @@ function esAutorizador(rol) {
   return hasRole(rol, ROLE_GROUPS.REQUEST_APPROVERS);
 }
 
+function fechaLocalActual() {
+  const hoy = new Date();
+  const year = hoy.getFullYear();
+  const month = String(hoy.getMonth() + 1).padStart(2, '0');
+  const day = String(hoy.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function validarPeriodoSolicitud({ fecha_inicio, fecha_fin }) {
+  const hoy = fechaLocalActual();
+
+  if (!fecha_inicio || !fecha_fin) {
+    return 'La fecha de inicio y fin son obligatorias';
+  }
+
+  if (fecha_inicio < hoy || fecha_fin < hoy) {
+    return 'La solicitud solo puede iniciar en el dia actual o en una fecha posterior';
+  }
+
+  if (fecha_fin < fecha_inicio) {
+    return 'La fecha final no puede ser anterior a la fecha de inicio';
+  }
+
+  return null;
+}
+
 async function obtenerSolicitudes() {
   return db.Solicitud.findAll({
     include: [
@@ -56,6 +82,10 @@ async function crearNotificacionSolicitud({ solicitud, tipo, titulo, mensaje }) 
 
 exports.listar = async (req, res) => {
   try {
+    if (!esAutorizador(req.user.rol)) {
+      return res.status(403).json({ error: 'Solo un administrador puede consultar solicitudes' });
+    }
+
     const solicitudes = await obtenerSolicitudes();
     res.json(solicitudes.map(toFrontendSolicitud));
   } catch (error) {
@@ -65,6 +95,11 @@ exports.listar = async (req, res) => {
 
 exports.crear = async (req, res) => {
   try {
+    const errorPeriodo = validarPeriodoSolicitud(req.body);
+    if (errorPeriodo) {
+      return res.status(400).json({ error: errorPeriodo });
+    }
+
     const solicitud = await db.Solicitud.create({
       ...req.body,
       empleado_id: req.user.empleado_id,
@@ -93,6 +128,8 @@ exports.aprobar = async (req, res) => {
     await db.Incidencia.create({
       empleado_id: solicitud.empleado_id,
       tipo: normalizarTipoIncidencia(solicitud.tipo),
+      titulo: `${solicitud.tipo} - solicitud SOL-${solicitud.id}`,
+      descripcion: solicitud.motivo,
       fecha_inicio: solicitud.fecha_inicio,
       fecha_fin: solicitud.fecha_fin,
       estatus: 'aprobado',

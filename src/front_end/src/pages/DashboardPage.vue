@@ -3,7 +3,7 @@
     <section class="hero-panel">
       <div>
         <span class="hero-panel__eyebrow">Operacion institucional</span>
-        <h2>Bienvenido, {{ authStore.user?.nombre || "Usuario" }}</h2>
+        <h2>Bienvenid(a), {{ authStore.user?.nombre || "Usuario" }}</h2>
         <p>Comunicados segmentados, asistencia diaria y resumen operativo en una vista de trabajo clara.</p>
       </div>
       <span class="role-chip">{{ authStore.user?.rol || "Colaborador" }}</span>

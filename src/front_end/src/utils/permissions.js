@@ -152,13 +152,11 @@ export const roleActionsByModule = {
     [ROLE_KEYS.RECEPCION]: ["viewDirectory"]
   },
   requests: {
-    [ROLE_KEYS.ADMIN_RH]: sharedManagementActions,
-    [ROLE_KEYS.DIRECCION]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests"],
-    [ROLE_KEYS.JEFE_AREA]: sharedManagementActions,
-    [ROLE_KEYS.SUBJEFE_AREA]: sharedManagementActions,
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: sharedManagementActions,
-    [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests"],
-    [ROLE_KEYS.RECEPCION]: ["createRequest", "deleteRequest", "viewRequests"]
+    [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests"],
+    [ROLE_KEYS.DIRECCION]: ["createRequest"],
+    [ROLE_KEYS.JEFE_AREA]: ["createRequest"],
+    [ROLE_KEYS.EMPLEADO]: ["createRequest"],
+    [ROLE_KEYS.RECEPCION]: ["createRequest"]
   },
   vacancies: {
     [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
