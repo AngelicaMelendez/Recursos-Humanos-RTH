@@ -139,7 +139,7 @@ import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
-import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
@@ -182,7 +182,7 @@ const currentEmployeeId = computed(() =>
   authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
 );
 const canApproveRequests = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.DIRECCION, ROLE_KEYS.JEFE_AREA])
+  hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS)
 );
 
 const summary = computed(() => [

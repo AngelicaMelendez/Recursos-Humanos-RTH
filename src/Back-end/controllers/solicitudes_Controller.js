@@ -1,7 +1,7 @@
 const db = require('../models');
+const { ROLE_GROUPS, hasRole } = require('../utils/roles');
 
 const tiposIncidencia = ['vacaciones', 'permiso', 'incapacidad', 'maternidad', 'paternidad', 'comision', 'otro'];
-const rolesAutorizadores = ['admin_rh', 'direccion', 'jefe_area'];
 
 function normalizarTipoIncidencia(tipo) {
   const normalizado = String(tipo || '').toLowerCase();
@@ -9,7 +9,7 @@ function normalizarTipoIncidencia(tipo) {
 }
 
 function esAutorizador(rol) {
-  return rolesAutorizadores.includes(rol);
+  return hasRole(rol, ROLE_GROUPS.REQUEST_APPROVERS);
 }
 
 async function obtenerSolicitudes() {

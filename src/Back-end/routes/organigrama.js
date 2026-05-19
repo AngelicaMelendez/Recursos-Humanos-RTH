@@ -1,6 +1,9 @@
-const router = require('express').Router();
-const ctrl = require('../controllers/frontend_Controller');
+const express = require('express');
+const router = express.Router();
+// 1. Traemos el controlador (Asegúrate de que la ruta a tu controlador sea la correcta)
+const ctrl = require('../controllers/organigrama_Controller'); // o como se llame tu archivo en controllers
 
-router.get('/', ctrl.organigrama);
+// 2. OJO AQUÍ: Deja solo '/' en lugar de '/organigrama'
+router.get('/', ctrl.obtenerOrganigrama);
 
 module.exports = router;

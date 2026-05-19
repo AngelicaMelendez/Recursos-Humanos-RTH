@@ -1,29 +1,27 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models');
-
-const roleLabels = {
-  admin_rh: 'Administrador',
-  direccion: 'Direccion',
-  jefe_area: 'Jefe de Area',
-  empleado: 'Empleado',
-  recepcion: 'Recepcion',
-};
+const { roleLabels, normalizeRole } = require('../utils/roles');
 
 function signUser(usuario) {
+  const rolNormalizado = normalizeRole(usuario.rol);
+
   return jwt.sign(
-    { id: usuario.id, rol: usuario.rol, empleado_id: usuario.empleado_id },
+    { id: usuario.id, rol: rolNormalizado, empleado_id: usuario.empleado_id },
     process.env.JWT_SECRET || 'dev-secret',
     { expiresIn: '8h' }
   );
 }
 
 function toFrontendUser(usuario) {
+  const rolNormalizado = normalizeRole(usuario.rol);
+
   return {
     id: usuario.id,
     empleado_id: usuario.empleado_id,
     nombre: usuario.empleado?.nombre || 'Usuario',
-    rol: roleLabels[usuario.rol] || usuario.rol,
-    rol_clave: usuario.rol,
+    rol: roleLabels[rolNormalizado] || rolNormalizado,
+    rol_clave: rolNormalizado,
+    rol_original: usuario.rol,
     area_id: usuario.empleado?.area_id,
   };
 }

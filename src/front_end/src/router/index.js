@@ -4,8 +4,8 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import DashboardPage from "@/pages/DashboardPage.vue";
 import CalendarPage from "@/pages/CalendarPage.vue";
-import OrganigramPage from "@/pages/OrganigramPage.vue";
 import DirectoryPage from "@/pages/DirectoryPage.vue";
+import OrganogramaPage from "@/pages/OrganogramaPage.vue";
 import RequestsPage from "@/pages/RequestsPage.vue";
 import NormativityPage from "@/pages/NormativityPage.vue";
 import VacanciesPage from "@/pages/VacanciesPage.vue";
@@ -31,8 +31,8 @@ const routes = [
     children: [
       { path: "", name: "dashboard", component: DashboardPage, meta: { module: "dashboard" } },
       { path: "calendario", name: "calendar", component: CalendarPage, meta: { module: "calendar" } },
-      { path: "organigrama", name: "organigram", component: OrganigramPage, meta: { module: "organigram" } },
-      { path: "directorio", name: "directory", component: DirectoryPage, meta: { module: "directory" } },
+            { path: "directorio", name: "directory", component: DirectoryPage, meta: { module: "directory" } },
+      { path: "organigrama", name: "organograma", component: OrganogramaPage, meta: { module: "organograma" } },
       { path: "solicitudes", name: "requests", component: RequestsPage, meta: { module: "requests" } },
       { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },
       { path: "vacantes", name: "vacancies", component: VacanciesPage, meta: { module: "vacancies" } },

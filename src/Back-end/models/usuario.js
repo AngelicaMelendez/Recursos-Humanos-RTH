@@ -3,7 +3,11 @@ const bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
   const Usuario = sequelize.define('Usuario', {
     empleado_id: { type: DataTypes.INTEGER, unique: true },
-    rol: { type: DataTypes.ENUM('admin_rh', 'direccion', 'jefe_area', 'empleado', 'recepcion'), defaultValue: 'empleado' },
+    rol: {
+  type: DataTypes.STRING(50),
+  allowNull: false,
+      defaultValue: 'empleado',
+    },
     password_hash: { type: DataTypes.STRING, allowNull: false },
   }, {
     tableName: 'usuarios',

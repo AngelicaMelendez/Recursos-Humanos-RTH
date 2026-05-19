@@ -1,10 +1,9 @@
 const db = require('../models');
 const { Op } = require('sequelize');
-
-const rolesGestores = ['admin_rh', 'jefe_area'];
+const { ROLE_GROUPS, hasRole } = require('../utils/roles');
 
 function esGestorComunicados(rol) {
-  return rolesGestores.includes(rol);
+  return hasRole(rol, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS);
 }
 
 async function obtenerUsuarioConArea(usuarioId) {

@@ -137,7 +137,7 @@ import CheckInCheckOut from "@/components/asistencia/CheckInCheckOut.vue";
 import HistoricoAsistencia from "@/components/asistencia/HistoricoAsistencia.vue";
 import { useAsistenciaStore } from "@/store/asistencia";
 import { useAuthStore } from "@/store/auth";
-import { hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
+import { hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 
 const asistenciaStore = useAsistenciaStore();
 const authStore = useAuthStore();
@@ -148,7 +148,7 @@ const empleadoBuscado = ref("");
 const empleadoSeleccionadoId = ref(null);
 
 const canReviewAttendance = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+  hasAnyRole(authStore.user, ROLE_GROUPS.ATTENDANCE_REVIEW)
 );
 
 const resumenMesAgrupado = computed(() => asistenciaStore.resumenMes);

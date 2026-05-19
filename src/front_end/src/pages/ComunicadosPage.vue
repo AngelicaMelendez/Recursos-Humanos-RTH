@@ -197,7 +197,7 @@ import ComunicadosLista from "@/components/comunicados/ComunicadosLista.vue";
 import { useComunicadosStore } from "@/store/comunicados";
 import { useAuthStore } from "@/store/auth";
 import comunicadosService from "@/services/comunicados.service";
-import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_GROUPS, ROLE_KEYS } from "@/utils/permissions";
 
 const comunicadosStore = useComunicadosStore();
 const authStore = useAuthStore();
@@ -223,7 +223,7 @@ const formularioOriginal = ref(null);
 
 const isAdmin = computed(() => hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH]));
 const canManageAnnouncements = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+  hasAnyRole(authStore.user, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS)
 );
 const canFilterByArea = computed(() => canManageAnnouncements.value);
 

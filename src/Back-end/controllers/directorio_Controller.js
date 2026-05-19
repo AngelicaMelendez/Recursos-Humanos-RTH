@@ -1,6 +1,59 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 
+// Obtener organigrama completo (árbol jerárquico)
+exports.obtenerOrganigrama = async (req, res) => {
+  try {
+    console.log('=== obtenerOrganigrama called ===');
+
+    // Obtener todos los empleados activos con su área, puesto y jefe
+    const empleados = await db.Empleado.findAll({
+      where: { estatus: 'activo' },
+      include: [
+        { model: db.Area, as: 'area' },
+        { model: db.Puesto, as: 'puesto' },
+        { model: db.Empleado, as: 'jefe', attributes: ['id', 'nombre'] }
+      ],
+      order: [['area_id', 'ASC'], ['puesto_id', 'ASC']]
+    });
+
+    console.log('Empleados found:', empleados.length);
+
+    // Construir árbol jerárquico basado en jefe_directo_id
+    const tree = [];
+    const empleadoMap = {};
+
+    // Primer paso: crear nodos para cada empleado
+    empleados.forEach(emp => {
+      empleadoMap[emp.id] = {
+        id: emp.id,
+        nombre: emp.nombre,
+        puesto: emp.puesto ? emp.puesto.nombre : 'Sin puesto',
+        area: emp.area ? emp.area.nombre : 'Sin área',
+        jefe_directo_id: emp.jefe_directo_id,
+        hijos: []
+      };
+    });
+
+    // segundo paso: construir el árbol
+    empleados.forEach(emp => {
+      if (emp.jefe_directo_id && empleadoMap[emp.jefe_directo_id]) {
+        // Tiene jefe, agregarlo como hijo
+        empleadoMap[emp.jefe_directo_id].hijos.push(empleadoMap[emp.id]);
+      } else {
+        // No tiene jefe, es raíz
+        tree.push(empleadoMap[emp.id]);
+      }
+    });
+
+    res.json(tree);
+  } catch (error) {
+    console.error('Error al obtener organigrama:', error);
+    res.status(500).json({ error: 'Error al obtener organigrama' });
+  }
+};
+
+// Listar empleados para selector
 exports.listar = async (req, res) => {
   const { page = 1, limit = 20, search } = req.query;
   const where = { estatus: 'activo' };
@@ -30,4 +83,32 @@ exports.baja = async (req, res) => {
     { where: { id } }
   );
   res.json({ mensaje: 'Empleado dado de baja' });
+};
+
+// Listar todas las áreas
+exports.listarAreas = async (req, res) => {
+  try {
+    const areas = await db.Area.findAll({
+      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre'] }],
+      order: [['nombre', 'ASC']]
+    });
+    res.json(areas);
+  } catch (error) {
+    console.error('Error al listar áreas:', error);
+    res.status(500).json({ error: 'Error al obtener áreas' });
+  }
+};
+
+// Listar todos los puestos
+exports.listarPuestos = async (req, res) => {
+  try {
+    const puestos = await db.Puesto.findAll({
+      include: [{ model: db.Area, as: 'area', attributes: ['id', 'nombre'] }],
+      order: [['nombre', 'ASC']]
+    });
+    res.json(puestos);
+  } catch (error) {
+    console.error('Error al listar puestos:', error);
+    res.status(500).json({ error: 'Error al obtener puestos' });
+  }
 };

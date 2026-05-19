@@ -9,7 +9,10 @@
     "preview:front_end": "npm --prefix front_end run preview",
     "lint:front_end": "npm --prefix front_end run lint",
     "dev:back_end": "npm --prefix Back-end run dev",
-    "start:back_end": "npm --prefix Back-end run start"
+    "start:back_end": "npm --prefix Back-end run start",
+    "db:migrate": "npx sequelize-cli db:migrate --config Back-end/config/config.js --migrations-path Back-end/migrations --models-path Back-end/models",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo --config Back-end/config/config.js --migrations-path Back-end/migrations --models-path Back-end/models",
+    "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all --config Back-end/config/config.js --migrations-path Back-end/migrations --models-path Back-end/models"
   },
   "dependencies": {
     "vue3-org-chart": "^0.2.5"
