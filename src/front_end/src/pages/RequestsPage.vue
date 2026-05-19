@@ -157,7 +157,8 @@ import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
-import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
+// ✅ Corregido: Importamos ROLE_KEYS y ROLE_GROUPS para las validaciones
+import { getRoleActions, hasAnyRole, ROLE_KEYS, ROLE_GROUPS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
@@ -208,10 +209,16 @@ const headerActions = computed(() =>
 const currentEmployeeId = computed(() =>
   authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
 );
+
+// ✅ Corregido: Quienes pueden autorizar/rechazar solicitudes (Grupo APPROVERS de permissions.js)
 const canApproveRequests = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH])
+  hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS)
 );
-const canManageRequests = computed(() => canApproveRequests.value);
+
+// ✅ Corregido: Quienes pueden gestionar o ver el panel administrativo general de solicitudes
+const canManageRequests = computed(() => 
+  hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS)
+);
 
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
@@ -228,6 +235,12 @@ const showToast = (title, message, tone = "success") => {
     toast.visible = false;
   }, 3200);
 };
+
+const getRequestErrorMessage = (error) =>
+  error.response?.data?.details ||
+  error.response?.data?.error ||
+  error.message ||
+  "Verifica conexion con el servidor/BD.";
 
 const normalizeRow = (row) => ({
   ...row,
@@ -247,10 +260,9 @@ const loadRequests = async () => {
     const data = await requestsService.list();
     rows.value = data.map(normalizeRow);
     showToast("Solicitudes actualizadas", "Se cargo la informacion mas reciente.");
-  } catch {
-    // No usar datos simulados: si falla el API, se muestra el error y la tabla se mantiene vacia.
+  } catch (error) {
     rows.value = [];
-    showToast("No se pudo cargar el modulo", "Verifica conexion con el servidor/BD.", "warning");
+    showToast("No se pudo cargar el modulo", getRequestErrorMessage(error), "warning");
   }
 };
 
@@ -354,10 +366,9 @@ const submitRequest = async () => {
     rows.value.unshift(normalizeRow(created));
     showToast("Solicitud creada", "La solicitud quedo pendiente de revision.");
   } catch (error) {
-    // No usar datos simulados: si falla el POST, se muestra el error y no se agrega nada.
     showToast(
       "No se pudo crear la solicitud",
-      error.response?.data?.error || "Verifica conexion con el servidor/BD.",
+      getRequestErrorMessage(error),
       "warning"
     );
   } finally {
@@ -384,11 +395,10 @@ const confirmResolution = async () => {
       rows.value = rows.value.filter((row) => row.id !== modal.row.id);
       showToast("Solicitud eliminada", `${modal.row.id} fue eliminada correctamente.`);
     }
-  } catch {
-    // No reflejar cambios en la vista si el API falla (sin modo demo).
+  } catch (error) {
     showToast(
       "No se pudo completar la accion",
-      "Verifica conexion con el servidor/BD.",
+      getRequestErrorMessage(error),
       "warning"
     );
   } finally {

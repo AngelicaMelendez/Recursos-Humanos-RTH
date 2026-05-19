@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
+const path = require('path');
 const db = require('../models');
 const { roleLabels, normalizeRole } = require('../utils/roles');
+
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 function signUser(usuario) {
   const rolNormalizado = normalizeRole(usuario.rol);

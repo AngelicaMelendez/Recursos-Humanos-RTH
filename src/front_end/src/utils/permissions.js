@@ -41,13 +41,16 @@ const roleAliases = {
   direccion_general: ROLE_KEYS.DIRECCION,
   director_general: ROLE_KEYS.DIRECCION,
   "direccion general": ROLE_KEYS.DIRECCION,
+  "dirección general": ROLE_KEYS.DIRECCION,
   jefe: ROLE_KEYS.JEFE_AREA,
   jefe_area: ROLE_KEYS.JEFE_AREA,
   "jefe de area": ROLE_KEYS.JEFE_AREA,
+  "jefe de área": ROLE_KEYS.JEFE_AREA,
   "jefes de area": ROLE_KEYS.JEFE_AREA,
   subjefe: ROLE_KEYS.SUBJEFE_AREA,
   subjefe_area: ROLE_KEYS.SUBJEFE_AREA,
   "subjefe de area": ROLE_KEYS.SUBJEFE_AREA,
+  "subjefe de área": ROLE_KEYS.SUBJEFE_AREA,
   subdireccion: ROLE_KEYS.SUBJEFE_AREA,
   responsable_departamento: ROLE_KEYS.RESPONSABLE_DEPARTAMENTO,
   jefe_departamento: ROLE_KEYS.RESPONSABLE_DEPARTAMENTO,
@@ -60,7 +63,7 @@ const roleAliases = {
 const moduleByRoute = {
   "/": "dashboard",
   "/calendario": "calendar",
-    "/directorio": "directory",
+  "/directorio": "directory",
   "/organigrama": "organograma",
   "/solicitudes": "requests",
   "/normatividad": "normativity",
@@ -85,7 +88,7 @@ export const roleLabels = {
 export const modulePermissions = {
   dashboard: ALL_ROLES,
   calendar: ALL_ROLES,
-    directory: ALL_ROLES,
+  directory: ALL_ROLES,
   organograma: ALL_ROLES,
   requests: ALL_ROLES,
   normativity: ALL_ROLES,
@@ -132,15 +135,6 @@ const actionCatalog = {
   registrarAsistencia: { label: "Registrar asistencia", icon: "check", operation: "C" }
 };
 
-const sharedManagementActions = [
-  "createRequest",
-  "deleteRequest",
-  "approveRequest",
-  "rejectRequest",
-  "manageIncident",
-  "viewRequests"
-];
-
 export const roleActionsByModule = {
   directory: {
     [ROLE_KEYS.ADMIN_RH]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
@@ -153,10 +147,13 @@ export const roleActionsByModule = {
   },
   requests: {
     [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests"],
-    [ROLE_KEYS.DIRECCION]: ["createRequest"],
-    [ROLE_KEYS.JEFE_AREA]: ["createRequest"],
-    [ROLE_KEYS.EMPLEADO]: ["createRequest"],
-    [ROLE_KEYS.RECEPCION]: ["createRequest"]
+    [ROLE_KEYS.DIRECCION]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests"],
+    [ROLE_KEYS.JEFE_AREA]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests"],
+    // ✅ Agregados los privilegios que faltaban para Subjefes y Responsables tras el merge
+    [ROLE_KEYS.SUBJEFE_AREA]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests"],
+    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests"],
+    [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests"],
+    [ROLE_KEYS.RECEPCION]: ["createRequest", "deleteRequest", "viewRequests"]
   },
   vacancies: {
     [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],

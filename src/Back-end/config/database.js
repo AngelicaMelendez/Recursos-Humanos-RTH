@@ -1,12 +1,14 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const path = require('path');
+
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME || 's_recursos_humanos',
+  process.env.DB_NAME || 'recursos_humanos_rth',
   process.env.DB_USER || 'root',
-  process.env.DB_PASSWORD || 'Martinez12612',
+  process.env.DB_PASSWORD || 'root',
   {
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || '127.0.0.1',
     port: Number(process.env.DB_PORT || 3306),
     dialect: 'mysql',
     dialectOptions: {

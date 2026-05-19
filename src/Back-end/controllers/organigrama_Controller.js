@@ -11,10 +11,8 @@ exports.obtenerOrganigrama = async (req, res) => {
       where: { estatus: 'activo' },
       include: [
         { model: db.Area, as: 'area' },
-        { model: db.Puesto, as: 'puesto' },
-        { model: db.Empleado, as: 'jefe', attributes: ['id', 'nombre'] }
       ],
-      order: [['area_id', 'ASC'], ['puesto_id', 'ASC']]
+      order: [['area_id', 'ASC']]
     });
 
     console.log('Empleados found:', empleados.length);
@@ -28,7 +26,6 @@ exports.obtenerOrganigrama = async (req, res) => {
       empleadoMap[emp.id] = {
         id: emp.id,
         nombre: emp.nombre,
-        puesto: emp.puesto ? emp.puesto.nombre : 'Sin puesto',
         area: emp.area ? emp.area.nombre : 'Sin área',
         jefe_directo_id: emp.jefe_directo_id,
         hijos: []
@@ -70,7 +67,7 @@ exports.listar = async (req, res) => {
 
 exports.obtenerUno = async (req, res) => {
   const emp = await db.Empleado.findByPk(req.params.id, {
-    include: ['area', 'puesto', 'documentos', 'historial', 'incidencias'],
+    include: ['area', 'puesto'],
   });
   if (!emp) return res.status(404).json({ error: 'No encontrado' });
   res.json(emp);

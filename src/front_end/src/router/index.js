@@ -68,7 +68,7 @@ router.beforeEach(async (to) => {
   const authStore = useAuthStore();
 
   if (!authStore.initialized) {
-    authStore.initialize();
+    await authStore.initialize();
   }
 
   if (!to.meta.public && !authStore.isAuthenticated) {

@@ -3,9 +3,9 @@
     <li v-for="nodo in nodos" :key="nodo.id">
       <div class="nodo">
         <strong>{{ nodo.nombre }}</strong>
-        <span>{{ nodo.puesto }}</span>
+        <span>{{ nodo.area }}</span>
       </div>
-      <ArbolOrganigrama class="nosenose", v-if="nodo.hijos && nodo.hijos.length" :nodos="nodo.hijos" />
+      <ArbolOrganigrama  v-if="nodo.hijos && nodo.hijos.length" :nodos="nodo.hijos" />
     </li>
   </ul>
 </template>
