@@ -2,7 +2,7 @@
   <div>
     <PageHeader
       eyebrow="Seguridad"
-      title="Control de accesos y roles"
+      title="Control de Accesos y Roles"
       description="Administración de credenciales, perfiles institucionales y permisos de navegación por módulo."
     />
     <BaseCard title="Usuarios autorizados" subtitle="Modelo base para JWT con roles y empleado asociado.">

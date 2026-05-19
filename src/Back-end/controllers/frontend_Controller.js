@@ -163,7 +163,10 @@ exports.dashboard = async (req, res) => {
       ],
     });
   } catch (error) {
-    res.json(dashboardData);
+    res.status(500).json({
+      error: 'No se pudo obtener el dashboard desde la base de datos',
+      details: error.message,
+    });
   }
 };
 
@@ -185,27 +188,73 @@ exports.directorio = async (req, res) => withFallback(res, fallback.directory, a
   };
 });
 
-exports.calendario = async (req, res) => withFallback(res, fallback.calendar, async () => {
-  const incidents = await db.Incidencia.findAll();
-  const rows = incidents.map((item) => ({
-    id: item.id,
-    empleado_id: `EMP-${String(item.empleado_id).padStart(3, '0')}`,
-    tipo: item.tipo,
-    fecha_inicio: item.fecha_inicio,
-    fecha_fin: item.fecha_fin,
-    estatus: statusToFrontend(item.estatus),
-  }));
+exports.calendario = async (req, res) => {
+  try {
+    const colorPorTipo = {
+      vacaciones: '#621132',
+      permiso: '#98989A',
+      incapacidad: '#98989A',
+      maternidad: '#DDC9A3',
+      paternidad: '#DDC9A3',
+      comision: '#7d2342',
+      otro: '#6F7271',
+    };
 
-  return {
-    incidents: rows,
-    events: rows.map((item) => ({
-      title: `${item.tipo} - ${item.empleado_id}`,
-      start: item.fecha_inicio,
-      end: item.fecha_fin,
-      color: item.tipo === 'vacaciones' ? '#621132' : '#b38e5d',
-    })),
-  };
-});
+    const addOneDay = (date) => {
+      if (!date) return date;
+      const nextDate = new Date(`${date}T00:00:00.000Z`);
+      nextDate.setUTCDate(nextDate.getUTCDate() + 1);
+      return nextDate.toISOString().slice(0, 10);
+    };
+
+    const [incidents, solicitudes] = await Promise.all([
+      db.Incidencia.findAll({
+        where: { estatus: 'aprobado' },
+        include: [{ association: 'empleado', attributes: ['id', 'nombre'] }],
+        order: [['fecha_inicio', 'ASC']],
+      }),
+      db.Solicitud.findAll({
+        where: { estatus: 'pendiente' },
+        include: [{ association: 'empleado', attributes: ['id', 'nombre'] }],
+        order: [['fecha_inicio', 'ASC']],
+      }),
+    ]);
+
+    const rows = incidents.map((item) => ({
+      id: item.id,
+      empleado_id: `EMP-${String(item.empleado_id).padStart(3, '0')}`,
+      tipo: item.tipo,
+      fecha_inicio: item.fecha_inicio,
+      fecha_fin: item.fecha_fin,
+      estatus: statusToFrontend(item.estatus),
+    }));
+
+    res.json({
+      incidents: rows,
+      events: [
+        ...incidents.map((item) => ({
+          id: `INC-${item.id}`,
+          title: `${item.tipo} - ${item.empleado?.nombre || `EMP-${String(item.empleado_id).padStart(3, '0')}`}`,
+          start: item.fecha_inicio,
+          end: addOneDay(item.fecha_fin),
+          color: colorPorTipo[item.tipo] || colorPorTipo.otro,
+        })),
+        ...solicitudes.map((item) => ({
+          id: `SOL-${item.id}`,
+          title: `Solicitud pendiente - ${item.empleado?.nombre || `EMP-${String(item.empleado_id).padStart(3, '0')}`}`,
+          start: item.fecha_inicio,
+          end: addOneDay(item.fecha_fin),
+          color: colorPorTipo[item.tipo] || colorPorTipo.otro,
+        })),
+      ],
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'No se pudo obtener el calendario desde la base de datos',
+      details: error.message,
+    });
+  }
+};
 
 exports.organigrama = async (req, res) => withFallback(res, fallback.organigram, async () => {
   const areas = await db.Area.findAll({ include: [{ association: 'empleados' }] });

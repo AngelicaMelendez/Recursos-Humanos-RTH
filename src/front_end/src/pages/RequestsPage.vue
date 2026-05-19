@@ -2,8 +2,8 @@
   <div>
     <PageHeader
       eyebrow="Flujo de autorizaciones"
-      title="Solicitudes e incidencias"
-      description="Todos pueden consultar el modulo. Las aprobaciones quedan restringidas a administracion y jefaturas."
+      title="Solicitudes e Incidencias"
+      description="Todos pueden generar solicitudes. La consulta, aprobacion y rechazo queda restringida a administracion."
     >
       <RoleActionBar :actions="headerActions" @select="selectAction" />
     </PageHeader>
@@ -13,14 +13,18 @@
       <span>{{ toast.message }}</span>
     </div>
 
-    <section class="request-summary">
+    <section v-if="canManageRequests" class="request-summary">
       <div v-for="item in summary" :key="item.label" class="request-summary__item">
         <span>{{ item.label }}</span>
         <strong>{{ item.value }}</strong>
       </div>
     </section>
 
-    <BaseCard title="Solicitudes activas" subtitle="Crea, consulta y da seguimiento al flujo operativo.">
+    <BaseCard
+      v-if="canManageRequests"
+      title="Solicitudes activas"
+      subtitle="Crea, consulta y da seguimiento al flujo operativo."
+    >
       <template #header-actions>
         <button class="ghost-button" type="button" @click="loadRequests">
           <IconSymbol name="activity" />
@@ -48,6 +52,20 @@
           </div>
         </template>
       </AppTable>
+    </BaseCard>
+
+    <BaseCard
+      v-else
+      title="Generar solicitud"
+      subtitle="Tu solicitud quedara pendiente para revision administrativa."
+    >
+      <p class="request-access-note">
+        La consulta, aprobacion y rechazo de solicitudes esta disponible solo para administradores.
+      </p>
+      <button class="primary-button" type="button" @click="openCreateModal">
+        <IconSymbol name="plus" />
+        Nueva solicitud
+      </button>
     </BaseCard>
 
     <div v-if="modal.visible" class="modal-backdrop" @click="closeModal">
@@ -78,11 +96,11 @@
           <div class="form-grid">
             <label>
               Inicio
-              <input v-model="form.fecha_inicio" type="date" required />
+              <input v-model="form.fecha_inicio" type="date" :min="today" required />
             </label>
             <label>
               Fin
-              <input v-model="form.fecha_fin" type="date" required />
+              <input v-model="form.fecha_fin" type="date" :min="form.fecha_inicio || today" required />
             </label>
           </div>
           <label>
@@ -163,6 +181,15 @@ const form = reactive({
   motivo: ""
 });
 
+const formatDateInputValue = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const today = formatDateInputValue(new Date());
+
 const columns = [
   { key: "id", label: "Folio" },
   { key: "empleado_id", label: "Empleado" },
@@ -182,8 +209,9 @@ const currentEmployeeId = computed(() =>
   authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
 );
 const canApproveRequests = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.DIRECCION, ROLE_KEYS.JEFE_AREA])
+  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH])
 );
+const canManageRequests = computed(() => canApproveRequests.value);
 
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
@@ -210,36 +238,19 @@ const normalizeRow = (row) => ({
 });
 
 const loadRequests = async () => {
+  if (!canManageRequests.value) {
+    rows.value = [];
+    return;
+  }
+
   try {
     const data = await requestsService.list();
     rows.value = data.map(normalizeRow);
     showToast("Solicitudes actualizadas", "Se cargo la informacion mas reciente.");
   } catch {
-    showToast("Modo demo activo", "No se pudo conectar al API, se mantienen datos locales.", "warning");
-    if (!rows.value.length) {
-      rows.value = [
-        normalizeRow({
-          id: "SOL-201",
-          empleado_id: "EMP-015",
-          tipo: "vacaciones",
-          fecha_inicio: "2026-06-01",
-          fecha_fin: "2026-06-05",
-          motivo: "Periodo vacacional programado",
-          estatus: "pendiente",
-          aprobado_por: "Jefatura pendiente"
-        }),
-        normalizeRow({
-          id: "SOL-202",
-          empleado_id: "EMP-009",
-          tipo: "comision",
-          fecha_inicio: "2026-05-15",
-          fecha_fin: "2026-05-16",
-          motivo: "Cobertura institucional",
-          estatus: "aprobada",
-          aprobado_por: "RH"
-        })
-      ];
-    }
+    // No usar datos simulados: si falla el API, se muestra el error y la tabla se mantiene vacia.
+    rows.value = [];
+    showToast("No se pudo cargar el modulo", "Verifica conexion con el servidor/BD.", "warning");
   }
 };
 
@@ -325,6 +336,16 @@ const closeModal = () => {
 };
 
 const submitRequest = async () => {
+  if (form.fecha_inicio < today || form.fecha_fin < today) {
+    showToast("Fecha no permitida", "Selecciona el dia actual o una fecha posterior.", "warning");
+    return;
+  }
+
+  if (form.fecha_fin < form.fecha_inicio) {
+    showToast("Periodo no valido", "La fecha final no puede ser anterior a la fecha de inicio.", "warning");
+    return;
+  }
+
   saving.value = true;
   const payload = { ...form };
 
@@ -332,17 +353,13 @@ const submitRequest = async () => {
     const created = await requestsService.create(payload);
     rows.value.unshift(normalizeRow(created));
     showToast("Solicitud creada", "La solicitud quedo pendiente de revision.");
-  } catch {
-    rows.value.unshift(
-      normalizeRow({
-        id: `SOL-${Date.now().toString().slice(-5)}`,
-        empleado_id: currentEmployeeId.value || "EMP-DEMO",
-        ...payload,
-        estatus: "pendiente",
-        aprobado_por: "Pendiente"
-      })
+  } catch (error) {
+    // No usar datos simulados: si falla el POST, se muestra el error y no se agrega nada.
+    showToast(
+      "No se pudo crear la solicitud",
+      error.response?.data?.error || "Verifica conexion con el servidor/BD.",
+      "warning"
     );
-    showToast("Solicitud creada en demo", "Cuando el API este activo se podra guardar en BD.", "warning");
   } finally {
     saving.value = false;
     closeModal();
@@ -368,17 +385,12 @@ const confirmResolution = async () => {
       showToast("Solicitud eliminada", `${modal.row.id} fue eliminada correctamente.`);
     }
   } catch {
-    if (modal.mode === "delete") {
-      rows.value = rows.value.filter((row) => row.id !== modal.row.id);
-      showToast("Eliminacion en demo", "La vista ya retiro la solicitud.", "warning");
-    } else {
-      replaceRow({
-        ...modal.row,
-        estatus: modal.mode === "approve" ? "aprobada" : "rechazada",
-        aprobado_por: authStore.user?.nombre || authStore.user?.rol || "Usuario actual"
-      });
-      showToast("Cambio aplicado en demo", "No se pudo guardar en API, pero la vista ya refleja la accion.", "warning");
-    }
+    // No reflejar cambios en la vista si el API falla (sin modo demo).
+    showToast(
+      "No se pudo completar la accion",
+      "Verifica conexion con el servidor/BD.",
+      "warning"
+    );
   } finally {
     saving.value = false;
     closeModal();
@@ -417,6 +429,12 @@ onMounted(loadRequests);
   display: block;
   margin-top: 8px;
   font-size: 1.7rem;
+}
+
+.request-access-note {
+  margin: 0 0 16px;
+  color: var(--color-text-soft);
+  line-height: 1.6;
 }
 
 .table-actions,

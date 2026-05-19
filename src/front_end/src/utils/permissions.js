@@ -108,10 +108,10 @@ export const roleActionsByModule = {
   },
   requests: {
     [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests"],
-    [ROLE_KEYS.DIRECCION]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests"],
-    [ROLE_KEYS.JEFE_AREA]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests"],
-    [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests"],
-    [ROLE_KEYS.RECEPCION]: ["createRequest", "deleteRequest", "viewRequests"]
+    [ROLE_KEYS.DIRECCION]: ["createRequest"],
+    [ROLE_KEYS.JEFE_AREA]: ["createRequest"],
+    [ROLE_KEYS.EMPLEADO]: ["createRequest"],
+    [ROLE_KEYS.RECEPCION]: ["createRequest"]
   },
   vacancies: {
     [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
