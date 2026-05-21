@@ -160,13 +160,13 @@ onBeforeUnmount(() => {
   gap: 20px;
   padding: 24px 28px;
   border-bottom: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 253, 249, 0.88);
   backdrop-filter: blur(10px);
 }
 
 .topbar__menu,
 .topbar__logout {
-  border: none;
+  border: 1px solid rgba(107, 24, 57, 0.08);
   border-radius: 14px;
   background: var(--color-surface-muted);
   color: var(--color-primary);
@@ -180,6 +180,7 @@ onBeforeUnmount(() => {
 .topbar__title {
   display: block;
   font-size: 1.1rem;
+  color: var(--color-primary-strong);
 }
 
 .topbar__subtitle,
@@ -216,16 +217,17 @@ onBeforeUnmount(() => {
 
 .icon-button {
   position: relative;
-  border: none;
-  background: none;
+  border: 1px solid rgba(107, 24, 57, 0.08);
+  background: rgba(107, 24, 57, 0.04);
   cursor: pointer;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 12px;
   margin-right: 15px;
+  color: var(--color-primary);
 }
 
 .icon-button:hover {
-  background: var(--color-surface-muted);
+  background: rgba(197, 155, 82, 0.16);
 }
 
 .icon-badge {
@@ -236,7 +238,7 @@ onBeforeUnmount(() => {
   height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: #1f7aff;
+  background: var(--color-accent);
   color: #fff;
   font-size: 0.7rem;
   font-weight: 800;
@@ -256,8 +258,8 @@ onBeforeUnmount(() => {
   padding: 14px;
   border: 1px solid var(--color-border);
   border-radius: 14px;
-  background: rgba(8, 14, 28, 0.98);
-  box-shadow: 0 18px 48px rgba(3, 8, 18, 0.34);
+  background: rgba(79, 16, 41, 0.98);
+  box-shadow: 0 18px 48px rgba(79, 16, 41, 0.24);
 }
 
 .notifications-panel__header {
@@ -271,7 +273,7 @@ onBeforeUnmount(() => {
 .text-button {
   border: none;
   background: none;
-  color: #4fd8ff;
+  color: var(--color-accent-soft);
   cursor: pointer;
   font-weight: 700;
 }
@@ -286,7 +288,7 @@ onBeforeUnmount(() => {
   display: grid;
   gap: 4px;
   padding: 12px;
-  border: 1px solid rgba(79, 216, 255, 0.12);
+  border: 1px solid rgba(197, 155, 82, 0.16);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
   color: #eef5ff;
@@ -300,8 +302,8 @@ onBeforeUnmount(() => {
 }
 
 .notification-item--unread {
-  border-color: rgba(79, 216, 255, 0.28);
-  background: rgba(31, 122, 255, 0.12);
+  border-color: rgba(197, 155, 82, 0.34);
+  background: rgba(197, 155, 82, 0.12);
 }
 
 .user-profile {
@@ -316,6 +318,7 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   display: inline-block;
   margin-right: 10px;
+  border: 2px solid rgba(197, 155, 82, 0.4);
 }
 
 .topbar__logout {

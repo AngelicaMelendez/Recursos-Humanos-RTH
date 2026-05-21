@@ -1,28 +1,28 @@
 <template>
   <div class="comunicados-lista">
     <div class="titulo-seccion">
-      <h3>Más comunicados</h3>
+      <h3>Mas comunicados</h3>
       <span class="count">{{ comunicados.length }}</span>
     </div>
 
-    <div class="scroll-container">
-      <div class="lista-horizontal">
-        <div
-          v-for="com in comunicados"
-          :key="com.id"
-          class="item-comunicado"
-          @click="$emit('seleccionar', com)"
-        >
-          <div class="fecha-hora">
-            {{ formatTime(com.createdAt) }}
-          </div>
-          <div class="titulo-item">{{ com.titulo }}</div>
-          <div class="resumen">{{ com.contenido.substring(0, 50) }}...</div>
-          <div class="reacciones" v-if="com.reacciones?.length">
-            <span class="count-reacciones">👍 {{ com.reacciones.length }}</span>
-          </div>
+    <div class="lista-grid">
+      <article
+        v-for="com in comunicados"
+        :key="com.id"
+        class="item-comunicado"
+        @click="$emit('seleccionar', com)"
+      >
+        <div class="fecha-hora">{{ formatTime(com.createdAt) }}</div>
+        <div class="titulo-item">{{ com.titulo }}</div>
+        <div class="resumen">{{ truncate(com.contenido) }}</div>
+
+        <div class="item-footer">
+          <span class="count-reacciones">
+            {{ com.reacciones?.length || 0 }} reacciones
+          </span>
+          <span class="leer-mas">Leer comunicado</span>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 </template>
@@ -31,8 +31,8 @@
 defineProps({
   comunicados: {
     type: Array,
-    default: () => [],
-  },
+    default: () => []
+  }
 });
 
 defineEmits(["seleccionar"]);
@@ -43,135 +43,111 @@ const formatTime = (dateString) => {
     month: "short",
     day: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   }).format(date);
 };
+
+const truncate = (value = "", limit = 110) =>
+  value.length > limit ? `${value.slice(0, limit).trim()}...` : value;
 </script>
 
 <style scoped>
 .comunicados-lista {
-  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+  margin-top: 8px;
 }
 
 .titulo-seccion {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid rgba(176, 142, 93, 0.3);
 }
 
 .titulo-seccion h3 {
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
   margin: 0;
+  color: var(--color-primary-strong);
+  font-size: 1rem;
 }
 
 .count {
-  background: rgba(176, 142, 93, 0.2);
-  color: #b38e5d;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(197, 155, 82, 0.16);
+  color: var(--color-accent-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
-.scroll-container {
-  overflow-x: auto;
-  padding-bottom: 8px;
-  margin: 0 -24px;
-  padding-left: 24px;
-  padding-right: 24px;
-
-  /* Estilos para scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(176, 142, 93, 0.3) rgba(15, 15, 31, 0.3);
-}
-
-.scroll-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scroll-container::-webkit-scrollbar-track {
-  background: rgba(15, 15, 31, 0.3);
-  border-radius: 3px;
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-  background: rgba(176, 142, 93, 0.3);
-  border-radius: 3px;
-}
-
-.scroll-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(176, 142, 93, 0.5);
-}
-
-.lista-horizontal {
-  display: flex;
-  gap: 12px;
-  min-width: min-content;
+.lista-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
 }
 
 .item-comunicado {
-  flex-shrink: 0;
-  width: 280px;
-  background: rgba(26, 26, 46, 0.8);
-  border: 1px solid rgba(176, 142, 93, 0.2);
-  border-radius: 8px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 8px;
+  padding: 18px;
+  border: 1px solid rgba(197, 155, 82, 0.18);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 1), rgba(241, 231, 219, 0.82));
+  cursor: pointer;
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .item-comunicado:hover {
-  background: rgba(26, 26, 46, 1);
-  border-color: rgba(176, 142, 93, 0.4);
   transform: translateY(-2px);
+  border-color: rgba(197, 155, 82, 0.38);
+  box-shadow: 0 16px 32px rgba(79, 16, 41, 0.08);
 }
 
 .fecha-hora {
-  font-size: 12px;
-  color: rgba(176, 142, 93, 0.8);
-  font-weight: 500;
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .titulo-item {
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.3;
+  color: var(--color-primary-strong);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .resumen {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  line-height: 1.4;
+  color: var(--color-text-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
-.reacciones {
+.item-footer {
   display: flex;
-  gap: 8px;
-  margin-top: 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.count-reacciones,
+.leer-mas {
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .count-reacciones {
-  display: inline-block;
-  background: rgba(176, 142, 93, 0.15);
-  color: #b38e5d;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
+  color: var(--color-text-soft);
 }
 
-@media (max-width: 768px) {
-  .item-comunicado {
-    width: 250px;
-  }
+.leer-mas {
+  color: var(--color-accent-strong);
 }
 </style>

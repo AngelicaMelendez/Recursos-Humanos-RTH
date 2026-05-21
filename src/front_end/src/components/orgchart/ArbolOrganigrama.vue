@@ -6,10 +6,15 @@
       :class="['rama', { 'tiene-hijos': nodo.hijos && nodo.hijos.length }]"
     >
       <div class="nodo">
+        <span class="nodo__accent"></span>
         <strong class="nombre">{{ nodo.nombre }}</strong>
         <span class="area">{{ nodo.area }}</span>
       </div>
-      <ArbolOrganigrama v-if="nodo.hijos && nodo.hijos.length" :nodos="nodo.hijos" />
+
+      <ArbolOrganigrama
+        v-if="nodo.hijos && nodo.hijos.length"
+        :nodos="nodo.hijos"
+      />
     </li>
   </ul>
 </template>
@@ -28,13 +33,12 @@ defineProps({
 </script>
 
 <style scoped>
-/* --- CONTENEDOR PRINCIPAL --- */
 .arbol,
 .arbol ul {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 12px;
+  gap: 18px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -45,7 +49,6 @@ defineProps({
   padding-top: 18px;
 }
 
-/* --- ESTRUCTURA DE LA RAMA (li) --- */
 .rama {
   display: flex;
   flex-direction: column;
@@ -56,12 +59,12 @@ defineProps({
 
 .rama::before,
 .rama::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   width: 50%;
   height: 18px;
-  border-top: 2px solid #64748b;
+  border-top: 2px solid rgba(107, 24, 57, 0.32);
 }
 
 .rama::before {
@@ -73,84 +76,122 @@ defineProps({
 }
 
 .rama:only-child::before,
-.rama:only-child::after {
-  display: none;
-}
-
+.rama:only-child::after,
 .rama:first-child::before,
 .rama:last-child::after {
   display: none;
 }
 
-/* --- DISEÑO DE LAS TARJETAS (Cards) --- */
 .nodo {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px 14px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  min-width: 150px;
-  max-width: 180px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08);
+  gap: 4px;
+  min-width: 180px;
+  max-width: 220px;
+  margin-bottom: 18px;
+  padding: 16px 16px 14px;
+  border: 1px solid rgba(221, 207, 191, 0.92);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 249, 1), rgba(248, 241, 232, 0.94));
+  box-shadow: 0 16px 28px rgba(79, 16, 41, 0.08);
   position: relative;
   z-index: 10;
-  margin-bottom: 16px;
+  text-align: center;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .nodo::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -18px;
   left: 50%;
-  transform: translateX(-50%);
-  border-left: 2px solid #64748b;
   width: 0;
   height: 18px;
+  transform: translateX(-50%);
+  border-left: 2px solid rgba(107, 24, 57, 0.32);
 }
 
-/* --- LÍNEA VERTICAL DE ENTRADA (Por arriba del nodo raíz) --- */
 .arbol.raiz > .rama > .nodo::before {
   display: none;
 }
 
-/* --- LÍNEA VERTICAL DE SALIDA (Por abajo de la card si tiene hijos) --- */
 .rama.tiene-hijos > .nodo::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -18px;
   left: 50%;
-  transform: translateX(-50%);
-  border-left: 2px solid #64748b;
   width: 0;
   height: 18px;
+  transform: translateX(-50%);
+  border-left: 2px solid rgba(107, 24, 57, 0.32);
 }
 
-/* Ocultar la línea de salida para nodos que no tienen hijos */
 .rama:not(.tiene-hijos) > .nodo::after {
   display: none;
 }
 
+.nodo__accent {
+  width: 46px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+}
+
 .nombre {
   display: block;
-  font-size: 0.86rem;
-  color: #0f172a;
+  color: var(--color-primary-strong);
+  font-size: 0.92rem;
   font-weight: 700;
   line-height: 1.2;
 }
 
 .area {
-  display: block;
-  font-size: 0.75rem;
-  color: #475569;
-  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(107, 24, 57, 0.08);
+  color: var(--color-primary);
+  font-size: 0.74rem;
 }
 
 .nodo:hover {
-  border-color: #2563eb;
-  box-shadow: 0 12px 18px rgba(15, 23, 42, 0.1);
+  border-color: rgba(197, 155, 82, 0.7);
+  box-shadow: 0 18px 34px rgba(79, 16, 41, 0.14);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 920px) {
+  .arbol,
+  .arbol ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .rama {
+    padding-top: 0;
+  }
+
+  .rama::before,
+  .rama::after,
+  .nodo::before,
+  .rama.tiene-hijos > .nodo::after {
+    display: none;
+  }
+
+  .nodo {
+    width: 100%;
+    max-width: none;
+    margin-bottom: 0;
+  }
 }
 </style>

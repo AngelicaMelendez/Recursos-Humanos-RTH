@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar" :class="{ 'sidebar--open': open }">
     <div class="sidebar__brand">
-      <img src="@/assets/logodorado2.png" alt="Logo" />
+      <img :src="logodorado2" alt="Logo" />
       <div>
         <strong>Recursos Humanos</strong>
         <span>Radio y Televisión de Hidalgo</span>
@@ -52,8 +52,9 @@ const visibleNavigationItems = computed(() =>
   height: 100vh;
   padding: 24px 18px;
   background:
-  linear-gradient(180deg, rgba(98, 17, 50, 0.98), rgba(68, 10, 33, 0.98)),
-  var(--color-primary);
+    radial-gradient(circle at top, rgba(197, 155, 82, 0.18), transparent 26%),
+    linear-gradient(180deg, rgba(107, 24, 57, 0.98), rgba(79, 16, 41, 0.99)),
+    var(--color-primary);
   color: #fff;
 }
 
@@ -62,9 +63,10 @@ const visibleNavigationItems = computed(() =>
   gap: 14px;
   align-items: center;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(197, 155, 82, 0.22);
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .sidebar__brand img {
@@ -94,15 +96,18 @@ const visibleNavigationItems = computed(() =>
   gap: 12px;
   padding: 14px 16px;
   border-radius: 16px;
+  border: 1px solid transparent;
   color: rgba(255, 255, 255, 0.88);
   transition:
     background var(--transition-base),
+    border-color var(--transition-base),
     transform var(--transition-base);
 }
 
 .sidebar__link:hover,
 .sidebar__link--active {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(90deg, rgba(197, 155, 82, 0.18), rgba(255, 255, 255, 0.08));
+  border-color: rgba(197, 155, 82, 0.26);
   transform: translateX(2px);
   color: #fff;
 }

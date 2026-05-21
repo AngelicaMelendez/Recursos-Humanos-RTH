@@ -30,6 +30,7 @@ const props = defineProps({
 const moduleByRoute = {
   "/visitantes": "visitors",
   "/solicitudes": "requests",
+  "/comunicados": "comunicados",
   "/normatividad": "normativity",
   "/vacantes": "vacancies",
   "/directorio": "directory"

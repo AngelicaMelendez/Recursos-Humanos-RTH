@@ -2,21 +2,48 @@
   <div class="comunicados-page">
     <PageHeader
       eyebrow="Comunicacion interna"
-      title="Comunicados y Avisos"
-      description="Consulta los comunicados activos de tu area. Solo administracion y jefaturas pueden filtrar por area."
+      title="Comunicados y avisos"
+      description="Consulta anuncios activos, reacciona a los avisos vigentes y gestiona publicaciones segun tu rol."
     >
       <RoleActionBar :actions="actions" @select="selectAction" />
     </PageHeader>
+
+    <section class="stats-strip">
+      <article class="stats-chip">
+        <span>Activos</span>
+        <strong>{{ totalActivos }}</strong>
+      </article>
+      <article class="stats-chip">
+        <span>Areas visibles</span>
+        <strong>{{ areasDisponibles.length || 1 }}</strong>
+      </article>
+      <article class="stats-chip" v-if="isAdmin">
+        <span>Historial</span>
+        <strong>{{ comunicadosStore.historial.length }}</strong>
+      </article>
+    </section>
 
     <div v-if="notificacion" :class="['notificacion', `tipo-${notificacion.tipo}`]">
       {{ notificacion.mensaje }}
     </div>
 
+    <section v-if="canFilterByArea && areasDisponibles.length" class="filter-row">
+      <label class="filtro-campo">
+        <span>Filtrar por area</span>
+        <select v-model="selectedAreaId" class="select">
+          <option value="">Todas las areas</option>
+          <option v-for="area in areasDisponibles" :key="area.id" :value="String(area.id)">
+            {{ area.nombre }}
+          </option>
+        </select>
+      </label>
+    </section>
+
     <div v-if="showModal" class="modal-overlay" @click.self="cerrarModal">
       <div class="modal">
         <div class="modal-header">
           <h2>{{ editando ? "Editar comunicado" : "Nuevo comunicado" }}</h2>
-          <button type="button" class="btn-cerrar" @click="cerrarModal">×</button>
+          <button type="button" class="btn-cerrar" @click="cerrarModal">x</button>
         </div>
 
         <div class="modal-body">
@@ -67,23 +94,11 @@
       </div>
     </div>
 
-    <div v-if="canFilterByArea && areasDisponibles.length" class="filtro-panel">
-      <label class="filtro-campo">
-        <span>Filtrar por area</span>
-        <select v-model="selectedAreaId" class="select">
-          <option value="">Todas las areas</option>
-          <option v-for="area in areasDisponibles" :key="area.id" :value="String(area.id)">
-            {{ area.nombre }}
-          </option>
-        </select>
-      </label>
-    </div>
-
-    <div class="contenedor">
+    <section class="content-card">
       <div v-if="masReciente" class="seccion">
         <ComunicadoDestacado
           :comunicado="masReciente"
-          :yua-reaccionaste="yaReaccionaste(masReciente.id)"
+          :ya-reaccionaste="yaReaccionaste(masReciente.id)"
           @editar="editarComunicado(masReciente)"
           @eliminar="eliminarComunicado(masReciente.id)"
           @toggle-reaccion="toggleReaccion(masReciente.id)"
@@ -91,7 +106,7 @@
 
         <div v-if="otrosComunicados.length" class="mas-acciones">
           <button type="button" class="btn-ver-mas" @click="showMore = !showMore">
-            {{ showMore ? "Ocultar" : "Ver mas" }}
+            {{ showMore ? "Ocultar comunicados secundarios" : "Ver mas comunicados" }}
           </button>
         </div>
 
@@ -103,13 +118,18 @@
       </div>
 
       <div v-else class="sin-contenido">
-        <div class="icono">📢</div>
-        <p>No hay comunicados disponibles en este momento</p>
+        <div class="sin-contenido__icon">Avisos</div>
+        <p>No hay comunicados disponibles en este momento.</p>
       </div>
-    </div>
+    </section>
 
-    <div v-if="isAdmin" class="seccion-admin">
-      <h3>Panel de Administracion</h3>
+    <section v-if="isAdmin" class="admin-panel">
+      <div class="admin-panel__header">
+        <div>
+          <span class="section-kicker">Administracion</span>
+          <h3>Historial y reacciones</h3>
+        </div>
+      </div>
 
       <div class="tabs">
         <button
@@ -118,7 +138,7 @@
           :class="{ activo: tabActual === 'historial' }"
           @click="tabActual = 'historial'"
         >
-          Historial de Comunicados
+          Historial
         </button>
         <button
           type="button"
@@ -126,13 +146,13 @@
           :class="{ activo: tabActual === 'reacciones' }"
           @click="tabActual = 'reacciones'"
         >
-          Detalle de Reacciones
+          Reacciones
         </button>
       </div>
 
       <div v-if="tabActual === 'historial'" class="contenido-tab">
         <div v-if="comunicadosStore.historial.length === 0" class="vacio">
-          No hay comunicados en el historial
+          No hay comunicados registrados en el historial.
         </div>
 
         <div v-else class="tabla-historial">
@@ -152,7 +172,7 @@
               </span>
             </div>
             <div class="col-reacciones">
-              <span class="count">{{ com.reacciones?.length || 0 }} 👍</span>
+              <span class="count">{{ com.reacciones?.length || 0 }}</span>
             </div>
           </div>
         </div>
@@ -169,13 +189,13 @@
         </div>
 
         <div v-if="reaccionesDetalle.length === 0" class="vacio">
-          Selecciona un comunicado para ver las reacciones
+          Selecciona un comunicado para consultar sus reacciones.
         </div>
 
         <div v-else class="tabla-reacciones">
           <div class="encabezado">
             <div class="col-usuario">Usuario</div>
-            <div class="col-fecha">Fecha y Hora</div>
+            <div class="col-fecha">Fecha y hora</div>
           </div>
 
           <div v-for="reac in reaccionesDetalle" :key="reac.id" class="fila">
@@ -184,18 +204,18 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
-import PageHeader from "@/components/shared/PageHeader.vue";
-import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import ComunicadoDestacado from "@/components/comunicados/ComunicadoDestacado.vue";
 import ComunicadosLista from "@/components/comunicados/ComunicadosLista.vue";
-import { useComunicadosStore } from "@/store/comunicados";
+import PageHeader from "@/components/shared/PageHeader.vue";
+import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import { useAuthStore } from "@/store/auth";
+import { useComunicadosStore } from "@/store/comunicados";
 import comunicadosService from "@/services/comunicados.service";
 import { getRoleActions, hasAnyRole, ROLE_GROUPS, ROLE_KEYS } from "@/utils/permissions";
 
@@ -226,9 +246,9 @@ const canManageAnnouncements = computed(() =>
   hasAnyRole(authStore.user, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS)
 );
 const canFilterByArea = computed(() => canManageAnnouncements.value);
-
 const actions = computed(() => getRoleActions(authStore.user, "comunicados"));
-const masReciente = computed(() => comunicadosStore.masReciente?.id ? comunicadosStore.masReciente : null);
+const masReciente = computed(() => (comunicadosStore.masReciente?.id ? comunicadosStore.masReciente : null));
+const totalActivos = computed(() => (masReciente.value ? 1 : 0) + otrosComunicados.value.length);
 
 const areasDisponibles = computed(() => {
   const mapa = new Map();
@@ -323,7 +343,7 @@ const cargarReacciones = async () => {
 
   try {
     reaccionesDetalle.value = await comunicadosService.getReactions(comunicadoSeleccionadoId.value);
-  } catch (error) {
+  } catch {
     reaccionesDetalle.value = [];
   }
 };
@@ -356,7 +376,7 @@ const guardarComunicado = async () => {
 };
 
 const eliminarComunicado = async (id) => {
-  if (!confirm("¿Estas seguro de que deseas eliminar este comunicado?")) {
+  if (!globalThis.confirm?.("Estas seguro de que deseas eliminar este comunicado?")) {
     return;
   }
 
@@ -386,7 +406,7 @@ const verDetalle = (comunicado) => {
 
 const mostrarNotificacion = (mensaje, tipo) => {
   notificacion.value = { mensaje, tipo };
-  window.setTimeout(() => {
+  globalThis.setTimeout(() => {
     notificacion.value = null;
   }, 4000);
 };
@@ -405,29 +425,57 @@ onMounted(async () => {
 
 <style scoped>
 .comunicados-page {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 24px;
+}
+
+.stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stats-chip {
+  display: grid;
+  gap: 4px;
+  min-width: 160px;
+  padding: 14px 16px;
+  border: 1px solid rgba(197, 155, 82, 0.18);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 1), rgba(241, 231, 219, 0.85));
+}
+
+.stats-chip span {
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stats-chip strong {
+  color: var(--color-primary);
+  font-size: 1.4rem;
 }
 
 .notificacion {
   padding: 14px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.92rem;
   animation: slideDown 0.3s ease;
 }
 
 .notificacion.tipo-exito {
-  background: rgba(76, 175, 80, 0.15);
-  border: 1px solid rgba(76, 175, 80, 0.3);
-  color: #4caf50;
+  background: rgba(47, 107, 79, 0.12);
+  border: 1px solid rgba(47, 107, 79, 0.2);
+  color: var(--color-success);
 }
 
 .notificacion.tipo-error {
-  background: rgba(244, 67, 54, 0.15);
-  border: 1px solid rgba(244, 67, 54, 0.3);
-  color: #f44336;
+  background: rgba(157, 45, 62, 0.12);
+  border: 1px solid rgba(157, 45, 62, 0.2);
+  color: var(--color-danger);
 }
 
 @keyframes slideDown {
@@ -441,83 +489,270 @@ onMounted(async () => {
   }
 }
 
-.filtro-panel {
-  padding: 16px 18px;
-  border: 1px solid rgba(176, 142, 93, 0.18);
-  border-radius: 10px;
-  background: rgba(26, 26, 46, 0.5);
+.content-card,
+.admin-panel,
+.modal {
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-surface);
+  box-shadow: 0 16px 38px var(--color-shadow);
+}
+
+.section-kicker {
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.filter-row {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .filtro-campo {
   display: grid;
   gap: 8px;
-  max-width: 340px;
+  min-width: min(100%, 300px);
 }
 
 .filtro-campo span,
-label {
-  color: #b38e5d;
-  font-weight: 600;
-  font-size: 13px;
+.form-group label {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+
+.content-card,
+.admin-panel {
+  padding: 22px;
+}
+
+.seccion {
+  display: grid;
+  gap: 16px;
+}
+
+.mas-acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-ver-mas,
+.btn,
+.tab,
+.btn-cerrar {
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    background var(--transition-base);
+}
+
+.btn-ver-mas {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(107, 24, 57, 0.06);
+  border-color: rgba(107, 24, 57, 0.14);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.btn-ver-mas:hover,
+.btn:hover,
+.tab:hover {
+  transform: translateY(-1px);
+}
+
+.sin-contenido {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  min-height: 220px;
+  text-align: center;
+  color: var(--color-text-soft);
+}
+
+.sin-contenido__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: rgba(107, 24, 57, 0.08);
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.admin-panel__header h3 {
+  margin: 8px 0 0;
+  color: var(--color-primary-strong);
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.tab {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(107, 24, 57, 0.06);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.tab.activo {
+  background: linear-gradient(135deg, var(--color-primary-soft), var(--color-primary));
+  color: #fff;
+}
+
+.vacio {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--color-text-soft);
+}
+
+.tabla-historial,
+.tabla-reacciones {
+  border: 1px solid rgba(197, 155, 82, 0.18);
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 1), rgba(241, 231, 219, 0.78));
+}
+
+.encabezado,
+.fila {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.encabezado {
+  background: rgba(107, 24, 57, 0.06);
+  border-bottom: 1px solid rgba(197, 155, 82, 0.18);
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
+}
+
+.tabla-historial .encabezado,
+.tabla-historial .fila {
+  grid-template-columns: 2fr 1fr 1fr 0.8fr;
+}
+
+.tabla-reacciones .encabezado,
+.tabla-reacciones .fila {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.fila {
+  color: var(--color-text);
+  border-bottom: 1px solid rgba(221, 207, 191, 0.92);
+}
+
+.fila:last-child {
+  border-bottom: none;
+}
+
+.badge,
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 34px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.estatus-activo {
+  background: rgba(47, 107, 79, 0.12);
+  color: var(--color-success);
+}
+
+.estatus-vencido {
+  background: rgba(178, 123, 44, 0.12);
+  color: var(--color-warning);
+}
+
+.estatus-archivado {
+  background: rgba(123, 111, 116, 0.12);
+  color: var(--color-neutral);
+}
+
+.count {
+  background: rgba(197, 155, 82, 0.16);
+  color: var(--color-accent-strong);
+}
+
+.selector-comunicado {
+  margin-bottom: 16px;
 }
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  padding: 20px;
+  background: rgba(47, 38, 48, 0.44);
 }
 
 .modal {
-  background: linear-gradient(135deg, #0f0f1f 0%, #1a1a2e 100%);
-  border: 1px solid rgba(176, 142, 93, 0.3);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
+  width: min(560px, 100%);
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.modal-header {
-  padding: 20px;
-  border-bottom: 1px solid rgba(176, 142, 93, 0.2);
+.modal-header,
+.modal-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 22px;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--color-border);
 }
 
 .modal-header h2 {
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 700;
   margin: 0;
+  color: var(--color-primary-strong);
+  font-size: 1.2rem;
 }
 
 .btn-cerrar {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 24px;
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(107, 24, 57, 0.08);
+  color: var(--color-primary);
+  font-size: 1.1rem;
 }
 
 .modal-body {
-  padding: 20px;
-  overflow-y: auto;
   flex: 1;
+  overflow-y: auto;
+  padding: 22px;
 }
 
 .form-group {
+  display: grid;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
@@ -531,21 +766,20 @@ label {
 .textarea,
 .select {
   width: 100%;
-  background: rgba(26, 26, 46, 0.8);
-  border: 1px solid rgba(176, 142, 93, 0.3);
-  color: #ffffff;
-  padding: 10px 12px;
-  border-radius: 6px;
+  padding: 11px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  color: var(--color-text);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
 .input:focus,
 .textarea:focus,
 .select:focus {
   outline: none;
-  border-color: #b38e5d;
-  background: rgba(26, 26, 46, 1);
+  border-color: var(--color-accent);
 }
 
 .textarea {
@@ -553,25 +787,19 @@ label {
 }
 
 .modal-footer {
-  padding: 16px 20px;
-  border-top: 1px solid rgba(176, 142, 93, 0.2);
-  display: flex;
-  gap: 12px;
   justify-content: flex-end;
+  border-top: 1px solid var(--color-border);
 }
 
 .btn {
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
 }
 
 .btn-primario {
-  background: #621132;
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary-soft), var(--color-primary));
+  color: #fff;
 }
 
 .btn-primario:disabled {
@@ -580,186 +808,33 @@ label {
 }
 
 .btn-secundario {
-  background: rgba(176, 142, 93, 0.15);
-  color: #b38e5d;
-  border: 1px solid rgba(176, 142, 93, 0.3);
+  background: rgba(107, 24, 57, 0.06);
+  border-color: rgba(107, 24, 57, 0.14);
+  color: var(--color-primary);
 }
 
-.contenedor {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.seccion {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mas-acciones {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn-ver-mas {
-  padding: 8px 14px;
-  border: 1px solid rgba(176, 142, 93, 0.3);
-  border-radius: 999px;
-  background: rgba(176, 142, 93, 0.12);
-  color: #b38e5d;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.sin-contenido {
-  text-align: center;
-  padding: 48px 24px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.sin-contenido .icono {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.seccion-admin {
-  margin-top: 24px;
-}
-
-.seccion-admin > h3 {
-  color: #b38e5d;
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(176, 142, 93, 0.2);
-}
-
-.tab {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 12px 16px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-
-.tab.activo {
-  color: #b38e5d;
-  border-bottom-color: #b38e5d;
-}
-
-.contenido-tab {
-  margin-top: 16px;
-}
-
-.vacio {
-  text-align: center;
-  padding: 32px 16px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.tabla-historial,
-.tabla-reacciones {
-  background: rgba(26, 26, 46, 0.5);
-  border: 1px solid rgba(176, 142, 93, 0.2);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.encabezado {
-  display: grid;
-  gap: 12px;
-  padding: 12px 16px;
-  background: rgba(26, 26, 46, 0.8);
-  border-bottom: 1px solid rgba(176, 142, 93, 0.3);
-  font-weight: 700;
-  font-size: 12px;
-  color: #b38e5d;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.tabla-historial .encabezado,
-.tabla-historial .fila {
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-}
-
-.tabla-reacciones .encabezado,
-.tabla-reacciones .fila {
-  grid-template-columns: 2fr 1fr;
-}
-
-.fila {
-  display: grid;
-  gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(176, 142, 93, 0.15);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.fila:last-child {
-  border-bottom: none;
-}
-
-.badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.estatus-activo {
-  background: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
-}
-
-.estatus-vencido {
-  background: rgba(255, 193, 7, 0.2);
-  color: #ffc107;
-}
-
-.estatus-archivado {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.count {
-  font-weight: 700;
-  color: #b38e5d;
-}
-
-.selector-comunicado {
-  margin-bottom: 16px;
-}
-
-.selector-comunicado .select {
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .modal {
-    width: 95%;
-    max-height: 95vh;
-  }
-
-  .form-row,
+@media (max-width: 900px) {
+  .modal-header,
+  .modal-footer,
   .tabla-historial .encabezado,
   .tabla-historial .fila,
   .tabla-reacciones .encabezado,
   .tabla-reacciones .fila {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .stats-strip {
+    display: grid;
     grid-template-columns: 1fr;
   }
 }
