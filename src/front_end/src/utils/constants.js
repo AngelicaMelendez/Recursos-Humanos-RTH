@@ -63,6 +63,7 @@ export const dashboardFallback = {
   quickActions: [
     { title: "Registrar visitante", route: "/visitantes" },
     { title: "Nueva solicitud", route: "/solicitudes" },
+    { title: "Ver comunicados", route: "/comunicados" },
     { title: "Subir normatividad", route: "/normatividad" }
   ]
 };

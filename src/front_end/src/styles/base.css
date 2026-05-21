@@ -12,8 +12,9 @@ body {
   margin: 0;
   font-family: var(--font-family-base);
   background:
-    radial-gradient(circle at top right, rgba(179, 142, 93, 0.16), transparent 28%),
-    linear-gradient(180deg, #fff 0%, #f9f5f1 100%);
+    radial-gradient(circle at top right, rgba(197, 155, 82, 0.2), transparent 26%),
+    radial-gradient(circle at left center, rgba(107, 24, 57, 0.08), transparent 24%),
+    linear-gradient(180deg, #fcf8f2 0%, var(--color-page) 100%);
   color: var(--color-text);
 }
 
@@ -27,6 +28,11 @@ textarea {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+::selection {
+  background: rgba(197, 155, 82, 0.28);
+  color: var(--color-primary-strong);
 }
 
 img {

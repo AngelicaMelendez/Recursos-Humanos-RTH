@@ -33,7 +33,7 @@ defineProps({
   margin-bottom: 12px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(98, 17, 50, 0.08);
+  background: linear-gradient(135deg, var(--color-primary-faint), rgba(197, 155, 82, 0.16));
   color: var(--color-primary);
   font-size: 0.82rem;
   font-weight: 700;

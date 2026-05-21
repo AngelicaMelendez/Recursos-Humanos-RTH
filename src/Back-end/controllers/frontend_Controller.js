@@ -5,7 +5,6 @@ const dashboardData = {
     { label: 'Empleados activos', value: 184, delta: '+6', tone: 'primary' },
     { label: 'Exempleados', value: 37, delta: 'Historico', tone: 'neutral' },
     { label: 'Visitantes hoy', value: 21, delta: '+4', tone: 'accent' },
-    { label: 'Pasantes activos', value: 13, delta: '2 por vencer', tone: 'primary' },
     { label: 'Vacantes abiertas', value: 9, delta: '3 urgentes', tone: 'accent' },
     { label: 'Solicitudes pendientes', value: 17, delta: '6 RH', tone: 'warning' },
     { label: 'Incidencias del mes', value: 28, delta: '-3', tone: 'neutral' },
@@ -41,7 +40,7 @@ const dashboardData = {
   quickActions: [
     { title: 'Registrar visitante', route: '/visitantes' },
     { title: 'Nueva solicitud', route: '/solicitudes' },
-    { title: 'Alta de pasante', route: '/pasantes' },
+    { title: 'Ver comunicados', route: '/comunicados' },
     { title: 'Subir normatividad', route: '/normatividad' },
   ],
 };
@@ -150,7 +149,6 @@ exports.dashboard = async (req, res) => {
         { label: 'Empleados activos', value: activos, delta: 'BD', tone: 'primary' },
         { label: 'Exempleados', value: bajas, delta: 'Historico', tone: 'neutral' },
         { label: 'Visitantes hoy', value: visitantesHoy, delta: 'Hoy', tone: 'accent' },
-        { label: 'Pasantes activos', value: fallback.pasantes.length, delta: 'Pendiente BD', tone: 'primary' },
         { label: 'Vacantes abiertas', value: vacantes, delta: 'BD', tone: 'accent' },
         { label: 'Solicitudes pendientes', value: solicitudes, delta: 'BD', tone: 'warning' },
         { label: 'Incidencias del mes', value: incidencias, delta: 'BD', tone: 'neutral' },

@@ -1,50 +1,232 @@
 <template>
   <div class="dashboard-page">
-    <section class="hero-panel">
-      <div>
-        <span class="hero-panel__eyebrow">Operacion institucional</span>
+    <PageHeader
+      eyebrow="Tablero institucional"
+      title="Dashboard ejecutivo"
+      description="Resumen estrategico de la operacion diaria, comunicados y seguimiento operativo de Recursos Humanos."
+    >
+      <div class="header-pills">
+        <span class="pill primary">{{ authStore.user?.rol || "Colaborador" }}</span>
+        <span class="pill neutral">{{ todayLabel }}</span>
+      </div>
+    </PageHeader>
+
+    <section class="overview-grid">
+      <article class="welcome-panel">
+        <span class="welcome-panel__eyebrow">Operacion institucional</span>
         <h2>Bienvenid(a), {{ authStore.user?.nombre || "Usuario" }}</h2>
-        <p>Comunicados segmentados, asistencia diaria y resumen operativo en una vista de trabajo clara.</p>
-      </div>
-      <span class="role-chip">{{ authStore.user?.rol || "Colaborador" }}</span>
+        <p>
+          Consulta el estado general del dia, revisa avisos vigentes y usa los accesos del tablero
+          segun tu ritmo de trabajo.
+        </p>
+      </article>
     </section>
 
-    <section class="hero-banner">
-      <div class="hero-banner__content">
-        <span class="hero-banner__eyebrow">Espacio de anuncio</span>
-        <h3>Banner personalizado</h3>
-        <p>Este es el lugar para mostrar una imagen, un mensaje de bienvenida o un aviso importante al usuario.</p>
-      </div>
-      <div class="hero-banner__image">
-        <!-- Agrega tu imagen aquí -->
-        <!-- <img src="/ruta/a/tu-imagen.jpg" alt="Banner de bienvenida" /> -->
-        <div class="hero-banner__image-placeholder">Tu imagen va aquí</div>
-      </div>
+    <section class="summary-grid">
+      <StatCard v-for="item in visibleSummary" :key="item.label" :item="item" />
     </section>
 
-    <section class="module-section attendance-module">
-      <div class="module-heading">
-        <div>
-          <span class="module-kicker">Registro de Asistencia</span>
-          <h3>Entrada y salida</h3>
-          <p>El sistema usa la hora actual del equipo y valida puntualidad contra el horario laboral.</p>
+    <section class="core-grid">
+      <section class="module-section announcements-module">
+        <div class="module-heading">
+          <div>
+            <span class="module-kicker">Comunicados</span>
+            <h3>Avisos activos</h3>
+            <p>
+              Revisa rapidamente los anuncios vigentes y abre el detalle completo cuando lo
+              necesites.
+            </p>
+          </div>
+
+          <div class="module-tools">
+            <router-link class="ghost-button" to="/comunicados">Ver todos</router-link>
+            <button
+              v-if="canManageAnnouncements"
+              class="electric-button"
+              type="button"
+              @click="startCreateAnnouncement"
+            >
+              Nuevo comunicado
+            </button>
+          </div>
         </div>
-        <span class="status-pill" :class="attendanceTone">{{ attendanceMessage }}</span>
-      </div>
 
-      <div class="attendance-grid">
-        <article class="time-panel">
-          <IconSymbol name="door" />
-          <span>Entrada</span>
-          <strong>{{ dashboardStore.attendance.entryTime || "Pendiente" }}</strong>
+        <p v-if="!canManageAnnouncements" class="announcement-note">
+          Esta vista muestra solo los comunicados vigentes para consulta rapida.
+        </p>
+
+        <article v-if="latestAnnouncement" class="featured-announcement">
+          <div class="featured-announcement__top">
+            <div>
+              <span class="featured-announcement__meta">
+                {{ latestAnnouncement.area }} | {{ latestAnnouncement.office }}
+              </span>
+              <h4>{{ latestAnnouncement.title }}</h4>
+            </div>
+
+            <button
+              v-if="remainingAnnouncements.length"
+              class="ghost-button ghost-button--small"
+              type="button"
+              @click="showMoreAnnouncements = !showMoreAnnouncements"
+            >
+              {{ showMoreAnnouncements ? "Ocultar" : "Ver mas" }}
+            </button>
+          </div>
+
+          <p>{{ latestAnnouncement.content }}</p>
+
+          <div class="announcement-meta">
+            <span>Publicado {{ formatDateTime(latestAnnouncement.createdAt) }}</span>
+            <span>Vence {{ formatDateTime(latestAnnouncement.expiresAt) }}</span>
+          </div>
+
+          <div class="announcement-actions">
+            <button
+              class="reaction-button"
+              type="button"
+              :class="{ active: hasLiked(latestAnnouncement) }"
+              @click="likeAnnouncement(latestAnnouncement)"
+            >
+              <IconSymbol name="check" />
+              {{ latestAnnouncement.likedBy.length }} reacciones
+            </button>
+
+            <button
+              class="ghost-button ghost-button--small"
+              type="button"
+              @click="openAnnouncementModal(latestAnnouncement)"
+            >
+              Ver detalle
+            </button>
+
+            <template v-if="canManageAnnouncements">
+              <button
+                class="ghost-button ghost-button--small"
+                type="button"
+                @click="startEditAnnouncement(latestAnnouncement)"
+              >
+                Editar
+              </button>
+              <button
+                class="danger-button"
+                type="button"
+                @click="deleteAnnouncement(latestAnnouncement.id)"
+              >
+                Eliminar
+              </button>
+            </template>
+          </div>
         </article>
-        <article class="time-panel">
-          <IconSymbol name="lock" />
-          <span>Salida</span>
-          <strong>{{ dashboardStore.attendance.exitTime || "Pendiente" }}</strong>
-        </article>
+
+        <div v-else class="empty-state">
+          No hay comunicados activos en este momento.
+        </div>
+
+        <div
+          v-if="showMoreAnnouncements && remainingAnnouncements.length"
+          class="announcement-rail"
+        >
+          <article
+            v-for="announcement in remainingAnnouncements"
+            :key="announcement.id"
+            class="rail-card"
+          >
+            <span>{{ formatDateTime(announcement.createdAt) }}</span>
+            <strong>{{ announcement.title }}</strong>
+            <p>{{ announcement.area }} | {{ announcement.office }}</p>
+            <button
+              class="ghost-button ghost-button--small"
+              type="button"
+              @click="openAnnouncementModal(announcement)"
+            >
+              Ver detalle
+            </button>
+          </article>
+        </div>
+
+        <form
+          v-if="canManageAnnouncements && announcementForm.visible"
+          class="announcement-form"
+          @submit.prevent="saveAnnouncement"
+        >
+          <div class="form-title">
+            <h4>{{ announcementForm.id ? "Editar comunicado" : "Crear comunicado" }}</h4>
+            <button class="icon-button icon-button--plain" type="button" @click="closeAnnouncementForm">
+              x
+            </button>
+          </div>
+
+          <label>
+            Titulo
+            <input v-model.trim="announcementForm.title" required />
+          </label>
+
+          <label>
+            Mensaje
+            <textarea v-model.trim="announcementForm.content" rows="4" required />
+          </label>
+
+          <div class="form-grid">
+            <label>
+              Area
+              <select v-model="announcementForm.area" required>
+                <option v-for="area in announcementAreaOptions" :key="area" :value="area">
+                  {{ area }}
+                </option>
+              </select>
+            </label>
+
+            <label>
+              Oficina
+              <select v-model="announcementForm.office" required>
+                <option v-for="office in announcementOfficeOptions" :key="office" :value="office">
+                  {{ office }}
+                </option>
+              </select>
+            </label>
+
+            <label>
+              Vencimiento
+              <input v-model="announcementForm.expiresAt" type="datetime-local" required />
+            </label>
+          </div>
+
+          <button class="electric-button" type="submit">Guardar comunicado</button>
+        </form>
+      </section>
+
+      <section class="module-section attendance-module">
+        <div class="module-heading">
+          <div>
+            <span class="module-kicker">Registro de asistencia</span>
+            <h3>Entrada y salida</h3>
+            <p>Tu estatus se actualiza en tiempo real usando la hora actual del equipo.</p>
+          </div>
+          <span class="status-pill" :class="attendanceTone">{{ attendanceMessage }}</span>
+        </div>
+
+        <div class="attendance-grid">
+          <article class="time-panel">
+            <IconSymbol name="door" />
+            <span>Entrada</span>
+            <strong>{{ dashboardStore.attendance.entryTime || "Pendiente" }}</strong>
+          </article>
+
+          <article class="time-panel">
+            <IconSymbol name="lock" />
+            <span>Salida</span>
+            <strong>{{ dashboardStore.attendance.exitTime || "Pendiente" }}</strong>
+          </article>
+        </div>
+
         <div class="attendance-actions">
-          <button class="electric-button" type="button" :disabled="Boolean(dashboardStore.attendance.entryTime)" @click="registerEntry">
+          <button
+            class="electric-button"
+            type="button"
+            :disabled="Boolean(dashboardStore.attendance.entryTime)"
+            @click="registerEntry"
+          >
             Registrar entrada
           </button>
           <button
@@ -56,168 +238,32 @@
             Registrar salida
           </button>
         </div>
-      </div>
 
-      <div class="history-list">
-        <div class="history-list__header">
-          <h4>Historial de movimientos</h4>
-          <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
-        </div>
-        <ul>
-          <li v-for="record in dashboardStore.attendanceHistory" :key="record.id">
-            <div>
-              <strong>{{ formatLongDate(record.date) }}</strong>
-              <span>Entrada {{ record.entry }} | Salida {{ record.exit || "Pendiente" }}</span>
-            </div>
-            <div class="history-tags">
-              <span class="status-pill" :class="statusTone(record.entryStatus)">{{ record.entryStatus }}</span>
-              <span class="status-pill" :class="statusTone(record.exitStatus)">{{ record.exitStatus }}</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="module-section announcements-module">
-      <div class="module-heading">
-        <div>
-          <span class="module-kicker">Comunicados</span>
-          <h3>Aviso</h3>
-          <p>Apartado en el que encontraras noticias o anuncios importantes referentes a tu area o a todo publico.</p>
-        </div>
-        <button v-if="canManageAnnouncements" class="electric-button" type="button" @click="startCreateAnnouncement">
-          Nuevo comunicado
-        </button>
-      </div>
-
-      <div v-if="canManageAnnouncements" class="announcement-filters">
-        <label>
-          Area
-          <select v-model="selectedArea">
-            <option value="Todas">Todas</option>
-            <option v-for="area in availableAreas" :key="area" :value="area">{{ area }}</option>
-          </select>
-        </label>
-        <label>
-          Oficina
-          <select v-model="selectedOffice">
-            <option value="Todas">Todas</option>
-            <option v-for="office in availableOffices" :key="office" :value="office">{{ office }}</option>
-          </select>
-        </label>
-      </div>
-
-      <p v-else class="announcement-note">
-        La vista publica muestra solo los comunicados asignados por administracion o jefatura.
-      </p>
-
-      <article v-if="latestAnnouncement" class="featured-announcement">
-        <div class="featured-announcement__top">
-          <div>
-            <span>{{ latestAnnouncement.area }} | {{ latestAnnouncement.office }}</span>
-            <h4>{{ latestAnnouncement.title }}</h4>
+        <div class="history-list">
+          <div class="history-list__header">
+            <h4>Historial de movimientos</h4>
+            <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
           </div>
-          <button v-if="remainingAnnouncements.length" class="ghost-button ghost-button--small" type="button" @click="showMoreAnnouncements = !showMoreAnnouncements">
-            {{ showMoreAnnouncements ? "Ocultar" : "Ver mas" }}
-          </button>
-        </div>
-        <p>{{ latestAnnouncement.content }}</p>
-        <div class="announcement-meta">
-          <span>Creado {{ formatDateTime(latestAnnouncement.createdAt) }}</span>
-          <span>Vence {{ formatDateTime(latestAnnouncement.expiresAt) }}</span>
-        </div>
-        <div class="announcement-actions">
-          <button class="reaction-button" type="button" :class="{ active: hasLiked(latestAnnouncement) }" @click="likeAnnouncement(latestAnnouncement)">
-            <IconSymbol name="check" />
-            {{ latestAnnouncement.likedBy.length }} likes
-          </button>
-          <template v-if="canManageAnnouncements">
-            <button class="ghost-button ghost-button--small" type="button" @click="startEditAnnouncement(latestAnnouncement)">Editar</button>
-            <button class="danger-button" type="button" @click="deleteAnnouncement(latestAnnouncement.id)">Eliminar</button>
-          </template>
-        </div>
-      </article>
-      <div v-else class="empty-state">No hay comunicados activos para los filtros seleccionados.</div>
 
-      <div v-if="showMoreAnnouncements && remainingAnnouncements.length" class="announcement-rail">
-        <article v-for="announcement in remainingAnnouncements" :key="announcement.id" class="rail-card">
-          <span>{{ formatDateTime(announcement.createdAt) }}</span>
-          <strong>{{ announcement.title }}</strong>
-          <p>{{ announcement.area }} | {{ announcement.office }}</p>
-          <button class="ghost-button ghost-button--small" type="button" @click="openAnnouncementModal(announcement)">Ver detalle</button>
-        </article>
-      </div>
+          <ul>
+            <li v-for="record in dashboardStore.attendanceHistory" :key="record.id">
+              <div>
+                <strong>{{ formatLongDate(record.date) }}</strong>
+                <span>Entrada {{ record.entry }} | Salida {{ record.exit || "Pendiente" }}</span>
+              </div>
 
-      <form v-if="canManageAnnouncements && announcementForm.visible" class="announcement-form" @submit.prevent="saveAnnouncement">
-        <div class="form-title">
-          <h4>{{ announcementForm.id ? "Editar comunicado" : "Crear comunicado" }}</h4>
-          <button class="icon-button" type="button" @click="closeAnnouncementForm">x</button>
-        </div>
-        <label>
-          Titulo
-          <input v-model.trim="announcementForm.title" required />
-        </label>
-        <label>
-          Mensaje
-          <textarea v-model.trim="announcementForm.content" rows="4" required />
-        </label>
-        <div class="form-grid">
-          <label>
-            Area
-            <select v-model="announcementForm.area" required>
-              <option v-for="area in availableAreas" :key="area" :value="area">{{ area }}</option>
-            </select>
-          </label>
-          <label>
-            Oficina
-            <select v-model="announcementForm.office" required>
-              <option v-for="office in availableOffices" :key="office" :value="office">{{ office }}</option>
-            </select>
-          </label>
-          <label>
-            Vencimiento
-            <input v-model="announcementForm.expiresAt" type="datetime-local" required />
-          </label>
-        </div>
-        <button class="electric-button" type="submit">Guardar comunicado</button>
-      </form>
-
-      <section v-if="isAdmin" class="audit-panel">
-        <div class="history-list__header">
-          <h4>Historial y auditoria</h4>
-          <span>{{ dashboardStore.announcements.length }} comunicados guardados</span>
-        </div>
-        <div class="audit-list">
-          <article v-for="announcement in announcementsByDate" :key="`audit-${announcement.id}`">
-            <div>
-              <span class="status-pill" :class="isExpired(announcement) ? 'danger' : 'success'">
-                {{ isExpired(announcement) ? "Vencido" : "Activo" }}
-              </span>
-              <h5>{{ announcement.title }}</h5>
-              <p>{{ announcement.area }} | {{ announcement.office }} | {{ formatDateTime(announcement.createdAt) }}</p>
-            </div>
-            <details>
-              <summary>{{ announcement.likedBy.length }} reacciones</summary>
-              <ul>
-                <li v-for="user in announcement.likedBy" :key="`${announcement.id}-${user.id}`">
-                  {{ user.name }} | {{ formatDateTime(user.reactedAt) }}
-                </li>
-                <li v-if="!announcement.likedBy.length">Sin reacciones registradas</li>
-              </ul>
-            </details>
-          </article>
+              <div class="history-tags">
+                <span class="status-pill" :class="statusTone(record.entryStatus)">
+                  {{ record.entryStatus }}
+                </span>
+                <span class="status-pill" :class="statusTone(record.exitStatus)">
+                  {{ record.exitStatus }}
+                </span>
+              </div>
+            </li>
+          </ul>
         </div>
       </section>
-    </section>
-
-    <PageHeader
-      eyebrow="Tablero institucional"
-      title="Dashboard ejecutivo"
-      description="Resumen estrategico de la operacion de RH, incidencias, visitantes y gestion interna."
-    />
-
-    <section class="grid grid-4">
-      <StatCard v-for="item in dashboardStore.summary" :key="item.label" :item="item" />
     </section>
 
     <section class="grid grid-3 dashboard-grid">
@@ -228,7 +274,7 @@
       />
       <DashboardDonutChart
         title="Solicitudes por estatus"
-        subtitle="Seguimiento al flujo Empleado a Jefe y RH."
+        subtitle="Seguimiento al flujo de aprobacion institucional."
         :items="dashboardStore.charts.requestsByStatus"
       />
       <QuickActions :actions="dashboardStore.quickActions" />
@@ -236,8 +282,16 @@
 
     <section class="grid grid-3 dashboard-grid">
       <ActivityFeed :items="dashboardStore.recentActivity" />
-      <InfoList title="Proximos cumpleanos" subtitle="Cumplimientos cercanos para planeacion institucional." :items="birthdayItems" />
-      <InfoList title="Empleados de vacaciones" subtitle="Cobertura operativa en curso." :items="vacationItems" />
+      <InfoList
+        title="Proximos cumpleanos"
+        subtitle="Personal con fechas cercanas para seguimiento interno."
+        :items="birthdayItems"
+      />
+      <InfoList
+        title="Empleados de vacaciones"
+        subtitle="Cobertura operativa actual por area."
+        :items="vacationItems"
+      />
     </section>
 
     <div v-if="successDialog.visible" class="toast-modal" @click="closeSuccessDialog">
@@ -252,20 +306,30 @@
     <div v-if="announcementModal.visible" class="announcement-modal" @click="closeAnnouncementModal">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h4>{{ announcementModal.announcement.title }}</h4>
-          <button class="icon-button" type="button" @click="closeAnnouncementModal">×</button>
+          <h4>{{ announcementModal.announcement?.title }}</h4>
+          <button class="icon-button icon-button--plain" type="button" @click="closeAnnouncementModal">
+            x
+          </button>
         </div>
-        <p>{{ announcementModal.announcement.content }}</p>
+
+        <p>{{ announcementModal.announcement?.content }}</p>
+
         <div class="announcement-meta">
-          <span>Área: {{ announcementModal.announcement.area }}</span>
-          <span>Oficina: {{ announcementModal.announcement.office }}</span>
-          <span>Creado: {{ formatDateTime(announcementModal.announcement.createdAt) }}</span>
-          <span>Vence: {{ formatDateTime(announcementModal.announcement.expiresAt) }}</span>
+          <span>Area: {{ announcementModal.announcement?.area }}</span>
+          <span>Oficina: {{ announcementModal.announcement?.office }}</span>
+          <span>Creado: {{ formatDateTime(announcementModal.announcement?.createdAt) }}</span>
+          <span>Vence: {{ formatDateTime(announcementModal.announcement?.expiresAt) }}</span>
         </div>
+
         <div class="modal-actions">
-          <button class="reaction-button" type="button" :class="{ active: hasLiked(announcementModal.announcement) }" @click="likeAnnouncement(announcementModal.announcement)">
+          <button
+            class="reaction-button"
+            type="button"
+            :class="{ active: hasLiked(announcementModal.announcement) }"
+            @click="likeAnnouncement(announcementModal.announcement)"
+          >
             <IconSymbol name="check" />
-            {{ announcementModal.announcement.likedBy.length }} likes
+            {{ announcementModal.announcement?.likedBy?.length || 0 }} reacciones
           </button>
           <button class="electric-button" type="button" @click="closeAnnouncementModal">Cerrar</button>
         </div>
@@ -276,24 +340,22 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import StatCard from "@/components/ui/StatCard.vue";
-import PageHeader from "@/components/shared/PageHeader.vue";
+import ActivityFeed from "@/components/shared/ActivityFeed.vue";
 import DashboardBarChart from "@/components/charts/DashboardBarChart.vue";
 import DashboardDonutChart from "@/components/charts/DashboardDonutChart.vue";
-import QuickActions from "@/components/shared/QuickActions.vue";
-import ActivityFeed from "@/components/shared/ActivityFeed.vue";
-import InfoList from "@/components/shared/InfoList.vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
-import { useDashboardStore } from "@/store/dashboard";
+import InfoList from "@/components/shared/InfoList.vue";
+import PageHeader from "@/components/shared/PageHeader.vue";
+import QuickActions from "@/components/shared/QuickActions.vue";
+import StatCard from "@/components/ui/StatCard.vue";
 import { useAuthStore } from "@/store/auth";
+import { useDashboardStore } from "@/store/dashboard";
 import { formatDateTime } from "@/utils/formatters";
 
 const dashboardStore = useDashboardStore();
 const authStore = useAuthStore();
 
 const schedule = { entry: "09:00", exit: "17:00" };
-const selectedArea = ref("Todas");
-const selectedOffice = ref("Todas");
 const showMoreAnnouncements = ref(false);
 const focusedAnnouncementId = ref(null);
 const attendanceMessage = ref("Listo para registrar");
@@ -317,28 +379,35 @@ const isAdmin = computed(() => normalizedRole.value.includes("admin"));
 const isAreaLead = computed(() => normalizedRole.value.includes("jefe"));
 const canManageAnnouncements = computed(() => isAdmin.value || isAreaLead.value);
 
-const availableAreas = computed(() => [...new Set(dashboardStore.announcements.map((item) => item.area))]);
-const availableOffices = computed(() => [...new Set(dashboardStore.announcements.map((item) => item.office))]);
+const visibleSummary = computed(() =>
+  dashboardStore.summary.filter((item) => !String(item.label || "").toLowerCase().includes("pasantes"))
+);
+
+const announcementAreaOptions = computed(() => {
+  const values = [...new Set(dashboardStore.announcements.map((item) => item.area).filter(Boolean))];
+  return values.length ? values : ["Recursos Humanos"];
+});
+
+const announcementOfficeOptions = computed(() => {
+  const values = [...new Set(dashboardStore.announcements.map((item) => item.office).filter(Boolean))];
+  return values.length ? values : ["Direccion Administrativa"];
+});
 
 const announcementsByDate = computed(() =>
   [...dashboardStore.announcements].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 );
 
-const publicAnnouncements = computed(() =>
-  announcementsByDate.value.filter((announcement) => {
-    const matchesArea = selectedArea.value === "Todas" || announcement.area === selectedArea.value;
-    const matchesOffice = selectedOffice.value === "Todas" || announcement.office === selectedOffice.value;
-    return matchesArea && matchesOffice && !isExpired(announcement);
-  })
+const activeAnnouncements = computed(() =>
+  announcementsByDate.value.filter((announcement) => !isExpired(announcement))
 );
 
 const latestAnnouncement = computed(() => {
-  const focused = publicAnnouncements.value.find((item) => item.id === focusedAnnouncementId.value);
-  return focused || publicAnnouncements.value[0] || null;
+  const focused = activeAnnouncements.value.find((item) => item.id === focusedAnnouncementId.value);
+  return focused || activeAnnouncements.value[0] || null;
 });
 
 const remainingAnnouncements = computed(() =>
-  publicAnnouncements.value.filter((item) => item.id !== latestAnnouncement.value?.id)
+  activeAnnouncements.value.filter((item) => item.id !== latestAnnouncement.value?.id)
 );
 
 const birthdayItems = computed(() =>
@@ -355,6 +424,14 @@ const vacationItems = computed(() =>
   }))
 );
 
+const todayLabel = computed(() =>
+  new Intl.DateTimeFormat("es-MX", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long"
+  }).format(new Date())
+);
+
 const showSuccess = (title, message) => {
   successDialog.value = { visible: true, title, message };
 };
@@ -364,6 +441,8 @@ const closeSuccessDialog = () => {
 };
 
 const openAnnouncementModal = (announcement) => {
+  if (!announcement) return;
+  focusedAnnouncementId.value = announcement.id;
   announcementModal.value = { visible: true, announcement };
 };
 
@@ -456,13 +535,15 @@ const registerExit = () => {
   showSuccess("Salida registrada", `Tu salida fue marcada como ${exitStatus}.`);
 };
 
-const hasLiked = (announcement) =>
-  announcement.likedBy.some((user) => user.id === currentUserId.value);
+const hasLiked = (announcement) => {
+  if (!announcement?.likedBy) return false;
+  return announcement.likedBy.some((user) => user.id === currentUserId.value);
+};
 
 const likeAnnouncement = (announcement) => {
-  if (!authStore.user) return;
+  if (!authStore.user || !announcement) return;
   if (hasLiked(announcement)) {
-    showSuccess("Like registrado", "Tu reaccion ya estaba guardada.");
+    showSuccess("Reaccion registrada", "Tu reaccion ya estaba guardada.");
     return;
   }
 
@@ -471,7 +552,12 @@ const likeAnnouncement = (announcement) => {
     name: authStore.user.nombre || "Usuario",
     reactedAt: new Date().toISOString()
   });
-  showSuccess("Reaccion enviada", "Tu like se registro correctamente.");
+
+  if (announcementModal.value.announcement?.id === announcement.id) {
+    announcementModal.value = { ...announcementModal.value, announcement };
+  }
+
+  showSuccess("Reaccion enviada", "Tu reaccion se registro correctamente.");
 };
 
 const toDateTimeLocal = (value) => {
@@ -492,8 +578,8 @@ const startCreateAnnouncement = () => {
     id: null,
     title: "",
     content: "",
-    area: selectedArea.value === "Todas" ? availableAreas.value[0] || "Recursos Humanos" : selectedArea.value,
-    office: selectedOffice.value === "Todas" ? availableOffices.value[0] || "Direccion Administrativa" : selectedOffice.value,
+    area: announcementAreaOptions.value[0] || "Recursos Humanos",
+    office: announcementOfficeOptions.value[0] || "Direccion Administrativa",
     expiresAt: defaultExpiration()
   });
 };
@@ -526,7 +612,7 @@ const saveAnnouncement = () => {
   if (announcementForm.id) {
     const target = dashboardStore.announcements.find((item) => item.id === announcementForm.id);
     if (target) Object.assign(target, payload);
-    showSuccess("Comunicado actualizado", "Los cambios ya estan visibles para el segmento correspondiente.");
+    showSuccess("Comunicado actualizado", "Los cambios ya estan visibles para consulta.");
   } else {
     dashboardStore.announcements.unshift({
       id: Date.now(),
@@ -535,7 +621,7 @@ const saveAnnouncement = () => {
       author: authStore.user?.nombre || "Administrador",
       likedBy: []
     });
-    showSuccess("Comunicado creado", "El aviso quedo publicado hasta su fecha de vencimiento.");
+    showSuccess("Comunicado creado", "El aviso quedo publicado correctamente.");
   }
 
   closeAnnouncementForm();
@@ -543,12 +629,13 @@ const saveAnnouncement = () => {
 
 const deleteAnnouncement = (id) => {
   dashboardStore.announcements = dashboardStore.announcements.filter((item) => item.id !== id);
-  showSuccess("Comunicado eliminado", "El aviso dejo de mostrarse en la vista publica.");
-};
-
-const focusAnnouncement = (announcement) => {
-  focusedAnnouncementId.value = announcement.id;
-  showMoreAnnouncements.value = false;
+  if (focusedAnnouncementId.value === id) {
+    focusedAnnouncementId.value = null;
+  }
+  if (announcementModal.value.announcement?.id === id) {
+    closeAnnouncementModal();
+  }
+  showSuccess("Comunicado eliminado", "El aviso dejo de mostrarse en el tablero.");
 };
 
 onMounted(() => {
@@ -559,171 +646,187 @@ onMounted(() => {
 <style scoped>
 .dashboard-page {
   display: grid;
-  gap: 24px;
+  gap: 20px;
 }
 
-.dashboard-grid {
-  margin-top: 0;
-}
-
-.hero-panel,
-.module-section {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  color: var(--color-text);
-  box-shadow: 0 12px 40px var(--color-shadow);
-}
-
-.hero-panel {
+.header-pills {
   display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  align-items: center;
-  padding: 28px;
-}
-
-.hero-banner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
-  gap: 18px;
-  align-items: center;
-  padding: 24px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  box-shadow: 0 12px 40px var(--color-shadow);
-}
-
-.hero-banner__content {
-  display: grid;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 10px;
 }
 
-.hero-banner__eyebrow {
-  color: #621132;
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.welcome-panel,
+.module-section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 14px 36px var(--color-shadow);
+}
+
+.welcome-panel {
+  padding: 24px 28px;
+  min-height: 0;
+  background:
+    radial-gradient(circle at top right, rgba(197, 155, 82, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(255, 253, 249, 1), rgba(246, 241, 234, 0.96));
+}
+
+.welcome-panel__eyebrow,
+.module-kicker {
+  color: var(--color-primary);
   font-size: 0.78rem;
   font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  line-height: 2;
 }
 
-.hero-banner__image {
-  min-height: 160px;
-  display: grid;
-  place-items: center;
-  border-radius: var(--radius-md);
-  background: var(--color-surface-muted);
-  padding: 18px;
-}
-
-.hero-banner__image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  border: 2px dashed var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-soft);
-  padding: 18px;
-  text-align: center;
-}
-
-.hero-panel h2,
+.welcome-panel h2,
 .module-heading h3,
 .history-list h4,
-.audit-panel h4,
-.announcement-form h4 {
+.announcement-form h4,
+.modal-header h4,
+.toast-box h4 {
   margin: 0;
-  letter-spacing: 0;
 }
 
-.hero-panel p,
-.module-heading p {
-  margin: 8px 0 0;
-  color: #0c0b0b;
-  line-height: 1.5
-  ;
+.welcome-panel p,
+.module-heading p,
+.featured-announcement p {
+  margin: 10px 0 0;
+  color: var(--color-text-soft);
+  line-height: 1.7;
+}
+.announcement-meta,
+.history-list__header span,
+.history-list li span,
+.rail-card span,
+.rail-card p {
+  color: var(--color-text-soft);
 }
 
-.hero-panel__eyebrow,
-.module-kicker {
-  color: #621132;
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  line-height: 2;
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
 }
 
-.role-chip,
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  min-height: 28px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid #621132;
-  background: #7d2342;
-  color: #ffffff;
-  font-size: 0.82rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-.status-pill.neutral {
-  border-color: #6f7271;
-  background: #98989A;
-  color: #ffffff;
-} 
-
-.status-pill.success {
-  border-color: #BC955B;
-  background: #DDC9A3;
-  color: #ffffff;
-}
-
-.status-pill.warning {
-  border-color: #6f7271;
-  background: #98989A;
-  color: #ffffff;
-}
-
-.status-pill.danger {
-  border-color: #6f7271;
-  background: #98989A;
-  color: #ffffff;
+.core-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
+  gap: 18px;
+  align-items: start;
 }
 
 .module-section {
   padding: 24px;
+}
+
+.announcements-module,
+.attendance-module {
+  display: grid;
+  align-content: start;
+  gap: 0;
 }
 
 .module-heading,
 .featured-announcement__top,
 .history-list__header,
-.form-title {
+.form-title,
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
 }
 
-.attendance-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(220px, 0.8fr);
-  gap: 14px;
-  margin-top: 18px;
+.module-tools,
+.announcement-actions,
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
-.time-panel,
+.announcement-note {
+  margin: 16px 0 0;
+  color: var(--color-text-soft);
+}
+
 .featured-announcement,
 .rail-card,
 .announcement-form,
-.audit-panel,
+.time-panel,
 .history-list {
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(197, 155, 82, 0.16);
   border-radius: var(--radius-md);
-  background: var(--color-surface-muted);
+  background: linear-gradient(180deg, rgba(255, 253, 249, 1), rgba(241, 231, 219, 0.82));
+}
+
+.featured-announcement {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 22px;
+}
+
+.featured-announcement__meta {
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.featured-announcement h4 {
+  margin: 8px 0 0;
+  font-size: 1.45rem;
+  color: var(--color-primary-strong);
+}
+
+.announcement-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.announcement-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.rail-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+
+.announcement-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.attendance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
 }
 
 .time-panel {
@@ -732,143 +835,19 @@ onMounted(() => {
   padding: 18px;
 }
 
-.time-panel svg {
-  color: var(--color-primary);
-}
-
-.time-panel span,
-.announcement-meta,
-.rail-card span,
-.rail-card p,
-.audit-list p,
-.history-list__header span,
-.history-list li span {
-  color: var(--color-text-soft);
-}
-
 .time-panel strong {
-  font-size: 1.4rem;
+  color: var(--color-primary);
+  font-size: 1.35rem;
+}
+
+.time-panel svg {
+  color: var(--color-accent-strong);
 }
 
 .attendance-actions {
   display: grid;
   gap: 10px;
-  align-content: center;
-}
-
-.electric-button,
-.ghost-button,
-.danger-button,
-.reaction-button,
-.icon-button {
-  min-height: 40px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-weight: 800;
-  transition: transform var(--transition-base), border-color var(--transition-base), background var(--transition-base);
-}
-
-.electric-button {
-  background: #0c0b0b;
-  color: white;
-}
-
-.electric-button:hover {
-  background: #7d2342;
-}
-
-.ghost-button {
-  background: #621132;
-  border-color: #7d2342;
-  color: #ffffff
-}
-
-.ghost-button:hover {
-  background: #7d2342;
-}
-
-.danger-button {
-  background: #621132;
-  color: white;
-}
-
-.danger-button:hover {
-  background: #7d2342;
-}
-
-.reaction-button {
-  background: #621132;
-  border-color: #7d2342;
-  color: #ffffff;
-}
-
-.reaction-button:hover {
-  background: #BC955B;
-}
-
-.reaction-button.active {
-  background: #BC955B;
-  color: white;
-}
-
-.electric-button {
-  background: linear-gradient(135deg, #7d2342), #621132;
-  color: #ffffff;
-  padding: 10px 16px;
-}
-
-.ghost-button{
-  background: #7d2342;
-  border-color: #621132;
-  color: #ffffff;
-  padding: 10px 14px;
-
-}
-.reaction-button{
-  background: #BC955B;
-  border-color: #DDC9A3;
-  color: #ffffff;
-  padding: 10px 14px;
-}
-.icon-button {
-  background: #621132;
-  border-color: #7d2342;
-  color: #ffffff;
-  padding: 10px 14px;
-}
-
-.ghost-button--small,
-.danger-button {
-  min-height: 34px;
-  padding: 7px 10px;
-  font-size: 0.84rem;
-}
-
-.danger-button {
-  background: #7d2342 ;
-  border-color: #621132;
-  color: #ffffff;
-}
-
-.reaction-button {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.reaction-button.active {
-  border-color: #BC955B;
-  color: #ffffff;
-}
-
-button:disabled {
-  opacity: 0.48;
-  cursor: not-allowed;
-}
-
-button:not(:disabled):hover {
-  transform: translateY(-1px);
+  margin-top: 14px;
 }
 
 .history-list {
@@ -876,8 +855,7 @@ button:not(:disabled):hover {
   padding: 18px;
 }
 
-.history-list ul,
-.audit-panel ul {
+.history-list ul {
   list-style: none;
   padding: 0;
   margin: 14px 0 0;
@@ -898,22 +876,129 @@ button:not(:disabled):hover {
 
 .history-tags {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
   justify-content: flex-end;
+  gap: 8px;
 }
 
-.announcement-filters,
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 18px;
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+  border: 1px solid rgba(123, 111, 116, 0.2);
+  background: rgba(123, 111, 116, 0.12);
+  color: var(--color-neutral);
 }
 
-.announcement-note {
-  margin: 18px 0 0;
-  color: var(--color-text-soft);
+.status-pill.success {
+  border-color: rgba(47, 107, 79, 0.2);
+  background: rgba(47, 107, 79, 0.12);
+  color: var(--color-success);
+}
+
+.status-pill.warning {
+  border-color: rgba(178, 123, 44, 0.24);
+  background: rgba(178, 123, 44, 0.12);
+  color: var(--color-warning);
+}
+
+.status-pill.danger {
+  border-color: rgba(157, 45, 62, 0.2);
+  background: rgba(157, 45, 62, 0.12);
+  color: var(--color-danger);
+}
+
+.electric-button,
+.ghost-button,
+.danger-button,
+.reaction-button,
+.icon-button {
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  transition:
+    box-shadow var(--transition-base),
+    border-color var(--transition-base),
+    background var(--transition-base);
+}
+
+.electric-button {
+  padding: 10px 16px;
+  background: linear-gradient(135deg, var(--color-primary-soft), var(--color-primary));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(107, 24, 57, 0.18);
+}
+
+.ghost-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-color: rgba(107, 24, 57, 0.14);
+  background: rgba(107, 24, 57, 0.06);
+  color: var(--color-primary);
+}
+
+.reaction-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-color: rgba(197, 155, 82, 0.22);
+  background: rgba(197, 155, 82, 0.16);
+  color: var(--color-accent-strong);
+}
+
+.reaction-button.active {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.danger-button {
+  padding: 8px 14px;
+  border-color: rgba(157, 45, 62, 0.18);
+  background: rgba(157, 45, 62, 0.1);
+  color: var(--color-danger);
+}
+
+.ghost-button--small,
+.danger-button {
+  min-height: 36px;
+  font-size: 0.85rem;
+}
+
+.icon-button {
+  min-width: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: rgba(107, 24, 57, 0.08);
+  color: var(--color-primary);
+}
+
+.icon-button--plain {
+  min-height: 36px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button:not(:disabled):hover,
+.ghost-button:hover,
+.electric-button:hover,
+.reaction-button:hover,
+.danger-button:hover {
+  box-shadow: 0 10px 22px rgba(79, 16, 41, 0.08);
 }
 
 label {
@@ -928,112 +1013,15 @@ input,
 select,
 textarea {
   width: 100%;
+  padding: 11px 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   color: var(--color-text);
-  padding: 11px 12px;
 }
 
 textarea {
   resize: vertical;
-}
-
-.featured-announcement {
-  margin-top: 18px;
-  padding: 22px;
-}
-
-.featured-announcement h4 {
-  margin: 6px 0 0;
-  font-size: 1.5rem;
-}
-
-.featured-announcement p {
-  color: var(--color-text-soft);
-  line-height: 1.7;
-}
-
-.announcement-meta,
-.announcement-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-.announcement-actions {
-  margin-top: 16px;
-}
-
-.announcement-rail {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding: 16px 0 4px;
-  scroll-snap-type: x mandatory;
-}
-
-.rail-card {
-  flex: 0 0 min(320px, 86vw);
-  padding: 16px;
-  scroll-snap-align: start;
-}
-
-.rail-card strong {
-  display: block;
-  margin: 8px 0;
-}
-
-.announcement-form {
-  display: grid;
-  gap: 14px;
-  margin-top: 18px;
-  padding: 18px;
-}
-
-.form-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 0;
-}
-
-.icon-button {
-  min-width: 36px;
-  padding: 0 10px;
-}
-
-.audit-panel {
-  margin-top: 18px;
-  padding: 18px;
-}
-
-.audit-list {
-  display: grid;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.audit-list article {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr);
-  gap: 16px;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-}
-
-.audit-list h5 {
-  margin: 10px 0 6px;
-  font-size: 1rem;
-}
-
-details {
-  color: var(--color-text-soft);
-}
-
-summary {
-  cursor: pointer;
-  font-weight: 800;
 }
 
 .empty-state {
@@ -1044,25 +1032,42 @@ summary {
   color: var(--color-text-soft);
 }
 
-.toast-modal {
+.dashboard-grid {
+  margin-top: 2px;
+}
+
+.toast-modal,
+.announcement-modal {
   position: fixed;
   inset: 0;
-  z-index: 40;
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.54);
+  background: rgba(47, 38, 48, 0.44);
+}
+
+.toast-modal {
+  z-index: 40;
+}
+
+.announcement-modal {
+  z-index: 50;
+}
+
+.toast-box,
+.modal-content {
+  width: min(620px, 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 24px 70px var(--color-shadow);
 }
 
 .toast-box {
   width: min(420px, 100%);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  color: var(--color-text);
   padding: 22px;
   text-align: center;
-  box-shadow: 0 24px 70px var(--color-shadow);
 }
 
 .toast-box__icon {
@@ -1071,71 +1076,54 @@ summary {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: rgba(98, 17, 50, 0.1);
+  background: rgba(107, 24, 57, 0.1);
   color: var(--color-primary);
 }
 
-.announcement-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.5);
-}
-
 .modal-content {
-  width: min(600px, 100%);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  color: var(--color-text);
   padding: 24px;
-  box-shadow: 0 24px 70px var(--color-shadow);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.modal-header h4 {
-  margin: 0;
 }
 
 .modal-actions {
-  display: flex;
-  gap: 12px;
   justify-content: flex-end;
   margin-top: 20px;
 }
 
-@media (max-width: 1100px) {
-  .attendance-grid,
-  .form-grid {
+@media (max-width: 1200px) {
+  .summary-grid,
+  .core-grid {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 760px) {
-  .hero-panel,
+@media (max-width: 920px) {
+  .form-grid,
+  .attendance-grid {
+    grid-template-columns: 1fr;
+  }
+
   .module-heading,
   .featured-announcement__top,
   .history-list__header,
   .history-list li,
-  .audit-list article {
+  .modal-header,
+  .modal-actions {
     display: grid;
     grid-template-columns: 1fr;
   }
 
-  .announcement-filters {
+  .history-tags {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .summary-grid,
+  .announcement-rail {
     grid-template-columns: 1fr;
   }
 
-  .history-tags {
+  .header-pills {
     justify-content: flex-start;
   }
 }

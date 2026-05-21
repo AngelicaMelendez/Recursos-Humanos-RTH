@@ -3,31 +3,31 @@ import api from './api';
 export default {
   // Obtener organigrama completo (árbol)
   obtenerOrganigrama() {
-    return api.get('http://localhost:8000/api/organigrama');
+    return api.get("/organigrama");
   },
 
   // Listar empleados (directorio)
   listarEmpleados(params) {
-    return api.get('http://localhost:8000/api/directorio', { params });
+    return api.get("/directorio", { params });
   },
 
   // Obtener un empleado
   obtenerEmpleado(id) {
-    return api.get(`http://localhost:8000/api/directorio/${id}`);
+    return api.get(`/directorio/${id}`);
   },
 
   // Dar de baja empleado
   darDeBaja(id, motivo) {
-    return api.put(`http://localhost:8000/api/directorio/${id}/baja`, { motivo });
+    return api.put(`/directorio/${id}/baja`, { motivo });
   },
 
   // Listar áreas
   listarAreas() {
-    return api.get('http://localhost:8000/api/directorio/areas');
+    return api.get("/directorio/areas");
   },
 
   // Listar puestos
   listarPuestos() {
-    return api.get('http://localhost:8000/api/directorio/puestos');
+    return api.get("/directorio/puestos");
   }
 };
