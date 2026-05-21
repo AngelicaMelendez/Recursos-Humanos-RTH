@@ -31,7 +31,7 @@ const routes = [
     children: [
       { path: "", name: "dashboard", component: DashboardPage, meta: { module: "dashboard" } },
       { path: "calendario", name: "calendar", component: CalendarPage, meta: { module: "calendar" } },
-      { path: "organigrama", name: "organigram", component: OrganigramPage, meta: { module: "organigram" } },
+      { path: "organigrama", name: "organigram", component: OrganogramaPage, meta: { module: "organigram" } },
       { path: "directorio", name: "directory", component: DirectoryPage, meta: { module: "directory" } },
       { path: "solicitudes", name: "requests", component: RequestsPage, meta: { module: "requests" } },
       { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },

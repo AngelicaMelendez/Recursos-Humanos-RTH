@@ -28,10 +28,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+
 import PageHeader from '@/components/shared/PageHeader.vue';
-import BaseCard from '@/components/ui/BaseCard.vue';
+import BaseCard from '@/components/ui/BaseCard.vue'; 
 import ArbolOrganigrama from '@/components/orgchart/ArbolOrganigrama.vue';
 import organogramaService from '@/services/organograma.service';
 
