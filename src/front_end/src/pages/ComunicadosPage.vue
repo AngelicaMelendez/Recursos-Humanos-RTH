@@ -223,7 +223,7 @@ const formularioOriginal = ref(null);
 
 const isAdmin = computed(() => hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH]));
 const canManageAnnouncements = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+  hasAnyRole(authStore.user, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS)
 );
 const canFilterByArea = computed(() => canManageAnnouncements.value);
 

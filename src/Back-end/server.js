@@ -44,8 +44,11 @@ async function connectDatabase() {
     await seedDatabase(db);
     console.log('Base de datos conectada');
   } catch (error) {
-    console.warn('No se pudo conectar a la base de datos. La API usara respuestas de respaldo.');
-    console.warn(error.message);
+    console.error('No se pudo conectar a la base de datos. La API usara respuestas de respaldo.');
+    console.error('Error completo:', error);
+    if (error.original) {
+      console.error('Error original:', error.original);
+    }
   }
 }
 

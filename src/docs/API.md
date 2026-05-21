@@ -6,15 +6,15 @@ Base URL esperada:
 http://localhost:3000/api
 ```
 
-## Ubicación del backend
+## Ubicacion del backend
 
 Toda la API vive en `back_end/`.
 
-## Autenticación
+## Autenticacion
 
 ### `POST /auth/login`
 
-Inicia sesión y devuelve JWT.
+Inicia sesion y devuelve JWT.
 
 Body:
 
@@ -40,17 +40,17 @@ Crea usuarios de acceso. Requiere rol `Administrador RH`.
 Devuelve:
 
 - tarjetas resumen
-- datos para gráficas
+- datos para graficas
 - actividad reciente
-- accesos rápidos
+- accesos rapidos
 
-## Organización
+## Organizacion
 
 ### `GET /organization/areas`
 ### `POST /organization/areas`
 ### `PUT /organization/areas/:id`
 
-Gestiona áreas del organigrama.
+Gestiona areas del organigrama.
 
 ### `GET /organization/puestos`
 ### `POST /organization/puestos`
@@ -66,15 +66,15 @@ Lista empleados activos.
 
 ### `GET /directory/employees/former`
 
-Lista exempleados sin eliminarlos físicamente.
+Lista exempleados sin eliminarlos fisicamente.
 
 ### `POST /directory/employees`
 
-Alta de empleado y creación automática del primer historial de puesto.
+Alta de empleado y creacion automatica del primer historial de puesto.
 
 ### `PATCH /directory/employees/:id/status`
 
-Cambio de estatus, baja o reactivación.
+Cambio de estatus, baja o reactivacion.
 
 ### `GET /directory/employees/:id/documents`
 ### `POST /directory/employees/:id/documents`
@@ -91,7 +91,7 @@ Historial de puestos del empleado.
 ### `POST /incidents`
 ### `PUT /incidents/:id`
 
-Módulo para vacaciones, incapacidades y eventos similares.
+Modulo para vacaciones, incapacidades y eventos similares.
 
 ## Solicitudes
 
@@ -99,7 +99,7 @@ Módulo para vacaciones, incapacidades y eventos similares.
 ### `POST /requests`
 ### `PATCH /requests/:id/resolve`
 
-Flujo de aprobación para permisos y ausencias.
+Flujo de aprobacion para permisos y ausencias.
 
 ## Normatividad
 
@@ -139,9 +139,9 @@ Seguimiento de pasantes y convenios.
 ### `POST /access`
 ### `PATCH /access/:id/role`
 
-Administración de usuarios y roles.
+Administracion de usuarios y roles.
 
-## Auditoría
+## Auditoria
 
 ### `GET /audit`
 
@@ -150,10 +150,12 @@ Consulta eventos auditables recientes.
 ## Roles contemplados
 
 - `Administrador RH`
-- `Dirección`
-- `Jefes de Área`
+- `Direccion General`
+- `Jefe de Area`
+- `Subjefe de Area`
+- `Responsable de Departamento`
 - `Empleado`
-- `Recepción`
+- `Recepcion`
 
 ## Relaciones SQL principales
 

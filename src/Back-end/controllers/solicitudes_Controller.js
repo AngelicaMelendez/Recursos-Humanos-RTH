@@ -1,7 +1,7 @@
 const db = require('../models');
+const { ROLE_GROUPS, hasRole } = require('../utils/roles');
 
 const tiposIncidencia = ['vacaciones', 'permiso', 'incapacidad', 'maternidad', 'paternidad', 'comision', 'otro'];
-const rolesAutorizadores = ['admin_rh'];
 
 function normalizarTipoIncidencia(tipo) {
   const normalizado = String(tipo || '').toLowerCase();
@@ -9,7 +9,7 @@ function normalizarTipoIncidencia(tipo) {
 }
 
 function esAutorizador(rol) {
-  return rolesAutorizadores.includes(rol);
+  return hasRole(rol, ROLE_GROUPS.REQUEST_APPROVERS);
 }
 
 function fechaLocalActual() {
@@ -107,7 +107,7 @@ exports.crear = async (req, res) => {
     });
     res.status(201).json(toFrontendSolicitud(solicitud));
   } catch (error) {
-    res.status(400).json({ error: 'No se pudo crear la solicitud' });
+    res.status(400).json({ error: 'No se pudo crear la solicitud', details: error.message });
   }
 };
 
@@ -145,24 +145,35 @@ exports.aprobar = async (req, res) => {
 
     res.json(toFrontendSolicitud(solicitud));
   } catch (error) {
-    res.status(400).json({ error: 'No se pudo aprobar la solicitud' });
+    res.status(400).json({ error: 'No se pudo aprobar la solicitud', details: error.message });
   }
 };
 
 exports.rechazar = async (req, res) => {
-  const { id } = req.params;
-  const solicitud = await db.Solicitud.findByPk(id);
-  if (!solicitud) return res.status(404).json({ error: 'No existe' });
-  if (solicitud.estatus !== 'pendiente') {
-    return res.status(400).json({ error: 'Solo se puede rechazar una pendiente' });
+  try {
+    const { id } = req.params;
+    const solicitud = await db.Solicitud.findByPk(id);
+    if (!solicitud) return res.status(404).json({ error: 'No existe' });
+    if (solicitud.estatus !== 'pendiente') {
+      return res.status(400).json({ error: 'Solo se puede rechazar una pendiente' });
+    }
+
+    solicitud.estatus = 'rechazado';
+    solicitud.aprobado_por = req.user.empleado_id;
+    solicitud.fecha_resolucion = new Date();
+    await solicitud.save();
+
+    await crearNotificacionSolicitud({
+      solicitud,
+      tipo: 'solicitud_rechazada',
+      titulo: 'Solicitud rechazada',
+      mensaje: `Tu solicitud de ${solicitud.tipo} fue rechazada.`,
+    });
+
+    res.json(toFrontendSolicitud(solicitud));
+  } catch (error) {
+    res.status(400).json({ error: 'No se pudo rechazar la solicitud', details: error.message });
   }
-
-  solicitud.estatus = 'rechazado';
-  solicitud.aprobado_por = req.user.empleado_id;
-  solicitud.fecha_resolucion = new Date();
-  await solicitud.save();
-
-  res.json(toFrontendSolicitud(solicitud));
 };
 
 exports.eliminar = async (req, res) => {
@@ -186,7 +197,7 @@ exports.eliminar = async (req, res) => {
     await solicitud.destroy();
     res.json({ mensaje: 'Solicitud eliminada correctamente' });
   } catch (error) {
-    res.status(400).json({ error: 'No se pudo eliminar la solicitud' });
+    res.status(400).json({ error: 'No se pudo eliminar la solicitud', details: error.message });
   }
 };
 

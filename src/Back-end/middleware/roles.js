@@ -1,8 +1,10 @@
+const { hasRole, normalizeAllowedRoles } = require('../utils/roles');
+
 module.exports = (...rolesPermitidos) => {
-  const rolesNormalizados = rolesPermitidos.flat().filter(Boolean);
+  const rolesNormalizados = normalizeAllowedRoles(rolesPermitidos);
 
   return (req, res, next) => {
-    if (!req.user || !rolesNormalizados.includes(req.user.rol)) {
+    if (!req.user || !hasRole(req.user.rol, rolesNormalizados)) {
       return res.status(403).json({ error: 'Acceso denegado' });
     }
     next();

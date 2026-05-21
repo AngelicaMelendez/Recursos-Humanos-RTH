@@ -1,10 +1,6 @@
 <template>
   <section class="card base-card">
     <header v-if="title || subtitle" class="base-card__header">
-      <div>
-        <h3 v-if="title" class="base-card__title">{{ title }}</h3>
-        <p v-if="subtitle" class="base-card__subtitle">{{ subtitle }}</p>
-      </div>
       <slot name="header-actions" />
     </header>
     <div class="base-card__content">
@@ -30,13 +26,13 @@ defineProps({
 
 .card.base-card{
   width: 100%;
-  max-width: none;
+  max-width: max-content;
 
 }
 .base-card {
   padding: 22px;
     width: 100%;
-  max-width: none;
+  max-width: max-content;
 
 }
 
@@ -60,7 +56,7 @@ defineProps({
 
 .base-card__content {
   width: 100%;
-  max-width: none;
+  max-width: max-content;
 }
 .card {
   display: flex;

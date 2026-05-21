@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import authService from "@/services/auth.service";
-
-const TOKEN_KEY = "rh_hidalgo_token";
-const USER_KEY = "rh_hidalgo_user";
+import { clearStoredAuth, readStoredAuth, writeStoredAuth } from "@/services/authStorage";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -15,20 +13,44 @@ export const useAuthStore = defineStore("auth", {
     isAuthenticated: (state) => Boolean(state.token)
   },
   actions: {
-    initialize() {
-      this.token = localStorage.getItem(TOKEN_KEY) || "";
-      this.user = JSON.parse(localStorage.getItem(USER_KEY) || "null");
-      this.initialized = true;
+    async initialize() {
+      if (this.initialized) {
+        return;
+      }
+
+      const storedAuth = readStoredAuth();
+      this.token = storedAuth.token;
+      this.user = storedAuth.user;
+
+      if (!this.token) {
+        clearStoredAuth();
+        this.initialized = true;
+        return;
+      }
+
+      try {
+        const response = await authService.profile();
+        this.user = response.user;
+        writeStoredAuth({ token: this.token, user: response.user });
+      } catch {
+        this.logout();
+      } finally {
+        this.initialized = true;
+      }
     },
     async login(credentials) {
       this.loading = true;
 
       try {
+        clearStoredAuth();
+        this.token = "";
+        this.user = null;
+
         const response = await authService.login(credentials);
         this.token = response.token;
         this.user = response.user;
-        localStorage.setItem(TOKEN_KEY, response.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(response.user));
+        writeStoredAuth(response);
+        this.initialized = true;
         return response;
       } finally {
         this.loading = false;
@@ -37,8 +59,7 @@ export const useAuthStore = defineStore("auth", {
     logout() {
       this.token = "";
       this.user = null;
-      localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem(USER_KEY);
+      clearStoredAuth();
     }
   }
 });

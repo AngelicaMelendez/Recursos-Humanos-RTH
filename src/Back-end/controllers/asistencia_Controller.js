@@ -1,7 +1,6 @@
 const db = require('../models');
 const { Op } = require('sequelize');
-
-const rolesRevisionAsistencia = ['admin_rh', 'jefe_area'];
+const { ROLE_GROUPS, hasRole } = require('../utils/roles');
 
 const calcularEstatusPuntualidad = (horaEntrada) => {
   if (!horaEntrada) return 'ausente';
@@ -143,7 +142,7 @@ exports.obtenerAsistencia = async (req, res) => {
     const { fecha_inicio, fecha_fin } = req.query;
     const usuarioActual = req.user;
 
-    if (!rolesRevisionAsistencia.includes(usuarioActual.rol) && usuarioActual.empleado_id !== empleadoId) {
+    if (!hasRole(usuarioActual.rol, ROLE_GROUPS.ATTENDANCE_REVIEW) && usuarioActual.empleado_id !== empleadoId) {
       return res.status(403).json({ error: 'No tienes permiso para ver esta informacion' });
     }
 

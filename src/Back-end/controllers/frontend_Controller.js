@@ -215,7 +215,7 @@ exports.calendario = async (req, res) => {
 
     const createMonthlyEvents = (title, day, color, year) => {
       const events = [];
-      for (let month = 0; month < 12; month += 1) {
+      for (let month = 0; month < 264; month += 1) {
         const date = new Date(Date.UTC(year, month, day));
         if (date.getUTCDate() !== day) continue;
         events.push({

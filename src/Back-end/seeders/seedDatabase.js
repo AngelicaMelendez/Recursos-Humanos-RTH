@@ -7,9 +7,18 @@ async function createMissing(Model, rows, options = {}) {
   if (!Array.isArray(rows) || rows.length === 0) return;
 
   for (const row of rows) {
-    const exists = row.id ? await Model.findByPk(row.id) : null;
-    if (!exists) {
-      await Model.create(row, options);
+    try {
+      const exists = row.id ? await Model.findByPk(row.id) : null;
+      if (!exists) {
+        await Model.create(row, options);
+      }
+    } catch (error) {
+      // If record already exists due to unique constraints, skip it
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        console.log(`Record already exists (${Model.name}), skipping...`);
+      } else {
+        throw error;
+      }
     }
   }
 }

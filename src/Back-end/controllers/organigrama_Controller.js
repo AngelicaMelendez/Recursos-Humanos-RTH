@@ -1,45 +1,111 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 
-async function buildTree(parentId = null) {
-  const areas = await db.Area.findAll({
-    where: { area_padre_id: parentId },
-    include: [
-      { association: 'empleados', include: [{ association: 'puesto' }] }
-    ]
-  });
-  const tree = [];
-  for (const area of areas) {
-    const node = {
-      id: area.id,
-      name: area.nombre,
-      title: 'Área',
-      children: []
-    };
-    // Agregar empleados como hijos hoja
-    area.empleados.forEach(emp => {
-      node.children.push({
-        id: `emp-${emp.id}`,
-        name: emp.nombre,
-        title: emp.puesto?.nombre || 'Sin puesto',
-        children: []
-      });
+// Obtener organigrama completo (árbol jerárquico)
+exports.obtenerOrganigrama = async (req, res) => {
+  try {
+    console.log('=== obtenerOrganigrama called ===');
+
+    // Obtener todos los empleados activos con su área, puesto y jefe
+    const empleados = await db.Empleado.findAll({
+      where: { estatus: 'activo' },
+      include: [
+        { model: db.Area, as: 'area' },
+      ],
+      order: [['area_id', 'ASC']]
     });
-    // Agregar subáreas recursivamente
-    const subareas = await buildTree(area.id);
-    node.children = node.children.concat(subareas);
-    tree.push(node);
-  }
-  return tree;
-}
 
-exports.getOrganigrama = async (req, res) => {
-  const tree = await buildTree();
-  // Nodo raíz: Dirección General (si no está en BD, crea uno manual)
-  const raiz = {
-    id: 'root',
-    name: 'Dirección General',
-    title: '',
-    children: tree
-  };
-  res.json(raiz);
+    console.log('Empleados found:', empleados.length);
+
+    // Construir árbol jerárquico basado en jefe_directo_id
+    const tree = [];
+    const empleadoMap = {};
+
+    // Primer paso: crear nodos para cada empleado
+    empleados.forEach(emp => {
+      empleadoMap[emp.id] = {
+        id: emp.id,
+        nombre: emp.nombre,
+        area: emp.area ? emp.area.nombre : 'Sin área',
+        jefe_directo_id: emp.jefe_directo_id,
+        hijos: []
+      };
+    });
+
+    // segundo paso: construir el árbol
+    empleados.forEach(emp => {
+      if (emp.jefe_directo_id && empleadoMap[emp.jefe_directo_id]) {
+        // Tiene jefe, agregarlo como hijo
+        empleadoMap[emp.jefe_directo_id].hijos.push(empleadoMap[emp.id]);
+      } else {
+        // No tiene jefe, es raíz
+        tree.push(empleadoMap[emp.id]);
+      }
+    });
+
+    res.json(tree);
+  } catch (error) {
+    console.error('Error al obtener organigrama:', error);
+    res.status(500).json({ error: 'Error al obtener organigrama' });
+  }
+};
+
+// Listar empleados para selector
+exports.listar = async (req, res) => {
+  const { page = 1, limit = 20, search } = req.query;
+  const where = { estatus: 'activo' };
+  if (search) where.nombre = { [Op.like]: `%${search}%` };
+
+  const empleados = await db.Empleado.findAndCountAll({
+    where,
+    include: ['area', 'puesto', 'jefe'],
+    offset: (Number(page) - 1) * Number(limit),
+    limit: Number(limit),
+  });
+  res.json(empleados);
+};
+
+exports.obtenerUno = async (req, res) => {
+  const emp = await db.Empleado.findByPk(req.params.id, {
+    include: ['area', 'puesto'],
+  });
+  if (!emp) return res.status(404).json({ error: 'No encontrado' });
+  res.json(emp);
+};
+
+exports.baja = async (req, res) => {
+  const { id } = req.params;
+  await db.Empleado.update(
+    { estatus: 'baja', fecha_baja: new Date(), motivo_baja: req.body.motivo },
+    { where: { id } }
+  );
+  res.json({ mensaje: 'Empleado dado de baja' });
+};
+
+// Listar todas las áreas
+exports.listarAreas = async (req, res) => {
+  try {
+    const areas = await db.Area.findAll({
+      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre'] }],
+      order: [['nombre', 'ASC']]
+    });
+    res.json(areas);
+  } catch (error) {
+    console.error('Error al listar áreas:', error);
+    res.status(500).json({ error: 'Error al obtener áreas' });
+  }
+};
+
+// Listar todos los puestos
+exports.listarPuestos = async (req, res) => {
+  try {
+    const puestos = await db.Puesto.findAll({
+      include: [{ model: db.Area, as: 'area', attributes: ['id', 'nombre'] }],
+      order: [['nombre', 'ASC']]
+    });
+    res.json(puestos);
+  } catch (error) {
+    console.error('Error al listar puestos:', error);
+    res.status(500).json({ error: 'Error al obtener puestos' });
+  }
 };

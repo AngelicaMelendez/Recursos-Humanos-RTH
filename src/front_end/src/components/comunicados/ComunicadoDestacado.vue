@@ -47,7 +47,7 @@
 <script setup>
 import { computed } from "vue";
 import { useAuthStore } from "@/store/auth";
-import { hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
+import { hasAnyRole} from "@/utils/permissions";
 
 defineEmits(["editar", "eliminar", "toggle-reaccion"]);
 
@@ -65,7 +65,7 @@ defineProps({
 const authStore = useAuthStore();
 
 const canManage = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH, ROLE_KEYS.JEFE_AREA])
+  hasAnyRole(authStore.user, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS)
 );
 
 const formatDate = (dateString) => {

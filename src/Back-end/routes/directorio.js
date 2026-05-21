@@ -1,6 +1,14 @@
 const router = require('express').Router();
-const ctrl = require('../controllers/frontend_Controller');
+const ctrl = require('../controllers/directorio_Controller');
 
-router.get('/', ctrl.directorio);
+
+// Áreas y puestos (para selectores)
+router.get('/areas', ctrl.listarAreas);
+router.get('/puestos', ctrl.listarPuestos);
+
+// CRUD directorio
+router.get('/', ctrl.listar);
+router.get('/:id', ctrl.obtenerUno);
+router.put('/:id/baja', ctrl.baja);
 
 module.exports = router;
