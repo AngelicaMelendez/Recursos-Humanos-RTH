@@ -137,7 +137,7 @@ import CheckInCheckOut from "@/components/asistencia/CheckInCheckOut.vue";
 import HistoricoAsistencia from "@/components/asistencia/HistoricoAsistencia.vue";
 import { useAsistenciaStore } from "@/store/asistencia";
 import { useAuthStore } from "@/store/auth";
-import { hasAnyRole } from "@/utils/permissions";
+import { hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 
 const asistenciaStore = useAsistenciaStore();
 const authStore = useAuthStore();

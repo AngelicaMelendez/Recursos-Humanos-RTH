@@ -47,7 +47,7 @@
 <script setup>
 import { computed } from "vue";
 import { useAuthStore } from "@/store/auth";
-import { hasAnyRole} from "@/utils/permissions";
+import { hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 
 defineEmits(["editar", "eliminar", "toggle-reaccion"]);
 

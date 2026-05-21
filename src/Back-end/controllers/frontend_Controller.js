@@ -70,26 +70,12 @@ const fallback = {
       { title: 'Comision - Jose Miguel Vargas', start: '2026-05-14', end: '2026-05-16', color: '#7d2342' },
     ],
   },
-  organigram: {
+  organigram: { // <-- Corregido para que coincida con fallback.organigram
     name: 'Direccion General',
     role: 'Titular del organismo',
     children: [
-      {
-        name: 'Direccion Administrativa',
-        role: 'Recursos, control y planeacion',
-        children: [
-          { name: 'Recursos Humanos', role: 'Jefatura de departamento' },
-          { name: 'Finanzas', role: 'Jefatura de departamento' },
-        ],
-      },
-      {
-        name: 'Direccion de Produccion',
-        role: 'Operacion radio y television',
-        children: [
-          { name: 'Produccion TV', role: 'Coordinacion' },
-          { name: 'Produccion Radio', role: 'Coordinacion' },
-        ],
-      },
+      { name: 'Produccion TV', role: 'Coordinacion' },
+      { name: 'Produccion Radio', role: 'Coordinacion' },
     ],
   },
   solicitudes: [
@@ -140,6 +126,7 @@ async function withFallback(res, fallbackValue, loader) {
     if (Array.isArray(data) && data.length === 0) return res.json(fallbackValue);
     return res.json(data || fallbackValue);
   } catch (error) {
+    console.error("Error cargando de BD, usando fallback:", error); // Añadido para debug
     return res.json(fallbackValue);
   }
 }
@@ -147,12 +134,12 @@ async function withFallback(res, fallbackValue, loader) {
 exports.dashboard = async (req, res) => {
   try {
     const [activos, bajas, visitantesHoy, vacantes, solicitudes, incidencias] = await Promise.all([
-      db.Empleado.count({ where: { estatus: 'activo' } }),
-      db.Empleado.count({ where: { estatus: 'baja' } }),
-      db.Visitante.count({ where: { fecha_entrada: new Date().toISOString().slice(0, 10) } }),
-      db.Vacante.count({ where: { estatus: 'abierta' } }),
-      db.Solicitud.count({ where: { estatus: 'pendiente' } }),
-      db.Incidencia.count(),
+      db.Empleado.count({ where: { estatus: 'activo' } }).catch(() => 0),
+      db.Empleado.count({ where: { estatus: 'baja' } }).catch(() => 0),
+      db.Visitante.count({ where: { fecha_entrada: new Date().toISOString().slice(0, 10) } }).catch(() => 0),
+      db.Vacante.count({ where: { estatus: 'abierta' } }).catch(() => 0),
+      db.Solicitud.count({ where: { estatus: 'pendiente' } }).catch(() => 0),
+      db.Incidencia.count().catch(() => 0),
     ]);
 
     res.json({

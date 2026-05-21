@@ -158,7 +158,7 @@ import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
 // ✅ Corregido: Importamos ROLE_KEYS y ROLE_GROUPS para las validaciones
-import { getRoleActions, hasAnyRole, ROLE_KEYS} from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_KEYS, ROLE_GROUPS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
@@ -209,14 +209,10 @@ const headerActions = computed(() =>
 const currentEmployeeId = computed(() =>
   authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
 );
-
 const canApproveRequests = computed(() =>
-  roleActions.value.some((action) => ["approveRequest", "rejectRequest", "manageIncident"].includes(action.key))
+  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH])
 );
-
-const canManageRequests = computed(() => 
-  roleActions.value.some((action) => action.key === "viewRequests")
-);
+const canManageRequests = computed(() => canApproveRequests.value);
 
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },

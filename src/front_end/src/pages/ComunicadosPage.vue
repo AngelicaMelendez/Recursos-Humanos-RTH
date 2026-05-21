@@ -197,7 +197,7 @@ import ComunicadosLista from "@/components/comunicados/ComunicadosLista.vue";
 import { useComunicadosStore } from "@/store/comunicados";
 import { useAuthStore } from "@/store/auth";
 import comunicadosService from "@/services/comunicados.service";
-import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_GROUPS, ROLE_KEYS } from "@/utils/permissions";
 
 const comunicadosStore = useComunicadosStore();
 const authStore = useAuthStore();

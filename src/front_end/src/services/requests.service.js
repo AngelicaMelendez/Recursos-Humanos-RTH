@@ -1,15 +1,15 @@
+
 import api from "/src/services/api.js";
 
 const normalizeId = (id) => String(id).replace("SOL-", "");
 
 export default {
   async list() {
-    // ✅ Deja solo la ruta relativa
-    const { data } = await api.get('/api/solicitudes');
+    const { data } = await api.get("/solicitudes");
     return data;
   },
   async create(payload) {
-    const { data } = await api.post('/api/solicitudes', payload);
+    const { data } = await api.post("/solicitudes", payload);
     return data;
   },
   async approve(id) {
