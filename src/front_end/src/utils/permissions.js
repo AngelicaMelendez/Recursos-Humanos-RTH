@@ -69,7 +69,6 @@ const moduleByRoute = {
   "/normatividad": "normativity",
   "/vacantes": "vacancies",
   "/visitantes": "visitors",
-  "/control-accesos": "accessControl",
   "/auditoria": "audit",
   "/comunicados": "comunicados",
   "/asistencia": "attendance"
@@ -94,7 +93,6 @@ export const modulePermissions = {
   normativity: ALL_ROLES,
   vacancies: ALL_ROLES,
   visitors: ALL_ROLES,
-  accessControl: ALL_ROLES,
   audit: ALL_ROLES,
   comunicados: ALL_ROLES,
   attendance: ALL_ROLES

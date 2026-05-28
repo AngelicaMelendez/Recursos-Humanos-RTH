@@ -10,7 +10,6 @@ import RequestsPage from "@/pages/RequestsPage.vue";
 import NormativityPage from "@/pages/NormativityPage.vue";
 import VacanciesPage from "@/pages/VacanciesPage.vue";
 import VisitorsPage from "@/pages/VisitorsPage.vue";
-import AccessControlPage from "@/pages/AccessControlPage.vue";
 import AuditPage from "@/pages/AuditPage.vue";
 import ComunicadosPage from "@/pages/ComunicadosPage.vue";
 import AttendancePage from "@/pages/AttendancePage.vue";
@@ -37,12 +36,6 @@ const routes = [
       { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },
       { path: "vacantes", name: "vacancies", component: VacanciesPage, meta: { module: "vacancies" } },
       { path: "visitantes", name: "visitors", component: VisitorsPage, meta: { module: "visitors" } },
-      {
-        path: "control-accesos",
-        name: "access-control",
-        component: AccessControlPage,
-        meta: { module: "accessControl" }
-      },
       { path: "auditoria", name: "audit", component: AuditPage, meta: { module: "audit" } },
       { path: "comunicados", name: "comunicados", component: ComunicadosPage, meta: { module: "comunicados" } },
       { path: "asistencia", name: "attendance", component: AttendancePage, meta: { module: "attendance" } }

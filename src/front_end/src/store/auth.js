@@ -56,6 +56,24 @@ export const useAuthStore = defineStore("auth", {
         this.loading = false;
       }
     },
+    async register(credentials) {
+      this.loading = true;
+
+      try {
+        clearStoredAuth();
+        this.token = "";
+        this.user = null;
+
+        const response = await authService.register(credentials);
+        this.token = response.token;
+        this.user = response.user;
+        writeStoredAuth(response);
+        this.initialized = true;
+        return response;
+      } finally {
+        this.loading = false;
+      }
+    },
     logout() {
       this.token = "";
       this.user = null;

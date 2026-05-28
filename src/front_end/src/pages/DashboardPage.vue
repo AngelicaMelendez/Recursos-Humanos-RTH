@@ -14,7 +14,10 @@
     <section class="overview-grid">
       <article class="welcome-panel">
         <span class="welcome-panel__eyebrow">Operacion institucional</span>
-        <h2>Bienvenid(a), {{ authStore.user?.nombre || "Usuario" }}</h2>
+        <h2>
+          Bienvenid(a),
+          {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || 'Usuario' }}
+        </h2>
         <p>
           Consulta el estado general del dia, revisa avisos vigentes y usa los accesos del tablero
           segun tu ritmo de trabajo.
@@ -22,277 +25,297 @@
       </article>
     </section>
 
-    <section class="summary-grid">
-      <StatCard v-for="item in visibleSummary" :key="item.label" :item="item" />
-    </section>
+    <section class="module-section attendance-module">
+      <div class="module-heading">
+        <div>
+          <span class="module-kicker">Registro de asistencia</span>
+          <h3>Entrada y salida</h3>
+          <p>Tu estatus se actualiza en tiempo real usando la hora actual del equipo.</p>
+        </div>
+        <span class="status-pill" :class="attendanceTone">{{ attendanceMessage }}</span>
+      </div>
 
-    <section class="core-grid">
-      <section class="module-section announcements-module">
-        <div class="module-heading">
-          <div>
-            <span class="module-kicker">Comunicados</span>
-            <h3>Avisos activos</h3>
-            <p>
-              Revisa rapidamente los anuncios vigentes y abre el detalle completo cuando lo
-              necesites.
-            </p>
-          </div>
+      <div class="attendance-grid">
+        <article class="time-panel">
+          <IconSymbol name="door" />
+          <span>Entrada</span>
+          <strong>{{ dashboardStore.attendance.entryTime || "Pendiente" }}</strong>
+        </article>
 
-          <div class="module-tools">
-            <router-link class="ghost-button" to="/comunicados">Ver todos</router-link>
-            <button
-              v-if="canManageAnnouncements"
-              class="electric-button"
-              type="button"
-              @click="startCreateAnnouncement"
-            >
-              Nuevo comunicado
-            </button>
-          </div>
+        <article class="time-panel">
+          <IconSymbol name="lock" />
+          <span>Salida</span>
+          <strong>{{ dashboardStore.attendance.exitTime || "Pendiente" }}</strong>
+        </article>
+      </div>
+
+      <div class="attendance-actions">
+        <button
+          class="electric-button"
+          type="button"
+          :disabled="Boolean(dashboardStore.attendance.entryTime)"
+          @click="registerEntry"
+        >
+          Registrar entrada
+        </button>
+        <button
+          class="ghost-button"
+          type="button"
+          :disabled="!dashboardStore.attendance.entryTime || Boolean(dashboardStore.attendance.exitTime)"
+          @click="registerExit"
+        >
+          Registrar salida
+        </button>
+      </div>
+
+      <div class="history-list">
+        <div class="history-list__header">
+          <h4>Historial de movimientos</h4>
+          <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
         </div>
 
-        <p v-if="!canManageAnnouncements" class="announcement-note">
-          Esta vista muestra solo los comunicados vigentes para consulta rapida.
-        </p>
-
-        <article v-if="latestAnnouncement" class="featured-announcement">
-          <div class="featured-announcement__top">
+        <ul>
+          <li v-for="record in dashboardStore.attendanceHistory" :key="record.id">
             <div>
-              <span class="featured-announcement__meta">
-                {{ latestAnnouncement.area }} | {{ latestAnnouncement.office }}
-              </span>
-              <h4>{{ latestAnnouncement.title }}</h4>
+              <strong>{{ formatLongDate(record.date) }}</strong>
+              <span>Entrada {{ record.entry }} | Salida {{ record.exit || "Pendiente" }}</span>
             </div>
 
-            <button
-              v-if="remainingAnnouncements.length"
-              class="ghost-button ghost-button--small"
-              type="button"
-              @click="showMoreAnnouncements = !showMoreAnnouncements"
-            >
-              {{ showMoreAnnouncements ? "Ocultar" : "Ver mas" }}
-            </button>
+            <div class="history-tags">
+              <span class="status-pill" :class="statusTone(record.entryStatus)">
+                {{ record.entryStatus }}
+              </span>
+              <span class="status-pill" :class="statusTone(record.exitStatus)">
+                {{ record.exitStatus }}
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="module-section summary-container">
+      <div class="summary-grid">
+        <StatCard v-for="item in visibleSummary" :key="item.label" :item="item" />
+      </div>
+    </section>
+
+    <section class="module-section announcements-section">
+      <div class="announcements-module">
+        <div class="core-orden-vertical">
+          <div class="module-heading">
+            <div>
+              <span class="module-kicker">Comunicados</span>
+              <h3>Avisos activos</h3>
+              <p>
+                Revisa rapidamente los anuncios vigentes y abre el detalle completo cuando lo
+                necesites.
+              </p>
+            </div>
+
+            <div class="module-tools">
+              <router-link class="ghost-button" to="/comunicados">Ver todos</router-link>
+              <button
+                v-if="canManageAnnouncements"
+                class="electric-button"
+                type="button"
+                @click="startCreateAnnouncement"
+              >
+                Nuevo comunicado
+              </button>
+            </div>
           </div>
 
-          <p>{{ latestAnnouncement.content }}</p>
+          <p v-if="!canManageAnnouncements" class="announcement-note">
+            Esta vista muestra solo los comunicados vigentes para consulta rapida.
+          </p>
 
-          <div class="announcement-meta">
-            <span>Publicado {{ formatDateTime(latestAnnouncement.createdAt) }}</span>
-            <span>Vence {{ formatDateTime(latestAnnouncement.expiresAt) }}</span>
-          </div>
+          <article v-if="latestAnnouncement" class="featured-announcement">
+            <div class="featured-announcement__top">
+              <div>
+                <span class="featured-announcement__meta">
+                  {{ latestAnnouncement.area }} | {{ latestAnnouncement.office }}
+                </span>
+                <h4>{{ latestAnnouncement.title }}</h4>
+              </div>
 
-          <div class="announcement-actions">
-            <button
-              class="reaction-button"
-              type="button"
-              :class="{ active: hasLiked(latestAnnouncement) }"
-              @click="likeAnnouncement(latestAnnouncement)"
-            >
-              <IconSymbol name="check" />
-              {{ latestAnnouncement.likedBy.length }} reacciones
-            </button>
+              <button
+                v-if="remainingAnnouncements.length"
+                class="ghost-button ghost-button--small"
+                type="button"
+                @click="showMoreAnnouncements = !showMoreAnnouncements"
+              >
+                {{ showMoreAnnouncements ? "Ocultar" : "Ver mas" }}
+              </button>
+            </div>
 
-            <button
-              class="ghost-button ghost-button--small"
-              type="button"
-              @click="openAnnouncementModal(latestAnnouncement)"
-            >
-              Ver detalle
-            </button>
+            <p>{{ latestAnnouncement.content }}</p>
 
-            <template v-if="canManageAnnouncements">
+            <div class="announcement-meta">
+              <span>Publicado {{ formatDateTime(latestAnnouncement.createdAt) }}</span>
+              <span>Vence {{ formatDateTime(latestAnnouncement.expiresAt) }}</span>
+            </div>
+
+            <div class="announcement-actions">
+              <button
+                class="reaction-button"
+                type="button"
+                :class="{ active: hasLiked(latestAnnouncement) }"
+                @click="likeAnnouncement(latestAnnouncement)"
+              >
+                <IconSymbol name="check" />
+                {{ latestAnnouncement.likedBy.length }} reacciones
+              </button>
+
               <button
                 class="ghost-button ghost-button--small"
                 type="button"
-                @click="startEditAnnouncement(latestAnnouncement)"
+                @click="openAnnouncementModal(latestAnnouncement)"
               >
-                Editar
+                Ver detalle
               </button>
-              <button
-                class="danger-button"
-                type="button"
-                @click="deleteAnnouncement(latestAnnouncement.id)"
-              >
-                Eliminar
-              </button>
-            </template>
+
+              <template v-if="canManageAnnouncements">
+                <button
+                  class="ghost-button ghost-button--small"
+                  type="button"
+                  @click="startEditAnnouncement(latestAnnouncement)"
+                >
+                  Editar
+                </button>
+                <button
+                  class="danger-button"
+                  type="button"
+                  @click="deleteAnnouncement(latestAnnouncement.id)"
+                >
+                  Eliminar
+                </button>
+              </template>
+            </div>
+          </article>
+
+          <div v-else class="empty-state">
+            No hay comunicados activos en este momento.
           </div>
-        </article>
 
-        <div v-else class="empty-state">
-          No hay comunicados activos en este momento.
-        </div>
-
-        <div
-          v-if="showMoreAnnouncements && remainingAnnouncements.length"
-          class="announcement-rail"
-        >
-          <article
-            v-for="announcement in remainingAnnouncements"
-            :key="announcement.id"
-            class="rail-card"
+          <div
+            v-if="showMoreAnnouncements && remainingAnnouncements.length"
+            class="announcement-rail"
           >
-            <span>{{ formatDateTime(announcement.createdAt) }}</span>
-            <strong>{{ announcement.title }}</strong>
-            <p>{{ announcement.area }} | {{ announcement.office }}</p>
-            <button
-              class="ghost-button ghost-button--small"
-              type="button"
-              @click="openAnnouncementModal(announcement)"
+            <article
+              v-for="announcement in remainingAnnouncements"
+              :key="announcement.id"
+              class="rail-card"
             >
-              Ver detalle
-            </button>
-          </article>
-        </div>
-
-        <form
-          v-if="canManageAnnouncements && announcementForm.visible"
-          class="announcement-form"
-          @submit.prevent="saveAnnouncement"
-        >
-          <div class="form-title">
-            <h4>{{ announcementForm.id ? "Editar comunicado" : "Crear comunicado" }}</h4>
-            <button class="icon-button icon-button--plain" type="button" @click="closeAnnouncementForm">
-              x
-            </button>
+              <span>{{ formatDateTime(announcement.createdAt) }}</span>
+              <strong>{{ announcement.title }}</strong>
+              <p>{{ announcement.area }} | {{ announcement.office }}</p>
+              <button
+                class="ghost-button ghost-button--small"
+                type="button"
+                @click="openAnnouncementModal(announcement)"
+              >
+                Ver detalle
+              </button>
+            </article>
           </div>
 
-          <label>
-            Titulo
-            <input v-model.trim="announcementForm.title" required />
-          </label>
-
-          <label>
-            Mensaje
-            <textarea v-model.trim="announcementForm.content" rows="4" required />
-          </label>
-
-          <div class="form-grid">
-            <label>
-              Area
-              <select v-model="announcementForm.area" required>
-                <option v-for="area in announcementAreaOptions" :key="area" :value="area">
-                  {{ area }}
-                </option>
-              </select>
-            </label>
-
-            <label>
-              Oficina
-              <select v-model="announcementForm.office" required>
-                <option v-for="office in announcementOfficeOptions" :key="office" :value="office">
-                  {{ office }}
-                </option>
-              </select>
-            </label>
-
-            <label>
-              Vencimiento
-              <input v-model="announcementForm.expiresAt" type="datetime-local" required />
-            </label>
-          </div>
-
-          <button class="electric-button" type="submit">Guardar comunicado</button>
-        </form>
-      </section>
-
-      <section class="module-section attendance-module">
-        <div class="module-heading">
-          <div>
-            <span class="module-kicker">Registro de asistencia</span>
-            <h3>Entrada y salida</h3>
-            <p>Tu estatus se actualiza en tiempo real usando la hora actual del equipo.</p>
-          </div>
-          <span class="status-pill" :class="attendanceTone">{{ attendanceMessage }}</span>
-        </div>
-
-        <div class="attendance-grid">
-          <article class="time-panel">
-            <IconSymbol name="door" />
-            <span>Entrada</span>
-            <strong>{{ dashboardStore.attendance.entryTime || "Pendiente" }}</strong>
-          </article>
-
-          <article class="time-panel">
-            <IconSymbol name="lock" />
-            <span>Salida</span>
-            <strong>{{ dashboardStore.attendance.exitTime || "Pendiente" }}</strong>
-          </article>
-        </div>
-
-        <div class="attendance-actions">
-          <button
-            class="electric-button"
-            type="button"
-            :disabled="Boolean(dashboardStore.attendance.entryTime)"
-            @click="registerEntry"
+          <form
+            v-if="canManageAnnouncements && announcementForm.visible"
+            class="announcement-form"
+            @submit.prevent="saveAnnouncement"
           >
-            Registrar entrada
-          </button>
-          <button
-            class="ghost-button"
-            type="button"
-            :disabled="!dashboardStore.attendance.entryTime || Boolean(dashboardStore.attendance.exitTime)"
-            @click="registerExit"
-          >
-            Registrar salida
-          </button>
+            <div class="form-title">
+              <h4>{{ announcementForm.id ? "Editar comunicado" : "Crear comunicado" }}</h4>
+              <button class="icon-button icon-button--plain" type="button" @click="closeAnnouncementForm">
+                x
+              </button>
+            </div>
+
+            <label>
+              Titulo
+              <input v-model.trim="announcementForm.title" required />
+            </label>
+
+            <label>
+              Mensaje
+              <textarea v-model.trim="announcementForm.content" rows="4" required></textarea>
+            </label>
+
+            <div class="form-grid">
+              <label>
+                Area
+                <select v-model="announcementForm.area" required>
+                  <option v-for="area in announcementAreaOptions" :key="area" :value="area">
+                    {{ area }}
+                  </option>
+                </select>
+              </label>
+
+              <label>
+                Oficina
+                <select v-model="announcementForm.office" required>
+                  <option v-for="office in announcementOfficeOptions" :key="office" :value="office">
+                    {{ office }}
+                  </option>
+                </select>
+              </label>
+
+              <label>
+                Vencimiento
+                <input v-model="announcementForm.expiresAt" type="datetime-local" required />
+              </label>
+            </div>
+
+            <button class="electric-button" type="submit">Guardar comunicado</button>
+          </form>
         </div>
-
-        <div class="history-list">
-          <div class="history-list__header">
-            <h4>Historial de movimientos</h4>
-            <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
-          </div>
-
-          <ul>
-            <li v-for="record in dashboardStore.attendanceHistory" :key="record.id">
-              <div>
-                <strong>{{ formatLongDate(record.date) }}</strong>
-                <span>Entrada {{ record.entry }} | Salida {{ record.exit || "Pendiente" }}</span>
-              </div>
-
-              <div class="history-tags">
-                <span class="status-pill" :class="statusTone(record.entryStatus)">
-                  {{ record.entryStatus }}
-                </span>
-                <span class="status-pill" :class="statusTone(record.exitStatus)">
-                  {{ record.exitStatus }}
-                </span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
     </section>
 
-    <section class="grid grid-3 dashboard-grid">
-      <DashboardBarChart
-        title="Incidencias del mes"
-        subtitle="Distribucion por tipo de incidencia registrada."
-        :items="dashboardStore.charts.incidentsByType"
-      />
-      <DashboardDonutChart
-        title="Solicitudes por estatus"
-        subtitle="Seguimiento al flujo de aprobacion institucional."
-        :items="dashboardStore.charts.requestsByStatus"
-      />
-      <QuickActions :actions="dashboardStore.quickActions" />
+    <section class="widgets-grid">
+      <div class="module-section widget-card">
+        <DashboardBarChart
+          title="Incidencias del mes"
+          subtitle="Distribucion por tipo de incidencia registrada."
+          :items="dashboardStore.charts.incidentsByType"
+        />
+      </div>
+
+      <div class="module-section widget-card">
+        <DashboardDonutChart
+          title="Solicitudes por estatus"
+          subtitle="Seguimiento al flujo de aprobacion institucional."
+          :items="dashboardStore.charts.requestsByStatus"
+        />
+      </div>
+
+      <div class="module-section widget-card quick-actions-card">
+        <QuickActions :actions="dashboardStore.quickActions" />
+      </div>
+
+      <div class="module-section widget-card">
+        <ActivityFeed :items="dashboardStore.recentActivity" />
+      </div>
+
+      <div class="module-section widget-card">
+        <InfoList
+          title="Proximos cumpleanos"
+          subtitle="Personal con fechas cercanas para seguimiento interno."
+          :items="birthdayItems"
+        />
+      </div>
+
+      <div class="module-section widget-card">
+        <InfoList
+          title="Empleados de vacaciones"
+          subtitle="Cobertura operativa actual por area."
+          :items="vacationItems"
+        />
+      </div>
     </section>
 
-    <section class="grid grid-3 dashboard-grid">
-      <ActivityFeed :items="dashboardStore.recentActivity" />
-      <InfoList
-        title="Proximos cumpleanos"
-        subtitle="Personal con fechas cercanas para seguimiento interno."
-        :items="birthdayItems"
-      />
-      <InfoList
-        title="Empleados de vacaciones"
-        subtitle="Cobertura operativa actual por area."
-        :items="vacationItems"
-      />
-    </section>
+
 
     <div v-if="successDialog.visible" class="toast-modal" @click="closeSuccessDialog">
       <div class="toast-box" @click.stop>
@@ -685,6 +708,7 @@ onMounted(() => {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+ 
 }
 
 .welcome-panel h2,
@@ -724,15 +748,31 @@ onMounted(() => {
   align-items: start;
 }
 
+.core-orden-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .module-section {
   padding: 24px;
+  gap: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .announcements-module,
 .attendance-module {
-  display: grid;
-  align-content: start;
-  gap: 0;
+  width: 100%; /* Asegura que ocupen todo el ancho disponible */
+  
+  /* CAMBIO AQUÍ: Cambiado de block a flex por si tienen etiquetas adentro */
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Separación interna para las cosas que estén dentro de cada módulo */
+  
+  margin-bottom: 0;
 }
 
 .module-heading,
@@ -1034,6 +1074,44 @@ textarea {
 
 .dashboard-grid {
   margin-top: 2px;
+}
+
+.widgets-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(360px, 1fr));
+  align-items: stretch;
+}
+
+.widget-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+}
+
+.widget-card > * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-actions-card {
+  min-height: 340px;
+}
+
+@media (max-width: 900px) {
+  .widgets-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.announcements-section {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 18px;
 }
 
 .toast-modal,
