@@ -42,6 +42,7 @@ defineProps({
 .base-card__title {
   margin: 0 0 6px;
   font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .base-card__subtitle {
@@ -52,6 +53,7 @@ defineProps({
 
 .base-card__content {
   width: 100%;
+  background: var(--color-background-soft);
 }
 
 .card {

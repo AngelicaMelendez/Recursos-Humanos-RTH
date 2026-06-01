@@ -39,8 +39,6 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 import ArbolOrganigrama from "@/components/orgchart/ArbolOrganigrama.vue";
 import PageHeader from "@/components/shared/PageHeader.vue";

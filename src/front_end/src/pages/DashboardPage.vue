@@ -2,7 +2,7 @@
   <div class="dashboard-page">
     <PageHeader
       eyebrow="Tablero institucional"
-      title="Dashboard ejecutivo"
+      title="Dashboard Ejecutivo"
       description="Resumen estrategico de la operacion diaria, comunicados y seguimiento operativo de Recursos Humanos."
     >
       <div class="header-pills">
@@ -912,6 +912,12 @@ onMounted(() => {
   border-color: rgba(157, 45, 62, 0.2);
   background: rgba(157, 45, 62, 0.12);
   color: var(--color-danger);
+}
+
+.status-pill.accent {
+  border-color: rgba(197, 155, 82, 0.22);
+  background: rgba(197, 155, 82, 0.16);
+  color: var(--color-accent-strong);
 }
 
 .electric-button,
