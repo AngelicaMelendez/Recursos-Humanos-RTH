@@ -10,7 +10,10 @@
     "db:migrate": "npx sequelize-cli db:migrate --config config/config.js --migrations-path migrations --models-path models",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo --config config/config.js --migrations-path migrations --models-path models",
     "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all --config config/config.js --migrations-path migrations --models-path models",
-    "db:clear-data": "node scripts/clearDatabaseData.js"
+    "db:clear-data": "node scripts/clearDatabaseData.js",
+    "db:seed": "node scripts/runSeeders.js",
+    "db:seed:undo": "node scripts/undoSeeders.js",
+    "db:reset-data": "npm run db:clear-data && npm run db:seed"
   },
   "keywords": [],
   "author": "",

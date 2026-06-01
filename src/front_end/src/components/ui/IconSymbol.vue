@@ -36,6 +36,7 @@ const iconMap = {
   archive: "M4 7h16M6 7v13h12V7M9 11h6M8 4h8l1 3H7l1-3Z",
   check: "M20 6 9 17l-5-5",
   x: "M6 6l12 12M18 6 6 18",
+  search: "M11 19a8 8 0 1 1 5.66-2.34L21 21m-10-4a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z",
   upload: "M12 16V4m0 0-5 5m5-5 5 5M4 20h16",
   tag: "M20 13 13 20 4 11V4h7l9 9ZM7.5 7.5h.01"
 };

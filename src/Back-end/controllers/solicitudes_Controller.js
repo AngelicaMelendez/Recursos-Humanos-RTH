@@ -1,4 +1,5 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 const { ROLE_GROUPS, hasRole } = require('../utils/roles');
 
 const tiposIncidencia = ['vacaciones', 'permiso', 'incapacidad', 'maternidad', 'paternidad', 'comision', 'otro'];
@@ -38,14 +39,54 @@ function validarPeriodoSolicitud({ fecha_inicio, fecha_fin }) {
   return null;
 }
 
-async function obtenerSolicitudes() {
+function obtenerNumeroEmpleado(valor) {
+  const texto = String(valor || '').trim().toUpperCase();
+  const numero = texto.replace(/^EMP-?/, '').replace(/\D/g, '');
+  return numero ? Number.parseInt(numero, 10) : null;
+}
+
+function construirFiltroEmpleado(query) {
+  const buscar = String(query.buscar || query.search || query.q || '').trim();
+  const filtro = String(query.filtro || query.tipoFiltro || query.campo || '').toLowerCase();
+
+  if (!buscar) {
+    return null;
+  }
+
+  if (filtro === 'empleado' || filtro === 'no_empleado' || filtro === 'numero_empleado') {
+    const empleadoId = obtenerNumeroEmpleado(buscar);
+    return { id: empleadoId || -1 };
+  }
+
+  if (filtro === 'rfc') {
+    return { rfc: { [Op.like]: `%${buscar.toUpperCase()}%` } };
+  }
+
+  const empleadoId = obtenerNumeroEmpleado(buscar);
+  return {
+    [Op.or]: [
+      { rfc: { [Op.like]: `%${buscar.toUpperCase()}%` } },
+      ...(empleadoId ? [{ id: empleadoId }] : []),
+    ],
+  };
+}
+
+async function obtenerSolicitudes(query = {}) {
+  const filtroEmpleado = construirFiltroEmpleado(query);
+  const empleadoInclude = {
+    model: db.Empleado,
+    as: 'empleado',
+    attributes: ['id', 'nombre', 'apellidos', 'rfc'],
+  };
+
+  if (filtroEmpleado) {
+    empleadoInclude.where = filtroEmpleado;
+    empleadoInclude.required = true;
+  }
+
   return db.Solicitud.findAll({
     include: [
-      {
-        model: db.Empleado,
-        as: 'empleado',
-        attributes: ['id', 'nombre'],
-      },
+      empleadoInclude,
       {
         model: db.Empleado,
         as: 'aprobador',
@@ -86,7 +127,7 @@ exports.listar = async (req, res) => {
       return res.status(403).json({ error: 'Solo un administrador puede consultar solicitudes' });
     }
 
-    const solicitudes = await obtenerSolicitudes();
+    const solicitudes = await obtenerSolicitudes(req.query);
     res.json(solicitudes.map(toFrontendSolicitud));
   } catch (error) {
     res.status(500).json({ error: 'No se pudieron obtener las solicitudes', details: error.message });
@@ -202,11 +243,15 @@ exports.eliminar = async (req, res) => {
 };
 
 function toFrontendSolicitud(row) {
+  const empleadoNombre = [row.empleado?.nombre, row.empleado?.apellidos].filter(Boolean).join(' ');
+
   return {
     id: `SOL-${row.id}`,
     raw_id: row.id,
     empleado_id: `EMP-${String(row.empleado_id).padStart(3, '0')}`,
-    empleado_nombre: row.empleado?.nombre || null,
+    empleado_numero: `EMP-${String(row.empleado_id).padStart(3, '0')}`,
+    empleado_nombre: empleadoNombre || row.empleado?.nombre || null,
+    empleado_rfc: row.empleado?.rfc || null,
     tipo: row.tipo,
     fecha_inicio: row.fecha_inicio,
     fecha_fin: row.fecha_fin,

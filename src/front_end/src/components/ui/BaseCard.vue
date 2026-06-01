@@ -1,6 +1,6 @@
 <template>
   <section class="card base-card">
-    <header v-if="title || subtitle" class="base-card__header">
+    <header v-if="title || subtitle" class="base2-card__header">
       <div>
         <h3 v-if="title" class="base-card__title">{{ title }}</h3>
         <p v-if="subtitle" class="base-card__subtitle">{{ subtitle }}</p>

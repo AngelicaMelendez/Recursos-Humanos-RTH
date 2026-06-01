@@ -32,6 +32,33 @@
         </button>
       </template>
 
+      <form class="request-filters" @submit.prevent="applySearch">
+        <label>
+          Filtro
+          <select v-model="filters.type">
+            <option value="empleado">No. empleado</option>
+            <option value="rfc">RFC</option>
+          </select>
+        </label>
+        <label>
+          Busqueda
+          <input
+            v-model.trim="filters.term"
+            type="search"
+            :placeholder="filterPlaceholder"
+          />
+        </label>
+        <div class="request-filters__actions">
+          <button class="primary-button" type="submit">
+            <IconSymbol name="search" />
+            Buscar
+          </button>
+          <button class="secondary-button" type="button" @click="clearSearch">
+            Limpiar
+          </button>
+        </div>
+      </form>
+
       <AppTable :columns="columns" :rows="rows">
         <template #estatus="{ row }">
           <StatusBadge :value="row.estatus" />
@@ -157,8 +184,7 @@ import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
-// ✅ Corregido: Importamos ROLE_KEYS y ROLE_GROUPS para las validaciones
-import { getRoleActions, hasAnyRole, ROLE_KEYS, ROLE_GROUPS } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
@@ -181,6 +207,10 @@ const form = reactive({
   fecha_fin: "",
   motivo: ""
 });
+const filters = reactive({
+  type: "empleado",
+  term: ""
+});
 
 const formatDateInputValue = (date) => {
   const year = date.getFullYear();
@@ -193,7 +223,9 @@ const today = formatDateInputValue(new Date());
 
 const columns = [
   { key: "id", label: "Folio" },
-  { key: "empleado_id", label: "Empleado" },
+  { key: "empleado_numero", label: "No. empleado" },
+  { key: "empleado_nombre", label: "Nombre" },
+  { key: "empleado_rfc", label: "RFC" },
   { key: "tipo", label: "Tipo" },
   { key: "fecha_inicio", label: "Inicio" },
   { key: "fecha_fin", label: "Fin" },
@@ -213,6 +245,9 @@ const canApproveRequests = computed(() =>
   hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH])
 );
 const canManageRequests = computed(() => canApproveRequests.value);
+const filterPlaceholder = computed(() =>
+  filters.type === "rfc" ? "Ej. GAAL850101AB1" : "Ej. EMP-001"
+);
 
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
@@ -239,6 +274,9 @@ const getRequestErrorMessage = (error) =>
 const normalizeRow = (row) => ({
   ...row,
   id: row.id?.startsWith?.("SOL-") ? row.id : `SOL-${row.id}`,
+  empleado_numero: row.empleado_numero || row.empleado_id || "Sin empleado",
+  empleado_nombre: row.empleado_nombre || "Sin nombre",
+  empleado_rfc: row.empleado_rfc || "Sin RFC",
   tipo: row.tipo ? row.tipo.charAt(0).toUpperCase() + row.tipo.slice(1) : "Otro",
   estatus: row.estatus === "aprobado" ? "aprobada" : row.estatus === "rechazado" ? "rechazada" : row.estatus,
   aprobado_por: row.aprobado_por || "Pendiente"
@@ -251,13 +289,26 @@ const loadRequests = async () => {
   }
 
   try {
-    const data = await requestsService.list();
+    const params = filters.term
+      ? { buscar: filters.term, filtro: filters.type }
+      : {};
+    const data = await requestsService.list(params);
     rows.value = data.map(normalizeRow);
     showToast("Solicitudes actualizadas", "Se cargo la informacion mas reciente.");
   } catch (error) {
     rows.value = [];
     showToast("No se pudo cargar el modulo", getRequestErrorMessage(error), "warning");
   }
+};
+
+const applySearch = () => {
+  loadRequests();
+};
+
+const clearSearch = () => {
+  filters.term = "";
+  filters.type = "empleado";
+  loadRequests();
 };
 
 const actionsForRow = (row) => {
@@ -439,6 +490,43 @@ onMounted(loadRequests);
   margin: 0 0 16px;
   color: var(--color-text-soft);
   line-height: 1.6;
+}
+
+.request-filters {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.35fr) minmax(220px, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-muted);
+}
+
+.request-filters label {
+  display: grid;
+  gap: 7px;
+  color: var(--color-text-soft);
+  font-weight: 700;
+}
+
+.request-filters input,
+.request-filters select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.request-filters__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .table-actions,
@@ -635,9 +723,19 @@ button:disabled {
 
 @media (max-width: 680px) {
   .request-summary,
+  .request-filters,
   .form-grid,
   .confirm-panel dl {
     grid-template-columns: 1fr;
+  }
+
+  .request-filters__actions {
+    width: 100%;
+  }
+
+  .request-filters__actions .primary-button,
+  .request-filters__actions .secondary-button {
+    flex: 1 1 140px;
   }
 }
 </style>

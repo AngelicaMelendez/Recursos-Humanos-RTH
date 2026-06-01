@@ -34,6 +34,12 @@ async function clearDatabaseData() {
       await sequelize.query(`TRUNCATE TABLE \`${table}\`;`);
     }
 
+    const [seederHistory] = await sequelize.query("SHOW TABLES LIKE 'SequelizeData';");
+    if (seederHistory.length > 0) {
+      console.log('Limpiando historial de seeders: SequelizeData');
+      await sequelize.query('TRUNCATE TABLE `SequelizeData`;');
+    }
+
     console.log('Reactivando comprobaciones de claves foráneas...');
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 1;');
 

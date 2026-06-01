@@ -4,8 +4,8 @@ import api from "/src/services/api.js";
 const normalizeId = (id) => String(id).replace("SOL-", "");
 
 export default {
-  async list() {
-    const { data } = await api.get("/solicitudes");
+  async list(params = {}) {
+    const { data } = await api.get("/solicitudes", { params });
     return data;
   },
   async create(payload) {
