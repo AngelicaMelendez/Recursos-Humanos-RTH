@@ -7,7 +7,6 @@ export const navigationItems = [
   { label: "Normatividad", route: "/normatividad", icon: "shield", module: "normativity" },
   { label: "Vacantes", route: "/vacantes", icon: "briefcase", module: "vacancies" },
   { label: "Visitantes", route: "/visitantes", icon: "door", module: "visitors" },
-  { label: "Control de accesos", route: "/control-accesos", icon: "lock", module: "accessControl" },
   { label: "Auditoría", route: "/auditoria", icon: "activity" }
 ];
 

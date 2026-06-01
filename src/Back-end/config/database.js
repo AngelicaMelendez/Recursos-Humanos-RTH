@@ -3,23 +3,37 @@ const path = require('path');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
+const databaseName = process.env.DB_NAME || 'recursos_humanos_rth';
+const databaseUser = process.env.DB_USER || 'root';
+const databasePassword = process.env.DB_PASSWORD || 'root';
+const databaseHost = process.env.DB_HOST || '127.0.0.1';
+const databasePort = Number(process.env.DB_PORT || 3306);
+
 const sequelize = new Sequelize(
-  process.env.DB_NAME || 'recursos_humanos_rth',
-  process.env.DB_USER || 'root',
-  process.env.DB_PASSWORD || 'root',
+  databaseName,
+  databaseUser,
+  databasePassword,
   {
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: Number(process.env.DB_PORT || 3306),
+    host: databaseHost,
+    port: databasePort,
     dialect: 'mysql',
     dialectOptions: {
       connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT || 30000),
     },
     logging: false,
-    define: {
-      timestamps: true,
-      underscored: true,
-    },
   }
 );
+
+sequelize.ensureDatabaseExists = async function () {
+  const adminSequelize = new Sequelize('mysql', databaseUser, databasePassword, {
+    host: databaseHost,
+    port: databasePort,
+    dialect: 'mysql',
+    logging: false,
+  });
+
+  await adminSequelize.query(`CREATE DATABASE IF NOT EXISTS \`${databaseName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+  await adminSequelize.close();
+};
 
 module.exports = sequelize;

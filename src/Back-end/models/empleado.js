@@ -1,6 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Empleado = sequelize.define('Empleado', {
     nombre: { type: DataTypes.STRING, allowNull: false },
+    apellidos: { type: DataTypes.STRING, allowNull: true },
     curp: { type: DataTypes.STRING(18), unique: true },
     rfc: { type: DataTypes.STRING(13) },
     nss: { type: DataTypes.STRING },

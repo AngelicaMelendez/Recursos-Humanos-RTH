@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const db = require('./models');
 const seedDatabase = require('./seeders/seedDatabase');
 
@@ -20,7 +21,6 @@ app.use('/api/normatividad', require('./routes/normatividad'));
 app.use('/api/vacantes', require('./routes/vacantes'));
 app.use('/api/visitantes', require('./routes/visitantes'));
 app.use('/api/organigrama', require('./routes/organigrama'));
-app.use('/api/control-accesos', require('./routes/control-accesos'));
 app.use('/api/auditoria', require('./routes/auditoria'));
 app.use('/api/comunicados', require('./routes/comunicados'));
 app.use('/api/asistencia', require('./routes/asistencia'));
@@ -38,9 +38,30 @@ const PORT = process.env.PORT || 3000;
 
 async function connectDatabase() {
   try {
+    console.log('Intentando conectar a la base de datos:', {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      seedOnStartup: process.env.DB_SEED_ON_STARTUP,
+    });
+
+    if (typeof db.sequelize.ensureDatabaseExists === 'function') {
+      await db.sequelize.ensureDatabaseExists();
+    }
+
     await db.sequelize.authenticate();
-    await db.sequelize.sync(); // create missing tables without altering existing schema
-    await seedDatabase(db);
+    await db.sequelize.sync({ alter: true }); // update schema with model changes, incl. nuevo campo de usuario
+
+    const seedOnStartup = process.env.DB_SEED_ON_STARTUP === 'true';
+    const recordCount = await db.Area.count().catch(() => 0);
+    const shouldSeed = seedOnStartup || recordCount === 0;
+
+    if (shouldSeed) {
+      console.log('Seed inicial: ejecutando seedDatabase porque seedOnStartup=', seedOnStartup, 'y recordCount=', recordCount);
+      await seedDatabase(db);
+    }
+
     console.log('Base de datos conectada');
   } catch (error) {
     console.error('No se pudo conectar a la base de datos. La API usara respuestas de respaldo.');
