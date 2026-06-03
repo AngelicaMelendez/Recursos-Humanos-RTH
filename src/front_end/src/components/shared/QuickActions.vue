@@ -1,5 +1,5 @@
 <template>
-  <BaseCard title="Accesos rápidos" subtitle="Atajos operativos para tareas recurrentes.">
+  <BaseCard title="Accesos Rápidos" subtitle="Atajos operativos para tareas recurrentes.">
     <div class="quick-actions">
       <router-link
         v-for="action in visibleActions"

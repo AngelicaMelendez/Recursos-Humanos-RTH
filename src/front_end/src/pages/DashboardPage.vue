@@ -1,6 +1,10 @@
 <template>
   <div class="dashboard-page">
-    <PageHeader class="linguini">
+    <PageHeader
+      eyebrow="Tablero institucional"
+      title="Dashboard Ejecutivo"
+      description="Resumen estrategico de la operacion diaria, comunicados y seguimiento operativo de Recursos Humanos."
+    >
       <div class="header-pills">
         <span eyebrow="Tablero institucional"></span>
         <span class="pill primary">{{ authStore.user?.rol || "Colaborador" }}</span>
@@ -24,7 +28,7 @@
       <div class="module-heading">
         <div>
           <span class="module-kicker">Registro de asistencia</span>
-          <h3>Entrada y salida</h3>
+          <h3>Entrada y Salida</h3>
           <p>Tu estatus se actualiza en tiempo real usando la hora actual del equipo.</p>
         </div>
         <span class="status-pill" :class="attendanceTone">{{ attendanceMessage }}</span>
@@ -51,7 +55,7 @@
           :disabled="Boolean(dashboardStore.attendance.entryTime)"
           @click="registerEntry"
         >
-          Registrar entrada
+          Registrar Entrada
         </button>
         <button
           class="ghost-button"
@@ -59,13 +63,13 @@
           :disabled="!dashboardStore.attendance.entryTime || Boolean(dashboardStore.attendance.exitTime)"
           @click="registerExit"
         >
-          Registrar salida
+          Registrar Salida
         </button>
       </div>
 
       <div class="history-list">
         <div class="history-list__header">
-          <h4>Historial de movimientos</h4>
+          <h4>Historial de Movimientos</h4>
           <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
         </div>
 
@@ -274,7 +278,7 @@
     <section class="widgets-grid">
       <div class="module-section widget-card">
         <DashboardBarChart
-          title="Incidencias del mes"
+          title="Incidencias del Mes"
           subtitle="Distribucion por tipo de incidencia registrada."
           :items="dashboardStore.charts.incidentsByType"
         />
@@ -282,7 +286,7 @@
 
       <div class="module-section widget-card">
         <DashboardDonutChart
-          title="Solicitudes por estatus"
+          title="Solicitudes por Estatus"
           subtitle="Seguimiento al flujo de aprobacion institucional."
           :items="dashboardStore.charts.requestsByStatus"
         />
@@ -298,7 +302,7 @@
 
       <div class="module-section widget-card">
         <InfoList
-          title="Proximos cumpleanos"
+          title="Proximos Cumpleaños"
           subtitle="Personal con fechas cercanas para seguimiento interno."
           :items="birthdayItems"
         />
@@ -306,7 +310,7 @@
 
       <div class="module-section widget-card">
         <InfoList
-          title="Empleados de vacaciones"
+          title="Empleados de Vacaciones"
           subtitle="Cobertura operativa actual por area."
           :items="vacationItems"
         />
@@ -954,6 +958,12 @@ onMounted(() => {
   border-color: rgba(157, 45, 62, 0.2);
   background: rgba(157, 45, 62, 0.12);
   color: var(--color-danger);
+}
+
+.status-pill.accent {
+  border-color: rgba(197, 155, 82, 0.22);
+  background: rgba(197, 155, 82, 0.16);
+  color: var(--color-accent-strong);
 }
 
 .electric-button,

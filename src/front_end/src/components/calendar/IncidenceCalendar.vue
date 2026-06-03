@@ -135,7 +135,9 @@ const incidenceLegendCategories = legendCategories.filter(
 );
 const legendColors = [...new Set(legendCategories.map((category) => category.color))];
 
-const selectedColors = ref([...legendColors]);
+
+//Permite que no aparezcan eventos al entrar a la página, y que el usuario pueda activar o desactivar cada categoría de eventos e incidencias según su preferencia.
+const selectedColors = ref([]);
 
 const normalizeColor = (color) => color?.toLowerCase();
 
@@ -154,6 +156,7 @@ const filteredEvents = computed(() => {
     activeColors.includes(normalizeColor(event.color || event.backgroundColor))
   );
 });
+
 
 const toggleCategory = (color) => {
   selectedColors.value = selectedColors.value.includes(color)

@@ -2,6 +2,7 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
+<<<<<<< HEAD
     const now = new Date();
 
     await queryInterface.bulkInsert('notificaciones', [
@@ -36,6 +37,9 @@ module.exports = {
         updatedAt: now,
       },
     ], {});
+=======
+        // TODO: Añade datos para "notificaciones".
+>>>>>>> fc939f90f7bfca898a3d6139267ed6ae4c81f666
   },
 
   async down(queryInterface, Sequelize) {

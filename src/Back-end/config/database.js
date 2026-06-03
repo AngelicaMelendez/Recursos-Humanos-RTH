@@ -3,9 +3,9 @@ const path = require('path');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-const databaseName = process.env.DB_NAME || 'recursos_humanos_rth';
+const databaseName = process.env.DB_NAME || 's_recursos_humanos';
 const databaseUser = process.env.DB_USER || 'root';
-const databasePassword = process.env.DB_PASSWORD || 'root';
+const databasePassword = process.env.DB_PASSWORD || 'Martinez12612';
 const databaseHost = process.env.DB_HOST || '127.0.0.1';
 const databasePort = Number(process.env.DB_PORT || 3306);
 

@@ -65,8 +65,9 @@ const fallback = {
     events: [
       { title: 'Vacaciones - Carlos Ortega', start: '2026-05-06', end: '2026-05-11', color: '#621132' },
       { title: 'Incapacidad - Laura Mendoza', start: '2026-05-08', end: '2026-05-13', color: '#b38e5d' },
-      { title: 'Cumpleanos - Ana Laura Perez', start: '2026-05-09', color: '#2f6b4f' },
+      { title: 'Cumpleaños - Ana Laura Perez', start: '2026-05-09', color: '#2f6b4f' },
       { title: 'Comision - Jose Miguel Vargas', start: '2026-05-14', end: '2026-05-16', color: '#7d2342' },
+      { title: 'Cumpleaños - Pablo Martínez', start: '2026-06-30', end: '2026-06-30', color: '#2f6b4f' },
     ],
   },
   organigram: { // <-- Corregido para que coincida con fallback.organigram
@@ -112,6 +113,7 @@ const eventosFijos = [
   { title: "Día Naranja", start: "2026-06-10", color: "#F97316" },
   { title: "Entrega de Informes", start: "2026-06-15", color: "#0ea5e9" },
   { title: "Día para Realizar Actividad", start: "2026-06-20", color: "#16a34a" },
+  { title: "Cumpleaños - Pablo Martínez", start: "2026-06-30", end: "2026-06-30", color: "#2f6b4f" },
 ];
 
 function statusToFrontend(status) {
@@ -219,6 +221,7 @@ exports.calendario = async (req, res) => {
       ...createMonthlyEvents('Día Naranja', 25, '#F97316', currentYear),
       ...createMonthlyEvents('Entrega de Informes', 14, '#0ea5e9', currentYear),
       ...createMonthlyEvents('Día para Realizar Actividad', 9, '#16a34a', currentYear),
+      
     ];
 
     const [incidents, solicitudes] = await Promise.all([

@@ -57,14 +57,14 @@ defineProps({
 
 .stat-card__delta {
   color: var(--color-text-soft);
-  font-size: 0.9rem;
+  font-size: 0.62rem;
   font-weight: 700;
 }
 
 .stat-card__value {
   margin-top: 18px;
   font-size: clamp(1.9rem, 4vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-primary);
 }
 </style>

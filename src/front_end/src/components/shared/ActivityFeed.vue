@@ -1,5 +1,5 @@
 <template>
-  <BaseCard title="Actividad reciente" subtitle="Trazabilidad de eventos relevantes del día.">
+  <BaseCard title="Actividad Reciente" subtitle="Trazabilidad de eventos relevantes del día.">
     <div class="activity-list">
       <article v-for="entry in items" :key="entry.title" class="activity-item">
         <h4>{{ entry.title }}</h4>

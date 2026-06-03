@@ -87,6 +87,10 @@ const submitLogin = async () => {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-card p {
