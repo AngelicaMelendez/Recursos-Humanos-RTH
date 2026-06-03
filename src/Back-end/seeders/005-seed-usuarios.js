@@ -7,7 +7,7 @@ module.exports = {
         usuario: 'Omar', //----------------------------INFORMATICA-----------------------------//
         nombre: 'Omar Efren',
         apellidos: 'Vazquez Moreno',
-        empleado_id: 101,
+        empleado_id: 1,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', //->123456
         createdAt: new Date(),
@@ -17,7 +17,7 @@ module.exports = {
         usuario: 'Axel',//----------------------------INFORMATICA-----------------------------//
         nombre: 'Axel',
         apellidos: 'Antonio Alarcon',
-        empleado_id: 102,
+        empleado_id: 2,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -27,7 +27,7 @@ module.exports = {
         usuario: 'Angelica', //----------------------------INFORMATICA-----------------------------//
         nombre: 'Angelica',
         apellidos: 'Melendez Lopez',
-        empleado_id: 103,
+        empleado_id: 3,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -37,7 +37,7 @@ module.exports = {
         usuario: 'lorena',//----------------------------ADMIN-RH-----------------------------//
         nombre: 'Lorena',
         apellidos: 'Barrera Soto',
-        empleado_id: 104,
+        empleado_id: 4,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -47,7 +47,7 @@ module.exports = {
         usuario: 'Maribel', //----------------------------ADMIN-RH-----------------------------//
         nombre: 'Maribel',
         apellidos: 'Leal Rico',
-        empleado_id: 105,
+        empleado_id: 5,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),

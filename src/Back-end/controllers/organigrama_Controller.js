@@ -86,13 +86,49 @@ exports.baja = async (req, res) => {
 exports.listarAreas = async (req, res) => {
   try {
     const areas = await db.Area.findAll({
-      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre'] }],
-      order: [['nombre', 'ASC']]
+      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre', 'tipo'] }],
+      order: [['tipo', 'ASC'], ['nombre', 'ASC']]
     });
     res.json(areas);
   } catch (error) {
     console.error('Error al listar áreas:', error);
     res.status(500).json({ error: 'Error al obtener áreas' });
+  }
+};
+
+exports.listarDirecciones = async (req, res) => {
+  try {
+    const direcciones = await db.Area.findAll({
+      where: { tipo: 'direccion' },
+      include: [
+        { model: db.Area, as: 'padre', attributes: ['id', 'nombre', 'tipo'] },
+        { model: db.Area, as: 'subareas', attributes: ['id', 'nombre', 'tipo'] },
+      ],
+      order: [['nombre', 'ASC']],
+    });
+    res.json(direcciones);
+  } catch (error) {
+    console.error('Error al listar direcciones:', error);
+    res.status(500).json({ error: 'Error al obtener direcciones' });
+  }
+};
+
+exports.listarDepartamentos = async (req, res) => {
+  try {
+    const where = { tipo: 'departamento' };
+    if (req.query.direccion_id) {
+      where.area_padre_id = req.query.direccion_id;
+    }
+
+    const departamentos = await db.Area.findAll({
+      where,
+      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre', 'tipo'] }],
+      order: [['nombre', 'ASC']],
+    });
+    res.json(departamentos);
+  } catch (error) {
+    console.error('Error al listar departamentos:', error);
+    res.status(500).json({ error: 'Error al obtener departamentos' });
   }
 };
 

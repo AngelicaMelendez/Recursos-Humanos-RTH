@@ -4,16 +4,23 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('empleados', [
       {
-        id: 101,
+        id: 1,
         nombre: 'Omar Efren',
         apellidos: 'Vazquez Moreno',
+        curp: 'VAMO760618HDFZRM08',
         rfc: 'VAMO900101AA1',
+        nss:'',
+        fecha_ingreso: '2020-01-15',
+        tipo_contrato: 'indefinido',
         estatus: 'activo',
+        direccion: '',
+        area_id: 38, // Informatica   
+        
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        id: 102,
+        id: 2,
         nombre: 'Axel',
         apellidos: 'Antonio Alarcon',
         rfc: 'AIAA900101AA2',
@@ -22,7 +29,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 103,
+        id: 3,
         nombre: 'Angelica',
         apellidos: 'Melendez Lopez',
         rfc: 'MELA900101AA3',
@@ -31,7 +38,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 104,
+        id: 4,
         nombre: 'Lorena',
         apellidos: 'Barrera Soto',
         rfc: 'BASL900101AA4',
@@ -40,7 +47,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 105,
+        id: 5,
         nombre: 'Maribel',
         apellidos: 'Leal Rico',
         rfc: 'LERM900101AA5',
@@ -52,8 +59,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('empleados', {
-      id: { [Sequelize.Op.in]: [101, 102, 103, 104, 105] }
-    }, {});
+    await queryInterface.bulkDelete('empleados', null, {});
   },
 };

@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const db = require('./models');
-const seedDatabase = require('./seeders/seedDatabase');
+const { runSeeders } = require('./scripts/runSeeders');
 
 const app = express();
 
@@ -51,15 +51,17 @@ async function connectDatabase() {
     }
 
     await db.sequelize.authenticate();
-    await db.sequelize.sync({ alter: true }); // update schema with model changes, incl. nuevo campo de usuario
+    await db.sequelize.sync();
 
     const seedOnStartup = process.env.DB_SEED_ON_STARTUP === 'true';
     const recordCount = await db.Area.count().catch(() => 0);
-    const shouldSeed = seedOnStartup || recordCount === 0;
+    const shouldSeed = recordCount === 0;
 
     if (shouldSeed) {
-      console.log('Seed inicial: ejecutando seedDatabase porque seedOnStartup=', seedOnStartup, 'y recordCount=', recordCount);
-      await seedDatabase(db);
+      console.log('Seed inicial: ejecutando seeders porque la base esta vacia.');
+      await runSeeders({ closeConnection: false, setExitCode: false });
+    } else if (seedOnStartup) {
+      console.log('DB_SEED_ON_STARTUP=true, pero la base ya tiene datos. Usa npm run db:reset-data para recargar seeders.');
     }
 
     console.log('Base de datos conectada');

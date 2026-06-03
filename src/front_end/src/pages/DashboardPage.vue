@@ -1,18 +1,12 @@
 <template>
   <div class="dashboard-page">
-    <PageHeader
-      eyebrow="Tablero institucional"
-      title="Dashboard ejecutivo"
-      description="Resumen estrategico de la operacion diaria, comunicados y seguimiento operativo de Recursos Humanos."
-    >
+    <PageHeader class="linguini">
       <div class="header-pills">
+        <span eyebrow="Tablero institucional"></span>
         <span class="pill primary">{{ authStore.user?.rol || "Colaborador" }}</span>
         <span class="pill neutral">{{ todayLabel }}</span>
       </div>
-    </PageHeader>
-
-    <section class="overview-grid">
-      <article class="welcome-panel">
+       <article class="welcome-panel">
         <span class="welcome-panel__eyebrow">Operacion institucional</span>
         <h2>
           Bienvenid(a),
@@ -22,10 +16,11 @@
           Consulta el estado general del dia, revisa avisos vigentes y usa los accesos del tablero
           segun tu ritmo de trabajo.
         </p>
-      </article>
-    </section>
+      </article>  
+    </PageHeader>
 
-    <section class="module-section attendance-module">
+    <section class="overview-grid">
+      <section class="module-section attendance-module">
       <div class="module-heading">
         <div>
           <span class="module-kicker">Registro de asistencia</span>
@@ -93,6 +88,9 @@
         </ul>
       </div>
     </section>
+    </section>
+
+    
 
     <section class="module-section summary-container">
       <div class="summary-grid">
@@ -684,13 +682,17 @@ onMounted(() => {
   grid-template-columns: 1fr;
   gap: 20px;
 }
-
+.linguini{
+  max-width: max-content;
+  
+}
 .welcome-panel,
 .module-section {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: 0 14px 36px var(--color-shadow);
+  
 }
 
 .welcome-panel {

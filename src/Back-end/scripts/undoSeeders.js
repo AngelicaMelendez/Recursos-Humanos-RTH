@@ -5,16 +5,19 @@ const sequelize = require('../config/database');
 
 const seedersPath = path.join(__dirname, '..', 'seeders');
 const preferredOrder = [
-  '20260526-seed-areas.js',
-  '20260526-seed-puestos.js',
-  '20260526-seed-empleados.js',
-  '20260526-seed-usuarios.js',
+  '001-seed-direcciones.js',
+  '002-seed-departamentos.js',
+  '003-seed-puestos.js',
+  '004-seed-empleados.js',
+  '005-seed-usuarios.js',
+  '006-seed-empleado-documentos.js',
+  '007-seed-historial-puestos.js',
 ];
 
 function getSeederFiles() {
   const seeders = fs
     .readdirSync(seedersPath)
-    .filter((file) => /^202\d+.*\.js$/.test(file));
+    .filter((file) => /^(?:\d{3}|202\d+).*\.js$/.test(file));
 
   const ordered = preferredOrder.filter((file) => seeders.includes(file));
   const remaining = seeders

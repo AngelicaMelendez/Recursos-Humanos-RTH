@@ -26,6 +26,15 @@ export default {
     return api.get("/directorio/areas");
   },
 
+  listarDirecciones() {
+    return api.get("/directorio/direcciones");
+  },
+
+  listarDepartamentos(direccionId = null) {
+    const params = direccionId ? { direccion_id: direccionId } : {};
+    return api.get("/directorio/departamentos", { params });
+  },
+
   // Listar puestos
   listarPuestos() {
     return api.get("/directorio/puestos");

@@ -2,8 +2,7 @@
   <div class="page-header">
     <div>
       <span v-if="eyebrow" class="page-header__eyebrow">{{ eyebrow }}</span>
-      <h1 class="page-header__title">{{ title }}</h1>
-      <p class="page-header__description">{{ description }}</p>
+
     </div>
     <div class="page-header__actions">
       <slot />

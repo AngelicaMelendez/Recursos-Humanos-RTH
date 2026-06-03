@@ -10,17 +10,24 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       nombre: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       nivel: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(5),
         allowNull: true,
       },
       area_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        references: {
+          model: 'areas',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
+      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -50,14 +50,26 @@ module.exports = {
       area_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        references: {       // llave foranea
+          model: 'areas', // Nombre real de la tabla en tu base de datos
+          key: 'id'       // Columna a la que apunta
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       puesto_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        references: {       // llave foranea
+          model: 'puestos', // Nombre real de la tabla en tu base de datos
+          key: 'id'         // Columna a la que apunta
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       jefe_directo_id: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: true, // Si se borra el jefe directo, el campo queda libre en NULL
       },
       banco: {
         type: Sequelize.STRING,

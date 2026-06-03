@@ -34,8 +34,11 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('reacciones_comunicados', 'reacciones_comunicados_comunicado_usuario_unique');
-    await queryInterface.dropTable('reacciones_comunicados');
-  },
+async down(queryInterface, Sequelize) {
+  // Si hay líneas aquí arriba borrando índices o llaves, coméntalas con //
+  // await queryInterface.removeConstraint('reacciones_comunicados', '...'); 
+
+  // Deja solo esto, que es lo que realmente importa:
+  await queryInterface.dropTable('reacciones_comunicados');
+}
 };

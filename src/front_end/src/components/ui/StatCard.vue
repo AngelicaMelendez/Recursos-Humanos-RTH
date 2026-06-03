@@ -2,7 +2,6 @@
   <BaseCard class="stat-card" :class="`stat-card--${item.tone || 'neutral'}`">
     <div class="stat-card__top">
       <span class="pill" :class="item.tone || 'neutral'">{{ item.label }}</span>
-      <span v-if="item.delta" class="stat-card__delta">{{ item.delta }}</span>
     </div>
 
     <div class="stat-card__value">{{ item.value }}</div>

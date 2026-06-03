@@ -26,6 +26,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         unique: true,
+        references: {       // llave foranea
+          model: 'empleados', // Nombre real de la tabla en tu base de datos
+          key: 'id'           // Columna a la que apunta
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'  // Si se borra el empleado, el usuario queda libre en NULL
       },
       rol: {
         type: Sequelize.STRING(50),

@@ -62,7 +62,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('asistencias', 'asistencias_empleado_fecha_unique');
+    //await queryInterface.removeIndex('asistencias', 'asistencias_empleado_fecha_unique');
     await queryInterface.dropTable('asistencias');
   },
 };

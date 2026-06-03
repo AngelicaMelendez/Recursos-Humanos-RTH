@@ -5,5 +5,8 @@ const ctrl = require('../controllers/organigrama_Controller'); // o como se llam
 
 // 2. OJO AQUÍ: Deja solo '/' en lugar de '/organigrama'
 router.get('/', ctrl.obtenerOrganigrama);
+router.get('/areas', ctrl.listarAreas);
+router.get('/direcciones', ctrl.listarDirecciones);
+router.get('/departamentos', ctrl.listarDepartamentos);
 
 module.exports = router;

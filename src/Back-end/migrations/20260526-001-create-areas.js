@@ -10,17 +10,25 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       nombre: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
-      apellidos: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      tipo: {
+        type: Sequelize.ENUM('direccion', 'departamento'),
+        allowNull: false,
+        defaultValue: 'departamento',
       },
+
       area_padre_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
-      },
+        references: {       // llave foranea
+          model: 'areas', // Nombre real de la tabla en tu base de datos}
+          key: 'id'       // Columna a la que apunta
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+     },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
