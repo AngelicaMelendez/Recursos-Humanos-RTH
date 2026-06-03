@@ -3,11 +3,15 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-   
+    // Borra posibles registros existentes para evitar errores de PK duplicadas
+    // al volver a ejecutar el seeder en la misma base de datos.
+    await queryInterface.bulkDelete('puestos', null, {});
+    await queryInterface.sequelize.query('ALTER TABLE `puestos` AUTO_INCREMENT = 1;');
+
     const puestos = [
       {    // ====== ÁREA: INFORMATICA ======
         id: 1,
-        nombre: "JEFE DE AREA A",
+        nombre: "JEFE       DE AREA A",
         nivel: "89A",
         area_id: 38,
         createdAt: new Date(),
