@@ -84,7 +84,6 @@ const selectAction = (action, row = null) => {
 const tabs = [
   "Generales",
   "Dirección",
-  "Bancario",
   "Contacto de emergencia",
   "Documentación",
   "Historial laboral"

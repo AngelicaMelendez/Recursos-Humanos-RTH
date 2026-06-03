@@ -3,7 +3,6 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const db = require('./models');
-const seedDatabase = require('./seeders/seedDatabase');
 
 const app = express();
 

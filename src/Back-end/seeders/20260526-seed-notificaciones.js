@@ -2,7 +2,7 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // TODO: Añade datos para "notificaciones".
+        // TODO: Añade datos para "notificaciones".
   },
 
   async down(queryInterface, Sequelize) {

@@ -58,7 +58,7 @@ defineProps({
 
 .stat-card__delta {
   color: var(--color-text-soft);
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 700;
 }
 
