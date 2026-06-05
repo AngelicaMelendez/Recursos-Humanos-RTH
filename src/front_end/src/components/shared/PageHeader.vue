@@ -1,9 +1,16 @@
 <template>
   <div class="page-header">
     <div>
-      <h1 class="page-header__title">{{ title }}</h1>
-      <p class="page-header__description">{{ description }}</p>
+      <p v-if="description" class="page-header__description">{{ description }}</p>
+
+      <slot>
+        <h2 v-if="star" class="header-star-welcome">
+          <img :src="star" alt="Estrella" />
+        </h2>
+      </slot>
     </div>
+
+    <slot name="actions" />
   </div>
 </template>
 
@@ -11,7 +18,8 @@
 defineProps({
   eyebrow: { type: String, default: "" },
   title: { type: String, required: true },
-  description: { type: String, required: true }
+  description: { type: String, default: "" },
+  star: { type: String, default: "" }
 });
 </script>
 
@@ -19,8 +27,8 @@ defineProps({
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  padding-left:18px
+  align-items: flex-start;
+  padding-left: 18px;
 }
 
 .page-header__title {
@@ -34,6 +42,7 @@ defineProps({
   max-width: 760px;
   color: var(--color-text-soft);
   line-height: 1.6;
+  
 }
 
 .page-header__actions {
