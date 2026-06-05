@@ -8,7 +8,7 @@
       <RoleActionBar :actions="actions" @select="selectAction" />
     </PageHeader>
     <p v-if="notice" class="notice">{{ notice }}</p>
-    <BaseCard title="Vacantes abiertas" subtitle="Consulta de posiciones por área y prioridad.">
+    <BaseCard title="Vacantes Abiertas" subtitle="Consulta de posiciones por área y prioridad.">
       <AppTable :columns="columns" :rows="rows">
         <template #estatus="{ row }">
           <StatusBadge :value="row.estatus" />

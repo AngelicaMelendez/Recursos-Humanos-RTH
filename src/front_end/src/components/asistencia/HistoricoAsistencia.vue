@@ -103,7 +103,7 @@ const formatHora = (horaString) => {
 };
 
 const etiquetaEstatus = (estatus, minutos_retardo) => {
-  if (estatus === "a_tiempo") return "A iempo";
+  if (estatus === "a_tiempo") return "A Tiempo";
   if (estatus === "retardo") return `Llego tarde (${minutos_retardo}m)`;
   if (estatus === "ausente") return "Ausente";
   if (estatus === "licencia") return "Licencia";
@@ -111,7 +111,7 @@ const etiquetaEstatus = (estatus, minutos_retardo) => {
 };
 
 const etiquetaEstatusSalida = (estatus) => {
-  if (estatus === "normal") return "A tiempo";
+  if (estatus === "normal") return "A Tiempo";
   if (estatus === "temprano") return "Salio antes";
   if (estatus === "tarde") return "Salio despues";
   if (estatus === "sin_registro") return "Sin registro";

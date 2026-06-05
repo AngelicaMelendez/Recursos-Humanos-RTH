@@ -33,12 +33,21 @@ const iconMap = {
   logout: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9",
   plus: "M12 5v14M5 12h14",
   edit: "M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Zm12-14 3 3",
+  download: "M12 16V4m0 0-5 5m5-5 5 5M4 20h16",
   archive: "M4 7h16M6 7v13h12V7M9 11h6M8 4h8l1 3H7l1-3Z",
   check: "M20 6 9 17l-5-5",
   x: "M6 6l12 12M18 6 6 18",
   search: "M11 19a8 8 0 1 1 5.66-2.34L21 21m-10-4a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z",
   upload: "M12 16V4m0 0-5 5m5-5 5 5M4 20h16",
-  tag: "M20 13 13 20 4 11V4h7l9 9ZM7.5 7.5h.01"
+  tag: "M20 13 13 20 4 11V4h7l9 9ZM7.5 7.5h.01",
+  clear: "M6 18L18 6M6 6l12 12",
+  garbage: "M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 0 0-1 1v3h6V4a1 1 0 0 0-1-1m-4 0h4",
+  brush: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 1 1 3.536 3.536L6.343 21.036H3v-3.572L16.732 3.732Z",
+  pincel: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 1 1 3.536 3.536L6.343 21.036H3v-3.572L16.732 3.732Z",
+  broom: "M3 16h18M5 8h14M7 4h10M9 12h6",
+  eraser: "M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2m5-3h4m-4 0a1 1 0 0 0-1 1v3h6V4a1 1 0 0 0-1-1m-4 0h4",
+  reset: "M3 12a9 9 0 1 0 3-6.7M3 5v6h6",
+  down: "M12 4v16m8-8H4"
 };
 
 const iconPath = computed(() => iconMap[props.name] || iconMap.grid);
@@ -49,5 +58,9 @@ const iconPath = computed(() => iconMap[props.name] || iconMap.grid);
   width: 20px;
   height: 20px;
 }
+
+.icon-hover .icon {
+  stroke: var(--color-primary);
+} 
 </style>
 

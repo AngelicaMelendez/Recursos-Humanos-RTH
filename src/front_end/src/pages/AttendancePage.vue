@@ -176,7 +176,7 @@ const formatFecha = (fechaString) => {
 const formatHora = (horaString) => horaString.slice(0, 5);
 
 const etiquetaEstatus = (estatus, minutosRetardo) => {
-  if (estatus === "a_tiempo") return "A tiempo";
+  if (estatus === "a_tiempo") return "A Tiempo";
   if (estatus === "retardo") return `Llego tarde (${minutosRetardo}m)`;
   if (estatus === "ausente") return "Ausente";
   if (estatus === "licencia") return "Licencia";

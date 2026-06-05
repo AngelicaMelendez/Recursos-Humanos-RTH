@@ -69,7 +69,7 @@
       <div v-if="showHistory" class="history-list">
         <div class="history-list__header">
           <h4>Historial de Movimientos</h4>
-          <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
+          <span>Horario Base: {{ schedule.entry }} a {{ schedule.exit }}</span>
         </div>
 
         <ul>
@@ -506,7 +506,7 @@ const minutesFromTime = (time) => {
   return hours * 60 + minutes;
 };
 
-const evaluateEntry = (time) => (minutesFromTime(time) <= minutesFromTime("09:10") ? "A tiempo" : "Retardo");
+const evaluateEntry = (time) => (minutesFromTime(time) <= minutesFromTime("09:10") ? "A Tiempo" : "Retardo");
 
 const evaluateExit = (time) => {
   const minutes = minutesFromTime(time);
