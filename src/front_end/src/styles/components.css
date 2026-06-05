@@ -21,15 +21,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  justify-content: center;
   padding: 7px 12px;
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
-}
-
-.pill.primary {
-  background: var(--color-primary-faint);
-  color: var(--color-primary);
 }
 
 .pill.warning {
@@ -50,8 +46,14 @@
 .pill.neutral {
   background: rgba(123, 111, 116, 0.12);
   color: var(--color-neutral);
-}
-
+  white-space: nowrap;
+  margin-left: 865px;
+ }
 .table-responsive {
   overflow-x: auto;
+}
+.header-star-welcome {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
 }

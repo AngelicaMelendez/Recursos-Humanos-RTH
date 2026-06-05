@@ -12,6 +12,10 @@
       </div>
     </PageHeader>
 
+    <div v-if="selectedEmployeeNumber" class="selected-employee-note">
+      <strong>Empleado seleccionado:</strong> {{ selectedEmployeeNumber }}. Se ha cargado el organigrama con enfoque en este empleado.
+    </div>
+
     <BaseCard class="organograma-card">
       <div class="organograma-actions">
         <p class="organograma-hint">Desplazate horizontalmente si el arbol ocupa mas espacio en pantalla.</p>
@@ -39,12 +43,14 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
 import ArbolOrganigrama from "@/components/orgchart/ArbolOrganigrama.vue";
 import PageHeader from "@/components/shared/PageHeader.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import organogramaService from "@/services/organograma.service";
 
+const route = useRoute();
 const loading = ref(true);
 const error = ref(null);
 const arbol = ref([]);
@@ -57,6 +63,11 @@ const getMaxDepth = (nodes = [], depth = 1) => {
   if (!nodes.length) return 0;
   return Math.max(...nodes.map((node) => getMaxDepth(node.hijos || [], depth + 1)), depth);
 };
+
+const selectedEmployeeId = computed(() => route.query.empleadoId || null);
+const selectedEmployeeNumber = computed(() =>
+  selectedEmployeeId.value ? `EMP-${String(selectedEmployeeId.value).padStart(3, "0")}` : null
+);
 
 const stats = computed(() => {
   const nodes = collectNodes(arbol.value);

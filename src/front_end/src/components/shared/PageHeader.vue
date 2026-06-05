@@ -1,11 +1,8 @@
 <template>
   <div class="page-header">
     <div>
-      <span v-if="eyebrow" class="page-header__eyebrow">{{ eyebrow }}</span>
-
-    </div>
-    <div class="page-header__actions">
-      <slot />
+      <h1 class="page-header__title">{{ title }}</h1>
+      <p class="page-header__description">{{ description }}</p>
     </div>
   </div>
 </template>
@@ -23,21 +20,7 @@ defineProps({
   display: flex;
   justify-content: space-between;
   align-items: end;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.page-header__eyebrow {
-  display: inline-flex;
-  margin-bottom: 12px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--color-primary-faint), rgba(197, 155, 82, 0.16));
-  color: var(--color-primary);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  padding-left:18px
 }
 
 .page-header__title {
@@ -51,6 +34,10 @@ defineProps({
   max-width: 760px;
   color: var(--color-text-soft);
   line-height: 1.6;
+}
+
+.page-header__actions {
+  display: none; /* ocultar botones de acciones en header */
 }
 
 @media (max-width: 920px) {

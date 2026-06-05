@@ -5,22 +5,14 @@
       title="Dashboard Ejecutivo"
       description="Resumen estrategico de la operacion diaria, comunicados y seguimiento operativo de Recursos Humanos."
     >
-      <div class="header-pills">
-        <span eyebrow="Tablero institucional"></span>
-        <span class="pill primary">{{ authStore.user?.rol || "Colaborador" }}</span>
-        <span class="pill neutral">{{ todayLabel }}</span>
-      </div>
-       <article class="welcome-panel">
-        <span class="welcome-panel__eyebrow">Operacion institucional</span>
-        <h2>
-          Bienvenid(a),
-          {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || 'Usuario' }}
+        <h2 class="header-star-welcome">
+          <img :src="star" alt="Estrella"/>
+            Bienvenid@!! {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || 'Usuario' }} <span class="pill neutral">{{ todayLabel }}</span>
         </h2>
         <p>
-          Consulta el estado general del dia, revisa avisos vigentes y usa los accesos del tablero
-          segun tu ritmo de trabajo.
+          Bienvenido podras ver un resumen del dia, tu registro , comunicados , tus solicitudes y mucho mas!! ...
         </p>
-      </article>  
+ 
     </PageHeader>
 
     <section class="overview-grid">
@@ -65,9 +57,16 @@
         >
           Registrar Salida
         </button>
+        <button
+          class="ghost-button"
+          type="button"
+          @click="showHistory = !showHistory"
+        >
+          {{ showHistory ? "Ocultar historial" : "Ver historial" }}
+        </button>
       </div>
 
-      <div class="history-list">
+      <div v-if="showHistory" class="history-list">
         <div class="history-list__header">
           <h4>Historial de Movimientos</h4>
           <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
@@ -376,12 +375,14 @@ import StatCard from "@/components/ui/StatCard.vue";
 import { useAuthStore } from "@/store/auth";
 import { useDashboardStore } from "@/store/dashboard";
 import { formatDateTime } from "@/utils/formatters";
+import star from "@/assets/star.png";
 
 const dashboardStore = useDashboardStore();
 const authStore = useAuthStore();
 
 const schedule = { entry: "09:00", exit: "17:00" };
 const showMoreAnnouncements = ref(false);
+const showHistory = ref(false);
 const focusedAnnouncementId = ref(null);
 const attendanceMessage = ref("Listo para registrar");
 const attendanceTone = ref("neutral");
@@ -674,12 +675,6 @@ onMounted(() => {
   gap: 20px;
 }
 
-.header-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
-}
 
 .overview-grid {
   display: grid;
@@ -688,7 +683,13 @@ onMounted(() => {
 }
 .linguini{
   max-width: max-content;
-  
+}
+.header-star-welcome{
+  width: 64px;
+  height: 64px;
+  display: flex;
+  gap:12px;
+
 }
 .welcome-panel,
 .module-section {
@@ -892,6 +893,7 @@ onMounted(() => {
 
 .attendance-actions {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   margin-top: 14px;
 }

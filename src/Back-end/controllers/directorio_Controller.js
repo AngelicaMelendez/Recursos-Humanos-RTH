@@ -55,9 +55,39 @@ exports.obtenerOrganigrama = async (req, res) => {
 
 // Listar empleados para selector
 exports.listar = async (req, res) => {
-  const { page = 1, limit = 20, search } = req.query;
-  const where = { estatus: 'activo' };
-  if (search) where.nombre = { [Op.like]: `%${search}%` };
+  const { page = 1, limit = 20, search, area_id, puesto_id, estatus = 'activo' } = req.query;
+  const where = {};
+
+  if (estatus) {
+    where.estatus = estatus;
+  }
+
+  if (area_id) {
+    where.area_id = area_id;
+  }
+
+  if (puesto_id) {
+    where.puesto_id = puesto_id;
+  }
+
+  if (search) {
+    const trimmed = search.trim();
+    const employeeCode = trimmed.match(/EMP-?0*(\d+)/i);
+    const numberMatch = trimmed.match(/^\d+$/);
+
+    if (employeeCode) {
+      where.id = employeeCode[1];
+    } else if (numberMatch) {
+      where.id = trimmed;
+    } else {
+      where[Op.or] = [
+        { nombre: { [Op.like]: `%${trimmed}%` } },
+        { apellidos: { [Op.like]: `%${trimmed}%` } },
+        { curp: { [Op.like]: `%${trimmed}%` } },
+        { rfc: { [Op.like]: `%${trimmed}%` } }
+      ];
+    }
+  }
 
   const empleados = await db.Empleado.findAndCountAll({
     where,

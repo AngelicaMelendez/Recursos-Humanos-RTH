@@ -11,7 +11,7 @@ module.exports = {
     const puestos = [
       {    // ====== ÁREA: INFORMATICA ======
         id: 1,
-        nombre: "JEFE       DE AREA A",
+        nombre: "JEFE DE AREA A",
         nivel: "89A",
         area_id: 38,
         createdAt: new Date(),
