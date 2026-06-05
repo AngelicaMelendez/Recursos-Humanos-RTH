@@ -10,7 +10,7 @@
     <BaseCard title="Busqueda">
       <div class="filter-grid">
         <label class="field">
-          <span>No. de empleado o nombre</span>
+          <span>No. de Empleado o Nombre</span>
           <input
             ref="searchInputRef"
             v-model="searchTerm"
@@ -30,7 +30,7 @@
               v-model="areaName"
               @change="resolveAreaSelection"
               list="areaList"
-              placeholder="Selecciona o escribe área"
+              placeholder="Selecciona o Escribe Área"
             />
             <datalist id="areaList">
               <option v-for="area in areas" :key="area.id" :value="area.nombre" />
@@ -44,7 +44,7 @@
               @change="resolvePuestoSelection"
               :list="filteredPuestos.length ? 'puestoList' : null"
               :disabled="!areas.length"
-              placeholder="Selecciona o escribe puesto"
+              placeholder="Selecciona o Escribe Puesto"
             />
             <datalist id="puestoList">
               <option v-for="puesto in filteredPuestos" :key="puesto.id" :value="puesto.nombre" />
@@ -52,8 +52,8 @@
           </label>
         </template>
         <div class="filter-actions">
-          <button type="button" class="primary" @click="fetchEmployees">Buscar</button>
-          <button type="button" class="secondary" @click="clearFilters">Limpiar</button>
+          <button type="button" class="primary" @click="fetchEmployees"> <IconSymbol name="search" /> Buscar</button>
+          <button type="button" class="secondary" @click="clearFilters"> <IconSymbol name="clear" /> Limpiar</button>
         </div>
       </div>
     </BaseCard>
@@ -66,8 +66,9 @@
           </template>
           <template #acciones="{ row }">
             <div class="row-actions">
-              <button type="button" class="link-button" @click="selectEmployee(row)">Ver datos</button>
-              <button type="button" class="link-button" @click="viewOrganigrama(row)">Ver organigrama</button>
+              <button type="button" class="link-button" @click="selectEmployee(row)">Ver Datos</button>
+              <button type="button" class="link-button" @click="viewOrganigrama(row)">Ver Organigrama</button>
+              <buttom type="button" class="link-button"> Actualizar Datos </buttom>
             </div>
           </template>
         </AppTable>
@@ -76,13 +77,13 @@
     </div>
 
     <div class="section-gap">
-      <BaseCard title="Datos generales" subtitle="Información del empleado seleccionado para consulta inmediata.">
+      <BaseCard title="Datos Generales" subtitle="Información del empleado seleccionado para consulta inmediata.">
         <div v-if="selectedEmployee" class="employee-details">
           <div class="details-grid">
             <section>
-              <h3>Datos personales</h3>
+              <h3>Datos Personales</h3>
               <dl>
-                <dt>No. de empleado</dt>
+                <dt>No. de Empleado</dt>
                 <dd>{{ selectedEmployee.numero }}</dd>
                 <dt>Nombre</dt>
                 <dd>{{ selectedEmployee.nombreCompleto }}</dd>
@@ -90,15 +91,15 @@
                 <dd>{{ selectedEmployee.curp || '-' }}</dd>
                 <dt>RFC</dt>
                 <dd>{{ selectedEmployee.rfc || '-' }}</dd>
-                <dt>Tipo de sangre</dt>
+                <dt>Tipo de Sangre</dt>
                 <dd>{{ selectedEmployee.tipo_sangre || '-' }}</dd>
-                <dt>Fecha de nacimiento</dt>
+                <dt>Fecha de Nacimiento</dt>
                 <dd>{{ formatDate(selectedEmployee.fecha_nacimiento) }}</dd>
                 <dt>Edad</dt>
                 <dd>{{ selectedEmployee.edad }}</dd>
                 <dt>Sexo</dt>
                 <dd>{{ selectedEmployee.sexo || '-' }}</dd>
-                <dt>Correo electrónico</dt>
+                <dt>Correo Electrónico</dt>
                 <dd>{{ selectedEmployee.email || selectedEmployee.correo || '-' }}</dd>
                 <dt>Teléfono</dt>
                 <dd>{{ selectedEmployee.telefono || selectedEmployee.celular || '-' }}</dd>
@@ -106,31 +107,31 @@
             </section>
 
             <section>
-              <h3>Datos empresariales</h3>
+              <h3>Datos Empresariales</h3>
               <dl>
-                <dt>No. de empleado</dt>
+                <dt>No. de Empleado</dt>
                 <dd>{{ selectedEmployee.numero }}</dd>
-                <dt>Constancia de vigencia de derechos</dt>
-                <dd>{{ selectedEmployee.estatus === 'activo' ? 'Alta' : 'Baja' }}</dd>
+                <dt>Constancia de Vigencia de Derechos</dt>
+                <dd>{{ selectedEmployee.estatus === 'Activo' ? 'Alta' : 'Baja' }}</dd>
                 <dt>NSS</dt>
                 <dd>{{ selectedEmployee.nss || '-' }}</dd>
                 <dt>Área</dt>
-                <dd>{{ selectedEmployee.area?.nombre || 'Sin área' }}</dd>
+                <dd>{{ selectedEmployee.area?.nombre || 'Sin Área' }}</dd>
                 <dt>Puesto</dt>
-                <dd>{{ selectedEmployee.puesto?.nombre || 'Sin puesto' }}</dd>
+                <dd>{{ selectedEmployee.puesto?.nombre || 'Sin Puesto' }}</dd>
                 <dt>Estatus</dt>
                 <dd>{{ selectedEmployee.estatus }}</dd>
-                <dt>Fecha de ingreso</dt>
+                <dt>Fecha de Ingreso</dt>
                 <dd>{{ formatDate(selectedEmployee.fecha_ingreso) }}</dd>
-                <dt>Fecha de salida</dt>
+                <dt>Fecha de Salida</dt>
                 <dd>{{ formatDate(selectedEmployee.fecha_baja) }}</dd>
               </dl>
             </section>
           </div>
 
           <div class="employee-actions">
-            <button type="button" class="primary" @click="viewOrganigrama(selectedEmployee)">Ver organigrama</button>
-            <button type="button" class="secondary" @click="selectedEmployee = null">Cerrar ficha</button>
+            <button type="button" class="primary" @click="viewOrganigrama(selectedEmployee)">Ver Organigrama</button>
+            <button type="button" class="secondary" @click="selectedEmployee = null">Cerrar Ficha</button>
           </div>
         </div>
 
@@ -152,6 +153,7 @@ import StatusBadge from "@/components/shared/StatusBadge.vue";
 import organogramaService from "@/services/organograma.service";
 import { getRoleActions } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
+import IconSymbol from "@/components/ui/IconSymbol.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -173,7 +175,6 @@ const showAreaPuesto = ref(false);
 
 const actions = computed(() => getRoleActions(authStore.user?.rol, "directory"));
 
-// role actions removed from header; keep actions to evaluate permissions if needed
 
 const columns = [
   { key: "numero", label: "No. empleado" },
@@ -209,9 +210,9 @@ const normalizeEmployee = (empleado) => ({
   id: empleado.id,
   numero: formatEmployeeNumber(empleado.id),
   nombre: [empleado.nombre, empleado.apellidos].filter(Boolean).join(" "),
-  area: empleado.area?.nombre || "Sin área",
-  puesto: empleado.puesto?.nombre || "Sin puesto",
-  estatus: empleado.estatus === "activo" ? "activa" : "baja"
+  area: empleado.area?.nombre || "Sin Área",
+  puesto: empleado.puesto?.nombre || "Sin Puesto",
+  estatus: empleado.estatus === "activo" ? "activo" : "Baja"
 });
 
 const fetchFilters = async () => {
@@ -291,27 +292,22 @@ const resolveEmployeeSelection = () => {
   if (match) {
     const formatted = `EMP-${String(match[1]).padStart(3, "0")}`;
     searchTerm.value = formatted;
-    // show next filters
     showAreaPuesto.value = true;
 
-    // try to prefill area/puesto if employee exists in current fetched list
     const found = employees.value.find((e) => e.numero === formatted || e.id === Number(match[1]));
     if (found) {
       areaName.value = found.area || "";
       puestoName.value = found.puesto || "";
       resolveAreaSelection();
       resolvePuestoSelection();
-      // auto-load ficha
       selectEmployee(found);
     }
-    // if not found in current list, try fetching by id
     if (!found) {
       selectEmployee({ id: Number(match[1]) });
     }
     return;
   }
 
-  // if user typed a name that matches an employee suggestion, show next filters
   const byName = employees.value.find((e) => `${e.numero} - ${e.nombre}`.toLowerCase() === trimmed.toLowerCase() || e.nombre.toLowerCase().includes(trimmed.toLowerCase()));
   if (byName) {
     showAreaPuesto.value = true;
@@ -319,7 +315,6 @@ const resolveEmployeeSelection = () => {
     puestoName.value = byName.puesto || "";
     resolveAreaSelection();
     resolvePuestoSelection();
-    // auto-load ficha when selecting by name
     selectEmployee(byName);
   }
 };
@@ -408,6 +403,10 @@ onMounted(async () => {
 
 .filter-actions .primary,
 .employee-actions .primary {
+  display: inline-flex;
+  justify-content: center;
+  border: none;
+  gap: 8px;
   border: none;
   background: var(--color-primary);
   color: #fff;
@@ -417,8 +416,11 @@ onMounted(async () => {
 }
 
 .filter-actions .secondary,
-.employee-actions .secondary,
-.link-button {
+.employee-actions .secondary {
+  display: inline-flex;
+  justify-content: center;
+  border: none;
+  gap: 8px;
   border: 1px solid var(--color-border);
   background: transparent;
   color: var(--color-text);
@@ -427,18 +429,44 @@ onMounted(async () => {
   cursor: pointer;
 }
 
+.link-button {
+  background: var (--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display:inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  
+}
+
+.link-button:hover {
+  background: var(--color-surface);
+  transform: translateY(-1px);
+}
+
 .row-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
-.link-button {
-  text-decoration: underline;
-  background: transparent;
-  border: none;
-  padding: 0;
-  color: var(--color-primary-strong);
+.act-buttom {
+  background: var (--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  
 }
 
 .details-grid {

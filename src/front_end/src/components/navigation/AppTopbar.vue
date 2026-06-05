@@ -5,7 +5,7 @@
     </button>
     <div>
       <strong class="topbar__title">Sistema Integral de Recursos Humanos</strong>
-      <p class="topbar__subtitle">Gestion institucional con manejo administrativa.</p>
+      <p class="topbar__subtitle">Gestión institucional con manejo administrativa.</p>
     </div>
     <div class="topbar__user">
       <div class="topbar__icons">
