@@ -5,7 +5,7 @@ import { dashboardFallback } from "@/utils/constants";
 export const useDashboardStore = defineStore("dashboard", {
   state: () => ({
     summary: dashboardFallback.summary,
-    charts: dashboardFallback.charts,
+    charts: dashboardFallback.charts, 
     recentActivity: dashboardFallback.recentActivity,
     upcomingBirthdays: dashboardFallback.upcomingBirthdays,
     employeesOnVacation: dashboardFallback.employeesOnVacation,
@@ -64,8 +64,8 @@ export const useDashboardStore = defineStore("dashboard", {
         date: "2026-05-11",
         entry: "08:52:14",
         exit: "17:08:55",
-        entryStatus: "A tiempo",
-        exitStatus: "Salida correcta"
+        entryStatus: "A Tiempo",
+        exitStatus: "Salida Correcta"
       },
       {
         id: 2,
@@ -73,7 +73,7 @@ export const useDashboardStore = defineStore("dashboard", {
         entry: "09:18:03",
         exit: "16:42:19",
         entryStatus: "Retardo",
-        exitStatus: "Salio antes"
+        exitStatus: "Salio Antes"
       }
     ],
     loading: false

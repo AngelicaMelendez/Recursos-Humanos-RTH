@@ -38,6 +38,10 @@ defineProps({
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .page-header__title {

@@ -49,6 +49,8 @@ defineProps({
   margin: 0;
   color: var(--color-text-soft);
   line-height: 1.5;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .base-card__content {

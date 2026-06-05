@@ -128,6 +128,8 @@ const formerEmployees = ref([
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: var(--color-surface-muted);
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .section-gap {

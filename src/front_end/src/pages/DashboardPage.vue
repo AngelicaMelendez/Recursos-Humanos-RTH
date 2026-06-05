@@ -11,7 +11,7 @@
         <span class="pill neutral">{{ todayLabel }}</span>
       </div>
        <article class="welcome-panel">
-        <span class="welcome-panel__eyebrow">Operacion institucional</span>
+        <span class="welcome-panel__eyebrow">Operacion Institucional</span>
         <h2>
           Bienvenid(a),
           {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || 'Usuario' }}
@@ -70,7 +70,7 @@
       <div class="history-list">
         <div class="history-list__header">
           <h4>Historial de Movimientos</h4>
-          <span>Horario base: {{ schedule.entry }} a {{ schedule.exit }}</span>
+          <span>Horario Base: {{ schedule.entry }} a {{ schedule.exit }}</span>
         </div>
 
         <ul>
@@ -505,7 +505,7 @@ const minutesFromTime = (time) => {
   return hours * 60 + minutes;
 };
 
-const evaluateEntry = (time) => (minutesFromTime(time) <= minutesFromTime("09:10") ? "A tiempo" : "Retardo");
+const evaluateEntry = (time) => (minutesFromTime(time) <= minutesFromTime("09:10") ? "A Tiempo" : "Retardo");
 
 const evaluateExit = (time) => {
   const minutes = minutesFromTime(time);

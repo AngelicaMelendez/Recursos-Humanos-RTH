@@ -3,7 +3,7 @@
     <PageHeader
       eyebrow="Flujo de autorizaciones"
       title="Solicitudes e Incidencias"
-      description="Todos pueden generar solicitudes. La consulta, aprobacion y rechazo queda restringida a administracion."
+      description="Todos pueden generar solicitudes. La consulta, aprobacion y rechazo queda restringida a administración."
     >
       <RoleActionBar :actions="headerActions" @select="selectAction" />
     </PageHeader>
@@ -25,12 +25,7 @@
       title="Solicitudes activas"
       subtitle="Crea, consulta y da seguimiento al flujo operativo."
     >
-      <template #header-actions>
-        <button class="ghost-button" type="button" @click="loadRequests">
-          <IconSymbol name="activity" />
-          Actualizar
-        </button>
-      </template>
+    
 
       <form class="request-filters" @submit.prevent="applySearch">
         <label>
@@ -54,8 +49,13 @@
             Buscar
           </button>
           <button class="secondary-button" type="button" @click="clearSearch">
+            <IconSymbol name="clear" />
             Limpiar
           </button>
+          <button class="ghost-button" type="button" @click="loadRequests">
+          <IconSymbol name="activity" />
+          Actualizar
+        </button>
         </div>
       </form>
 
@@ -319,7 +319,10 @@ const actionsForRow = (row) => {
     if (action.key === "createRequest" || action.key === "viewRequests") return false;
     if (action.key === "deleteRequest") return pending && isOwner;
     if (["approveRequest", "rejectRequest"].includes(action.key)) return pending && canApproveRequests.value;
-    return action.key === "manageIncident" && canApproveRequests.value;
+    if (action.key === "manageIncident") return canApproveRequests.value;
+    if (action.key === "downloadRequestDocument") {
+  return canApproveRequests.value;
+}
   });
 };
 
@@ -343,6 +346,11 @@ const selectAction = (action, row = null) => {
     openResolutionModal("delete", row);
     return;
   }
+
+  if (action.key === "downloadRequestDocument") {
+  showToast("Descargar", `Descargando documento de ${row.id}.`);
+  return;
+}
 
   showToast(action.label, row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.");
 };
@@ -502,6 +510,7 @@ onMounted(loadRequests);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-surface-muted);
+  margin-top: 18px;
 }
 
 .request-filters label {
@@ -517,7 +526,7 @@ onMounted(loadRequests);
   min-height: 42px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 10px 12px 10px 12px;
   background: var(--color-surface);
   color: var(--color-text);
   font: inherit;
@@ -712,7 +721,7 @@ onMounted(loadRequests);
 }
 
 .secondary-button {
-  background: var(--color-surface-muted);
+  background: var(--color-surface);
   color: var(--color-text);
 }
 
@@ -721,12 +730,22 @@ button:disabled {
   opacity: 0.65;
 }
 
+
+
+
 @media (max-width: 680px) {
   .request-summary,
   .request-filters,
   .form-grid,
   .confirm-panel dl {
     grid-template-columns: 1fr;
+  }
+
+
+  .request-filters{
+    margin-bottom: 50px;
+    padding: 14px 10px;
+
   }
 
   .request-filters__actions {

@@ -146,13 +146,13 @@ exports.dashboard = async (req, res) => {
     res.json({
       ...dashboardData,
       summary: [
-        { label: 'Empleados activos', value: activos, delta: 'BD', tone: 'primary' },
+        { label: 'Empleados Activos', value: activos, delta: 'BD', tone: 'primary' },
         { label: 'Exempleados', value: bajas, delta: 'Historico', tone: 'neutral' },
-        { label: 'Visitantes hoy', value: visitantesHoy, delta: 'Hoy', tone: 'accent' },
-        { label: 'Vacantes abiertas', value: vacantes, delta: 'BD', tone: 'accent' },
-        { label: 'Solicitudes pendientes', value: solicitudes, delta: 'BD', tone: 'warning' },
-        { label: 'Incidencias del mes', value: incidencias, delta: 'BD', tone: 'neutral' },
-        { label: 'Vacaciones activas', value: dashboardData.employeesOnVacation.length, delta: 'Semana actual', tone: 'primary' },
+        { label: 'Visitantes Hoy', value: visitantesHoy, delta: 'Hoy', tone: 'accent' },
+        { label: 'Vacantes Abiertas', value: vacantes, delta: 'BD', tone: 'accent' },
+        { label: 'Solicitudes Pendientes', value: solicitudes, delta: 'BD', tone: 'warning' },
+        { label: 'Incidencias del Mes', value: incidencias, delta: 'BD', tone: 'neutral' },
+        { label: 'Vacaciones Activas', value: dashboardData.employeesOnVacation.length, delta: 'Semana actual', tone: 'primary' },
       ],
     });
   } catch (error) {

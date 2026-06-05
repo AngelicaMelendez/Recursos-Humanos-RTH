@@ -6,9 +6,9 @@
       description="Vista jerarquica de la organizacion basada en relaciones de subordinacion."
     >
       <div class="organograma-metrics" v-if="!loading && !error && stats.total">
-        <span class="pill primary">{{ stats.total }} puestos</span>
-        <span class="pill neutral">{{ stats.areas }} areas</span>
-        <span class="pill warning">{{ stats.niveles }} niveles</span>
+        <span class="pill primary">{{ stats.total }} Puestos</span>
+        <span class="pill neutral">{{ stats.areas }} Áreas</span>
+        <span class="pill warning">{{ stats.niveles }} Niveles</span>
       </div>
     </PageHeader>
 
