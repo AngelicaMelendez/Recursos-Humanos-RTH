@@ -102,7 +102,10 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
-
+      motivo_baja: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       documento_baja: {
         type: Sequelize.STRING,
         allowNull: true,

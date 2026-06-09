@@ -7,7 +7,7 @@ module.exports = {
 
         id: 1,
         usuario: 'Marina', //----------------------------Contraloría-----------------------------//
-        nombre: 'Marina',
+        nombre: 'Marina1',
         apellidos: 'Callejas Alamilla',
         empleado_id: null,
         rol: 'empleado',
@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         id: 2,
-        usuario: 'Maria Angelica', //----------------------------Contraloría-----------------------------//
+        usuario: 'Maria', //----------------------------Contraloría-----------------------------//
         nombre: 'Maria Angelica',
         apellidos: 'Hernandez Hernandez',
         empleado_id: null,
@@ -28,7 +28,7 @@ module.exports = {
       },
       {
         id: 3,
-        usuario: 'Edgar de Jesus', //----------------------------Dirección de Administración y Finanzas-----------------------------//
+        usuario: 'Edgar', //----------------------------Dirección de Administración y Finanzas-----------------------------//
         nombre: 'Edgar de Jesus',
         apellidos: 'Vergara Contreras',
         empleado_id: null,
@@ -39,7 +39,7 @@ module.exports = {
       },
       {
         id: 4,
-        usuario: 'Cinthya Iris', //----------------------------Dirección de Administración y Finanzas-----------------------------//
+        usuario: 'Cinthya', //----------------------------Dirección de Administración y Finanzas-----------------------------//
         nombre: 'Cinthya Iris',
         apellidos: 'Aguado Castañeda',
         empleado_id: null,
@@ -50,7 +50,7 @@ module.exports = {
       },
       {
         id: 5,
-        usuario: 'Wendy Valeria', //----------------------------Dirección de Administración y Finanzas-----------------------------//
+        usuario: 'Wendy', //----------------------------Dirección de Administración y Finanzas-----------------------------//
         nombre: 'Wendy Valeria',
         apellidos: 'Rubiales Flores',
         empleado_id: null,
@@ -61,7 +61,7 @@ module.exports = {
       },
       {
         id: 6,
-        usuario: 'Maria de los Angeles', //----------------------------Planeacion-----------------------------//
+        usuario: 'Maria', //----------------------------Planeacion-----------------------------//
         nombre: 'Maria de los Angeles',
         apellidos: 'Monzalvo Perez',
         empleado_id: null,
@@ -72,7 +72,7 @@ module.exports = {
       },
       {
         id: 7,
-        usuario: 'Carlos Alberto', //----------------------------Planeacion-----------------------------//
+        usuario: 'Carlos', //----------------------------Planeacion-----------------------------//
         nombre: 'Carlos Alberto',
         apellidos: 'Luna Ibarra',
         empleado_id: null,
@@ -84,7 +84,7 @@ module.exports = {
       {
         id: 8,
         usuario: 'Daniela', //----------------------------Planeacion-----------------------------//
-        nombre: 'Daniela' ,
+        nombre: 'Daniela1' ,
         apellidos: 'Cruz Jimenez',
         empleado_id: null,
         rol: 'empleado', 
@@ -94,7 +94,7 @@ module.exports = {
       },
       {
         id: 9,
-        usuario: 'Maria del Pilar', //----------------------------Archivo-----------------------------//
+        usuario: 'Maria', //----------------------------Archivo-----------------------------//
         nombre: 'Maria del Pilar',
         apellidos: 'Palomares Paredes',
         empleado_id: null,
@@ -106,7 +106,7 @@ module.exports = {
       {
         id: 10,
         usuario: 'Johanann', //----------------------------Archivo-----------------------------//
-        nombre: 'Johanann',
+        nombre: 'Johanann1',
         apellidos: 'Carrasco Acosta',
         empleado_id: null,
         rol: 'empleado',
@@ -117,7 +117,7 @@ module.exports = {
       {
         id: 11,
         usuario: 'Alicia', //----------------------------Contabilidad-----------------------------//
-        nombre: 'Alicia',
+        nombre: 'Alicia1',
         apellidos: 'Rangel Mendoza',
         empleado_id: null,
         rol: 'empleado',
@@ -127,7 +127,7 @@ module.exports = {
       },
       {
         id: 12,
-        usuario: 'Luz Elena', //----------------------------Finanzas y Contabilidad-----------------------------//
+        usuario: 'Luz', //----------------------------Finanzas y Contabilidad-----------------------------//
         nombre: 'Luz Elena',
         apellidos: 'Velazco Lara',
         empleado_id: null,
@@ -138,7 +138,7 @@ module.exports = {
       },
       {
         id: 13,
-        usuario: 'Joel Alberto', //----------------------------Finanzas y Contabilidad-----------------------------//
+        usuario: 'Joel', //----------------------------Finanzas y Contabilidad-----------------------------//
         nombre: 'Joel Alberto',
         apellidos: 'Carpio Bautista',
         empleado_id: null,
@@ -149,7 +149,7 @@ module.exports = {
       },
        {
         id: 14,
-        usuario: 'Omar Efren', //----------------------------INFORMATICA-----------------------------//
+        usuario: 'Omar', //----------------------------INFORMATICA-----------------------------//
         nombre: 'Omar Efren',
         apellidos: 'Vazquez Moreno',
         empleado_id: null,
@@ -161,7 +161,7 @@ module.exports = {
       {
         id: 15,
         usuario: 'Axel',//----------------------------INFORMATICA-----------------------------//
-        nombre: 'Axel',
+        nombre: 'Axel1',
         apellidos: 'Antonio Alarcon',
         empleado_id: null,
         rol: 'admin_rh',
@@ -172,7 +172,7 @@ module.exports = {
       {
         id: 16,
         usuario: 'Angelica', //----------------------------INFORMATICA-----------------------------//
-        nombre: 'Angelica',
+        nombre: 'Angelica1',
         apellidos: 'Melendez Lopez',
         empleado_id: null,
         rol: 'admin_rh',
@@ -183,7 +183,7 @@ module.exports = {
       {
         id: 17,
         usuario: 'Ivan', //----------------------------Almacen-----------------------------//
-        nombre: 'Ivan',
+        nombre: 'Ivan1',
         apellidos: 'Martinez Aldana',
         empleado_id: null,
         rol: 'empleado',
@@ -193,7 +193,7 @@ module.exports = {
       },
       {
         id: 18,
-        usuario: 'Jose David', //----------------------------Inventarios-----------------------------//
+        usuario: 'Jose', //----------------------------Inventarios-----------------------------//
         nombre: 'Jose David',
         apellidos: 'Paredes Cruz',
         empleado_id: null,
@@ -204,7 +204,7 @@ module.exports = {
       },
       {
         id: 19,
-        usuario: 'Maria de la Paz', //----------------------------Inventarios-----------------------------//
+        usuario: 'Maria', //----------------------------Inventarios-----------------------------//
         nombre: 'Maria de la Paz',
         apellidos: 'Hernandez Escamilla',
         empleado_id: null,
@@ -215,7 +215,7 @@ module.exports = {
       },
       {
         id: 20,
-        usuario: 'Jorge Enrique', //----------------------------Inventarios-----------------------------//
+        usuario: 'Jorge', //----------------------------Inventarios-----------------------------//
         nombre: 'Jorge Enrique',
         apellidos: 'Fernandez Garcia',
         empleado_id: null,
@@ -227,7 +227,7 @@ module.exports = {
       {
         id: 21,
         usuario: 'Lorena',//----------------------------Recursos-Humanos-----------------------------//
-        nombre: 'Lorena',
+        nombre: 'Lorena1',
         apellidos: 'Barrera Soto',
         empleado_id: null,
         rol: 'admin_rh',
@@ -238,7 +238,7 @@ module.exports = {
       {
         id: 22,
         usuario: 'Maribel', //----------------------------Recursos-Humanos-----------------------------//
-        nombre: 'Maribel',
+        nombre: 'Maribel1',
         apellidos: 'Leal Rico',
         empleado_id: null,
         rol: 'admin_rh',
@@ -248,7 +248,7 @@ module.exports = {
       },
       {
         id: 23,
-        usuario: 'Ariadna Albertina', //----------------------------Recursos-Humanos-----------------------------//
+        usuario: 'Ariadna', //----------------------------Recursos-Humanos-----------------------------//
         nombre: 'Ariadna Albertina',
         apellidos: 'Ramirez Trejo',
         empleado_id: null,
@@ -260,7 +260,7 @@ module.exports = {
       {
         id: 24,
         usuario: 'Roberto', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Roberto',
+        nombre: 'Roberto1',
         apellidos: 'Espinoza Dominguez',
         empleado_id: null,
         rol: 'empleado',
@@ -271,7 +271,7 @@ module.exports = {
       {
         id: 25,
         usuario: 'Oscar', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Oscar',
+        nombre: 'Oscar1',
         apellidos: 'Islas Sanchez',
         empleado_id: null,
         rol: 'empleado',
@@ -282,7 +282,7 @@ module.exports = {
       {
         id: 26,
         usuario: 'Amparo', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Amparo',
+        nombre: 'Amparo1',
         apellidos: 'Lugo Muñoz',
         empleado_id: null,
         rol: 'empleado',
@@ -292,7 +292,7 @@ module.exports = {
       },
       {
         id: 27,
-        usuario: 'Maria Lidia', //----------------------------Servicios-Generales-----------------------------//
+        usuario: 'Maria', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Maria Lidia',
         apellidos: 'Alvarado Palafox',
         empleado_id: null,
@@ -304,7 +304,7 @@ module.exports = {
       {
         id: 28,
         usuario: 'Antonio', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Antonio',
+        nombre: 'Antonio1',
         apellidos: 'Jimenez Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -314,7 +314,7 @@ module.exports = {
       },
       {
         id: 29,
-        usuario: 'Maria Esther Raquel', //----------------------------Servicios-Generales-----------------------------//
+        usuario: 'Maria', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Maria Esther Raquel',
         apellidos: 'Tapia Alfaro',
         empleado_id: null,
@@ -325,7 +325,7 @@ module.exports = {
       },
       {
         id: 30,
-        usuario: 'Victor Manuel', //----------------------------Servicios-Generales-----------------------------//
+        usuario: 'Victor', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Victor Manuel',
         apellidos: 'Guerrero Guerrero',
         empleado_id: null,
@@ -336,7 +336,7 @@ module.exports = {
       },
       {
         id: 31,
-        usuario: 'Enrique Manuel', //----------------------------Servicios-Generales-----------------------------//
+        usuario: 'Enrique', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Enrique Manuel',
         apellidos: 'Alarcon Murrieta',
         empleado_id: null,
@@ -348,7 +348,7 @@ module.exports = {
       {
         id: 32,
         usuario: 'Fernando', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Fernando',
+        nombre: 'Fernando1',
         apellidos: 'Herrera Chagoya',
         empleado_id: null,
         rol: 'empleado',
@@ -359,7 +359,7 @@ module.exports = {
       {
         id: 33,
         usuario: 'Javier', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Javier',
+        nombre: 'Javier1',
         apellidos: 'Zamora Martinez',
         empleado_id: null,
         rol: 'empleado',
@@ -370,7 +370,7 @@ module.exports = {
       {
         id: 34,
         usuario: 'Guillermo', //----------------------------Servicios-Generales-----------------------------//
-        nombre: 'Guillermo',
+        nombre: 'Guillermo1',
         apellidos: 'Vivanco Quijano',
         empleado_id: null,
         rol: 'empleado',
@@ -380,7 +380,7 @@ module.exports = {
       },
       {
         id: 35,
-        usuario: 'Jonathan Daniel', //----------------------------Dirección de Proyectos Estrategicos-----------------------------//
+        usuario: 'Jonathan D', //----------------------------Dirección de Proyectos Estrategicos-----------------------------//
         nombre: 'Jonathan Daniel',
         apellidos: 'Gama Venegas',
         empleado_id: null,
@@ -392,7 +392,7 @@ module.exports = {
       {
         id: 36,
         usuario: 'Miguel', //----------------------------Dirección de Proyectos Estrategicos-----------------------------//
-        nombre: 'Miguel',
+        nombre: 'Miguel1',
         apellidos: 'Serna Grajales',
         empleado_id: null,
         rol: 'empleado',
@@ -403,7 +403,7 @@ module.exports = {
       {
         id: 37,
         usuario: 'David', //----------------------------Dirección de Ingenieria-----------------------------//
-        nombre: 'David',
+        nombre: 'David1',
         apellidos: 'Cervantes Herrera',
         empleado_id: null,
         rol: 'empleado',
@@ -413,7 +413,7 @@ module.exports = {
       },
       {
         id: 38,
-        usuario: 'Ivan Erick', //----------------------------Dirección de Ingenieria-----------------------------//
+        usuario: 'Ivan E', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Ivan Erick',
         apellidos: 'Aguilar Castillo',
         empleado_id: null,
@@ -425,7 +425,7 @@ module.exports = {
       {
         id: 39,
         usuario: 'Alejandro', //----------------------------Dirección de Ingenieria-----------------------------//
-        nombre: 'Alejandro',
+        nombre: 'Alejandro1',
         apellidos: 'Benitez Garcia',
         empleado_id: null,
         rol: 'empleado',
@@ -435,7 +435,7 @@ module.exports = {
       },
       {
         id: 40,
-        usuario: 'Hector Joseph', //----------------------------Dirección de Ingenieria-----------------------------//
+        usuario: 'Hector J', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Hector Joseph',
         apellidos: 'Sosa de la Cruz',
         empleado_id: null,
@@ -446,7 +446,7 @@ module.exports = {
       },
       {
         id: 41,
-        usuario: 'Yadira del Rosario', //----------------------------Dirección de Ingenieria-----------------------------//
+        usuario: 'Yadira', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Yadira del Rosario',
         apellidos: 'Ortiz Leon',
         empleado_id: null,
@@ -458,7 +458,7 @@ module.exports = {
       {
         id: 42,
         usuario: 'Diana', //----------------------------Dirección de Ingenieria-----------------------------//
-        nombre: 'Diana',
+        nombre: 'Diana1',
         apellidos: 'Fonseca Barquin',
         empleado_id: null,
         rol: 'empleado',
@@ -468,7 +468,7 @@ module.exports = {
       },
       {
         id: 43,
-        usuario: 'AntonioC', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
+        usuario: 'Jose', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
         nombre: 'Antonio',
         apellidos: 'Barrera Castro',
         empleado_id: null,
@@ -480,7 +480,7 @@ module.exports = {
       {
         id: 44,
         usuario: 'Florencio', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
-        nombre: 'Florencio',
+        nombre: 'Florencio1',
         apellidos: 'Gonzalez Torquemada',
         empleado_id: null,
         rol: 'empleado',
@@ -490,8 +490,8 @@ module.exports = {
       },
       {
         id: 45,
-        usuario: 'JavierT', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
-        nombre: 'Javier',
+        usuario: 'Javier', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
+        nombre: 'Javier1',
         apellidos: 'Gonzalez Torquemada',
         empleado_id: null,
         rol: 'empleado',
@@ -501,7 +501,7 @@ module.exports = {
       },
       {
         id: 46,
-         usuario: 'Jose Juan', //----------------------------Repetidor de Tv: Huejutla-----------------------------//
+         usuario: 'Jose', //----------------------------Repetidor de Tv: Huejutla-----------------------------//
         nombre: 'Jose Juan',
         apellidos: 'Flores Galvan',
         empleado_id: null,
@@ -512,7 +512,7 @@ module.exports = {
       },
       {
         id: 47,
-         usuario: 'Arturo Oldair', //----------------------------Repetidor de Tv: Huejutla-----------------------------//
+         usuario: 'Arturo', //----------------------------Repetidor de Tv: Huejutla-----------------------------//
         nombre: 'Arturo Oldair',
         apellidos: 'Tapia Diego',
         empleado_id: null,
@@ -524,7 +524,7 @@ module.exports = {
       {
         id: 48,
          usuario: 'Jonatan', //----------------------------Repetidor de Tv: Tepeapulco-----------------------------//
-        nombre: 'Jonatan',
+        nombre: 'Jonatan1',
         apellidos: 'Espinoza Fernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -535,7 +535,7 @@ module.exports = {
       {
         id: 49,
          usuario: 'Luis', //----------------------------Repetidor de Tv: Tepeapulco-----------------------------//
-        nombre: 'Luis',
+        nombre: 'Luis1',
         apellidos: 'Vera Lozada',
         empleado_id: null,
         rol: 'empleado',
@@ -546,7 +546,7 @@ module.exports = {
       {
         id: 50,
         usuario: 'Clemente', //----------------------------Repetidor de Tv: Tula-----------------------------//
-        nombre: 'Clemente',
+        nombre: 'Clemente1',
         apellidos: 'Lara Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -557,7 +557,7 @@ module.exports = {
       {
         id: 51,
         usuario: 'Sabas', //----------------------------Repetidor de Tv: Tula-----------------------------//
-        nombre: 'Sabas',
+        nombre: 'Sabas1',
         apellidos: 'Lara Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -568,7 +568,7 @@ module.exports = {
       {
         id: 52,
         usuario: 'Mario', //----------------------------Repetidor de Tv: Tulancingo-----------------------------//
-        nombre: 'Mario',
+        nombre: 'Mario1',
         apellidos: 'Hernandez Escorcia',
         empleado_id: null,
         rol: 'empleado',
@@ -579,7 +579,7 @@ module.exports = {
       {
         id: 53,
         usuario: 'Gregorio', //----------------------------Repetidor de Tv: Tulancingo-----------------------------//
-        nombre: 'Gregorio',
+        nombre: 'Gregorio1',
         apellidos: 'Oviedo Jimenez',
         empleado_id: null,
         rol: 'empleado',
@@ -590,7 +590,7 @@ module.exports = {
       {
         id: 54,
         usuario: 'Erik', //----------------------------Transmisor-Cerro-Cubitos-----------------------------//
-        nombre: 'Erik',
+        nombre: 'Erik1',
         apellidos: 'Aguilar Noriega',
         empleado_id: null,
         rol: 'empleado',
@@ -600,7 +600,7 @@ module.exports = {
       },
       {
         id: 55,
-        usuario: 'Keobel Ramses', //----------------------------Transmisor-Cerro-Cubitos-----------------------------//
+        usuario: 'Keobel', //----------------------------Transmisor-Cerro-Cubitos-----------------------------//
         nombre: 'Keobel Ramses',
         apellidos: 'Rivera Lopez',
         empleado_id: null,
@@ -612,7 +612,7 @@ module.exports = {
       {
         id: 56,
         usuario: 'Karina', //----------------------------Direccion de Noticias-----------------------------//
-        nombre: 'Karina',
+        nombre: 'Karina1',
         apellidos: 'Atanacio Ponce',
         empleado_id: null,
         rol: 'empleado',
@@ -622,7 +622,7 @@ module.exports = {
       },
       {
         id: 57,
-        usuario: 'Mara lizette', //----------------------------Conductores-----------------------------//
+        usuario: 'Mara', //----------------------------Conductores-----------------------------//
         nombre: 'Mara lizette',
         apellidos: 'Olvera Hernandez',
         empleado_id: null,
@@ -634,7 +634,7 @@ module.exports = {
       {
         id: 58,
         usuario: 'Uriel', //----------------------------Conductores-----------------------------//
-        nombre: 'Uriel',
+        nombre: 'Uriel1',
         apellidos: 'Ramirez Vega',
         empleado_id: null,
         rol: 'empleado',
@@ -644,7 +644,7 @@ module.exports = {
       },
       {
         id: 59,
-        usuario: 'Citlally Isabel', //----------------------------Conductores-----------------------------//
+        usuario: 'Citlally', //----------------------------Conductores-----------------------------//
         nombre: 'Citlally Isabel',
         apellidos: 'Velasco Guerrero',
         empleado_id: null,
@@ -655,7 +655,7 @@ module.exports = {
       },
       {
         id: 60,
-        usuario: 'Brianda Yareli', //----------------------------Direccion de Noticias-----------------------------//
+        usuario: 'Brianda', //----------------------------Direccion de Noticias-----------------------------//
         nombre: 'Brianda Yareli',
         apellidos: 'Gomez Ramirez',
         empleado_id: null,
@@ -666,7 +666,7 @@ module.exports = {
       },
       {
         id: 61,
-        usuario: 'Victor Omar', //----------------------------Direccion de Noticias-----------------------------//
+        usuario: 'Victor', //----------------------------Direccion de Noticias-----------------------------//
         nombre: 'Victor Omar',
         apellidos: 'Castilleja Vergara',
         empleado_id: null,
@@ -677,7 +677,7 @@ module.exports = {
       },
       {
         id: 62,
-        usuario: 'Jose Luis', //----------------------------Camarografos-----------------------------//
+        usuario: 'Jose', //----------------------------Camarografos-----------------------------//
         nombre: 'Jose Luis',
         apellidos: 'Ortega Ortega',
         empleado_id: null,
@@ -688,8 +688,8 @@ module.exports = {
       },
       {
         id: 63,
-        usuario: 'FernandoV', //----------------------------Camarografos-----------------------------//
-        nombre: 'Fernando',
+        usuario: 'Fernando', //----------------------------Camarografos-----------------------------//
+        nombre: 'Fernando1',
         apellidos: 'Lozano Vazquez',
         empleado_id: null,
         rol: 'empleado',
@@ -699,7 +699,7 @@ module.exports = {
       },
       {
         id: 64,
-        usuario: 'Danilo Agustin', //----------------------------Camarografos-----------------------------//
+        usuario: 'Danilo', //----------------------------Camarografos-----------------------------//
         nombre: 'Danilo Agustin',
         apellidos: 'Badillo Ayala',
         empleado_id: null,
@@ -711,7 +711,7 @@ module.exports = {
       {
         id: 65,
         usuario: 'Lucio', //----------------------------Camarografos-----------------------------//
-        nombre: 'Lucio',
+        nombre: 'Lucio1',
         apellidos: 'Torres Moreno',
         empleado_id: null,
         rol: 'empleado',
@@ -721,8 +721,8 @@ module.exports = {
       },
       {
         id: 66,
-        usuario: 'AlejandroP', //----------------------------Camarografos-----------------------------//
-        nombre: 'Alejandro',
+        usuario: 'Alejandro', //----------------------------Camarografos-----------------------------//
+        nombre: 'Alejandro1',
         apellidos: 'Juarez Pacheco',
         empleado_id: null,
         rol: 'empleado',
@@ -732,8 +732,8 @@ module.exports = {
       },
       {
         id: 67,
-        usuario: 'IvanP', //----------------------------Edición-----------------------------//
-        nombre: 'Ivan',
+        usuario: 'Ivan', //----------------------------Edición-----------------------------//
+        nombre: 'Ivan1',
         apellidos: 'Cabrera Perez',
         empleado_id: null,
         rol: 'empleado',
@@ -744,7 +744,7 @@ module.exports = {
       {
         id: 68,
         usuario: 'Christian', //----------------------------Edición-----------------------------//
-        nombre: 'Christian',
+        nombre: 'Christian1',
         apellidos: 'Corte Islas',
         empleado_id: null,
         rol: 'empleado',
@@ -754,7 +754,7 @@ module.exports = {
       },
       {
         id: 69,
-        usuario: 'Yazmin Arlette', //----------------------------Edición-----------------------------//
+        usuario: 'Yazmin', //----------------------------Edición-----------------------------//
         nombre: 'Yazmin Arlette',
         apellidos: 'Quebrado Herrera',
         empleado_id: null,
@@ -766,7 +766,7 @@ module.exports = {
       {
         id: 70,
         usuario: 'Vianey', //----------------------------Edición-----------------------------//
-        nombre: 'Vianey',
+        nombre: 'Vianey1',
         apellidos: 'Juarez Pacheco',
         empleado_id: null,
         rol: 'empleado',
@@ -776,7 +776,7 @@ module.exports = {
       },
       {
         id: 71,
-        usuario: 'Luis Enrique', //----------------------------Edición-----------------------------//
+        usuario: 'Luis', //----------------------------Edición-----------------------------//
         nombre: 'Luis Enrique',
         apellidos: 'Martinez Oviedo',
         empleado_id: null,
@@ -787,8 +787,8 @@ module.exports = {
       },
       {
         id: 72,
-        usuario: 'Maria de la PazG', //----------------------------Reporteros-----------------------------//
-        nombre: 'Maria de la Paz',
+        usuario: 'Maria de la Paz', //----------------------------Reporteros-----------------------------//
+        nombre: 'Maria de la Paz1',
         apellidos: 'Roldan Garcia',
         empleado_id: null,
         rol: 'empleado',
@@ -798,7 +798,7 @@ module.exports = {
       },
       {
         id: 73,
-        usuario: 'Flor Ivonne', //----------------------------Reporteros-----------------------------//
+        usuario: 'Flor', //----------------------------Reporteros-----------------------------//
         nombre: 'Flor Ivonne',
         apellidos: 'Hernandez Hernandez',
         empleado_id: null,
@@ -809,7 +809,7 @@ module.exports = {
       },
       {
         id: 74,
-        usuario: 'Juan Orlando', //----------------------------Reporteros-----------------------------//
+        usuario: 'Juan', //----------------------------Reporteros-----------------------------//
         nombre: 'Juan Orlando',
         apellidos: 'Betancur Castano',
         empleado_id: null,
@@ -821,7 +821,7 @@ module.exports = {
       {
         id: 75,
         usuario: 'Gustavo', //----------------------------Reporteros-----------------------------//
-        nombre: 'Gustavo',
+        nombre: 'Gustavo1',
         apellidos: 'Garcia Serrano',
         empleado_id: null,
         rol: 'empleado',
@@ -831,8 +831,8 @@ module.exports = {
       },
       {
         id: 76,
-        usuario: 'AngelicaA', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
-        nombre: 'Angelica',
+        usuario: 'Angelica', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
+        nombre: 'Angelica1',
         apellidos: 'Palafox Alpizar',
         empleado_id: null,
         rol: 'empleado',
@@ -842,8 +842,8 @@ module.exports = {
       },
       {
         id: 77,
-         usuario: 'MarinaC', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
-        nombre: 'Marina',
+         usuario: 'Marina', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
+        nombre: 'Marina1',
         apellidos: 'Barrera Cruz',
         empleado_id: null,
         rol: 'empleado',
@@ -853,8 +853,8 @@ module.exports = {
       },
       {
         id: 78,
-        usuario: 'DavidS', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
-        nombre: 'David',
+        usuario: 'David', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
+        nombre: 'David1',
         apellidos: 'Lara Salinas',
         empleado_id: null,
         rol: 'empleado',
@@ -865,7 +865,7 @@ module.exports = {
       {
         id: 79,
          usuario: 'Andres', //----------------------------Direccion de Radio-----------------------------//
-        nombre: 'Andres',
+        nombre: 'Andres1',
         apellidos: 'Torres Aguirre',
         empleado_id: null,
         rol: 'empleado',
@@ -875,7 +875,7 @@ module.exports = {
       },
       {
         id: 80,
-        usuario: 'Juan Antonio', //----------------------------Direccion de Radio-----------------------------//
+        usuario: 'Juan', //----------------------------Direccion de Radio-----------------------------//
         nombre: 'Juan Antonio',
         apellidos: 'Garcia Ybarra',
         empleado_id: null,
@@ -886,7 +886,7 @@ module.exports = {
       },
       {
         id: 81,
-        usuario: 'Karina Zuleima', //----------------------------Radiodifusora Pachuca-----------------------------//
+        usuario: 'Karina', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Karina Zuleima',
         apellidos: 'Martinez Velazquez',
         empleado_id: null,
@@ -897,7 +897,7 @@ module.exports = {
       },
       {
         id: 82,
-         usuario: 'Edgar Marcos', //----------------------------Radiodifusora Pachuca-----------------------------//
+         usuario: 'Edgar', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Edgar Marcos',
         apellidos: 'Martinez Soto',
         empleado_id: null,
@@ -908,7 +908,7 @@ module.exports = {
       },
       {
         id: 83,
-         usuario: 'Vania Anet', //----------------------------Radiodifusora Pachuca-----------------------------//
+         usuario: 'Vania', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Vania Anet',
         apellidos: 'Gomez Paredes',
         empleado_id: null,
@@ -920,7 +920,7 @@ module.exports = {
       {
         id: 84,
          usuario: 'Giselle', //----------------------------Radiodifusora Pachuca-----------------------------//
-        nombre: 'Giselle',
+        nombre: 'Giselle1',
         apellidos: 'Macias Aguirre',
         empleado_id: null,
         rol: 'empleado',
@@ -930,7 +930,7 @@ module.exports = {
       },
       {
         id: 85,
-         usuario: 'Leonardo Saul', //----------------------------Radiodifusora Pachuca-----------------------------//
+         usuario: 'Leonardo', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Leonardo Saul',
         apellidos: 'Ortiz Contreras',
         empleado_id: null,
@@ -941,7 +941,7 @@ module.exports = {
       },
       {
         id: 86,
-         usuario: 'Mario Alfredo', //----------------------------Radiodifusora Pachuca-----------------------------//
+         usuario: 'Mario', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Mario Alfredo',
         apellidos: 'Tapia Nava',
         empleado_id: null,
@@ -952,7 +952,7 @@ module.exports = {
       },
       {
         id: 87,
-         usuario: 'Aldo Esteban', //----------------------------Radiodifusora Pachuca-----------------------------//
+         usuario: 'Aldo', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Aldo Esteban',
         apellidos: 'Falcon Jimenez',
         empleado_id: null,
@@ -964,7 +964,7 @@ module.exports = {
       {
         id: 88,
          usuario: 'Jazmin', //----------------------------Radiodifusora Pachuca-----------------------------//
-        nombre: 'Jazmin',
+        nombre: 'Jazmin1',
         apellidos: 'Falcon Jimenez',
         empleado_id: null,
         rol: 'empleado',
@@ -974,7 +974,7 @@ module.exports = {
       },
       {
         id: 89,
-         usuario: 'Belinda Silvia', //----------------------------Radiodifusora Pachuca-----------------------------//
+         usuario: 'Belinda', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Belinda Silvia',
         apellidos: 'Perez Rios',
         empleado_id: null,
@@ -985,7 +985,7 @@ module.exports = {
       },
       {
         id: 90,
-        usuario: 'Juan Carlos', //----------------------------Radiodifusora Pachuca-----------------------------//
+        usuario: 'Juan', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Juan Carlos',
         apellidos: 'Garcia Tenorio',
         empleado_id: null,
@@ -997,7 +997,7 @@ module.exports = {
       {
         id: 91,
         usuario: 'Nicolas', //----------------------------Tx. Radio Actopan-----------------------------//
-        nombre: 'Nicolas',
+        nombre: 'Nicolas1',
         apellidos: 'Moctezuma Mendoza',
         empleado_id: null,
         rol: 'empleado',
@@ -1007,7 +1007,7 @@ module.exports = {
       },
       {
         id: 92,
-        usuario: 'Julio Fortunato', //----------------------------Tx. Radiodifusoras de Huejutla AM y FM-----------------------------//
+        usuario: 'Julio', //----------------------------Tx. Radiodifusoras de Huejutla AM y FM-----------------------------//
         nombre: 'Julio Fortunato',
         apellidos: 'Martinez Hernandez',
         empleado_id: null,
@@ -1019,7 +1019,7 @@ module.exports = {
       {
         id: 93,
         usuario: 'Francisco', //----------------------------Tx. Radiofusoras de Huejutla AM y FM-----------------------------//
-        nombre: 'Francisco',
+        nombre: 'Francisco1',
         apellidos: 'Esparza Perez',
         empleado_id: null,
         rol: 'empleado',
@@ -1030,7 +1030,7 @@ module.exports = {
       {
         id: 94,
         usuario: 'Maricelda', //----------------------------Radiofusora de Huejutla AM-----------------------------//
-        nombre: 'Maricelda',
+        nombre: 'Maricelda1',
         apellidos: 'Bautista Granados',
         empleado_id: null,
         rol: 'empleado',
@@ -1040,7 +1040,7 @@ module.exports = {
       },
       {
         id: 95,
-        usuario: 'Elda Nora', //----------------------------Radiofusora de Huejutla AM-----------------------------//
+        usuario: 'Elda', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Elda Nora',
         apellidos: 'Bengoa Retama',
         empleado_id: null,
@@ -1052,7 +1052,7 @@ module.exports = {
       {
         id: 96,
         usuario: 'Delfino', //----------------------------Radiofusora de Huejutla AM-----------------------------//
-        nombre: 'Delfino',
+        nombre: 'Delfino1',
         apellidos: 'San Juan Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1063,7 +1063,7 @@ module.exports = {
       {
         id: 97,
         usuario: 'Jessica', //----------------------------Radiofusora de Huejutla AM-----------------------------//
-        nombre: 'Jessica',
+        nombre: 'Jessica1',
         apellidos: 'Reyes Vicente',
         empleado_id: null,
         rol: 'empleado',
@@ -1073,7 +1073,7 @@ module.exports = {
       },
       {
         id: 98,
-        usuario: 'Maria Fernanda', //----------------------------Radiofusora de Huejutla AM-----------------------------//
+        usuario: 'Maria F', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Maria Fernanda',
         apellidos: 'Martinez Hernandez',
         empleado_id: null,
@@ -1085,7 +1085,7 @@ module.exports = {
       {
         id: 99,
         usuario: 'Joel', //----------------------------Radiofusora de Huejutla AM-----------------------------//
-        nombre: 'Joel',
+        nombre: 'Joel1',
         apellidos: 'Vega Perez',
         empleado_id: null,
         rol: 'empleado',
@@ -1096,7 +1096,7 @@ module.exports = {
       {
         id: 100,
         usuario: 'Elizabeth', //----------------------------Radiofusora de Huejutla AM-----------------------------//
-        nombre: 'Elizabeth',
+        nombre: 'Elizabeth1',
         apellidos: 'Ruiz Cruz',
         empleado_id: null,
         rol: 'empleado',
@@ -1107,7 +1107,7 @@ module.exports = {
       {
         id: 101,
         usuario: 'Wendy', //----------------------------Radiofusora de Huejutla AM-----------------------------//
-        nombre: 'Wendy',
+        nombre: 'Wendy1',
         apellidos: 'Salazar Castillo',
         empleado_id: null,
         rol: 'empleado',
@@ -1118,7 +1118,7 @@ module.exports = {
       {
         id: 102,
         usuario: 'Adolfo', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Adolfo',
+        nombre: 'Adolfo1',
         apellidos: 'Otero Melo',
         empleado_id: null,
         rol: 'empleado',
@@ -1128,8 +1128,8 @@ module.exports = {
       },
       {
         id: 103,
-         usuario: 'RobertoF', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Roberto',
+         usuario: 'Roberto', //----------------------------Radiofusora-Jacala--------------------------//
+        nombre: 'Roberto1',
         apellidos: 'Garay Franco',
         empleado_id: null,
         rol: 'empleado',
@@ -1140,7 +1140,7 @@ module.exports = {
       {
         id: 104,
          usuario: 'Marcela', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Marcela',
+        nombre: 'Marcela1',
         apellidos: 'Garica Ramirez',
         empleado_id: null,
         rol: 'empleado',
@@ -1151,7 +1151,7 @@ module.exports = {
       {
         id: 105,
          usuario: 'Ma de la Luz', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Ma de la Luz',
+        nombre: 'Ma de la Luz1',
         apellidos: 'Gonzalez Maqueda',
         empleado_id: null,
         rol: 'empleado',
@@ -1162,7 +1162,7 @@ module.exports = {
       {
         id: 106,
          usuario: 'Leonides', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Leonides',
+        nombre: 'Leonides1',
         apellidos: 'Leonardo Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1173,7 +1173,7 @@ module.exports = {
       {
         id: 107,
          usuario: 'Fabiola Estefani', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Fabiola Estefani',
+        nombre: 'Fabiola Estefani1',
         apellidos: 'Pedraza Ibarra',
         empleado_id: null,
         rol: 'empleado',
@@ -1184,7 +1184,7 @@ module.exports = {
       {
         id: 108,
          usuario: 'Lidia Smith', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Lidia Smith',
+        nombre: 'Lidia Smith1',
         apellidos: 'Perez Gonzalez',
         empleado_id: null,
         rol: 'empleado',
@@ -1195,7 +1195,7 @@ module.exports = {
       {
         id: 109,
          usuario: 'Ricardo', //----------------------------Radiofusora-Jacala--------------------------//
-        nombre: 'Ricardo',
+        nombre: 'Ricardo1',
         apellidos: 'Cruz Morales',
         empleado_id: null,
         rol: 'empleado',
@@ -1205,7 +1205,7 @@ module.exports = {
       },
       {
         id: 110,
-         usuario: 'Eduardo Jeovany', //----------------------------Radiofusora-Tlanchinol--------------------------//
+         usuario: 'Eduardo', //----------------------------Radiofusora-Tlanchinol--------------------------//
         nombre: 'Eduardo Jeovany',
         apellidos: 'Peña Ramirez',
         empleado_id: null,
@@ -1216,8 +1216,8 @@ module.exports = {
       },
       {
         id: 111,
-         usuario: 'OscarM', //----------------------------Radiofusora-Tlanchinol--------------------------//
-        nombre: 'Oscar',
+         usuario: 'Oscar', //----------------------------Radiofusora-Tlanchinol--------------------------//
+        nombre: 'Oscar1',
         apellidos: 'Ramirez Medina',
         empleado_id: null,
         rol: 'empleado',
@@ -1228,7 +1228,7 @@ module.exports = {
       {
         id: 112,
          usuario: 'Socorro', //----------------------------Radiofusora-Tlanchinol--------------------------//
-        nombre: 'Socorro',
+        nombre: 'Socorro1',
         apellidos: 'Garcia Torres',
         empleado_id: null,
         rol: 'empleado',
@@ -1239,7 +1239,7 @@ module.exports = {
       {
         id: 113,
          usuario: 'Ma Cristina', //----------------------------Radiofusora-Tlanchinol--------------------------//
-        nombre: 'Ma Cristina',
+        nombre: 'Ma Cristina1',
         apellidos: 'Hernandez Velasco',
         empleado_id: null,
         rol: 'empleado',
@@ -1249,7 +1249,7 @@ module.exports = {
       },
       {
         id: 114,
-        usuario: 'Ricardo Javier', //----------------------------Dirección de Televisión--------------------------//
+        usuario: 'Ricardo', //----------------------------Dirección de Televisión--------------------------//
         nombre: 'Ricardo Javier',
         apellidos: 'Olguin Martinez',
         empleado_id: null,
@@ -1261,7 +1261,7 @@ module.exports = {
       {
         id: 115,
          usuario: 'Patricia', //----------------------------Dirección de Televisión--------------------------//
-        nombre: 'Patricia',
+        nombre: 'Patricia1',
         apellidos: 'Escalante Tinoco',
         empleado_id: null,
         rol: 'empleado',
@@ -1272,7 +1272,7 @@ module.exports = {
       {
         id: 116,
          usuario: 'Aurora', //----------------------------Planeación-------------------------//
-        nombre: 'Aurora',
+        nombre: 'Aurora1',
         apellidos: 'Resendiz Ramos',
         empleado_id: null,
         rol: 'empleado',
@@ -1283,7 +1283,7 @@ module.exports = {
       {
         id: 117,
          usuario: 'Leticia', //----------------------------Secretaría--------------------------//
-        nombre: 'Leticia',
+        nombre: 'Leticia1',
         apellidos: 'Perez Castillo',
         empleado_id: null,
         rol: 'empleado',
@@ -1294,7 +1294,7 @@ module.exports = {
       {
         id: 118,
         usuario: 'Ivette', //----------------------------Secretaría--------------------------//
-        nombre: 'Ivette',
+        nombre: 'Ivette1',
         apellidos: 'Espejel Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1305,7 +1305,7 @@ module.exports = {
       {
         id: 119,
          usuario: 'Hugo', //----------------------------Producción--------------------------//
-        nombre: 'Hugo',
+        nombre: 'Hugo1',
         apellidos: 'Guzman Cortes',
         empleado_id: null,
         rol: 'empleado',
@@ -1315,7 +1315,7 @@ module.exports = {
       },
       {
         id: 120,
-        usuario: 'Astrid Minelli', //----------------------------Producción--------------------------//
+        usuario: 'Astrid', //----------------------------Producción--------------------------//
         nombre: 'Astrid Minelli',
         apellidos: 'Dominguez Garcia',
         empleado_id: null,
@@ -1326,7 +1326,7 @@ module.exports = {
       },
       {
         id: 121,
-        usuario: 'Ivette America', //----------------------------Producción--------------------------//
+        usuario: 'Ivette', //----------------------------Producción--------------------------//
         nombre: 'Ivette America',
         apellidos: 'Guerrero Montesinos',
         empleado_id: null,
@@ -1338,7 +1338,7 @@ module.exports = {
       {
         id: 122,
         usuario: 'Gabriel', //----------------------------Producción--------------------------//
-        nombre: 'Gabriel',
+        nombre: 'Gabriel1',
         apellidos: 'Perales Ramirez',
         empleado_id: null,
         rol: 'empleado',
@@ -1349,7 +1349,7 @@ module.exports = {
       {
         id: 123,
         usuario: 'Anabelly', //----------------------------Producción--------------------------//
-        nombre: 'Anabelly',
+        nombre: 'Anabelly1',
         apellidos: 'Espinoza Angeles',
         empleado_id: null,
         rol: 'empleado',
@@ -1359,7 +1359,7 @@ module.exports = {
       },
       {
         id: 124,
-        usuario: 'Jose Omar', //----------------------------Producción--------------------------//
+        usuario: 'Jose', //----------------------------Producción--------------------------//
         nombre: 'Jose Omar',
         apellidos: 'Aguirre Garcia',
         empleado_id: null,
@@ -1371,7 +1371,7 @@ module.exports = {
       {
         id: 125,
         usuario: 'Saul', //----------------------------Producción--------------------------//
-        nombre: 'Saul',
+        nombre: 'Saul1',
         apellidos: 'Garrido Arroyo',
         empleado_id: null,
         rol: 'empleado',
@@ -1381,8 +1381,8 @@ module.exports = {
       },
       {
         id: 126,
-        usuario: 'SaulP', //----------------------------Producción--------------------------//
-        nombre: 'Saul',
+        usuario: 'Saul', //----------------------------Producción--------------------------//
+        nombre: 'Saul1',
         apellidos: 'Lopez Pimentel',
         empleado_id: null,
         rol: 'empleado',
@@ -1392,7 +1392,7 @@ module.exports = {
       },
       {
         id: 127,
-        usuario: 'Lorena Elizabeth', //----------------------------Producción--------------------------//
+        usuario: 'Lorena', //----------------------------Producción--------------------------//
         nombre: 'Lorena Elizabeth',
         apellidos: 'Ruiz Rodriguez',
         empleado_id: null,
@@ -1404,7 +1404,7 @@ module.exports = {
       {
         id: 128,
         usuario: 'Maria del Consuelo', //----------------------------Producción--------------------------//
-        nombre: 'Maria del Consuelo',
+        nombre: 'Maria del Consuelo1',
         apellidos: 'Chong Barreiro',
         empleado_id: null,
         rol: 'empleado',
@@ -1414,7 +1414,7 @@ module.exports = {
       },
       {
         id: 129,
-        usuario: 'AlejandroC', //----------------------------Contenidos--------------------------//
+        usuario: 'Omar', //----------------------------Contenidos--------------------------//
         nombre: 'Alejandro',
         apellidos: 'Paz Carrasco',
         empleado_id: null,
@@ -1425,7 +1425,7 @@ module.exports = {
       },
       {
         id: 130,
-        usuario: 'Silvia Rosa', //----------------------------Contenidos--------------------------//
+        usuario: 'Silvia', //----------------------------Contenidos--------------------------//
         nombre: 'Silvia Rosa',
         apellidos: 'Cortes Pasten',
         empleado_id: null,
@@ -1436,7 +1436,7 @@ module.exports = {
       },
       {
         id: 131,
-        usuario: 'Cristian Armando', //----------------------------Audio--------------------------//
+        usuario: 'Cristian', //----------------------------Audio--------------------------//
         nombre: 'Cristian Armando',
         apellidos: 'Sanchez Olguin',
         empleado_id: null,
@@ -1447,7 +1447,7 @@ module.exports = {
       },
       {
         id: 132,
-        usuario: 'Romualdo', //----------------------------Audio--------------------------//
+        usuario: 'Jose', //----------------------------Audio--------------------------//
         nombre: 'Romualdo',
         apellidos: 'Sanchez Jurado',
         empleado_id: null,
@@ -1459,7 +1459,7 @@ module.exports = {
       {
         id: 133,
         usuario: 'Enrique', //----------------------------Audio--------------------------//
-        nombre: 'Enrique',
+        nombre: 'Enrique1',
         apellidos: 'Ponce',
         empleado_id: null,
         rol: 'empleado',
@@ -1469,7 +1469,7 @@ module.exports = {
       },
       {
         id: 134,
-        usuario: 'Ricardo Jesus', //----------------------------Audio--------------------------//
+        usuario: 'Ricardo', //----------------------------Audio--------------------------//
         nombre: 'Ricardo Jesus',
         apellidos: 'Rodriguez Herrera',
         empleado_id: null,
@@ -1480,7 +1480,7 @@ module.exports = {
       },
       {
         id: 135,
-        usuario: 'Luis Angel', //----------------------------Camarográfo--------------------------//
+        usuario: 'Luis', //----------------------------Camarográfo--------------------------//
         nombre: 'Luis Angel',
         apellidos: 'Romero Jimenez',
         empleado_id: null,
@@ -1491,8 +1491,8 @@ module.exports = {
       },
       {
         id: 136,
-        usuario: 'AlejandroQ', //----------------------------Camarográfo--------------------------//
-        nombre: 'Alejandro',
+        usuario: 'Alejandro', //----------------------------Camarográfo--------------------------//
+        nombre: 'Alejandro1',
         apellidos: 'Castañeda Quitero',
         empleado_id: null,
         rol: 'empleado',
@@ -1502,7 +1502,7 @@ module.exports = {
       },
       {
         id: 137,
-         usuario: 'Juan Manuel', //----------------------------Camarográfo--------------------------//
+         usuario: 'Juan', //----------------------------Camarográfo--------------------------//
         nombre: 'Juan Manuel',
         apellidos: 'Gomez Hernandez',
         empleado_id: null,
@@ -1513,7 +1513,7 @@ module.exports = {
       },
       {
         id: 138,
-        usuario: 'Crystian Alexis', //----------------------------Camarográfo--------------------------//
+        usuario: 'Crystian', //----------------------------Camarográfo--------------------------//
         nombre: 'Crystian Alexis',
         apellidos: 'Razgado Garcia',
         empleado_id: null,
@@ -1524,7 +1524,7 @@ module.exports = {
       },
       {
         id: 139,
-        usuario: 'Luis Alberto', //----------------------------Camarográfo--------------------------//
+        usuario: 'Luis', //----------------------------Camarográfo--------------------------//
         nombre: 'Luis Alberto',
         apellidos: 'Martinez Chavez',
         empleado_id: null,
@@ -1535,8 +1535,8 @@ module.exports = {
       },
       {
         id: 140,
-        usuario: 'JoelG', //----------------------------Camarográfo--------------------------//
-        nombre: 'Joel',
+        usuario: 'Joel', //----------------------------Camarográfo--------------------------//
+        nombre: 'Joel1',
         apellidos: 'Spargo Gonzalez',
         empleado_id: null,
         rol: 'empleado',
@@ -1546,7 +1546,7 @@ module.exports = {
       },
       {
         id: 141,
-         usuario: 'Oscar Alberto', //----------------------------Camarográfo--------------------------//
+         usuario: 'Oscar', //----------------------------Camarográfo--------------------------//
         nombre: 'Oscar Alberto',
         apellidos: 'Hernandez Meneses',
         empleado_id: null,
@@ -1558,7 +1558,7 @@ module.exports = {
       {
         id: 142,
          usuario: 'Benjamin', //----------------------------Camarográfo--------------------------//
-        nombre: 'Benjamin',
+        nombre: 'Benjamin1',
         apellidos: 'Ramos Aldana',
         empleado_id: null,
         rol: 'empleado',
@@ -1569,7 +1569,7 @@ module.exports = {
       {
         id: 143,
          usuario: 'Aldo', //----------------------------Camarográfo--------------------------//
-        nombre: 'Aldo',
+        nombre: 'Aldo1',
         apellidos: 'Polvo Lopez',
         empleado_id: null,
         rol: 'empleado',
@@ -1579,7 +1579,7 @@ module.exports = {
       },
       {
         id: 144,
-         usuario: 'Rocio Carolina', //----------------------------Produccion--------------------------//
+         usuario: 'Rocio', //----------------------------Produccion--------------------------//
         nombre: 'Rocio Carolina',
         apellidos: 'Rivera Martinez',
         empleado_id: null,
@@ -1591,7 +1591,7 @@ module.exports = {
       {
         id: 145,
          usuario: 'Jesus', //----------------------------Produccion--------------------------//
-        nombre: 'Jesus',
+        nombre: 'Jesus1',
         apellidos: 'Ramirez Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1602,7 +1602,7 @@ module.exports = {
       {
         id: 146,
         usuario: 'Raul', //----------------------------Deportes--------------------------//
-        nombre: 'Raul',
+        nombre: 'Raul1',
         apellidos: 'Bautista Ibarra',
         empleado_id: null,
         rol: 'empleado',
@@ -1612,7 +1612,7 @@ module.exports = {
       },
       {
         id: 147,
-        usuario: 'Jose Alberto', //----------------------------Deportes--------------------------//
+        usuario: 'Jose', //----------------------------Deportes--------------------------//
         nombre: 'Jose Alberto',
         apellidos: 'Perez Hernandez Lara',
         empleado_id: null,
@@ -1623,7 +1623,7 @@ module.exports = {
       },
       {
         id: 148,
-        usuario: 'Erick Daniel', //----------------------------Deportes--------------------------//
+        usuario: 'Erick', //----------------------------Deportes--------------------------//
         nombre: 'Erick Daniel',
         apellidos: 'Paredes Lopez',
         empleado_id: null,
@@ -1635,7 +1635,7 @@ module.exports = {
       {
         id: 149,
         usuario: 'Santiago', //----------------------------Coordinador de Staff------------------------//
-        nombre: 'Santiago',
+        nombre: 'Santiago1',
         apellidos: 'Mejia Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1646,7 +1646,7 @@ module.exports = {
       {
         id: 150,
         usuario: 'German', //----------------------------Escenografia--------------------------//
-        nombre: 'German',
+        nombre: 'German1',
         apellidos: 'Herrera Castillo',
         empleado_id: null,
         rol: 'empleado',
@@ -1657,7 +1657,7 @@ module.exports = {
       {
         id: 151,
         usuario: 'Salvador', //----------------------------Escenografia--------------------------//
-        nombre: 'Salvador',
+        nombre: 'Salvador1',
         apellidos: 'Alejandre Maldonado',
         empleado_id: null,
         rol: 'empleado',
@@ -1667,8 +1667,8 @@ module.exports = {
       },
       {
         id: 152,
-        usuario: 'ClementeE', //----------------------------Escenografia--------------------------//
-        nombre: 'Clemente',
+        usuario: 'Clemente', //----------------------------Escenografia--------------------------//
+        nombre: 'Clemente1',
         apellidos: 'Alcantara Estrada',
         empleado_id: null,
         rol: 'empleado',
@@ -1678,7 +1678,7 @@ module.exports = {
       },
       {
         id: 153,
-        usuario: 'Ignacio Aristeo', //----------------------------Escenografia--------------------------//
+        usuario: 'Ignacio', //----------------------------Escenografia--------------------------//
         nombre: 'Ignacio Aristeo',
         apellidos: 'Lopez Lopez',
         empleado_id: null,
@@ -1689,7 +1689,7 @@ module.exports = {
       },
       {
         id: 154,
-        usuario: 'Josue Eddgar', //----------------------------Edición--------------------------//
+        usuario: 'Josue', //----------------------------Edición--------------------------//
         nombre: 'Josue Eddgar',
         apellidos: 'Melo Sandoval',
         empleado_id: null,
@@ -1700,7 +1700,7 @@ module.exports = {
       },
       {
         id: 155,
-         usuario: 'Marco Antonio', //----------------------------Iluminación--------------------------//
+         usuario: 'Marco', //----------------------------Iluminación--------------------------//
         nombre: 'Marco Antonio',
         apellidos: 'Acosta Flores',
         empleado_id: null,
@@ -1711,7 +1711,7 @@ module.exports = {
       },
       {
         id: 156,
-         usuario: 'Jose Ignacio', //----------------------------Iluminación--------------------------//
+         usuario: 'Jose', //----------------------------Iluminación--------------------------//
         nombre: 'Jose Ignacio',
         apellidos: 'Galvan Bocanegra',
         empleado_id: null,
@@ -1723,7 +1723,7 @@ module.exports = {
       {
         id: 157,
          usuario: 'Anderson', //----------------------------Iluminación--------------------------//
-        nombre: 'Anderson',
+        nombre: 'Anderson1',
         apellidos: 'Hernandez Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1734,7 +1734,7 @@ module.exports = {
       {
         id: 158,
          usuario: 'Gerardo', //----------------------------Imagen--------------------------//
-        nombre: 'Gerardo',
+        nombre: 'Gerardo1',
         apellidos: 'Guasso Gonzalez',
         empleado_id: null,
         rol: 'empleado',
@@ -1744,7 +1744,7 @@ module.exports = {
       },
       {
         id: 159,
-         usuario: 'Juan Jose', //----------------------------Imagen--------------------------//
+         usuario: 'Juan', //----------------------------Imagen--------------------------//
         nombre: 'Juan Jose',
         apellidos: 'Sanchez Lopez',
         empleado_id: null,
@@ -1755,7 +1755,7 @@ module.exports = {
       },
       {
         id: 160,
-        usuario: 'Maria Magdalena', //----------------------------Maquillista--------------------------//
+        usuario: 'Maria', //----------------------------Maquillista--------------------------//
         nombre: 'Maria Magdalena',
         apellidos: 'Diaz Benitez',
         empleado_id: null,
@@ -1766,7 +1766,7 @@ module.exports = {
       },
       {
         id: 161,
-         usuario: 'Jesus Angel', //----------------------------Master--------------------------//
+         usuario: 'Jesus', //----------------------------Master--------------------------//
         nombre: 'Jesus Angel',
         apellidos: 'Vargas Flores',
         empleado_id: null,
@@ -1777,7 +1777,7 @@ module.exports = {
       },
       {
         id: 162,
-        usuario: 'Judith Alejandra', //----------------------------Master--------------------------//
+        usuario: 'Judith', //----------------------------Master--------------------------//
         nombre: 'Judith Alejandra',
         apellidos: 'Bernardino Cruz',
         empleado_id: null,
@@ -1788,7 +1788,7 @@ module.exports = {
       },
       {
         id: 163,
-        usuario: 'Juan Alberto', //----------------------------Master--------------------------//
+        usuario: 'Juan', //----------------------------Master--------------------------//
         nombre: 'Juan Alberto',
         apellidos: 'Acosta Flores',
         empleado_id: null,
@@ -1800,7 +1800,7 @@ module.exports = {
       {
         id: 164,
         usuario: 'Leopoldo', //----------------------------Master--------------------------//
-        nombre: 'Leopoldo',
+        nombre: 'Leopoldo1',
         apellidos: 'Juarez Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -1810,7 +1810,7 @@ module.exports = {
       },
       {
         id: 165,
-        usuario: 'Leslie Shanik', //----------------------------Switcher--------------------------//
+        usuario: 'Leslie', //----------------------------Switcher--------------------------//
         nombre: 'Leslie Shanik',
         apellidos: 'Cabrera Lopez',
         empleado_id: null,
@@ -1821,7 +1821,7 @@ module.exports = {
       },
       {
         id: 166,
-        usuario: 'Enrique Roman', //----------------------------Switcher--------------------------//
+        usuario: 'Enrique', //----------------------------Switcher--------------------------//
         nombre: 'Enrique Roman',
         apellidos: 'Monroy Ruiz',
         empleado_id: null,
@@ -1832,7 +1832,7 @@ module.exports = {
       },
       {
         id: 167,
-        usuario: 'Ana Gabriela', //----------------------------Titulador--------------------------//
+        usuario: 'Ana', //----------------------------Titulador--------------------------//
         nombre: 'Ana Gabriela',
         apellidos: 'Gomez Soto',
         empleado_id: null,
@@ -1844,7 +1844,7 @@ module.exports = {
       {
         id: 168,
         usuario: 'Alejandra', //----------------------------Titulador--------------------------//
-        nombre: 'Alejandra',
+        nombre: 'Alejandra1',
         apellidos: 'Pineda Espinoza',
         empleado_id: null,
         rol: 'empleado',
@@ -1854,7 +1854,7 @@ module.exports = {
       },
       {
         id: 169,
-        usuario: 'Estephania Sarahi', //----------------------------Titulador--------------------------//
+        usuario: 'Estephania', //----------------------------Titulador--------------------------//
         nombre: 'Estephania Sarahi',
         apellidos: 'Cruz Muñoz',
         empleado_id: null,
@@ -1865,7 +1865,7 @@ module.exports = {
       },
       {
         id: 170,
-        usuario: 'Alba Johana', //----------------------------Videoteca--------------------------//
+        usuario: 'Alba', //----------------------------Videoteca--------------------------//
         nombre: 'Alba Johana',
         apellidos: 'Reyes Gutierrez',
         empleado_id: null,
@@ -1876,7 +1876,7 @@ module.exports = {
       },
       {
         id: 171,
-        usuario: 'Alberto Carlos', //----------------------------Videoteca--------------------------//
+        usuario: 'Alberto', //----------------------------Videoteca--------------------------//
         nombre: 'Alberto Carlos',
         apellidos: 'Echavarri Ayala',
         empleado_id: null,
@@ -1887,7 +1887,7 @@ module.exports = {
       },
       {
         id: 172,
-        usuario: 'Ruben Eduardo', //----------------------------Videoteca--------------------------//
+        usuario: 'Ruben', //----------------------------Videoteca--------------------------//
         nombre: 'Ruben Eduardo',
         apellidos: 'Perez Anaya',
         empleado_id: null,
@@ -1899,7 +1899,7 @@ module.exports = {
       {
         id: 173,
         usuario: 'Areli', //----------------------------Play-Out--------------------------//
-        nombre: 'Areli',
+        nombre: 'Areli1',
         apellidos: 'Cruz Sosa',
         empleado_id: null,
         rol: 'empleado',
@@ -1909,8 +1909,8 @@ module.exports = {
       },
       {
         id: 174,
-         usuario: 'Carlos AlbertoI', //----------------------------Play-Out--------------------------//
-        nombre: 'Carlos Alberto',
+         usuario: 'Carlos Alberto', //----------------------------Play-Out--------------------------//
+        nombre: 'Carlos Alberto1',
         apellidos: 'Henandez Ibarra',
         empleado_id: null,
         rol: 'empleado',
@@ -1921,7 +1921,7 @@ module.exports = {
       {
         id: 175,
         usuario: 'Ariana', //----------------------------Dirección de Vinculación--------------------------//
-        nombre: 'Ariana',
+        nombre: 'Ariana1',
         apellidos: 'Flores Gomez',
         empleado_id: null,
         rol: 'empleado',
@@ -1932,7 +1932,7 @@ module.exports = {
       {
         id: 176,
         usuario: 'Milton', //----------------------------Dirección de Vinculación--------------------------//
-        nombre: 'Milton',
+        nombre: 'Milton1',
         apellidos: 'Pelcastre Rubio',
         empleado_id: null,
         rol: 'empleado',
@@ -1942,8 +1942,8 @@ module.exports = {
       },
       {
         id: 177,
-        usuario: 'KarinaN', //----------------------------Dirección de Vinculación--------------------------//
-        nombre: 'Karina',
+        usuario: 'Karina', //----------------------------Dirección de Vinculación--------------------------//
+        nombre: 'Karina1',
         apellidos: 'Sanchez Nochebuena',
         empleado_id: null,
         rol: 'empleado',
@@ -1954,7 +1954,7 @@ module.exports = {
       {
         id: 178,
         usuario: 'Angel', //----------------------------Dirección de Vinculación--------------------------//
-        nombre: 'Angel',
+        nombre: 'Angel1',
         apellidos: 'Ventura Lopez',
         empleado_id: null,
         rol: 'empleado',
@@ -1964,7 +1964,7 @@ module.exports = {
       },
       {
         id: 179,
-        usuario: 'Martha Adriana', //----------------------------Dirección de Vinculación--------------------------//
+        usuario: 'Martha', //----------------------------Dirección de Vinculación--------------------------//
         nombre: 'Martha Adriana',
         apellidos: 'Martinez Retama',
         empleado_id: null,
@@ -1976,7 +1976,7 @@ module.exports = {
       {
         id: 180,
         usuario: 'Alan', //----------------------------Dirección-General--------------------------//
-        nombre: 'Alan',
+        nombre: 'Alan1',
         apellidos: 'Austria Anaya',
         empleado_id: null,
         rol: 'empleado',
@@ -1986,7 +1986,7 @@ module.exports = {
       },
       {
         id: 181,
-        usuario: 'Adrian Rodrigo', //----------------------------Dirección-General--------------------------//
+        usuario: 'Adrian', //----------------------------Dirección-General--------------------------//
         nombre: 'Adrian Rodrigo',
         apellidos: 'Jimenez Perez',
         empleado_id: null,
@@ -1997,7 +1997,7 @@ module.exports = {
       },
       {
         id: 182,
-        usuario: 'Jesus Martin', //----------------------------Dirección-General--------------------------//
+        usuario: 'Jesus', //----------------------------Dirección-General--------------------------//
         nombre: 'Jesus Martin',
         apellidos: 'Galvan Ramos',
         empleado_id: null,
@@ -2008,7 +2008,7 @@ module.exports = {
       },
       {
         id: 183,
-        usuario: 'Adriana Gabriela', //----------------------------Dirección-General--------------------------//
+        usuario: 'Adriana', //----------------------------Dirección-General--------------------------//
         nombre: 'Adriana Gabriela',
         apellidos: 'Cruz Sosa',
         empleado_id: null,
@@ -2019,8 +2019,8 @@ module.exports = {
       },
       {
         id: 184,
-        usuario: 'RicardoV', //----------------------------Dirección-Juridica--------------------------//
-        nombre: 'Ricardo',
+        usuario: 'Ricardo', //----------------------------Dirección-Juridica--------------------------//
+        nombre: 'Ricardo1',
         apellidos: 'Gonzalez Valencia',
         empleado_id: null,
         rol: 'empleado',
@@ -2031,7 +2031,7 @@ module.exports = {
       {
         id: 185,
         usuario: 'Mirna', //----------------------------Dirección-Juridica--------------------------//
-        nombre: 'Mirna',
+        nombre: 'Mirna1',
         apellidos: 'Samperio Gomez',
         empleado_id: null,
         rol: 'empleado',
@@ -2041,7 +2041,7 @@ module.exports = {
       },
       {
         id: 186,
-        usuario: 'Maria Deyanira', //----------------------------Dirección-Juridica--------------------------//
+        usuario: 'Maria', //----------------------------Dirección-Juridica--------------------------//
         nombre: 'Maria Deyanira',
         apellidos: 'Chavez Maldonado',
         empleado_id: null,
@@ -2053,7 +2053,7 @@ module.exports = {
       {
         id: 187,
         usuario: 'Job', //----------------------------Dirección-Juridica--------------------------//
-        nombre: 'Job',
+        nombre: 'Job1',
         apellidos: 'Licona Martinez',
         empleado_id: null,
         rol: 'empleado',
@@ -2063,7 +2063,7 @@ module.exports = {
       },
       {
         id: 188,
-        usuario: 'Mario Felix', //----------------------------Comisionado Subsecretaría De Protección Civil Y Gestión De Riesgos--------------------------//
+        usuario: 'Mario', //----------------------------Comisionado Subsecretaría De Protección Civil Y Gestión De Riesgos--------------------------//
         nombre: 'Mario Felix',
         apellidos: 'Castillo Granillo',
         empleado_id: null,
@@ -2074,7 +2074,7 @@ module.exports = {
       },
       {
         id: 189,
-        usuario: 'Felipe Fernando', //----------------------------Servicios-Generales--------------------------//
+        usuario: 'Felipe', //----------------------------Servicios-Generales--------------------------//
         nombre: 'Felipe Fernando',
         apellidos: 'Rodriguez Lopez',
         empleado_id: null,
@@ -2086,7 +2086,7 @@ module.exports = {
       {
         id: 190,
         usuario: 'Jose', //----------------------------Archivo y Servicios Generales--------------------------//
-        nombre: 'Jose',
+        nombre: 'Jose1',
         apellidos: 'Hernandez Hernandez',
         empleado_id: null,
         rol: 'empleado',
@@ -2096,7 +2096,7 @@ module.exports = {
       },
       {
         id: 191,
-        usuario: 'Cesar Alberto', //----------------------------Direccion de Proyectos Estrategicos--------------------------//
+        usuario: 'Cesar', //----------------------------Direccion de Proyectos Estrategicos--------------------------//
         nombre: 'Cesar Alberto',
         apellidos: 'Cravioto Aguirre',
         empleado_id: null,
@@ -2107,7 +2107,7 @@ module.exports = {
       },
       {
         id: 192,
-        usuario: 'Eddert Yonn', //----------------------------Coordinador Personal Cerros de Tx--------------------------//
+        usuario: 'Eddert', //----------------------------Coordinador Personal Cerros de Tx--------------------------//
         nombre: 'Eddert Yonn',
         apellidos: 'Hernandez Ricaño',
         empleado_id: null,
@@ -2118,7 +2118,7 @@ module.exports = {
       },
       {
         id: 193,
-        usuario: 'Frida Elizabeth', //----------------------------Reporteros--------------------------//
+        usuario: 'Frida', //----------------------------Reporteros--------------------------//
         nombre: 'Frida Elizabeth',
         apellidos: 'Maya Guzman',
         empleado_id: null,
@@ -2130,7 +2130,7 @@ module.exports = {
       {
         id: 194,
         usuario: 'Hector', //----------------------------Mantenimientos y Tx. De Futbol y Eventos Especiales--------------------------//
-        nombre: 'Hector',
+        nombre: 'Hector1',
         apellidos: 'Fuentes Cervantes',
         empleado_id: null,
         rol: 'empleado',
@@ -2141,7 +2141,7 @@ module.exports = {
       {
         id: 195,
         usuario: 'Brenda', //----------------------------Conductora--------------------------//
-        nombre: 'Brenda',
+        nombre: 'Brenda1',
         apellidos: 'Monzalvo Uribe',
         empleado_id: null,
         rol: 'empleado',
@@ -2151,8 +2151,8 @@ module.exports = {
       },
       {
         id: 196,
-        usuario: 'ElizabethG', //----------------------------Conductora--------------------------//
-        nombre: 'Elizabeth',
+        usuario: 'Elizabeth', //----------------------------Conductora--------------------------//
+        nombre: 'Elizabeth1',
         apellidos: 'Patiño Gonzalez',
         empleado_id: null,
         rol: 'empleado',
@@ -2162,7 +2162,7 @@ module.exports = {
       },
       {
         id: 197,
-        usuario: 'Claudia Guadalupe', //----------------------------Conductora--------------------------//
+        usuario: 'Claudia', //----------------------------Conductora--------------------------//
         nombre: 'Claudia Guadalupe',
         apellidos: 'Jimenez Cruz',
         empleado_id: null,
@@ -2173,7 +2173,7 @@ module.exports = {
       },
       {
         id: 198,
-        usuario: 'Maura Alejandra Rosario', //----------------------------Conductora--------------------------//
+        usuario: 'Maura', //----------------------------Conductora--------------------------//
         nombre: 'Maura Alejandra Rosario',
         apellidos: 'del Rio Calderon',
         empleado_id: null,
@@ -2184,7 +2184,7 @@ module.exports = {
       },
       {
         id: 199,
-        usuario: 'Luis EnriqueD', //----------------------------Edición--------------------------//
+        usuario: 'Luis', //----------------------------Edición--------------------------//
         nombre: 'Luis Enrique',
         apellidos: 'Gonzalez Duran',
         empleado_id: null,
@@ -2195,7 +2195,7 @@ module.exports = {
       },
       {
         id: 200,
-        usuario: 'Edgar Fernando', //----------------------------Escengrafo--------------------------//
+        usuario: 'Edgar', //----------------------------Escengrafo--------------------------//
         nombre: 'Edgar Fernando',
         apellidos: 'Olguin Gonzalez',
         empleado_id: null,
@@ -2206,7 +2206,7 @@ module.exports = {
       },
       {
         id: 201,
-        usuario: 'Daniela Itzamar', //----------------------------Imagen--------------------------//
+        usuario: 'Daniela', //----------------------------Imagen--------------------------//
         nombre: 'Daniela Itzamar',
         apellidos: 'Gonzalez Alvidrez',
         empleado_id: null,
@@ -2217,7 +2217,7 @@ module.exports = {
       },
       {
         id: 202,
-        usuario: 'Blanca Guadalupe', //----------------------------Master--------------------------//
+        usuario: 'Blanca', //----------------------------Master--------------------------//
         nombre: 'Blanca Guadalupe',
         apellidos: 'Lopez Gonzalez',
         empleado_id: null,
@@ -2228,8 +2228,8 @@ module.exports = {
       },
       {
         id: 203,
-        usuario: 'GerardoM', //----------------------------Producción--------------------------//
-        nombre: 'Gerardo',
+        usuario: 'Gerardo', //----------------------------Producción--------------------------//
+        nombre: 'Gerardo1',
         apellidos: 'Islas Muñoz',
         empleado_id: null,
         rol: 'empleado',
@@ -2239,7 +2239,7 @@ module.exports = {
       },
       {
         id: 204,
-        usuario: 'Luis Manuel', //----------------------------Producción y Conductor --------------------------//
+        usuario: 'Luis', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Luis Manuel',
         apellidos: 'Garcia Aguirre',
         empleado_id: null,
@@ -2250,7 +2250,7 @@ module.exports = {
       },
       {
         id: 205,
-        usuario: 'Christian Alejandro', //----------------------------Producción y Conductor --------------------------//
+        usuario: 'Christian', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Christian Alejandro',
         apellidos: 'Leines del Castillo',
         empleado_id: null,
@@ -2261,7 +2261,7 @@ module.exports = {
       },
       {
         id: 206,
-        usuario: 'GerardoO', //----------------------------Producción y Conductor --------------------------//
+        usuario: 'Elverth', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Gerardo',
         apellidos: 'Castillo Osorio',
         empleado_id: null,
@@ -2272,7 +2272,7 @@ module.exports = {
       },
       {
         id: 207,
-        usuario: 'Gabriela del Mar', //----------------------------Producción y Conductor --------------------------//
+        usuario: 'Gabriela', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Gabriela del Mar',
         apellidos: 'Diaz Enriquez',
         empleado_id: null,
@@ -2283,7 +2283,7 @@ module.exports = {
       },
       {
         id: 208,
-        usuario: 'Maria Isabel', //----------------------------Videoteca--------------------------//
+        usuario: 'Maria', //----------------------------Videoteca--------------------------//
         nombre: 'Maria Isabel',
         apellidos: 'Santillan Montiel',
         empleado_id: null,
@@ -2294,7 +2294,7 @@ module.exports = {
       },
       {
         id: 209,
-        usuario: 'Yazmin Sarahi', //----------------------------Dirección de Televisión--------------------------//
+        usuario: 'Yazmin', //----------------------------Dirección de Televisión--------------------------//
         nombre: 'Yazmin Sarahi',
         apellidos: 'Esparza Hernandez',
         empleado_id: null,
@@ -2305,7 +2305,7 @@ module.exports = {
       },
       {
         id: 210,
-        usuario: 'Irene Esperanza', //----------------------------Recepción--------------------------//
+        usuario: 'Irene', //----------------------------Recepción--------------------------//
         nombre: 'Irene Esperanza',
         apellidos: 'Rodriguez Altamirano',
         empleado_id: null,
@@ -2317,7 +2317,7 @@ module.exports = {
       {
         id: 211,
         usuario: 'Sebastian', //----------------------------Producción--------------------------//
-        nombre: 'Sebastian',
+        nombre: 'Sebastian1',
         apellidos: 'Guarneros Dominguez',
         empleado_id: null,
         rol: 'empleado',
@@ -2327,7 +2327,7 @@ module.exports = {
       },
       {
         id: 212,
-        usuario: 'Silvia Maryne', //----------------------------Direccion de Contraloria--------------------------//
+        usuario: 'Silvia', //----------------------------Direccion de Contraloria--------------------------//
         nombre: 'Silvia Maryne',
         apellidos: 'Salinas Argumedo',
         empleado_id: null,
