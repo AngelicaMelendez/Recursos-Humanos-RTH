@@ -1,10 +1,6 @@
 <template>
   <div class="dashboard-page">
-    <PageHeader
-      eyebrow="Tablero institucional"
-      title="Dashboard Ejecutivo"
-      description="Resumen estrategico de la operacion diaria, comunicados y seguimiento operativo de Recursos Humanos."
-    >
+    <PageHeader>
         <h2 class="header-star-welcome">
           <img :src="star" alt="Estrella"/>
             Bienvenid@!! {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || 'Usuario' }} <span class="pill neutral">{{ todayLabel }}</span>
@@ -12,7 +8,7 @@
         <p>
           Bienvenido podras ver un resumen del dia, tu registro , comunicados , tus solicitudes y mucho mas!! ...
         </p>
- 
+        
     </PageHeader>
 
     <section class="overview-grid">
@@ -685,11 +681,10 @@ onMounted(() => {
   max-width: max-content;
 }
 .header-star-welcome{
-  width: 64px;
-  height: 64px;
   display: flex;
-  gap:12px;
-
+  align-items: center;
+  gap: 12px;
+  font-size: 1.25rem;
 }
 .welcome-panel,
 .module-section {

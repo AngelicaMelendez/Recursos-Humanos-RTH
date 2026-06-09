@@ -2,7 +2,6 @@
   <section class="card base-card">
     <header v-if="title || subtitle" class="base2-card__header">
       <div>
-        <h3 v-if="title" class="base-card__title">{{ title }}</h3>
  
       </div>
       <slot name="header-actions" />
@@ -39,11 +38,6 @@ defineProps({
   margin-bottom: 18px;
 }
 
-.base-card__title {
-  margin: 0 0 6px;
-  font-size: 1.05rem;
-  font-weight: 700;
-}
 
 .base-card__subtitle {
   margin: 0;
