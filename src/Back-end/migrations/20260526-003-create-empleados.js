@@ -67,18 +67,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      jefe_directo_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true, // Si se borra el jefe directo, el campo queda libre en NULL
-      },
-      banco: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      cuenta: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       clabe: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -92,18 +80,6 @@ module.exports = {
         allowNull: true,
       },
       contacto_telefono: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      fecha_baja: {
-        type: Sequelize.DATEONLY,
-        allowNull: true,
-      },
-      motivo_baja: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      documento_baja: {
         type: Sequelize.STRING,
         allowNull: true,
       },

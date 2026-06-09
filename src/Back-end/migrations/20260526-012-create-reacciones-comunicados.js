@@ -28,10 +28,6 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
-    await queryInterface.addIndex('reacciones_comunicados', ['comunicado_id', 'usuario_id'], {
-      unique: true,
-      name: 'reacciones_comunicados_comunicado_usuario_unique',
-    });
   },
 
 async down(queryInterface, Sequelize) {

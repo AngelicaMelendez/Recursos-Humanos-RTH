@@ -63,7 +63,10 @@
         </button>
       </div>
       <div class="user-profile">
-        <img :src="user?.avatar || iconoPerfil" alt="Perfil" class="profile-image" />
+        <img :src="user?.avatar || iconoPerfil" alt="Perfil" class="profile-image"
+        
+        />
+
         <div>
           <strong class="user-name">
             {{ user?.nombre || user?.name || user?.usuario || user?.rol || "Usuario" }}

@@ -11,16 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     direccion: { type: DataTypes.STRING },
     area_id: { type: DataTypes.INTEGER },
     puesto_id: { type: DataTypes.INTEGER },
-    jefe_directo_id: { type: DataTypes.INTEGER },
-    banco: { type: DataTypes.STRING },
-    cuenta: { type: DataTypes.STRING },
     clabe: { type: DataTypes.STRING },
     contacto_nombre: { type: DataTypes.STRING },
     contacto_parentesco: { type: DataTypes.STRING },
     contacto_telefono: { type: DataTypes.STRING },
-    fecha_baja: { type: DataTypes.DATEONLY },
-    motivo_baja: { type: DataTypes.STRING },
-    documento_baja: { type: DataTypes.STRING }, // path al archivo
   }, {
     tableName: 'empleados',
   });

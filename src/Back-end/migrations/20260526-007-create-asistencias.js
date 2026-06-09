@@ -12,6 +12,10 @@ module.exports = {
       empleado_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'empleados', // Nombre real de la tabla en tu base de datos
+          key: 'id'           // Columna a la que apunta
+        },
       },
       fecha: {
         type: Sequelize.DATEONLY,
@@ -55,12 +59,7 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
-    await queryInterface.addIndex('asistencias', ['empleado_id', 'fecha'], {
-      unique: true,
-      name: 'asistencias_empleado_fecha_unique',
-    });
   },
-
   async down(queryInterface, Sequelize) {
     //await queryInterface.removeIndex('asistencias', 'asistencias_empleado_fecha_unique');
     await queryInterface.dropTable('asistencias');
