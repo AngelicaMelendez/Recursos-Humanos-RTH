@@ -1,3 +1,6 @@
+console.log("=========================================");
+console.log("🚀 ¡ESTE SÍ ES EL BACKEND REAL QUE ESTÁ CORRIENDO!");
+console.log("=========================================");
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -19,7 +22,6 @@ app.use('/api/solicitudes', require('./routes/solicitudes'));
 app.use('/api/incidencias', require('./routes/incidencias'));
 app.use('/api/normatividad', require('./routes/normatividad'));
 app.use('/api/vacantes', require('./routes/vacantes'));
-app.use('/api/visitantes', require('./routes/visitantes'));
 app.use('/api/organigrama', require('./routes/organigrama'));
 app.use('/api/auditoria', require('./routes/auditoria'));
 app.use('/api/comunicados', require('./routes/comunicados'));
@@ -54,7 +56,7 @@ async function connectDatabase() {
     await db.sequelize.sync();
 
     const seedOnStartup = process.env.DB_SEED_ON_STARTUP === 'true';
-    const recordCount = await db.Area.count().catch(() => 0);
+    const recordCount = await db.Direccion.count().catch(() => 0);
     const shouldSeed = recordCount === 0;
 
     if (shouldSeed) {

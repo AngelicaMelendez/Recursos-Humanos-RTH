@@ -6,7 +6,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('vacantes', [
       {
-        area_id: 38,
+        departamento_id: null,
         puesto: 'Analista de soporte tecnico',
         tipo_contrato: 'indefinido',
         perfil_requerido: 'Experiencia en soporte tecnico, redes y atencion a usuarios.',
@@ -16,7 +16,7 @@ module.exports = {
         updatedAt: now,
       },
       {
-        area_id: 1,
+        departamento_id: null,
         puesto: 'Auxiliar administrativo',
         tipo_contrato: 'temporal',
         perfil_requerido: 'Manejo de archivo, captura de informacion y seguimiento documental.',
@@ -26,7 +26,7 @@ module.exports = {
         updatedAt: now,
       },
       {
-        area_id: 50,
+        departamento_id: null,
         puesto: 'Productor de contenidos',
         tipo_contrato: 'indefinido',
         perfil_requerido: 'Produccion audiovisual, redaccion y coordinacion de contenidos.',

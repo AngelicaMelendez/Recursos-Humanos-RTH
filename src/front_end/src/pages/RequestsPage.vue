@@ -59,6 +59,19 @@
         </div>
       </form>
 
+      <div class="request-actions-below-filter">
+        <button
+          v-for="action in headerActions"
+          :key="action.key"
+          type="button"
+          :class="[action.key === 'createRequest' ? 'primary-button' : 'secondary-button']"
+          @click="selectAction(action)"
+        >
+          <IconSymbol :name="action.icon" />
+          {{ action.label }}
+        </button>
+      </div>
+
       <AppTable :columns="columns" :rows="rows">
         <template #estatus="{ row }">
           <StatusBadge :value="row.estatus" />
@@ -538,6 +551,49 @@ onMounted(loadRequests);
   gap: 8px;
 }
 
+.request-actions-below-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0 24px;
+  padding: 0;
+}
+
+.request-actions-below-filter .primary-button,
+.request-actions-below-filter .secondary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.request-actions-below-filter .primary-button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-soft));
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(107, 24, 57, 0.16);
+}
+
+.request-actions-below-filter .primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px rgba(107, 24, 57, 0.22);
+}
+
+.request-actions-below-filter .secondary-button {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary-faint);
+}
+
+.request-actions-below-filter .secondary-button:hover {
+  background: var(--color-primary-faint);
+  transform: translateY(-1px);
+}
+
 .table-actions,
 .modal-actions {
   display: flex;
@@ -750,6 +806,16 @@ button:disabled {
 
   .request-filters__actions {
     width: 100%;
+  }
+
+  .request-actions-below-filter {
+    flex-direction: column;
+  }
+
+  .request-actions-below-filter .primary-button,
+  .request-actions-below-filter .secondary-button {
+    width: 100%;
+    justify-content: center;
   }
 
   .request-filters__actions .primary-button,

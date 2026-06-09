@@ -4,7 +4,6 @@ const dashboardData = {
   summary: [
     { label: 'Empleados activos', value: 184, delta: '+6', tone: 'primary' },
     { label: 'Exempleados', value: 37, delta: 'Historico', tone: 'neutral' },
-    { label: 'Visitantes hoy', value: 21, delta: '+4', tone: 'accent' },
     { label: 'Vacantes abiertas', value: 9, delta: '3 urgentes', tone: 'accent' },
     { label: 'Solicitudes pendientes', value: 17, delta: '6 RH', tone: 'warning' },
     { label: 'Incidencias del mes', value: 28, delta: '-3', tone: 'neutral' },
@@ -131,16 +130,16 @@ async function withFallback(res, fallbackValue, loader) {
     return res.json(fallbackValue);
   }
 }
-
 exports.dashboard = async (req, res) => {
   try {
+    // Verificamos de forma segura si los modelos existen en el objeto db antes de llamar a .count()
     const [activos, bajas, visitantesHoy, vacantes, solicitudes, incidencias] = await Promise.all([
-      db.Empleado.count({ where: { estatus: 'activo' } }).catch(() => 0),
-      db.Empleado.count({ where: { estatus: 'baja' } }).catch(() => 0),
-      db.Visitante.count({ where: { fecha_entrada: new Date().toISOString().slice(0, 10) } }).catch(() => 0),
-      db.Vacante.count({ where: { estatus: 'abierta' } }).catch(() => 0),
-      db.Solicitud.count({ where: { estatus: 'pendiente' } }).catch(() => 0),
-      db.Incidencia.count().catch(() => 0),
+      db.Empleado ? db.Empleado.count({ where: { estatus: 'activo' } }).catch(() => 0) : 0,
+      db.Empleado ? db.Empleado.count({ where: { estatus: 'baja' } }).catch(() => 0) : 0,
+      db.Visitante ? db.Visitante.count({ where: { fecha_entrada: new Date().toISOString().slice(0, 10) } }).catch(() => 0) : 0,
+      db.Vacante ? db.Vacante.count({ where: { estatus: 'abierta' } }).catch(() => 0) : 0,
+      db.Solicitud ? db.Solicitud.count({ where: { estatus: 'pendiente' } }).catch(() => 0) : 0,
+      db.Incidencia ? db.Incidencia.count().catch(() => 0) : 0,
     ]);
 
     res.json({
@@ -156,6 +155,7 @@ exports.dashboard = async (req, res) => {
       ],
     });
   } catch (error) {
+    console.error("❌ Error real en controlador de dashboard:", error);
     res.status(500).json({
       error: 'No se pudo obtener el dashboard desde la base de datos',
       details: error.message,
@@ -164,11 +164,11 @@ exports.dashboard = async (req, res) => {
 };
 
 exports.directorio = async (req, res) => withFallback(res, fallback.directory, async () => {
-  const empleados = await db.Empleado.findAll({ include: [{ association: 'area' }, { association: 'puesto' }] });
+  const empleados = await db.Empleado.findAll({ include: [{ association: 'departamento' }, { association: 'direccion' }, { association: 'puesto' }] });
   const rows = empleados.map((empleado) => ({
     id: `EMP-${String(empleado.id).padStart(3, '0')}`,
     nombre: empleado.nombre,
-    area: empleado.area?.nombre || 'Sin area',
+    area: empleado.departamento?.nombre || empleado.direccion?.nombre || 'Sin unidad',
     puesto: empleado.puesto?.nombre || 'Sin puesto',
     estatus: statusToFrontend(empleado.estatus),
     fecha_baja: empleado.fecha_baja,
@@ -276,23 +276,18 @@ exports.calendario = async (req, res) => {
 
 
 exports.organigrama = async (req, res) => withFallback(res, fallback.organigram, async () => {
-  const areas = await db.Area.findAll({ include: [{ association: 'empleados' }] });
-  const byParent = new Map();
-  areas.forEach((area) => {
-    const key = area.area_padre_id || 'root';
-    byParent.set(key, [...(byParent.get(key) || []), area]);
-  });
-
-  const build = (parentId = 'root') => (byParent.get(parentId) || []).map((area) => ({
-    name: area.nombre,
-    role: 'Area institucional',
-    children: [
-      ...(area.empleados || []).map((empleado) => ({ name: empleado.nombre, role: 'Colaborador' })),
-      ...build(area.id),
-    ],
+  const direcciones = await db.Direccion.findAll({ include: [{ association: 'departamentos' }] });
+  const byDireccion = direcciones.map((direccion) => ({
+    name: direccion.nombre,
+    role: 'Dirección',
+    children: direccion.departamentos.map((departamento) => ({
+      name: departamento.nombre,
+      role: 'Departamento',
+      children: [],
+    })),
   }));
 
-  return { name: 'Direccion General', role: 'Titular del organismo', children: build() };
+  return { name: 'Dirección General', role: 'Titular del organismo', children: byDireccion };
 });
 
 exports.solicitudes = async (req, res) => withFallback(res, fallback.solicitudes, async () => {
@@ -311,10 +306,10 @@ exports.solicitudes = async (req, res) => withFallback(res, fallback.solicitudes
 exports.normatividad = async (req, res) => withFallback(res, fallback.normatividad, async () => db.Normatividad.findAll());
 
 exports.vacantes = async (req, res) => withFallback(res, fallback.vacantes, async () => {
-  const rows = await db.Vacante.findAll({ include: [{ model: db.Area, as: 'area', required: false }] });
+  const rows = await db.Vacante.findAll({ include: [{ model: db.Departamento, as: 'departamento', required: false }] });
   return rows.map((row) => ({
     id: `VAC-${row.id}`,
-    area: row.area?.nombre || 'Sin area',
+    area: row.departamento?.nombre || 'Sin unidad',
     puesto: row.puesto,
     tipo_contrato: row.tipo_contrato,
     fecha_publicacion: row.fecha_publicacion,

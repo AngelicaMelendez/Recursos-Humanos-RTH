@@ -402,7 +402,7 @@ const isAreaLead = computed(() => normalizedRole.value.includes("jefe"));
 const canManageAnnouncements = computed(() => isAdmin.value || isAreaLead.value);
 
 const visibleSummary = computed(() =>
-  dashboardStore.summary.filter((item) => !String(item.label || "").toLowerCase().includes("pasantes"))
+  dashboardStore.summary.filter((item) => !String(item.label || "").toLowerCase().includes("pasantes") && !String(item.label || "").toLowerCase().includes("visitantes"))
 );
 
 const announcementAreaOptions = computed(() => {

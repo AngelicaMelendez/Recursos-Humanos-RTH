@@ -3,7 +3,6 @@ const ctrl = require('../controllers/directorio_Controller');
 
 
 // Áreas y puestos (para selectores)
-router.get('/areas', ctrl.listarAreas);
 router.get('/direcciones', ctrl.listarDirecciones);
 router.get('/departamentos', ctrl.listarDepartamentos);
 router.get('/puestos', ctrl.listarPuestos);

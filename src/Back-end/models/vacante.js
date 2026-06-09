@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Vacante = sequelize.define('Vacante', {
-    area_id: DataTypes.INTEGER,
+    departamento_id: DataTypes.INTEGER,
     puesto: DataTypes.STRING,
     tipo_contrato: DataTypes.STRING,
     perfil_requerido: DataTypes.TEXT,
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   }, { tableName: 'vacantes' });
 
   Vacante.associate = (models) => {
-    Vacante.belongsTo(models.Area, { foreignKey: 'area_id', as: 'area' });
+    Vacante.belongsTo(models.Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
   };
 
   return Vacante;

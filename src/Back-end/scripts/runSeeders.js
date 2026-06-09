@@ -12,10 +12,21 @@ const preferredOrder = [
   '005-seed-usuarios.js',
   '006-seed-empleado-documentos.js',
   '007-seed-historial-puestos.js',
+  '008-seed-asistencias.js',
+  '009-seed-comunicados.js',
+  '010-seed-incidencias.js',
+  '011-seed-logs.js',
+  '012-seed-normatividades.js',
+  '013-seed-notificaciones.js',
+  '014-seed-reacciones-comunicados.js',
+  '015-seed-solicitudes.js',
+  '016-seed-vacantes.js',
+  '017-seed-visitantes.js'
 ];
 
 const tablesToReport = [
-  'areas',
+  'direcciones',
+  'departamentos',
   'puestos',
   'empleados',
   'usuarios',

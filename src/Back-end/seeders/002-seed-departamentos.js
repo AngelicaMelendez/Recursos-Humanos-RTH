@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     // 1. Recuperamos las direcciones que ya deben existir en la base de datos
     const [direccionesExistentes] = await queryInterface.sequelize.query(
-      `SELECT id, nombre FROM areas WHERE tipo = 'direccion';`
+      `SELECT id, nombre FROM direcciones;`
     );
 
     // Creamos el mapa { "NOMBRE_DIRECCION": id }
@@ -233,18 +233,16 @@ module.exports = {
       const padreId = mapaDirecciones[padreNombre] || null;
       return {
         nombre: deptoNombre,
-        tipo: 'departamento',
-        area_padre_id: padreId,
+        direccion_id: padreId,
         createdAt: new Date(),
         updatedAt: new Date()
       };
     });
 
-    await queryInterface.bulkInsert('areas', datosDepartamentos);
+    await queryInterface.bulkInsert('departamentos', datosDepartamentos);
   },
 
   async down(queryInterface, Sequelize) {
-    // Borra solo las que sean tipo departamento
-    await queryInterface.bulkDelete('areas', { tipo: 'departamento' }, {});
+    await queryInterface.bulkDelete('departamentos', null, {});
   }
 };

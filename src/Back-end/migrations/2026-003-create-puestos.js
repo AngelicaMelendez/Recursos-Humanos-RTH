@@ -2,38 +2,32 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('vacantes', {
+    await queryInterface.createTable('puestos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      area_id: {
+      nombre: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      nivel: {
+        type: Sequelize.STRING(5),
+        allowNull: true,
+      },
+      departamento_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        references: {
+          model: 'departamentos',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
-      puesto: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      tipo_contrato: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      perfil_requerido: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      fecha_publicacion: {
-        type: Sequelize.DATEONLY,
-        allowNull: true,
-      },
-      estatus: {
-        type: Sequelize.ENUM('abierta', 'cerrada'),
-        allowNull: false,
-        defaultValue: 'abierta',
-      },
+      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -48,6 +42,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('vacantes');
+    await queryInterface.dropTable('puestos');
   },
 };

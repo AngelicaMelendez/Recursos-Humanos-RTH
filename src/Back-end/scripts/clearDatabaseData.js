@@ -1,7 +1,8 @@
 const sequelize = require('../config/database');
 
 const tablesToClear = [
-  'areas',
+  'direcciones',
+  'departamentos',
   'asistencias',
   'comunicados',
   'empleado_documentos',

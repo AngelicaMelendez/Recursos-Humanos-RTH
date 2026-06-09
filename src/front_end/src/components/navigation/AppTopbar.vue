@@ -10,7 +10,7 @@
     <div class="topbar__user">
       <div class="topbar__icons">
         <div ref="notificationsWrap" class="notifications-wrap">
-          <button class="icon-button" type="button" @click.stop="toggleNotifications">
+          <button class="icon-button-notifications" type="button" @click.stop="toggleNotifications">
             <span v-if="notificationsStore.unreadCount" class="icon-badge">
               {{ notificationsStore.unreadCount }}
             </span>
@@ -52,13 +52,13 @@
           </div>
         </div>
 
-        <button class="icon-button" type="button" @click="showMessages">
+        <button class="icon-button-mail" type="button" @click="showMessages">
           <IconSymbol name="mail" />
         </button>
-        <button class="icon-button" type="button" @click="showFiles">
+        <button class="icon-button-data" type="button" @click="showFiles">
           <IconSymbol name="folder" />
         </button>
-        <button class="icon-button" type="button" @click="showHelp">
+        <button class="icon-button-help" type="button" @click="showHelp">
           <IconSymbol name="help" />
         </button>
       </div>
@@ -217,7 +217,10 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
-.icon-button {
+.icon-button-data,
+.icon-button-mail,
+.icon-button-help,
+.icon-button-notifications {
   position: relative;
   border: 1px solid rgba(107, 24, 57, 0.08);
   background: rgba(107, 24, 57, 0.04);
@@ -228,7 +231,10 @@ onBeforeUnmount(() => {
   color: var(--color-primary);
 }
 
-.icon-button:hover {
+.icon-button-data:hover,
+.icon-button-mail:hover,
+.icon-button-help:hover,
+.icon-button-notifications:hover {
   background: rgba(197, 155, 82, 0.16);
 }
 

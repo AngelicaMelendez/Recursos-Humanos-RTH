@@ -1,7 +1,7 @@
 export const navigationItems = [
   { label: "Dashboard", route: "/", icon: "grid", module: "dashboard" },
   { label: "Calendario", route: "/calendario", icon: "calendar", module: "calendar" },
-    { label: "Directorio", route: "/directorio", icon: "users", module: "directory" },
+  { label: "Directorio", route: "/directorio", icon: "users", module: "directory" },
   { label: "Organigrama", route: "/organigrama", icon: "hierarchy", module: "organograma" },
   { label: "Solicitudes", route: "/solicitudes", icon: "file", module: "requests" },
   { label: "Normatividad", route: "/normatividad", icon: "shield", module: "normativity" },

@@ -10,7 +10,7 @@
     <BaseCard title="Busqueda">
       <div class="filter-grid">
         <label class="field">
-          <span>No. de Empleado o Nombre</span>
+          <span>NO. de Empleado o Nombre</span>
           <input
             ref="searchInputRef"
             v-model="searchTerm"
@@ -68,7 +68,6 @@
             <div class="row-actions">
               <button type="button" class="link-button" @click="selectEmployee(row)">Ver Datos</button>
               <button type="button" class="link-button" @click="viewOrganigrama(row)">Ver Organigrama</button>
-              <buttom type="button" class="link-button"> Actualizar Datos </buttom>
             </div>
           </template>
         </AppTable>

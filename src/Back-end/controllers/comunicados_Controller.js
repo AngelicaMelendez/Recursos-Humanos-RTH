@@ -12,7 +12,7 @@ async function obtenerUsuarioConArea(usuarioId) {
       {
         model: db.Empleado,
         as: 'empleado',
-        attributes: ['id', 'area_id'],
+        attributes: ['id', 'departamento_id', 'direccion_id'],
       },
     ],
   });
@@ -28,23 +28,27 @@ async function construirFiltroVisibilidad(req) {
   };
 
   if (esGestorComunicados(req.user.rol)) {
-    if (req.query.area_id) {
-      where.area_id = req.query.area_id;
+    if (req.query.departamento_id) {
+      where.departamento_id = req.query.departamento_id;
     }
-
+    if (req.query.direccion_id) {
+      where.direccion_id = req.query.direccion_id;
+    }
     return where;
   }
 
   const usuario = await obtenerUsuarioConArea(req.user.id);
-  const areaId = usuario?.empleado?.area_id || null;
-  where[Op.and] = [
-    {
-      [Op.or]: [
-        { area_id: null },
-        ...(areaId ? [{ area_id: areaId }] : []),
-      ],
-    },
+  const departamentoId = usuario?.empleado?.departamento_id || null;
+  const direccionId = usuario?.empleado?.direccion_id || null;
+  const filtro = [
+    { departamento_id: null },
+    { direccion_id: null },
   ];
+
+  if (departamentoId) filtro.push({ departamento_id: departamentoId });
+  if (direccionId) filtro.push({ direccion_id: direccionId });
+
+  where[Op.and] = [{ [Op.or]: filtro }];
 
   return where;
 }
@@ -57,7 +61,8 @@ exports.obtenerComunicados = async (req, res) => {
     const comunicados = await db.Comunicado.findAll({
       where,
       include: [
-        { model: db.Area, as: 'area', attributes: ['id', 'nombre'] },
+        { model: db.Departamento, as: 'departamento', attributes: ['id', 'nombre'] },
+        { model: db.Direccion, as: 'direccion', attributes: ['id', 'nombre'] },
         { model: db.Usuario, as: 'autor', attributes: ['id'] },
         { model: db.ReaccionComunicado, as: 'reacciones', attributes: ['usuario_id', 'createdAt'] },
       ],
@@ -78,7 +83,8 @@ exports.obtenerMasReciente = async (req, res) => {
     const comunicado = await db.Comunicado.findOne({
       where,
       include: [
-        { model: db.Area, as: 'area', attributes: ['id', 'nombre'] },
+        { model: db.Departamento, as: 'departamento', attributes: ['id', 'nombre'] },
+        { model: db.Direccion, as: 'direccion', attributes: ['id', 'nombre'] },
         { model: db.Usuario, as: 'autor', attributes: ['id'] },
         { model: db.ReaccionComunicado, as: 'reacciones', attributes: ['usuario_id', 'createdAt'] },
       ],
@@ -94,7 +100,7 @@ exports.obtenerMasReciente = async (req, res) => {
 // Crear comunicado (Admin/Jefe de Area)
 exports.crearComunicado = async (req, res) => {
   try {
-    const { titulo, contenido, area_id, fecha_vencimiento } = req.body;
+    const { titulo, contenido, departamento_id, direccion_id, fecha_vencimiento } = req.body;
     const usuario_id = req.user.id;
 
     if (!titulo || !contenido) {
@@ -104,7 +110,8 @@ exports.crearComunicado = async (req, res) => {
     const comunicado = await db.Comunicado.create({
       titulo,
       contenido,
-      area_id,
+      departamento_id,
+      direccion_id,
       usuario_id,
       fecha_vencimiento,
       estatus: 'activo',
@@ -120,7 +127,7 @@ exports.crearComunicado = async (req, res) => {
 exports.editarComunicado = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, contenido, area_id, fecha_vencimiento } = req.body;
+    const { titulo, contenido, departamento_id, direccion_id, fecha_vencimiento } = req.body;
 
     const comunicado = await db.Comunicado.findByPk(id);
     if (!comunicado) {
@@ -130,7 +137,8 @@ exports.editarComunicado = async (req, res) => {
     await comunicado.update({
       titulo,
       contenido,
-      area_id,
+      departamento_id,
+      direccion_id,
       fecha_vencimiento,
     });
 
@@ -194,7 +202,8 @@ exports.obtenerHistorial = async (req, res) => {
   try {
     const comunicados = await db.Comunicado.findAll({
       include: [
-        { model: db.Area, as: 'area', attributes: ['id', 'nombre'] },
+        { model: db.Departamento, as: 'departamento', attributes: ['id', 'nombre'] },
+        { model: db.Direccion, as: 'direccion', attributes: ['id', 'nombre'] },
         { model: db.Usuario, as: 'autor', attributes: ['id'] },
         { model: db.ReaccionComunicado, as: 'reacciones', attributes: ['usuario_id', 'createdAt'] },
       ],

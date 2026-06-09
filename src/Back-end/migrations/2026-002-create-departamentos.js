@@ -2,7 +2,7 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('areas', {
+    await queryInterface.createTable('departamentos', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,22 +13,16 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      tipo: {
-        type: Sequelize.ENUM('direccion', 'departamento'),
-        allowNull: false,
-        defaultValue: 'departamento',
-      },
-
-      area_padre_id: {
+      direccion_id: {
         type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {       // llave foranea
-          model: 'areas', // Nombre real de la tabla en tu base de datos}
-          key: 'id'       // Columna a la que apunta
+        allowNull: true, // Cambia a false si es obligatorio que todo departamento tenga dirección
+        references: {
+          model: 'direcciones',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-     },
+        onDelete: 'SET NULL',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -43,6 +37,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('areas');
+    await queryInterface.dropTable('departamentos');
   },
 };

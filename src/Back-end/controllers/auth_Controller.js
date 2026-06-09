@@ -9,7 +9,13 @@ function signUser(usuario) {
   const rolNormalizado = normalizeRole(usuario.rol);
 
   return jwt.sign(
-    { id: usuario.id, rol: rolNormalizado, empleado_id: usuario.empleado_id },
+    {
+      id: usuario.id,
+      rol: rolNormalizado,
+      empleado_id: usuario.empleado_id,
+      departamento_id: usuario.empleado?.departamento_id || null,
+      direccion_id: usuario.empleado?.direccion_id || null,
+    },
     process.env.JWT_SECRET || 'dev-secret',
     { expiresIn: '8h' }
   );
@@ -28,7 +34,8 @@ function toFrontendUser(usuario) {
     rol: roleLabels[rolNormalizado] || rolNormalizado,
     rol_clave: rolNormalizado,
     rol_original: usuario.rol,
-    area_id: usuario.empleado?.area_id,
+    departamento_id: usuario.empleado?.departamento_id,
+    direccion_id: usuario.empleado?.direccion_id,
   };
 }
 
@@ -45,7 +52,7 @@ exports.login = async (req, res) => {
       include: [{
         model: db.Empleado,
         as: 'empleado',
-        attributes: ['id', 'nombre', 'area_id'],
+        attributes: ['id', 'nombre', 'departamento_id', 'direccion_id'],
       }],
     });
 
@@ -55,7 +62,7 @@ exports.login = async (req, res) => {
           model: db.Empleado,
           as: 'empleado',
           where: { curp: username },
-          attributes: ['id', 'nombre', 'area_id'],
+          attributes: ['id', 'nombre', 'departamento_id', 'direccion_id'],
         }],
       });
     }
@@ -102,7 +109,7 @@ exports.register = async (req, res) => {
       include: [{
         model: db.Empleado,
         as: 'empleado',
-        attributes: ['id', 'nombre', 'area_id'],
+        attributes: ['id', 'nombre', 'departamento_id', 'direccion_id'],
       }],
     });
 
@@ -115,7 +122,7 @@ exports.register = async (req, res) => {
 exports.me = async (req, res) => {
   try {
     const usuario = await db.Usuario.findByPk(req.user.id, {
-      include: [{ model: db.Empleado, as: 'empleado', attributes: ['id', 'nombre', 'area_id'] }],
+      include: [{ model: db.Empleado, as: 'empleado', attributes: ['id', 'nombre', 'departamento_id', 'direccion_id'] }],
     });
 
     if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });

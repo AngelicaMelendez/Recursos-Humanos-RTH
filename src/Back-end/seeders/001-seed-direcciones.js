@@ -66,17 +66,14 @@ module.exports = {
 
     const datosDirecciones = direccionesUnicas.map(nombre => ({
       nombre,
-      tipo: 'direccion',
-      area_padre_id: null,
       createdAt: new Date(),
       updatedAt: new Date()
     }));
 
-    await queryInterface.bulkInsert('areas', datosDirecciones);
+    await queryInterface.bulkInsert('direcciones', datosDirecciones);
   },
 
   async down(queryInterface, Sequelize) {
-    // Borra solo las que sean tipo direccion
-    await queryInterface.bulkDelete('areas', { tipo: 'direccion' }, {});
+    await queryInterface.bulkDelete('direcciones', null, {});
   }
 };

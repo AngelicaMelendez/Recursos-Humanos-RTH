@@ -219,13 +219,10 @@ exports.obtenerResumenMes = async (req, res) => {
         {
           model: db.Empleado,
           as: 'empleado',
-          attributes: ['id', 'nombre', 'area_id'],
+          attributes: ['id', 'nombre', 'departamento_id', 'direccion_id'],
           include: [
-            {
-              model: db.Area,
-              as: 'area',
-              attributes: ['id', 'nombre'],
-            },
+            { model: db.Departamento, as: 'departamento', attributes: ['id', 'nombre'] },
+            { model: db.Direccion, as: 'direccion', attributes: ['id', 'nombre'] },
           ],
         },
       ],

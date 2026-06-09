@@ -4,44 +4,35 @@ const { Op } = require('sequelize');
 // Obtener organigrama completo (árbol jerárquico)
 exports.obtenerOrganigrama = async (req, res) => {
   try {
-    console.log('=== obtenerOrganigrama called ===');
-
-    // Obtener todos los empleados activos con su área, puesto y jefe
     const empleados = await db.Empleado.findAll({
       where: { estatus: 'activo' },
       include: [
-        { model: db.Area, as: 'area' },
+        { model: db.Departamento, as: 'departamento' },
+        { model: db.Direccion, as: 'direccion' },
         { model: db.Puesto, as: 'puesto' },
-        { model: db.Empleado, as: 'jefe', attributes: ['id', 'nombre'] }
+        { model: db.Empleado, as: 'jefe', attributes: ['id', 'nombre'] },
       ],
-      order: [['area_id', 'ASC'], ['puesto_id', 'ASC']]
+      order: [['departamento_id', 'ASC'], ['puesto_id', 'ASC']],
     });
 
-    console.log('Empleados found:', empleados.length);
-
-    // Construir árbol jerárquico basado en jefe_directo_id
     const tree = [];
     const empleadoMap = {};
 
-    // Primer paso: crear nodos para cada empleado
     empleados.forEach(emp => {
       empleadoMap[emp.id] = {
         id: emp.id,
         nombre: emp.nombre,
         puesto: emp.puesto ? emp.puesto.nombre : 'Sin puesto',
-        area: emp.area ? emp.area.nombre : 'Sin área',
+        unidad: emp.departamento?.nombre || emp.direccion?.nombre || 'Sin unidad',
         jefe_directo_id: emp.jefe_directo_id,
-        hijos: []
+        hijos: [],
       };
     });
 
-    // segundo paso: construir el árbol
     empleados.forEach(emp => {
       if (emp.jefe_directo_id && empleadoMap[emp.jefe_directo_id]) {
-        // Tiene jefe, agregarlo como hijo
         empleadoMap[emp.jefe_directo_id].hijos.push(empleadoMap[emp.id]);
       } else {
-        // No tiene jefe, es raíz
         tree.push(empleadoMap[emp.id]);
       }
     });
@@ -55,15 +46,19 @@ exports.obtenerOrganigrama = async (req, res) => {
 
 // Listar empleados para selector
 exports.listar = async (req, res) => {
-  const { page = 1, limit = 20, search, area_id, puesto_id, estatus = 'activo' } = req.query;
+  const { page = 1, limit = 20, search, departamento_id, direccion_id, puesto_id, estatus = 'activo' } = req.query;
   const where = {};
 
   if (estatus) {
     where.estatus = estatus;
   }
 
-  if (area_id) {
-    where.area_id = area_id;
+  if (departamento_id) {
+    where.departamento_id = departamento_id;
+  }
+
+  if (direccion_id) {
+    where.direccion_id = direccion_id;
   }
 
   if (puesto_id) {
@@ -91,7 +86,7 @@ exports.listar = async (req, res) => {
 
   const empleados = await db.Empleado.findAndCountAll({
     where,
-    include: ['area', 'puesto', 'jefe'],
+    include: ['departamento', 'direccion', 'puesto', 'jefe'],
     offset: (Number(page) - 1) * Number(limit),
     limit: Number(limit),
   });
@@ -100,7 +95,7 @@ exports.listar = async (req, res) => {
 
 exports.obtenerUno = async (req, res) => {
   const emp = await db.Empleado.findByPk(req.params.id, {
-    include: ['area', 'puesto', 'documentos', 'historial', 'incidencias'],
+    include: ['departamento', 'direccion', 'puesto', 'documentos', 'historial', 'incidencias'],
   });
   if (!emp) return res.status(404).json({ error: 'No encontrado' });
   res.json(emp);
@@ -115,28 +110,10 @@ exports.baja = async (req, res) => {
   res.json({ mensaje: 'Empleado dado de baja' });
 };
 
-// Listar todas las áreas
-exports.listarAreas = async (req, res) => {
-  try {
-    const areas = await db.Area.findAll({
-      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre', 'tipo'] }],
-      order: [['tipo', 'ASC'], ['nombre', 'ASC']]
-    });
-    res.json(areas);
-  } catch (error) {
-    console.error('Error al listar áreas:', error);
-    res.status(500).json({ error: 'Error al obtener áreas' });
-  }
-};
-
 exports.listarDirecciones = async (req, res) => {
   try {
-    const direcciones = await db.Area.findAll({
-      where: { tipo: 'direccion' },
-      include: [
-        { model: db.Area, as: 'padre', attributes: ['id', 'nombre', 'tipo'] },
-        { model: db.Area, as: 'subareas', attributes: ['id', 'nombre', 'tipo'] },
-      ],
+    const direcciones = await db.Direccion.findAll({
+      include: [{ model: db.Departamento, as: 'departamentos', attributes: ['id', 'nombre'] }],
       order: [['nombre', 'ASC']],
     });
     res.json(direcciones);
@@ -148,14 +125,14 @@ exports.listarDirecciones = async (req, res) => {
 
 exports.listarDepartamentos = async (req, res) => {
   try {
-    const where = { tipo: 'departamento' };
+    const where = {};
     if (req.query.direccion_id) {
-      where.area_padre_id = req.query.direccion_id;
+      where.direccion_id = req.query.direccion_id;
     }
 
-    const departamentos = await db.Area.findAll({
+    const departamentos = await db.Departamento.findAll({
       where,
-      include: [{ model: db.Area, as: 'padre', attributes: ['id', 'nombre', 'tipo'] }],
+      include: [{ model: db.Direccion, as: 'direccion', attributes: ['id', 'nombre'] }],
       order: [['nombre', 'ASC']],
     });
     res.json(departamentos);
@@ -169,8 +146,8 @@ exports.listarDepartamentos = async (req, res) => {
 exports.listarPuestos = async (req, res) => {
   try {
     const puestos = await db.Puesto.findAll({
-      include: [{ model: db.Area, as: 'area', attributes: ['id', 'nombre'] }],
-      order: [['nombre', 'ASC']]
+      include: [{ model: db.Departamento, as: 'departamento', attributes: ['id', 'nombre'] }],
+      order: [['nombre', 'ASC']],
     });
     res.json(puestos);
   } catch (error) {

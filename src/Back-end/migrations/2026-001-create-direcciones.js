@@ -2,7 +2,8 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('puestos', {
+
+    await queryInterface.createTable('direcciones', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,24 +11,9 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       nombre: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
-      nivel: {
-        type: Sequelize.STRING(5),
-        allowNull: true,
-      },
-      area_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'areas',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      },
-      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -42,6 +28,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('puestos');
+    await queryInterface.dropTable('direcciones');
   },
 };

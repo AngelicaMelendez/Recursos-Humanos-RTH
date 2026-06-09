@@ -2,42 +2,43 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('comunicados', {
+    await queryInterface.createTable('vacantes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      contenido: {
-        type: Sequelize.TEXT,
-        allowNull: false,
+      departamento_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'departamentos',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
-      titulo: {
+      puesto: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      area_id: {
-        type: Sequelize.INTEGER,
         allowNull: true,
       },
-      usuario_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      tipo: {
-        type: Sequelize.ENUM('publico', 'privado'),
+      tipo_contrato: {
+        type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: 'publico',
       },
-      fecha_vencimiento: {
+      perfil_requerido: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      fecha_publicacion: {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
       estatus: {
-        type: Sequelize.ENUM('activo', 'vencido', 'archivado'),
+        type: Sequelize.ENUM('abierta', 'cerrada'),
         allowNull: false,
-        defaultValue: 'activo',
+        defaultValue: 'abierta',
       },
       createdAt: {
         allowNull: false,
@@ -53,6 +54,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('comunicados');
+    await queryInterface.dropTable('vacantes');
   },
 };

@@ -9,19 +9,19 @@ module.exports = {
     await queryInterface.sequelize.query('ALTER TABLE `puestos` AUTO_INCREMENT = 1;');
 
     const puestos = [
-      {    // ====== ÁREA: INFORMATICA ======
+      {    // ====== DIRECCIÓN: INFORMATICA ======
         id: 1,
         nombre: "JEFE DE AREA A",
         nivel: "89A",
-        area_id: 38,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {      // ====== ÁREA: DIRECCION GENERAL ======
+      {      // ====== DIRECCIÓN: DIRECCION GENERAL ======
         id: 2,
         nombre: "DIRECTOR GENERAL",
         nivel: "12B",
-        area_id: 1,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -29,7 +29,7 @@ module.exports = {
         id: 3,
         nombre: "SUBDIRECTOR DE AREA C",
         nivel: "10C",
-        area_id: 1,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -37,7 +37,7 @@ module.exports = {
         id:4,
         nombre:"SUBDIRECTOR ADJUNTO A",
         nivel: "10A",
-        area_id:1,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -45,7 +45,7 @@ module.exports = {
         id:5,
         nombre:"JEFE DE AREA A",
         nivel: "89A",
-        area_id: 1,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -53,7 +53,7 @@ module.exports = {
         id:6,
         nombre:"JEFE DE AREA A",
         nivel: "89A",
-        area_id: 1,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -61,7 +61,7 @@ module.exports = {
         id:7,
         nombre:"JEFE  AREA A",
         nivel: "89A",
-        area_id: 38,
+        departamento_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       }

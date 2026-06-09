@@ -30,12 +30,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      tipo_Sanguineo: {
+        type: Sequelize.STRING(3),
+        allowNull: true,
+      },
       fecha_ingreso: {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
       tipo_contrato: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM('honorarios', 'funcionarios', 'confianza', 'base', 'indefinido'),
         allowNull: true,
       },
       estatus: {
@@ -43,20 +47,27 @@ module.exports = {
         allowNull: false,
         defaultValue: 'activo',
       },
-      direccion: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      area_id: {
+      direccion_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: {       // llave foranea
-          model: 'areas', // Nombre real de la tabla en tu base de datos
-          key: 'id'       // Columna a la que apunta
+        references: {
+          model: 'direcciones',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
+      departamento_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'departamentos',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
+      
       puesto_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -71,15 +82,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true, // Si se borra el jefe directo, el campo queda libre en NULL
       },
-      banco: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      cuenta: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      clabe: {
+      clabe_bancaria: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -99,10 +102,7 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
-      motivo_baja: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+
       documento_baja: {
         type: Sequelize.STRING,
         allowNull: true,
