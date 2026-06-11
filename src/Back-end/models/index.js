@@ -17,7 +17,7 @@ fs.readdirSync(__dirname)
         db[model.name] = model;
       }
     } catch (error) {
-      console.error(`❌ Error al cargar archivo automático ${file}:`, error.message);
+      console.error(` Error al cargar archivo automático ${file}:`, error.message);
     }
   });
 
@@ -29,16 +29,16 @@ if (!db.Empleado) {
     const empleadoFunc = require('./Empleado.js'); 
     const empleadoModel = empleadoFunc(sequelize, Sequelize.DataTypes);
     db[empleadoModel.name] = empleadoModel;
-    console.log("🚀 ¡Modelo Empleado inyectado con éxito mediante carga forzada manual!");
+    console.log(" ¡Modelo Empleado inyectado con éxito mediante carga forzada manual!");
   } catch (err) {
     try {
       // Intento B por si el archivo está en minúsculas en el disco
       const empleadoFunc = require('./empleado.js');
       const empleadoModel = empleadoFunc(sequelize, Sequelize.DataTypes);
       db[empleadoModel.name] = empleadoModel;
-      console.log("🚀 ¡Modelo empleado (minúscula) inyectado con éxito mediante carga forzada manual!");
+      console.log(" ¡Modelo empleado (minúscula) inyectado con éxito mediante carga forzada manual!");
     } catch (err2) {
-      console.error("🚨 Error crítico: No se pudo forzar la carga de Empleado de ninguna forma:", err2.message);
+      console.error("Error crítico: No se pudo forzar la carga de Empleado de ninguna forma:", err2.message);
     }
   }
 }
