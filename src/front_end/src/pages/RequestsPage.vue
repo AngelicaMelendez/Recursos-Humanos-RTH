@@ -94,17 +94,18 @@
       </AppTable>
     </BaseCard>
 
-    <BaseCard
+  
+    <BaseCard 
       v-else
-      title="Generar solicitud"
-      subtitle="Tu solicitud quedara pendiente para revision administrativa."
+      title="Generar solicitud"     
+      subtitle="Tu solicitud quedara pendiente para revision administrativa."    
     >
       <p class="request-access-note">
         La consulta, aprobacion y rechazo de solicitudes esta disponible solo para administradores.
       </p>
       <button class="primary-button" type="button" @click="openCreateModal">
         <IconSymbol name="plus" />
-        Nueva solicitud
+        Nueva Solicitud
       </button>
     </BaseCard>
 
@@ -197,7 +198,7 @@ import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
-import { getRoleActions, hasAnyRole, ROLE_KEYS } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
@@ -255,7 +256,7 @@ const currentEmployeeId = computed(() =>
   authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
 );
 const canApproveRequests = computed(() =>
-  hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH])
+  hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS)
 );
 const canManageRequests = computed(() => canApproveRequests.value);
 const filterPlaceholder = computed(() =>
@@ -774,6 +775,10 @@ onMounted(loadRequests);
 .primary-button--danger {
   border-color: var(--color-danger);
   background: var(--color-danger);
+}
+
+.primary-button:hover {
+  background: red;
 }
 
 .secondary-button {

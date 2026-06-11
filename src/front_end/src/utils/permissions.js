@@ -1,63 +1,47 @@
 export const ROLE_KEYS = {
+  SUPER_USER: "super_usuario",
   ADMIN_RH: "admin_rh",
-  DIRECCION: "direccion_general",
-  JEFE_AREA: "jefe_area",
-  SUBJEFE_AREA: "subjefe_area",
-  RESPONSABLE_DEPARTAMENTO: "responsable_departamento",
-  EMPLEADO: "empleado",
-  RECEPCION: "recepcion"
+  EMPLEADO: "empleado"
 };
 
 const ALL_ROLES = Object.values(ROLE_KEYS);
 
 export const ROLE_GROUPS = {
   APPROVERS: [
-    ROLE_KEYS.ADMIN_RH,
-    ROLE_KEYS.DIRECCION,
-    ROLE_KEYS.JEFE_AREA,
-    ROLE_KEYS.SUBJEFE_AREA,
-    ROLE_KEYS.RESPONSABLE_DEPARTAMENTO
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.ADMIN_RH
   ],
   ANNOUNCEMENT_MANAGERS: [
-    ROLE_KEYS.ADMIN_RH,
-    ROLE_KEYS.JEFE_AREA,
-    ROLE_KEYS.SUBJEFE_AREA,
-    ROLE_KEYS.RESPONSABLE_DEPARTAMENTO
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.ADMIN_RH
+    
   ],
   ATTENDANCE_REVIEW: [
+    ROLE_KEYS.SUPER_USER,
     ROLE_KEYS.ADMIN_RH,
-    ROLE_KEYS.JEFE_AREA,
-    ROLE_KEYS.SUBJEFE_AREA,
-    ROLE_KEYS.RESPONSABLE_DEPARTAMENTO
+    ROLE_KEYS.EMPLEADO
   ]
 };
 
 const roleAliases = {
-  admin: ROLE_KEYS.ADMIN_RH,
-  administrador: ROLE_KEYS.ADMIN_RH,
-  admin_rh: ROLE_KEYS.ADMIN_RH,
+  // Variantes para Super Usuario
+  "superuser": ROLE_KEYS.SUPER_USER,
+  "super_usuario": ROLE_KEYS.SUPER_USER,
+  "super usuario": ROLE_KEYS.SUPER_USER,
+  "super-usuario": ROLE_KEYS.SUPER_USER,
+
+  // Variantes para Administrador de RH
+  "admin": ROLE_KEYS.ADMIN_RH,
+  "administrador": ROLE_KEYS.ADMIN_RH,
+  "admin_rh": ROLE_KEYS.ADMIN_RH,
+  "admin-rh": ROLE_KEYS.ADMIN_RH,
   "administrador rh": ROLE_KEYS.ADMIN_RH,
-  direccion: ROLE_KEYS.DIRECCION,
-  direccion_general: ROLE_KEYS.DIRECCION,
-  director_general: ROLE_KEYS.DIRECCION,
-  "direccion general": ROLE_KEYS.DIRECCION,
-  "dirección general": ROLE_KEYS.DIRECCION,
-  jefe: ROLE_KEYS.JEFE_AREA,
-  jefe_area: ROLE_KEYS.JEFE_AREA,
-  "jefe de area": ROLE_KEYS.JEFE_AREA,
-  "jefe de área": ROLE_KEYS.JEFE_AREA,
-  "jefes de area": ROLE_KEYS.JEFE_AREA,
-  subjefe: ROLE_KEYS.SUBJEFE_AREA,
-  subjefe_area: ROLE_KEYS.SUBJEFE_AREA,
-  "subjefe de area": ROLE_KEYS.SUBJEFE_AREA,
-  "subjefe de área": ROLE_KEYS.SUBJEFE_AREA,
-  subdireccion: ROLE_KEYS.SUBJEFE_AREA,
-  responsable_departamento: ROLE_KEYS.RESPONSABLE_DEPARTAMENTO,
-  jefe_departamento: ROLE_KEYS.RESPONSABLE_DEPARTAMENTO,
-  departamento: ROLE_KEYS.RESPONSABLE_DEPARTAMENTO,
-  "responsable de departamento": ROLE_KEYS.RESPONSABLE_DEPARTAMENTO,
-  empleado: ROLE_KEYS.EMPLEADO,
-  recepcion: ROLE_KEYS.RECEPCION
+  "administrador_rh": ROLE_KEYS.ADMIN_RH,
+
+  // Variantes para Empleado
+  "empleado": ROLE_KEYS.EMPLEADO,
+  "user": ROLE_KEYS.EMPLEADO,
+  "usuario": ROLE_KEYS.EMPLEADO
 };
 
 const moduleByRoute = {
@@ -75,13 +59,9 @@ const moduleByRoute = {
 };
 
 export const roleLabels = {
+  [ROLE_KEYS.SUPER_USER]: "Super Usuario",
   [ROLE_KEYS.ADMIN_RH]: "Administrador RH",
-  [ROLE_KEYS.DIRECCION]: "Direccion General",
-  [ROLE_KEYS.JEFE_AREA]: "Jefe de Area",
-  [ROLE_KEYS.SUBJEFE_AREA]: "Subjefe de Area",
-  [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: "Responsable de Departamento",
-  [ROLE_KEYS.EMPLEADO]: "Empleado",
-  [ROLE_KEYS.RECEPCION]: "Recepcion"
+  [ROLE_KEYS.EMPLEADO]: "Empleado"
 };
 
 export const modulePermissions = {
@@ -92,8 +72,8 @@ export const modulePermissions = {
   requests: ALL_ROLES,
   normativity: ALL_ROLES,
   vacancies: ALL_ROLES,
-  visitors: ALL_ROLES,
-  audit: ALL_ROLES,
+  visitors: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.ADMIN_RH],
+  audit: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.ADMIN_RH],
   comunicados: ALL_ROLES,
   attendance: ALL_ROLES
 };
@@ -136,68 +116,38 @@ const actionCatalog = {
 
 export const roleActionsByModule = {
   directory: {
+    [ROLE_KEYS.SUPER_USER]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.ADMIN_RH]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
-    [ROLE_KEYS.DIRECCION]: ["viewDirectory"],
-    [ROLE_KEYS.JEFE_AREA]: ["viewDirectory"],
-    [ROLE_KEYS.SUBJEFE_AREA]: ["viewDirectory"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["viewDirectory"],
-    [ROLE_KEYS.EMPLEADO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
-    [ROLE_KEYS.RECEPCION]: ["viewDirectory"]
+    [ROLE_KEYS.EMPLEADO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"]
   },
   requests: {
+    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.DIRECCION]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.JEFE_AREA]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
-    // ✅ Agregados los privilegios que faltaban para Subjefes y Responsables tras el merge
-    [ROLE_KEYS.SUBJEFE_AREA]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.RECEPCION]: ["createRequest", "deleteRequest", "viewRequests"]
+    [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"]
   },
   vacancies: {
+    [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
     [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.DIRECCION]: ["viewVacancies"],
-    [ROLE_KEYS.JEFE_AREA]: ["viewVacancies"],
-    [ROLE_KEYS.SUBJEFE_AREA]: ["viewVacancies"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["viewVacancies"],
-    [ROLE_KEYS.EMPLEADO]: ["viewVacancies"],
-    [ROLE_KEYS.RECEPCION]: ["viewVacancies"]
+    [ROLE_KEYS.EMPLEADO]: ["viewVacancies"]
   },
   normativity: {
+    [ROLE_KEYS.SUPER_USER]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
     [ROLE_KEYS.ADMIN_RH]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.DIRECCION]: ["viewNormativity"],
-    [ROLE_KEYS.JEFE_AREA]: ["viewNormativity"],
-    [ROLE_KEYS.SUBJEFE_AREA]: ["viewNormativity"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["viewNormativity"],
-    [ROLE_KEYS.EMPLEADO]: ["viewNormativity"],
-    [ROLE_KEYS.RECEPCION]: ["viewNormativity"]
+    [ROLE_KEYS.EMPLEADO]: ["viewNormativity"]
   },
   visitors: {
-    [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
-    [ROLE_KEYS.RECEPCION]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors"],
-    [ROLE_KEYS.DIRECCION]: ["viewVisitors"],
-    [ROLE_KEYS.JEFE_AREA]: ["viewVisitors"],
-    [ROLE_KEYS.SUBJEFE_AREA]: ["viewVisitors"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["viewVisitors"],
-    [ROLE_KEYS.EMPLEADO]: ["viewVisitors"]
+    [ROLE_KEYS.SUPER_USER]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
+    [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"]
   },
   comunicados: {
+    [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.ADMIN_RH]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.DIRECCION]: ["verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.JEFE_AREA]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.SUBJEFE_AREA]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.RECEPCION]: ["verComunicados", "reaccionarComunicado"]
+    [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"]
   },
   attendance: {
+    [ROLE_KEYS.SUPER_USER]: ["registrarAsistencia", "verHistorialAsistencia"],
     [ROLE_KEYS.ADMIN_RH]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.DIRECCION]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.JEFE_AREA]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.SUBJEFE_AREA]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.RESPONSABLE_DEPARTAMENTO]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.EMPLEADO]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.RECEPCION]: ["registrarAsistencia", "verHistorialAsistencia"]
+    [ROLE_KEYS.EMPLEADO]: ["registrarAsistencia", "verHistorialAsistencia"]
   }
 };
 

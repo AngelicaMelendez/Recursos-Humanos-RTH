@@ -62,7 +62,6 @@ defineEmits(["select"]);
 .role-actions__button:hover {
   transform: translateY(-2px);
   border-color: var(--color-accent);
-  background: var(--color-surface-muted);
   box-shadow: 0 10px 24px rgba(98, 17, 50, 0.08);
 }
 

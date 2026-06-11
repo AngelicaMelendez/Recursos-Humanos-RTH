@@ -217,7 +217,7 @@ import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import { useAuthStore } from "@/store/auth";
 import { useComunicadosStore } from "@/store/comunicados";
 import comunicadosService from "@/services/comunicados.service";
-import { getRoleActions, hasAnyRole, ROLE_GROUPS, ROLE_KEYS } from "@/utils/permissions";
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 
 const comunicadosStore = useComunicadosStore();
 const authStore = useAuthStore();
@@ -241,7 +241,7 @@ const formulario = ref({
 
 const formularioOriginal = ref(null);
 
-const isAdmin = computed(() => hasAnyRole(authStore.user, [ROLE_KEYS.ADMIN_RH]));
+const isAdmin = computed(() => hasAnyRole(authStore.user, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS));
 const canManageAnnouncements = computed(() =>
   hasAnyRole(authStore.user, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS)
 );

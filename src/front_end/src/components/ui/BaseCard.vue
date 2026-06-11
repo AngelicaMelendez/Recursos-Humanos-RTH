@@ -29,6 +29,8 @@ defineProps({
 .base-card {
   padding: 22px;
   width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .base-card__header {
