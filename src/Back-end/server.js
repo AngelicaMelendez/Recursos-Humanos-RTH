@@ -1,6 +1,4 @@
-console.log("=========================================");
-console.log("🚀 ¡ESTE SÍ ES EL BACKEND REAL QUE ESTÁ CORRIENDO!");
-console.log("=========================================");
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -40,7 +38,7 @@ const PORT = process.env.PORT || 3000;
 
 async function connectDatabase() {
   try {
-    console.log('Intentando conectar a la base de datos:', {
+    console.log('Intentando conectar a la base de datos.....', {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
       database: process.env.DB_NAME,
@@ -66,7 +64,7 @@ async function connectDatabase() {
       console.log('DB_SEED_ON_STARTUP=true, pero la base ya tiene datos. Usa npm run db:reset-data para recargar seeders.');
     }
 
-    console.log('Base de datos conectada');
+    console.log('Base de datos conectada exitosamente :D');
   } catch (error) {
     console.error('No se pudo conectar a la base de datos. La API usara respuestas de respaldo.');
     console.error('Error completo:', error);
