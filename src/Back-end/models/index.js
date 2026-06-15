@@ -26,7 +26,7 @@ fs.readdirSync(__dirname)
 if (!db.Empleado) {
   try {
     // Forzamos el require directo al archivo del empleado en la misma carpeta
-    const empleadoFunc = require('./Empleado.js'); 
+    const empleadoFunc = require('./empleado.js'); 
     const empleadoModel = empleadoFunc(sequelize, Sequelize.DataTypes);
     db[empleadoModel.name] = empleadoModel;
     console.log("🚀 ¡Modelo Empleado inyectado con éxito mediante carga forzada manual!");

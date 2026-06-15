@@ -2,7 +2,7 @@ const router = require('express').Router();
 const ctrl = require('../controllers/comunicados_Controller');
 const auth = require('../middleware/auth');
 const roles = require('../middleware/roles');
-const { ROLE_GROUPS, ROLE_KEYS } = require('../utils/roles');
+const { ROLE_GROUPS } = require('../utils/roles');
 
 // Rutas públicas (lectura)
 router.get('/', auth, ctrl.obtenerComunicados);
@@ -20,8 +20,8 @@ router.patch('/:id', auth, roles(ROLE_GROUPS.ANNOUNCEMENT_MANAGERS), ctrl.editar
 // Eliminar comunicado (Admin y Jefe de Area)
 router.delete('/:id', auth, roles(ROLE_GROUPS.ANNOUNCEMENT_MANAGERS), ctrl.eliminarComunicado);
 
-// Historial y reacciones (Solo Admin)
-router.get('/admin/historial', auth, roles([ROLE_KEYS.ADMIN_RH]), ctrl.obtenerHistorial);
-router.get('/:id/reacciones', auth, roles([ROLE_KEYS.ADMIN_RH]), ctrl.obtenerReacciones);
+// Historial y reacciones (Admin RH y Super Usuario)
+router.get('/admin/historial', auth, roles(ROLE_GROUPS.ANNOUNCEMENT_MANAGERS), ctrl.obtenerHistorial);
+router.get('/:id/reacciones', auth, roles(ROLE_GROUPS.ANNOUNCEMENT_MANAGERS), ctrl.obtenerReacciones);
 
 module.exports = router;

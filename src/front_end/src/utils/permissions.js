@@ -24,13 +24,11 @@ export const ROLE_GROUPS = {
 };
 
 const roleAliases = {
-  // Variantes para Super Usuario
   "superuser": ROLE_KEYS.SUPER_USER,
   "super_usuario": ROLE_KEYS.SUPER_USER,
   "super usuario": ROLE_KEYS.SUPER_USER,
   "super-usuario": ROLE_KEYS.SUPER_USER,
 
-  // Variantes para Administrador de RH
   "admin": ROLE_KEYS.ADMIN_RH,
   "administrador": ROLE_KEYS.ADMIN_RH,
   "admin_rh": ROLE_KEYS.ADMIN_RH,
@@ -38,7 +36,6 @@ const roleAliases = {
   "administrador rh": ROLE_KEYS.ADMIN_RH,
   "administrador_rh": ROLE_KEYS.ADMIN_RH,
 
-  // Variantes para Empleado
   "empleado": ROLE_KEYS.EMPLEADO,
   "user": ROLE_KEYS.EMPLEADO,
   "usuario": ROLE_KEYS.EMPLEADO
@@ -73,7 +70,7 @@ export const modulePermissions = {
   normativity: ALL_ROLES,
   vacancies: ALL_ROLES,
   visitors: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.ADMIN_RH],
-  audit: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.ADMIN_RH],
+  audit: [ROLE_KEYS.SUPER_USER],
   comunicados: ALL_ROLES,
   attendance: ALL_ROLES
 };

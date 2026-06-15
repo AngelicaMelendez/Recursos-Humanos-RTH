@@ -217,4 +217,9 @@ onMounted(async () => {
     width: 100%;
   }
 }
+
+.page-header{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 </style>

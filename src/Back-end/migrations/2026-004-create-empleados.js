@@ -30,6 +30,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      grado_de_estudios: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       tipo_Sanguineo: {
         type: Sequelize.STRING(3),
         allowNull: true,

@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
+    grado_de_estudios: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     tipo_Sanguineo: {
       type: DataTypes.STRING(3),
       allowNull: true

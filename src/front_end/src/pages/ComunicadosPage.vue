@@ -813,6 +813,11 @@ onMounted(async () => {
   color: var(--color-primary);
 }
 
+.role-actions{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
 @media (max-width: 900px) {
   .modal-header,
   .modal-footer,

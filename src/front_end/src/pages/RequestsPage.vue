@@ -53,7 +53,7 @@
             Limpiar
           </button>
           <button class="ghost-button" type="button" @click="loadRequests">
-          <IconSymbol name="activity" />
+          <IconSymbol name="reset" />
           Actualizar
         </button>
         </div>
@@ -487,6 +487,7 @@ onMounted(loadRequests);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .request-summary__item {
@@ -621,6 +622,10 @@ onMounted(loadRequests);
   padding: 9px 12px;
   background: var(--color-surface);
   color: var(--color-text);
+}
+
+.ghost-button:hover {
+  transform: translateY(-1px);
 }
 
 .icon-action {
@@ -778,7 +783,7 @@ onMounted(loadRequests);
 }
 
 .primary-button:hover {
-  background: red;
+  transform: translateY(-1px);
 }
 
 .secondary-button {
@@ -786,13 +791,24 @@ onMounted(loadRequests);
   color: var(--color-text);
 }
 
+.secondary-button:hover {
+  transform: translateY(-1px);
+}
+
+.page-header{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
 button:disabled {
   cursor: not-allowed;
   opacity: 0.65;
 }
 
-
-
+.role-actions {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 
 @media (max-width: 680px) {
   .request-summary,

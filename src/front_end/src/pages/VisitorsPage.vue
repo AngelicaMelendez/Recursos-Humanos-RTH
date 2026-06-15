@@ -184,6 +184,11 @@ const closeModal = () => {
   gap: 8px;
 }
 
+.role-actions{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
 .icon-action,
 .primary-button,
 .secondary-button {
@@ -265,6 +270,11 @@ const closeModal = () => {
 .secondary-button {
   background: var(--color-surface-muted);
   color: var(--color-text);
+}
+
+.page-header{
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 
