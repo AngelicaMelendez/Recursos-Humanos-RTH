@@ -180,7 +180,7 @@ const getEventIconName = (title) => {
   if (normalizedTitle.includes("solicitud pendiente")) return "calendar";
   if (normalizedTitle.includes("vacaciones")) return "sun";
   if (normalizedTitle.includes("cumple")) return "cake";
-  if (normalizedTitle.includes("comision") || normalizedTitle.includes("comisión")) return "briefcase";
+  if (normalizedTitle.includes("Comision") || normalizedTitle.includes("Comisión")) return "briefcase";
   if (normalizedTitle.includes("Maternidad") || normalizedTitle.includes("paternidad")) return "heart";
   if (normalizedTitle.includes("incapacidad")) return "bandage";
   if (normalizedTitle.includes("permiso")) return "shield";
@@ -454,11 +454,9 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-event-main) {
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   gap: 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
 }
 
 :deep(.event-inline-icon) {
@@ -469,11 +467,13 @@ const calendarOptions = computed(() => ({
 }
 
 :deep(.event-title-text) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.75rem;
-  font-weight: 600;
+  text-overflow: clip;
+  white-space: normal;
+  font-size: 0.66rem;
+  font-weight: 750;
+  word-break: break-word;
+  
+  
 }
 
 :deep(.fc-daygrid-event) {

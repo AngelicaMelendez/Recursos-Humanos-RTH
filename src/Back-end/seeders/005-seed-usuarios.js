@@ -153,7 +153,7 @@ module.exports = {
         nombre: 'Omar Efren',
         apellidos: 'Vazquez Moreno',
         empleado_id: null,
-        rol: 'admin_rh',
+        rol: 'super_usuario',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', //->123456
         createdAt: new Date(),
         updatedAt: new Date()
@@ -164,7 +164,7 @@ module.exports = {
         nombre: 'Axel',
         apellidos: 'Antonio Alarcon',
         empleado_id: null,
-        rol: 'admin_rh',
+        rol: 'super_usuario',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
         updatedAt: new Date()
@@ -175,9 +175,9 @@ module.exports = {
         nombre: 'Angelica',
         apellidos: 'Melendez Lopez',
         empleado_id: null,
-        rol: 'admin_rh',
+        rol: 'super_usuario',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
-        createdAt: new Date(),
+        createdAt: new Date(), 
         updatedAt: new Date()
       },
       {

@@ -258,7 +258,7 @@ exports.calendario = async (req, res) => {
         })),
         ...solicitudes.map((item) => ({
           id: `SOL-${item.id}`,
-          title: `Solicitud pendiente - ${item.empleado?.nombre || `EMP-${String(item.empleado_id).padStart(3, '0')}`}`,
+          title: `Solicitud Pendiente - ${item.empleado?.nombre || `EMP-${String(item.empleado_id).padStart(3, '0')}`}`,
           start: item.fecha_inicio,
           end: addOneDay(item.fecha_fin),
           color: colorPorTipo[item.tipo] || colorPorTipo.otro,

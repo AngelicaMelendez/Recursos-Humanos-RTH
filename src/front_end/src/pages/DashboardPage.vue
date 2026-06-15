@@ -3,7 +3,7 @@
     <PageHeader>
         <h2 class="header-star-welcome">
           <img :src="star" alt="Estrella"/>
-            Bienvenid@!! {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || 'Usuario' }} <span class="pill neutral">{{ todayLabel }}</span>
+            Bienvenid@!! {{ authStore.user?.nombre || authStore.user?.name || authStore.user?.usuario || authStore.user?.rol || authStore.user?.area || 'Usuario' }} <span class="pill neutral">{{ todayLabel }}</span>
         </h2>
         <p>
           Bienvenido podras ver un resumen del dia, tu registro , comunicados , tus solicitudes y mucho mas!! ...
@@ -450,7 +450,7 @@ const todayLabel = computed(() =>
   new Intl.DateTimeFormat("es-MX", {
     weekday: "long",
     day: "2-digit",
-    month: "long"
+    month: "long",
   }).format(new Date())
 );
 

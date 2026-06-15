@@ -31,3 +31,12 @@ const loadEvents = async () => {
 
 onMounted(loadEvents);
 </script>
+
+<style scoped>
+
+.page-header{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+</style>

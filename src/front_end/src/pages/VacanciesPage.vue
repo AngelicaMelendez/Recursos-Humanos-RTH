@@ -100,5 +100,15 @@ const rows = ref([
   color: var(--color-success);
   font-weight: 700;
 }
+
+.role-actions{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.page-header{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 </style>
 
