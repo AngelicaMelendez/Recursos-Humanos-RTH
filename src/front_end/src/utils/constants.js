@@ -14,7 +14,6 @@ export const dashboardFallback = {
   summary: [
     { label: "Empleados activos", value: 184, delta: "+6", tone: "primary" },
     { label: "Exempleados", value: 37, delta: "Histórico", tone: "neutral" },
-    { label: "Visitantes hoy", value: 21, delta: "+4", tone: "accent" },
     { label: "Vacantes abiertas", value: 9, delta: "3 urgentes", tone: "accent" },
     { label: "Solicitudes pendientes", value: 17, delta: "6 RH", tone: "warning" },
     { label: "Incidencias del mes", value: 28, delta: "-3", tone: "neutral" },

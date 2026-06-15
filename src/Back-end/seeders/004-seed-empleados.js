@@ -53,7 +53,7 @@ module.exports = {
         curp: null,
         rfc: null,
         estatus: 'activo',
-        direccion_id: 11,
+        direccion_id: 7,
         departamento_id: 2,
         puesto_id: 2,
         jefe_directo_id: null,

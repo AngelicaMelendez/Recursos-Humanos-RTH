@@ -8,55 +8,71 @@
     <p v-if="notice" class="notice">{{ notice }}</p>
 
     <BaseCard title="Busqueda">
-      <div class="filter-grid">
-        <label class="field">
-          <span>NO. de Empleado o Nombre</span>
-          <input
-            ref="searchInputRef"
-            v-model="searchTerm"
-            @change="resolveEmployeeSelection"
-            list="employeeSuggestions"
-            placeholder="EMP-001 / Nombre"
-          />
-          <datalist id="employeeSuggestions">
-            <option v-for="option in employeeSuggestions" :key="option" :value="option" />
-          </datalist>
-        </label>
+  <div class="filter-grid">
+    <label class="field">
+      <span>NO. de Empleado o Nombre</span>
+      <input
+        ref="searchInputRef"
+        v-model="searchTerm"
+        @change="resolveEmployeeSelection"
+        list="employeeSuggestions"
+        placeholder="EMP-001 / Nombre"
+      />
+      <datalist id="employeeSuggestions">
+        <option v-for="option in employeeSuggestions" :key="option" :value="option" />
+      </datalist>
+    </label>
 
-        <template v-if="showAreaPuesto">
-          <label class="field">
-            <span>Área</span>
-            <input
-              v-model="areaName"
-              @change="resolveAreaSelection"
-              list="areaList"
-              placeholder="Selecciona o Escribe Área"
-            />
-            <datalist id="areaList">
-              <option v-for="area in areas" :key="area.id" :value="area.nombre" />
-            </datalist>
-          </label>
+    <template v-if="showDepartamentoPuesto">
+      
+      <label class="field">
+        <span>Dirección</span>
+        <input
+          v-model="direccionName"
+          @change="resolveDireccionSelection"
+          list="direccionList"
+          placeholder="Selecciona o Escribe Dirección"
+        />
+        <datalist id="direccionList">
+          <option v-for="dir in direcciones" :key="dir.id" :value="dir.nombre" />
+        </datalist>
+      </label>
 
-          <label class="field">
-            <span>Puesto</span>
-            <input
-              v-model="puestoName"
-              @change="resolvePuestoSelection"
-              :list="filteredPuestos.length ? 'puestoList' : null"
-              :disabled="!areas.length"
-              placeholder="Selecciona o Escribe Puesto"
-            />
-            <datalist id="puestoList">
-              <option v-for="puesto in filteredPuestos" :key="puesto.id" :value="puesto.nombre" />
-            </datalist>
-          </label>
-        </template>
-        <div class="filter-actions">
-          <button type="button" class="primary" @click="fetchEmployees"> <IconSymbol name="search" /> Buscar</button>
-          <button type="button" class="secondary" @click="clearFilters"> <IconSymbol name="clear" /> Limpiar</button>
-        </div>
-      </div>
-    </BaseCard>
+      <label class="field">
+        <span>Departamento</span>
+        <input
+          v-model="departamentoName"
+          @change="resolveDepartamentoSelection"
+          :list="filteredDepartamentos.length ? 'departamentoList' : null"
+          :disabled="!filteredDepartamentos.length"
+          placeholder="Selecciona o Escribe Departamento"
+        />
+        <datalist id="departamentoList">
+          <option v-for="dep in filteredDepartamentos" :key="dep.id" :value="dep.nombre" />
+        </datalist>
+      </label>
+
+      <label class="field">
+        <span>Puesto</span>
+        <input
+          v-model="puestoName"
+          @change="resolvePuestoSelection"
+          :list="filteredPuestos.length ? 'puestoList' : null"
+          :disabled="!filteredPuestos.length"
+          placeholder="Selecciona o Escribe Puesto"
+        />
+        <datalist id="puestoList">
+          <option v-for="puesto in filteredPuestos" :key="puesto.id" :value="puesto.nombre" />
+        </datalist>
+      </label>
+    </template>
+
+    <div class="filter-actions">
+      <button type="button" class="primary" @click="fetchEmployees"> <IconSymbol name="search" /> Buscar</button>
+      <button type="button" class="secondary" @click="clearFilters"> <IconSymbol name="clear" /> Limpiar</button>
+    </div>
+  </div>
+</BaseCard>
 
     <div class="section-gap">
       <BaseCard title="Resultados" subtitle="Lista de empleados que cumplen los criterios de búsqueda.">
@@ -161,13 +177,16 @@ const notice = ref("");
 const loading = ref(false);
 const searchTerm = ref("");
 const searchInputRef = ref(null);
-const areaName = ref("");
+const direccionName = ref("");
+const departamentoName = ref("");
 const puestoName = ref("");
-const selectedAreaId = ref("");
+const selectedDireccionId = ref("");
+const selectedDepartamentoId = ref("");
 const selectedPuestoId = ref("");
 const employees = ref([]);
 const selectedEmployee = ref(null);
-const areas = ref([]);
+const direcciones = ref([]);
+const departamentos = ref([]);
 const puestos = ref([]);
 const employeeSuggestions = ref([]);
 const showAreaPuesto = ref(false);
@@ -178,7 +197,8 @@ const actions = computed(() => getRoleActions(authStore.user?.rol, "directory"))
 const columns = [
   { key: "numero", label: "No. empleado" },
   { key: "nombre", label: "Nombre" },
-  { key: "area", label: "Área" },
+  { key: "direccion", label: "Direccion" },
+  { key: "departamento", label: "Departamento" },
   { key: "puesto", label: "Puesto" },
   { key: "estatus", label: "Estatus" },
   { key: "acciones", label: "Acciones" }
@@ -209,18 +229,21 @@ const normalizeEmployee = (empleado) => ({
   id: empleado.id,
   numero: formatEmployeeNumber(empleado.id),
   nombre: [empleado.nombre, empleado.apellidos].filter(Boolean).join(" "),
-  area: empleado.area?.nombre || "Sin Área",
+  direccion: empleado.direccion?.nombre || "Sin Direccion",
+  departamento: empleado.departamento?.nombre || "Sin Departamento",
   puesto: empleado.puesto?.nombre || "Sin Puesto",
   estatus: empleado.estatus === "activo" ? "activo" : "Baja"
 });
 
 const fetchFilters = async () => {
   try {
-    const [areasResp, puestosResp] = await Promise.all([
-      organogramaService.listarAreas(),
+    const [direccionesResp, departamentosResp, puestosResp] = await Promise.all([
+      organogramaService.listarDirecciones(),
+      organogramaService.listarDepartamentos(),
       organogramaService.listarPuestos()
     ]);
-    areas.value = areasResp.data || [];
+    direcciones.value = direccionesResp.data || [];
+    departamentos.value = departamentosResp.data || [];
     puestos.value = puestosResp.data || [];
   } catch (error) {
     console.error(error);
@@ -236,7 +259,8 @@ const fetchEmployees = async () => {
     };
 
     if (searchTerm.value.trim()) params.search = searchTerm.value.trim();
-    if (selectedAreaId.value) params.area_id = selectedAreaId.value;
+    if (selectedDireccionId.value) params.direccion_id = selectedDireccionId.value;
+    if (selectedDepartamentoId.value) params.departamento_id = selectedDepartamentoId.value;
     if (selectedPuestoId.value) params.puesto_id = selectedPuestoId.value;
 
     const response = await organogramaService.listarEmpleados(params);
@@ -251,12 +275,25 @@ const fetchEmployees = async () => {
   }
 };
 
-const resolveAreaSelection = () => {
-  const match = areas.value.find(
-    (area) => area.nombre.toLowerCase() === areaName.value.trim().toLowerCase()
+const resolveDireccionSelection = () => {
+  const match = direcciones.value.find(
+    (direccion) => direccion.nombre.toLowerCase() === direccionName.value.trim().toLowerCase()
   );
-  selectedAreaId.value = match ? String(match.id) : "";
-  if (!selectedAreaId.value) {
+  selectedDireccionId.value = match ? String(match.id) : "";
+  if (!selectedDireccionId.value) {
+    puestoName.value = "";
+    selectedPuestoId.value = "";
+  }
+};
+
+const resolveDepartamentoSelection = () => {
+  const match = departamentos.value.find(
+    (departamento) =>
+      departamento.nombre.toLowerCase() === departamentoName.value.trim().toLowerCase() &&
+      (!selectedDireccionId.value || departamento.direccion_id === Number(selectedDireccionId.value))
+  );
+  selectedDepartamentoId.value = match ? String(match.id) : "";
+  if (!selectedDepartamentoId.value) {
     puestoName.value = "";
     selectedPuestoId.value = "";
   }
@@ -266,17 +303,20 @@ const resolvePuestoSelection = () => {
   const match = puestos.value.find(
     (puesto) =>
       puesto.nombre.toLowerCase() === puestoName.value.trim().toLowerCase() &&
-      (!selectedAreaId.value || puesto.area_id === Number(selectedAreaId.value))
+      (!selectedDireccionId.value || puesto.direccion_id === Number(selectedDireccionId.value)),
+      (!selectedDepartamentoId.value || puesto.departamento_id === Number(selectedDepartamentoId.value))
   );
   selectedPuestoId.value = match ? String(match.id) : "";
 };
 
-watch(areaName, (value) => {
+watch(direccionName,departamentoName,(value) => {
   if (!value) {
-    selectedAreaId.value = "";
+    selectedDireccionId.value = "";
+    selectedDepartamentoId.value = "";  
     selectedPuestoId.value = "";
     puestoName.value = "";
   }
+
 });
 
 watch(puestoName, (value) => {
@@ -295,7 +335,8 @@ const resolveEmployeeSelection = () => {
 
     const found = employees.value.find((e) => e.numero === formatted || e.id === Number(match[1]));
     if (found) {
-      areaName.value = found.area || "";
+      direccionName.value = found.direccion || "";
+      departamentoName.value = found.departamento || "";
       puestoName.value = found.puesto || "";
       resolveAreaSelection();
       resolvePuestoSelection();
@@ -309,10 +350,14 @@ const resolveEmployeeSelection = () => {
 
   const byName = employees.value.find((e) => `${e.numero} - ${e.nombre}`.toLowerCase() === trimmed.toLowerCase() || e.nombre.toLowerCase().includes(trimmed.toLowerCase()));
   if (byName) {
-    showAreaPuesto.value = true;
-    areaName.value = byName.area || "";
+    showDireccionPuesto.value = true;
+    showDepartamentoPuesto.value = true;
+    searchTerm.value = `${byName.numero} - ${byName.nombre}`;
+    direccionName.value = byName.direccion || "";
+    departamentoName.value = byName.departamento || "";
     puestoName.value = byName.puesto || "";
-    resolveAreaSelection();
+    resolveDireccionSelection();
+    resolveDepartamentoSelection();
     resolvePuestoSelection();
     selectEmployee(byName);
   }
@@ -340,9 +385,11 @@ const viewOrganigrama = (row) => {
 
 const clearFilters = async () => {
   searchTerm.value = "";
-  areaName.value = "";
+  direccionName.value = "";
+  departamentoName.value = "";
   puestoName.value = "";
-  selectedAreaId.value = "";
+  selectedDireccionId.value = "";
+  selectedDepartamentoId.value = "";
   selectedPuestoId.value = "";
   selectedEmployee.value = null;
   showAreaPuesto.value = false;

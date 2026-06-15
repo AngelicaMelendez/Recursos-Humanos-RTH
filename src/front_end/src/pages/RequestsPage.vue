@@ -21,10 +21,7 @@
     </section>
 
     <BaseCard
-      v-if="canManageRequests"
-      title="Solicitudes activas"
-      subtitle="Crea, consulta y da seguimiento al flujo operativo."
-    >
+      v-if="canManageRequests">
     
 
       <form class="request-filters" @submit.prevent="applySearch">
