@@ -20,18 +20,13 @@ export default {
   darDeBaja(id, motivo) {
     return api.put(`/directorio/${id}/baja`, { motivo });
   },
-
-  // Listar áreas
-  listarAreas() {
-    return api.get("/directorio/areas");
-  },
-
-  listarDirecciones() {
-    return api.get("/directorio/direcciones");
-  },
-
-  listarDepartamentos(direccionId = null) {
+  listarDirecciones(direccionId = null) {
     const params = direccionId ? { direccion_id: direccionId } : {};
+    return api.get("/directorio/direcciones", { params });
+  },
+
+  listarDepartamentos(departamentoId = null) {
+    const params = departamentoId ? { departamento_id: departamentoId } : {};
     return api.get("/directorio/departamentos", { params });
   },
 

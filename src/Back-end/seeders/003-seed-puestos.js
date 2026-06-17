@@ -9,7 +9,7 @@ module.exports = {
     await queryInterface.sequelize.query('ALTER TABLE `puestos` AUTO_INCREMENT = 1;');
 
     const puestos = [
-      {    // ====== DIRECCIÓN: INFORMATICA ======
+      {
         id: 1,
         nombre: "Director General de Radio y Television de Hidalgo",
         nivel: "12B",

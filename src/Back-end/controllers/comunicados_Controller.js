@@ -6,13 +6,13 @@ function esGestorComunicados(rol) {
   return hasRole(rol, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS);
 }
 
-async function obtenerUsuarioConArea(usuarioId) {
+async function obtenerUsuarioConDireccion(usuarioId) {
   return db.Usuario.findByPk(usuarioId, {
     include: [
       {
         model: db.Empleado,
         as: 'empleado',
-        attributes: ['id', 'departamento_id', 'direccion_id'],
+        attributes: ['id', 'direccion_id','departamento_id'],
       },
     ],
   });
