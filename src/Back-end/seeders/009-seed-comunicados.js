@@ -36,7 +36,7 @@ module.exports = {
         titulo: 'Mantenimiento preventivo',
         contenido: 'El area de Informatica realizara mantenimiento preventivo a los equipos administrativos.',
         departamento_id: null,
-        direccion_id: 38,
+        direccion_id: 5,
         usuario_id: 1,
         tipo: 'privado',
         fecha_vencimiento: '2026-06-20',

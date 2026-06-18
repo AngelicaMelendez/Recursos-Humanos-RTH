@@ -64,11 +64,8 @@
       </div>
 
       <div class="user-profile">
-        <div class="profile-image-container" @click="triggerPhotoUpload" title="Cambiar foto de perfil">
-          <img :src="avatarPreview || user?.avatar || iconoPerfil" alt="Perfil" class="profile-image" />
-          <div class="profile-image-overlay">
-            <IconSymbol name="edit" class="overlay-icon" />
-          </div>
+        <div class="profile-image-container" title="Perfil" @click="verPerfil(usuarioLogueado.id)">{{ usuarioLogueado.nombre }}
+          <img src=" " alt="Perfil" class="profile-image" />
         </div>
         
         <input 
@@ -83,7 +80,7 @@
           <strong class="user-name">
             {{ localName || "Usuario" }}
           </strong>
-          <span>{{ localArea || "Area" }}</span>
+          <span>{{ localDepartment || "Departamento" }}</span>
           <br></br>
           <span>{{ localRole || "Administrador" }}</span>
         </div>
@@ -104,8 +101,8 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-area">Área:</label>
-        <input type="text" id="edit-area" v-model="editForm.area" />
+        <label for="edit-department">Departamento:</label>
+        <input type="text" id="edit-department" v-model="editForm.departamento" />
       </div>
       <div class="form-group">
         <label for="edit-role">Rol / Puesto:</label>
@@ -123,6 +120,7 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
 import { useNotificationsStore } from "@/store/notificaciones";
+import {useRouter} from 'vue-router';
 import iconoPerfil from "@/assets/icono.png";
 
 const props = defineProps({
@@ -141,19 +139,18 @@ const notificationsWrap = ref(null);
 
 // MODIFICADO: Estados reactivos para el control de edición de usuario
 const fileInput = ref(null);
-const avatarPreview = ref(null);
 const isModalOpen = ref(false);
 const localName = ref("");
-const localArea = ref("");
+const localDepartment = ref("");
 const localRole = ref("");
-const editForm = ref({ nombre: "", rol: "", area:"" });
+const editForm = ref({ nombre: "", departamento: "", rol: "" });
 
 // Sincronizar props iniciales con variables locales
 watch(() => props.user, (newUser) => {
   if (newUser) {
     localName.value = newUser.nombre || newUser.name || newUser.usuario || "Usuario";
+    localDepartment.value = newUser.departamento || "Departamento";
     localRole.value = newUser.rol || "Administrador";
-    localArea.value = newUser.area || "Area";
   }
 }, { immediate: true });
 
@@ -197,11 +194,6 @@ const showMessages = () => { globalThis.alert?.("Mensajes"); };
 const showFiles = () => { globalThis.alert?.("Archivos"); };
 const showHelp = () => { globalThis.alert?.("Ayuda"); };
 
-// MODIFICADO: Funciones lógicas para manejo de imagen y modal de datos
-const triggerPhotoUpload = () => {
-  fileInput.value.click();
-};
-
 const handlePhotoChange = (event) => {
   const file = event.target.files[0];
   if (!file) return;
@@ -219,8 +211,9 @@ const handlePhotoChange = (event) => {
 
 const openEditModal = () => {
   editForm.value.nombre = localName.value;
+  editForm.value.departamento = localDepartment.value;
   editForm.value.rol = localRole.value;
-  editForm.value.area = localArea.value;
+  
   isModalOpen.value = true;
 };
 
@@ -230,15 +223,15 @@ const closeEditModal = () => {
 
 const saveUserData = () => {
   localName.value = editForm.value.nombre;
+  localDepartment.value = editForm.value.departamento;
   localRole.value = editForm.value.rol;
-  localArea.value = editForm.value.area;
-   
+
   // Emitir cambios de texto al padre
   emit("update-user", { 
     action: "update-info", 
     nombre: localName.value, 
     rol: localRole.value, 
-    area: localArea.value
+    departamento: localDepartment.value
   });
   
   closeEditModal();
@@ -251,6 +244,30 @@ onMounted(() => {
 onBeforeUnmount(() => {
   globalThis.document?.removeEventListener("click", handleOutsideClick);
 });
+
+const usuarioLogueado = ref({
+  id: 'id',
+  nombre: ''
+});
+
+onMounted(() => {
+  const datosSesion = localStorage.getItem('usuario_sesion');
+  if (datosSesion) {
+    const usuarioReal = JSON.parse(datosSesion);
+    usuarioLogueado.value = {
+      id: usuarioReal.id,
+      nombre: usuarioReal.nombre
+    };
+  }
+});
+
+// 3. CORRECCIÓN DEL ERROR: Tu función ya no debe llevar "router.push"
+const verPerfil = (id) => {
+  if (!id) {
+    alert("Error: No se encontró el ID del usuario.");
+    return;
+  }
+};
 </script>
 
 <style scoped>

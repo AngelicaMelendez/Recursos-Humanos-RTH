@@ -9,12 +9,12 @@ module.exports = {
         curp: null,
         rfc: null,
         nss: null,
+        grado_de_estudios: null,
         tipo_Sanguineo: null,
         fecha_ingreso: null,
         tipo_contrato: null,
         estatus: 'activo',
-        direccion: '',
-        area_id: 38, // Informatica   
+        
         
         createdAt: new Date(),
         updatedAt: new Date()

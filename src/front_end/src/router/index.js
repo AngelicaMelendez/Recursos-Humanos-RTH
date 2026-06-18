@@ -9,13 +9,13 @@ import DirectoryPage from "@/pages/DirectoryPage.vue";
 import RequestsPage from "@/pages/RequestsPage.vue";
 import NormativityPage from "@/pages/NormativityPage.vue";
 import VacanciesPage from "@/pages/VacanciesPage.vue";
-import VisitorsPage from "@/pages/VisitorsPage.vue";
 import AuditPage from "@/pages/AuditPage.vue";
 import ComunicadosPage from "@/pages/ComunicadosPage.vue";
 import AttendancePage from "@/pages/AttendancePage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 import { useAuthStore } from "@/store/auth";
 import { canAccessModule } from "@/utils/permissions";
+import ProfilePage from "@/pages/ProfilePage.vue";
 
 const routes = [
   {
@@ -35,10 +35,10 @@ const routes = [
       { path: "solicitudes", name: "requests", component: RequestsPage, meta: { module: "requests" } },
       { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },
       { path: "vacantes", name: "vacancies", component: VacanciesPage, meta: { module: "vacancies" } },
-      { path: "visitantes", name: "visitors", component: VisitorsPage, meta: { module: "visitors" } },
       { path: "auditoria", name: "audit", component: AuditPage, meta: { module: "audit" } },
       { path: "comunicados", name: "comunicados", component: ComunicadosPage, meta: { module: "comunicados" } },
-      { path: "asistencia", name: "attendance", component: AttendancePage, meta: { module: "attendance" } }
+      { path: "asistencia", name: "attendance", component: AttendancePage, meta: { module: "attendance" } },
+      { path: "perfil" ,name: "profile", component: ProfilePage}
     ]
   },
   {

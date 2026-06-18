@@ -1,13 +1,6 @@
 <template>
   <div>
-    <PageHeader
-      eyebrow="Flujo de autorizaciones"
-      title="Solicitudes e Incidencias"
-      description="Todos pueden generar solicitudes. La consulta, aprobacion y rechazo queda restringida a administración."
-    >
-      <RoleActionBar :actions="headerActions" @select="selectAction" />
-    </PageHeader>
-
+    
     <div v-if="toast.visible" class="toast" :class="`toast--${toast.tone}`">
       <strong>{{ toast.title }}</strong>
       <span>{{ toast.message }}</span>
