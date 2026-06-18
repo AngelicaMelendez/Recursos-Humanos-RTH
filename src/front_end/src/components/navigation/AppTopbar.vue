@@ -101,8 +101,8 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-department">Departamento:</label>
-        <input type="text" id="edit-department" v-model="editForm.departamento" />
+        <label for="edit-area">Área:</label>
+        <input type="text" id="edit-area" v-model="editForm.area" />
       </div>
       <div class="form-group">
         <label for="edit-role">Rol / Puesto:</label>
@@ -141,7 +141,7 @@ const notificationsWrap = ref(null);
 const fileInput = ref(null);
 const isModalOpen = ref(false);
 const localName = ref("");
-const localDepartment = ref("");
+const localArea = ref("");
 const localRole = ref("");
 const editForm = ref({ nombre: "", departamento: "", rol: "" });
 
@@ -213,7 +213,7 @@ const openEditModal = () => {
   editForm.value.nombre = localName.value;
   editForm.value.departamento = localDepartment.value;
   editForm.value.rol = localRole.value;
-  
+  editForm.value.area = localArea.value;
   isModalOpen.value = true;
 };
 

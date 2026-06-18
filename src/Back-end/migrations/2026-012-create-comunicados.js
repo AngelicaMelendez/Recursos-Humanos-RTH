@@ -40,6 +40,12 @@ module.exports = {
       usuario_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'usuarios',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       tipo: {
         type: Sequelize.ENUM('publico', 'privado'),

@@ -16,6 +16,14 @@ module.exports = {
       puesto_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
+
+        unique: true,
+        references: {
+          model: 'puestos',
+          key : 'id'
+        },
+        OnUpdate: 'CASCADE',
+        OnDelete: 'CASCADE'
       },
       fecha_inicio: {
         type: Sequelize.DATEONLY,

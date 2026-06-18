@@ -6,7 +6,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('notificaciones', [
       {
-        usuario_id: 1,
+        usuario_id: 14,
         tipo: 'recordatorio',
         titulo: 'Expedientes pendientes',
         mensaje: 'Revisa los documentos de empleados cargados durante la inicializacion.',
@@ -16,7 +16,7 @@ module.exports = {
         updatedAt: now,
       },
       {
-        usuario_id: 4,
+        usuario_id: 21,
         tipo: 'solicitud_aprobada',
         titulo: 'Solicitud aprobada',
         mensaje: 'Tu solicitud de vacaciones fue marcada como aprobada.',
@@ -26,7 +26,7 @@ module.exports = {
         updatedAt: now,
       },
       {
-        usuario_id: 5,
+        usuario_id: 22,
         tipo: 'recordatorio',
         titulo: 'Registro de asistencia',
         mensaje: 'No olvides revisar el historico de asistencia semanal.',

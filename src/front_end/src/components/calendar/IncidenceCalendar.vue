@@ -254,7 +254,7 @@ const calendarOptions = computed(() => ({
 .Simbologia {
   width: 230px;
   flex-shrink: 0;
-  margin-top: 65px;
+  margin-bottom: 95px;
 }
 
 .Simbologia h3 {
