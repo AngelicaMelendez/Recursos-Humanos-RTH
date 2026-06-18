@@ -8,20 +8,19 @@ const preferredOrder = [
   '001-seed-direcciones.js',
   '002-seed-departamentos.js',
   '003-seed-puestos.js',
-  '004-seed-empleados.js',
-  '005-seed-usuarios.js',
+  '004-seed-usuarios.js',
+  '005-seed-empleados.js',
   '006-seed-empleado-documentos.js',
   '007-seed-historial-puestos.js',
   '008-seed-asistencias.js',
   '009-seed-comunicados.js',
   '010-seed-incidencias.js',
-  '011-seed-logs.js',
-  '012-seed-normatividades.js',
-  '013-seed-notificaciones.js',
-  '014-seed-reacciones-comunicados.js',
-  '015-seed-solicitudes.js',
-  '016-seed-vacantes.js',
-  '017-seed-visitantes.js'
+  '011.seed-solicitudes.js',
+  '012-seed-vacantes.js',
+  '013-seed-reacciones-comunicados.js',
+  '014-seed-notificaciones.js',
+  '015-seed-normatividades.js',
+  '016-seed-logs.js',
 ];
 
 const tablesToReport = [
@@ -41,7 +40,6 @@ const tablesToReport = [
   'reacciones_comunicados',
   'solicitudes',
   'vacantes',
-  'visitantes',
 ];
 
 function getSeederFiles() {
@@ -61,8 +59,12 @@ async function printTableCounts() {
   console.log('\nResumen de datos sembrados:');
 
   for (const table of tablesToReport) {
-    const [rows] = await sequelize.query(`SELECT COUNT(*) AS total FROM \`${table}\`;`);
-    console.log(`- ${table}: ${rows[0].total}`);
+    try {
+      const [rows] = await sequelize.query(`SELECT COUNT(*) AS total FROM \`${table}\`;`);
+      console.log(`- ${table}: ${rows[0].total}`);
+    } catch (error) {
+      console.log(`- ${table}: no disponible`);
+    }
   }
 }
 

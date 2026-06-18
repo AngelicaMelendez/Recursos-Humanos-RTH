@@ -83,7 +83,7 @@
           <strong class="user-name">
             {{ localName || "Usuario" }}
           </strong>
-          <span>{{ localArea || "Area" }}</span>
+          <span>{{ localDireccion || "Dirección" }}</span>
           <br></br>
           <span>{{ localRole || "Administrador" }}</span>
         </div>
@@ -104,8 +104,8 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-area">Área:</label>
-        <input type="text" id="edit-area" v-model="editForm.area" />
+        <label for="edit-direccion">Dirección:</label>
+        <input type="text" id="edit-direccion" v-model="editForm.direccion" />
       </div>
       <div class="form-group">
         <label for="edit-role">Rol / Puesto:</label>
@@ -144,7 +144,7 @@ const fileInput = ref(null);
 const avatarPreview = ref(null);
 const isModalOpen = ref(false);
 const localName = ref("");
-const localArea = ref("");
+const localDireccion = ref("");
 const localRole = ref("");
 const editForm = ref({ nombre: "", rol: "", area:"" });
 
@@ -153,7 +153,7 @@ watch(() => props.user, (newUser) => {
   if (newUser) {
     localName.value = newUser.nombre || newUser.name || newUser.usuario || "Usuario";
     localRole.value = newUser.rol || "Administrador";
-    localArea.value = newUser.area || "Area";
+    localDireccion.value = newUser.area || "Dirección";
   }
 }, { immediate: true });
 
@@ -220,7 +220,7 @@ const handlePhotoChange = (event) => {
 const openEditModal = () => {
   editForm.value.nombre = localName.value;
   editForm.value.rol = localRole.value;
-  editForm.value.area = localArea.value;
+  editForm.value.direccion = localDireccion.value;
   isModalOpen.value = true;
 };
 
@@ -231,14 +231,14 @@ const closeEditModal = () => {
 const saveUserData = () => {
   localName.value = editForm.value.nombre;
   localRole.value = editForm.value.rol;
-  localArea.value = editForm.value.area;
+  localDireccion.value = editForm.value.direccion;
    
   // Emitir cambios de texto al padre
   emit("update-user", { 
     action: "update-info", 
     nombre: localName.value, 
     rol: localRole.value, 
-    area: localArea.value
+    direccion: localDireccion.value
   });
   
   closeEditModal();

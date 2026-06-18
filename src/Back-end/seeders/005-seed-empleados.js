@@ -2,25 +2,26 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('usuarios', [
+    const empleados = [
       {
 
         id: 1,
         usuario: 'Marina', //----------------------------Contraloría-----------------------------//
         nombre: 'Marina',
         apellidos: 'Callejas Alamilla',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
         updatedAt: new Date()
+
       },
       {
         id: 2,
         usuario: 'Maria Angelica', //----------------------------Contraloría-----------------------------//
         nombre: 'Maria Angelica',
         apellidos: 'Hernandez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -31,7 +32,7 @@ module.exports = {
         usuario: 'Edgar de Jesus', //----------------------------Dirección de Administración y Finanzas-----------------------------//
         nombre: 'Edgar de Jesus',
         apellidos: 'Vergara Contreras',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -42,7 +43,7 @@ module.exports = {
         usuario: 'Cinthya Iris', //----------------------------Dirección de Administración y Finanzas-----------------------------//
         nombre: 'Cinthya Iris',
         apellidos: 'Aguado Castañeda',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -53,7 +54,7 @@ module.exports = {
         usuario: 'Wendy Valeria', //----------------------------Dirección de Administración y Finanzas-----------------------------//
         nombre: 'Wendy Valeria',
         apellidos: 'Rubiales Flores',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -64,7 +65,7 @@ module.exports = {
         usuario: 'Maria de los Angeles', //----------------------------Planeacion-----------------------------//
         nombre: 'Maria de los Angeles',
         apellidos: 'Monzalvo Perez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -75,7 +76,7 @@ module.exports = {
         usuario: 'Carlos Alberto', //----------------------------Planeacion-----------------------------//
         nombre: 'Carlos Alberto',
         apellidos: 'Luna Ibarra',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -86,7 +87,7 @@ module.exports = {
         usuario: 'Daniela', //----------------------------Planeacion-----------------------------//
         nombre: 'Daniela' ,
         apellidos: 'Cruz Jimenez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado', 
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -97,7 +98,7 @@ module.exports = {
         usuario: 'Maria del Pilar', //----------------------------Archivo-----------------------------//
         nombre: 'Maria del Pilar',
         apellidos: 'Palomares Paredes',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -108,7 +109,7 @@ module.exports = {
         usuario: 'Johanann', //----------------------------Archivo-----------------------------//
         nombre: 'Johanann',
         apellidos: 'Carrasco Acosta',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -119,7 +120,7 @@ module.exports = {
         usuario: 'Alicia', //----------------------------Contabilidad-----------------------------//
         nombre: 'Alicia',
         apellidos: 'Rangel Mendoza',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -130,7 +131,7 @@ module.exports = {
         usuario: 'Luz Elena', //----------------------------Finanzas y Contabilidad-----------------------------//
         nombre: 'Luz Elena',
         apellidos: 'Velazco Lara',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -141,7 +142,7 @@ module.exports = {
         usuario: 'Joel Alberto', //----------------------------Finanzas y Contabilidad-----------------------------//
         nombre: 'Joel Alberto',
         apellidos: 'Carpio Bautista',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -152,7 +153,7 @@ module.exports = {
         usuario: 'Omar Efren', //----------------------------INFORMATICA-----------------------------//
         nombre: 'Omar Efren',
         apellidos: 'Vazquez Moreno',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'super_usuario',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', //->123456
         createdAt: new Date(),
@@ -163,7 +164,7 @@ module.exports = {
         usuario: 'Axel',//----------------------------INFORMATICA-----------------------------//
         nombre: 'Axel',
         apellidos: 'Antonio Alarcon',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'super_usuario',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -174,7 +175,7 @@ module.exports = {
         usuario: 'Angelica', //----------------------------INFORMATICA-----------------------------//
         nombre: 'Angelica',
         apellidos: 'Melendez Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'super_usuario',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(), 
@@ -185,7 +186,7 @@ module.exports = {
         usuario: 'Ivan', //----------------------------Almacen-----------------------------//
         nombre: 'Ivan',
         apellidos: 'Martinez Aldana',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -196,7 +197,7 @@ module.exports = {
         usuario: 'Jose David', //----------------------------Inventarios-----------------------------//
         nombre: 'Jose David',
         apellidos: 'Paredes Cruz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -207,7 +208,7 @@ module.exports = {
         usuario: 'Maria de la Paz', //----------------------------Inventarios-----------------------------//
         nombre: 'Maria de la Paz',
         apellidos: 'Hernandez Escamilla',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -218,7 +219,7 @@ module.exports = {
         usuario: 'Jorge Enrique', //----------------------------Inventarios-----------------------------//
         nombre: 'Jorge Enrique',
         apellidos: 'Fernandez Garcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86',
         createdAt: new Date(),
@@ -229,7 +230,7 @@ module.exports = {
         usuario: 'Lorena',//----------------------------Recursos-Humanos-----------------------------//
         nombre: 'Lorena',
         apellidos: 'Barrera Soto',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -240,7 +241,7 @@ module.exports = {
         usuario: 'Maribel', //----------------------------Recursos-Humanos-----------------------------//
         nombre: 'Maribel',
         apellidos: 'Leal Rico',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -251,7 +252,7 @@ module.exports = {
         usuario: 'Ariadna Albertina', //----------------------------Recursos-Humanos-----------------------------//
         nombre: 'Ariadna Albertina',
         apellidos: 'Ramirez Trejo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'admin_rh',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -262,7 +263,7 @@ module.exports = {
         usuario: 'Roberto', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Roberto',
         apellidos: 'Espinoza Dominguez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -273,7 +274,7 @@ module.exports = {
         usuario: 'Oscar', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Oscar',
         apellidos: 'Islas Sanchez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -284,7 +285,7 @@ module.exports = {
         usuario: 'Amparo', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Amparo',
         apellidos: 'Lugo Muñoz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -295,7 +296,7 @@ module.exports = {
         usuario: 'Maria Lidia', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Maria Lidia',
         apellidos: 'Alvarado Palafox',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -306,7 +307,7 @@ module.exports = {
         usuario: 'Antonio', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Antonio',
         apellidos: 'Jimenez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -317,7 +318,7 @@ module.exports = {
         usuario: 'Maria Esther Raquel', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Maria Esther Raquel',
         apellidos: 'Tapia Alfaro',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -328,7 +329,7 @@ module.exports = {
         usuario: 'Victor Manuel', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Victor Manuel',
         apellidos: 'Guerrero Guerrero',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -339,7 +340,7 @@ module.exports = {
         usuario: 'Enrique Manuel', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Enrique Manuel',
         apellidos: 'Alarcon Murrieta',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -350,7 +351,7 @@ module.exports = {
         usuario: 'Fernando', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Fernando',
         apellidos: 'Herrera Chagoya',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -361,7 +362,7 @@ module.exports = {
         usuario: 'Javier', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Javier',
         apellidos: 'Zamora Martinez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -372,7 +373,7 @@ module.exports = {
         usuario: 'Guillermo', //----------------------------Servicios-Generales-----------------------------//
         nombre: 'Guillermo',
         apellidos: 'Vivanco Quijano',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -383,7 +384,7 @@ module.exports = {
         usuario: 'Jonathan Daniel', //----------------------------Dirección de Proyectos Estrategicos-----------------------------//
         nombre: 'Jonathan Daniel',
         apellidos: 'Gama Venegas',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -394,7 +395,7 @@ module.exports = {
         usuario: 'Miguel', //----------------------------Dirección de Proyectos Estrategicos-----------------------------//
         nombre: 'Miguel',
         apellidos: 'Serna Grajales',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -405,7 +406,7 @@ module.exports = {
         usuario: 'David', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'David',
         apellidos: 'Cervantes Herrera',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -416,7 +417,7 @@ module.exports = {
         usuario: 'Ivan Erick', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Ivan Erick',
         apellidos: 'Aguilar Castillo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -427,7 +428,7 @@ module.exports = {
         usuario: 'Alejandro', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Alejandro',
         apellidos: 'Benitez Garcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -438,7 +439,7 @@ module.exports = {
         usuario: 'Hector Joseph', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Hector Joseph',
         apellidos: 'Sosa de la Cruz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -449,7 +450,7 @@ module.exports = {
         usuario: 'Yadira del Rosario', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Yadira del Rosario',
         apellidos: 'Ortiz Leon',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -460,7 +461,7 @@ module.exports = {
         usuario: 'Diana', //----------------------------Dirección de Ingenieria-----------------------------//
         nombre: 'Diana',
         apellidos: 'Fonseca Barquin',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -471,7 +472,7 @@ module.exports = {
         usuario: 'AntonioC', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
         nombre: 'Antonio',
         apellidos: 'Barrera Castro',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -482,7 +483,7 @@ module.exports = {
         usuario: 'Florencio', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
         nombre: 'Florencio',
         apellidos: 'Gonzalez Torquemada',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -493,7 +494,7 @@ module.exports = {
         usuario: 'JavierT', //----------------------------Repetidor de Tv: Cerro Juarez-----------------------------//
         nombre: 'Javier',
         apellidos: 'Gonzalez Torquemada',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -504,7 +505,7 @@ module.exports = {
          usuario: 'Jose Juan', //----------------------------Repetidor de Tv: Huejutla-----------------------------//
         nombre: 'Jose Juan',
         apellidos: 'Flores Galvan',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -515,7 +516,7 @@ module.exports = {
          usuario: 'Arturo Oldair', //----------------------------Repetidor de Tv: Huejutla-----------------------------//
         nombre: 'Arturo Oldair',
         apellidos: 'Tapia Diego',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -526,7 +527,7 @@ module.exports = {
          usuario: 'Jonatan', //----------------------------Repetidor de Tv: Tepeapulco-----------------------------//
         nombre: 'Jonatan',
         apellidos: 'Espinoza Fernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -537,7 +538,7 @@ module.exports = {
          usuario: 'Luis', //----------------------------Repetidor de Tv: Tepeapulco-----------------------------//
         nombre: 'Luis',
         apellidos: 'Vera Lozada',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -548,7 +549,7 @@ module.exports = {
         usuario: 'Clemente', //----------------------------Repetidor de Tv: Tula-----------------------------//
         nombre: 'Clemente',
         apellidos: 'Lara Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -559,7 +560,7 @@ module.exports = {
         usuario: 'Sabas', //----------------------------Repetidor de Tv: Tula-----------------------------//
         nombre: 'Sabas',
         apellidos: 'Lara Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -570,7 +571,7 @@ module.exports = {
         usuario: 'Mario', //----------------------------Repetidor de Tv: Tulancingo-----------------------------//
         nombre: 'Mario',
         apellidos: 'Hernandez Escorcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -581,7 +582,7 @@ module.exports = {
         usuario: 'Gregorio', //----------------------------Repetidor de Tv: Tulancingo-----------------------------//
         nombre: 'Gregorio',
         apellidos: 'Oviedo Jimenez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -592,7 +593,7 @@ module.exports = {
         usuario: 'Erik', //----------------------------Transmisor-Cerro-Cubitos-----------------------------//
         nombre: 'Erik',
         apellidos: 'Aguilar Noriega',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -603,7 +604,7 @@ module.exports = {
         usuario: 'Keobel Ramses', //----------------------------Transmisor-Cerro-Cubitos-----------------------------//
         nombre: 'Keobel Ramses',
         apellidos: 'Rivera Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -614,7 +615,7 @@ module.exports = {
         usuario: 'Karina', //----------------------------Direccion de Noticias-----------------------------//
         nombre: 'Karina',
         apellidos: 'Atanacio Ponce',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -625,7 +626,7 @@ module.exports = {
         usuario: 'Mara lizette', //----------------------------Conductores-----------------------------//
         nombre: 'Mara lizette',
         apellidos: 'Olvera Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -636,7 +637,7 @@ module.exports = {
         usuario: 'Uriel', //----------------------------Conductores-----------------------------//
         nombre: 'Uriel',
         apellidos: 'Ramirez Vega',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -647,7 +648,7 @@ module.exports = {
         usuario: 'Citlally Isabel', //----------------------------Conductores-----------------------------//
         nombre: 'Citlally Isabel',
         apellidos: 'Velasco Guerrero',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -658,7 +659,7 @@ module.exports = {
         usuario: 'Brianda Yareli', //----------------------------Direccion de Noticias-----------------------------//
         nombre: 'Brianda Yareli',
         apellidos: 'Gomez Ramirez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -669,7 +670,7 @@ module.exports = {
         usuario: 'Victor Omar', //----------------------------Direccion de Noticias-----------------------------//
         nombre: 'Victor Omar',
         apellidos: 'Castilleja Vergara',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -680,7 +681,7 @@ module.exports = {
         usuario: 'Jose Luis', //----------------------------Camarografos-----------------------------//
         nombre: 'Jose Luis',
         apellidos: 'Ortega Ortega',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -691,7 +692,7 @@ module.exports = {
         usuario: 'FernandoV', //----------------------------Camarografos-----------------------------//
         nombre: 'Fernando',
         apellidos: 'Lozano Vazquez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -702,7 +703,7 @@ module.exports = {
         usuario: 'Danilo Agustin', //----------------------------Camarografos-----------------------------//
         nombre: 'Danilo Agustin',
         apellidos: 'Badillo Ayala',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -713,7 +714,7 @@ module.exports = {
         usuario: 'Lucio', //----------------------------Camarografos-----------------------------//
         nombre: 'Lucio',
         apellidos: 'Torres Moreno',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -724,7 +725,7 @@ module.exports = {
         usuario: 'AlejandroP', //----------------------------Camarografos-----------------------------//
         nombre: 'Alejandro',
         apellidos: 'Juarez Pacheco',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -735,7 +736,7 @@ module.exports = {
         usuario: 'IvanP', //----------------------------Edición-----------------------------//
         nombre: 'Ivan',
         apellidos: 'Cabrera Perez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -746,7 +747,7 @@ module.exports = {
         usuario: 'Christian', //----------------------------Edición-----------------------------//
         nombre: 'Christian',
         apellidos: 'Corte Islas',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -757,7 +758,7 @@ module.exports = {
         usuario: 'Yazmin Arlette', //----------------------------Edición-----------------------------//
         nombre: 'Yazmin Arlette',
         apellidos: 'Quebrado Herrera',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -768,7 +769,7 @@ module.exports = {
         usuario: 'Vianey', //----------------------------Edición-----------------------------//
         nombre: 'Vianey',
         apellidos: 'Juarez Pacheco',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -779,7 +780,7 @@ module.exports = {
         usuario: 'Luis Enrique', //----------------------------Edición-----------------------------//
         nombre: 'Luis Enrique',
         apellidos: 'Martinez Oviedo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -790,7 +791,7 @@ module.exports = {
         usuario: 'Maria de la PazG', //----------------------------Reporteros-----------------------------//
         nombre: 'Maria de la Paz',
         apellidos: 'Roldan Garcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -801,7 +802,7 @@ module.exports = {
         usuario: 'Flor Ivonne', //----------------------------Reporteros-----------------------------//
         nombre: 'Flor Ivonne',
         apellidos: 'Hernandez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -812,7 +813,7 @@ module.exports = {
         usuario: 'Juan Orlando', //----------------------------Reporteros-----------------------------//
         nombre: 'Juan Orlando',
         apellidos: 'Betancur Castano',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -823,7 +824,7 @@ module.exports = {
         usuario: 'Gustavo', //----------------------------Reporteros-----------------------------//
         nombre: 'Gustavo',
         apellidos: 'Garcia Serrano',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -834,7 +835,7 @@ module.exports = {
         usuario: 'AngelicaA', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
         nombre: 'Angelica',
         apellidos: 'Palafox Alpizar',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -845,7 +846,7 @@ module.exports = {
          usuario: 'MarinaC', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
         nombre: 'Marina',
         apellidos: 'Barrera Cruz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -856,7 +857,7 @@ module.exports = {
         usuario: 'DavidS', //----------------------------Direccion de Promocion y Mejora Continua-----------------------------//
         nombre: 'David',
         apellidos: 'Lara Salinas',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -867,7 +868,7 @@ module.exports = {
          usuario: 'Andres', //----------------------------Direccion de Radio-----------------------------//
         nombre: 'Andres',
         apellidos: 'Torres Aguirre',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -878,7 +879,7 @@ module.exports = {
         usuario: 'Juan Antonio', //----------------------------Direccion de Radio-----------------------------//
         nombre: 'Juan Antonio',
         apellidos: 'Garcia Ybarra',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -889,7 +890,7 @@ module.exports = {
         usuario: 'Karina Zuleima', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Karina Zuleima',
         apellidos: 'Martinez Velazquez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -900,7 +901,7 @@ module.exports = {
          usuario: 'Edgar Marcos', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Edgar Marcos',
         apellidos: 'Martinez Soto',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -911,7 +912,7 @@ module.exports = {
          usuario: 'Vania Anet', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Vania Anet',
         apellidos: 'Gomez Paredes',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -922,7 +923,7 @@ module.exports = {
          usuario: 'Giselle', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Giselle',
         apellidos: 'Macias Aguirre',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -933,7 +934,7 @@ module.exports = {
          usuario: 'Leonardo Saul', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Leonardo Saul',
         apellidos: 'Ortiz Contreras',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -944,7 +945,7 @@ module.exports = {
          usuario: 'Mario Alfredo', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Mario Alfredo',
         apellidos: 'Tapia Nava',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -955,7 +956,7 @@ module.exports = {
          usuario: 'Aldo Esteban', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Aldo Esteban',
         apellidos: 'Falcon Jimenez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -966,7 +967,7 @@ module.exports = {
          usuario: 'Jazmin', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Jazmin',
         apellidos: 'Falcon Jimenez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -977,7 +978,7 @@ module.exports = {
          usuario: 'Belinda Silvia', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Belinda Silvia',
         apellidos: 'Perez Rios',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -988,7 +989,7 @@ module.exports = {
         usuario: 'Juan Carlos', //----------------------------Radiodifusora Pachuca-----------------------------//
         nombre: 'Juan Carlos',
         apellidos: 'Garcia Tenorio',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -999,7 +1000,7 @@ module.exports = {
         usuario: 'Nicolas', //----------------------------Tx. Radio Actopan-----------------------------//
         nombre: 'Nicolas',
         apellidos: 'Moctezuma Mendoza',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1010,7 +1011,7 @@ module.exports = {
         usuario: 'Julio Fortunato', //----------------------------Tx. Radiodifusoras de Huejutla AM y FM-----------------------------//
         nombre: 'Julio Fortunato',
         apellidos: 'Martinez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1021,7 +1022,7 @@ module.exports = {
         usuario: 'Francisco', //----------------------------Tx. Radiofusoras de Huejutla AM y FM-----------------------------//
         nombre: 'Francisco',
         apellidos: 'Esparza Perez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1032,7 +1033,7 @@ module.exports = {
         usuario: 'Maricelda', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Maricelda',
         apellidos: 'Bautista Granados',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1043,7 +1044,7 @@ module.exports = {
         usuario: 'Elda Nora', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Elda Nora',
         apellidos: 'Bengoa Retama',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1054,7 +1055,7 @@ module.exports = {
         usuario: 'Delfino', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Delfino',
         apellidos: 'San Juan Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1065,7 +1066,7 @@ module.exports = {
         usuario: 'Jessica', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Jessica',
         apellidos: 'Reyes Vicente',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1076,7 +1077,7 @@ module.exports = {
         usuario: 'Maria Fernanda', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Maria Fernanda',
         apellidos: 'Martinez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1087,7 +1088,7 @@ module.exports = {
         usuario: 'Joel', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Joel',
         apellidos: 'Vega Perez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1098,7 +1099,7 @@ module.exports = {
         usuario: 'Elizabeth', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Elizabeth',
         apellidos: 'Ruiz Cruz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1109,7 +1110,7 @@ module.exports = {
         usuario: 'Wendy', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Wendy',
         apellidos: 'Salazar Castillo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1120,7 +1121,7 @@ module.exports = {
         usuario: 'Adolfo', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Adolfo',
         apellidos: 'Otero Melo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1131,7 +1132,7 @@ module.exports = {
          usuario: 'RobertoF', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Roberto',
         apellidos: 'Garay Franco',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1142,7 +1143,7 @@ module.exports = {
          usuario: 'Marcela', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Marcela',
         apellidos: 'Garica Ramirez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1153,7 +1154,7 @@ module.exports = {
          usuario: 'Ma de la Luz', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Ma de la Luz',
         apellidos: 'Gonzalez Maqueda',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1164,7 +1165,7 @@ module.exports = {
          usuario: 'Leonides', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Leonides',
         apellidos: 'Leonardo Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1175,7 +1176,7 @@ module.exports = {
          usuario: 'Fabiola Estefani', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Fabiola Estefani',
         apellidos: 'Pedraza Ibarra',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1186,7 +1187,7 @@ module.exports = {
          usuario: 'Lidia Smith', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Lidia Smith',
         apellidos: 'Perez Gonzalez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1197,7 +1198,7 @@ module.exports = {
          usuario: 'Ricardo', //----------------------------Radiofusora-Jacala--------------------------//
         nombre: 'Ricardo',
         apellidos: 'Cruz Morales',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1208,7 +1209,7 @@ module.exports = {
          usuario: 'Eduardo Jeovany', //----------------------------Radiofusora-Tlanchinol--------------------------//
         nombre: 'Eduardo Jeovany',
         apellidos: 'Peña Ramirez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1219,7 +1220,7 @@ module.exports = {
          usuario: 'OscarM', //----------------------------Radiofusora-Tlanchinol--------------------------//
         nombre: 'Oscar',
         apellidos: 'Ramirez Medina',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1227,10 +1228,10 @@ module.exports = {
       },
       {
         id: 112,
-         usuario: 'Socorro', //----------------------------Radiofusora-Tlanchinol--------------------------//
+        usuario: 'Socorro', //----------------------------Radiofusora-Tlanchinol--------------------------//
         nombre: 'Socorro',
         apellidos: 'Garcia Torres',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1241,7 +1242,7 @@ module.exports = {
          usuario: 'Ma Cristina', //----------------------------Radiofusora-Tlanchinol--------------------------//
         nombre: 'Ma Cristina',
         apellidos: 'Hernandez Velasco',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1252,7 +1253,7 @@ module.exports = {
         usuario: 'Ricardo Javier', //----------------------------Dirección de Televisión--------------------------//
         nombre: 'Ricardo Javier',
         apellidos: 'Olguin Martinez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1263,7 +1264,7 @@ module.exports = {
          usuario: 'Patricia', //----------------------------Dirección de Televisión--------------------------//
         nombre: 'Patricia',
         apellidos: 'Escalante Tinoco',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1274,7 +1275,7 @@ module.exports = {
          usuario: 'Aurora', //----------------------------Planeación-------------------------//
         nombre: 'Aurora',
         apellidos: 'Resendiz Ramos',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1285,7 +1286,7 @@ module.exports = {
          usuario: 'Leticia', //----------------------------Secretaría--------------------------//
         nombre: 'Leticia',
         apellidos: 'Perez Castillo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1296,7 +1297,7 @@ module.exports = {
         usuario: 'Ivette', //----------------------------Secretaría--------------------------//
         nombre: 'Ivette',
         apellidos: 'Espejel Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1307,7 +1308,7 @@ module.exports = {
          usuario: 'Hugo', //----------------------------Producción--------------------------//
         nombre: 'Hugo',
         apellidos: 'Guzman Cortes',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1318,7 +1319,7 @@ module.exports = {
         usuario: 'Astrid Minelli', //----------------------------Producción--------------------------//
         nombre: 'Astrid Minelli',
         apellidos: 'Dominguez Garcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1329,7 +1330,7 @@ module.exports = {
         usuario: 'Ivette America', //----------------------------Producción--------------------------//
         nombre: 'Ivette America',
         apellidos: 'Guerrero Montesinos',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1340,7 +1341,7 @@ module.exports = {
         usuario: 'Gabriel', //----------------------------Producción--------------------------//
         nombre: 'Gabriel',
         apellidos: 'Perales Ramirez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1351,7 +1352,7 @@ module.exports = {
         usuario: 'Anabelly', //----------------------------Producción--------------------------//
         nombre: 'Anabelly',
         apellidos: 'Espinoza Angeles',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1362,7 +1363,7 @@ module.exports = {
         usuario: 'Jose Omar', //----------------------------Producción--------------------------//
         nombre: 'Jose Omar',
         apellidos: 'Aguirre Garcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1373,7 +1374,7 @@ module.exports = {
         usuario: 'Saul', //----------------------------Producción--------------------------//
         nombre: 'Saul',
         apellidos: 'Garrido Arroyo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1384,7 +1385,7 @@ module.exports = {
         usuario: 'SaulP', //----------------------------Producción--------------------------//
         nombre: 'Saul',
         apellidos: 'Lopez Pimentel',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1395,7 +1396,7 @@ module.exports = {
         usuario: 'Lorena Elizabeth', //----------------------------Producción--------------------------//
         nombre: 'Lorena Elizabeth',
         apellidos: 'Ruiz Rodriguez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1406,7 +1407,7 @@ module.exports = {
         usuario: 'Maria del Consuelo', //----------------------------Producción--------------------------//
         nombre: 'Maria del Consuelo',
         apellidos: 'Chong Barreiro',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1417,7 +1418,7 @@ module.exports = {
         usuario: 'AlejandroC', //----------------------------Contenidos--------------------------//
         nombre: 'Alejandro',
         apellidos: 'Paz Carrasco',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1428,7 +1429,7 @@ module.exports = {
         usuario: 'Silvia Rosa', //----------------------------Contenidos--------------------------//
         nombre: 'Silvia Rosa',
         apellidos: 'Cortes Pasten',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1439,7 +1440,7 @@ module.exports = {
         usuario: 'Cristian Armando', //----------------------------Audio--------------------------//
         nombre: 'Cristian Armando',
         apellidos: 'Sanchez Olguin',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1450,7 +1451,7 @@ module.exports = {
         usuario: 'Romualdo', //----------------------------Audio--------------------------//
         nombre: 'Romualdo',
         apellidos: 'Sanchez Jurado',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1461,7 +1462,7 @@ module.exports = {
         usuario: 'Enrique', //----------------------------Audio--------------------------//
         nombre: 'Enrique',
         apellidos: 'Ponce',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1472,7 +1473,7 @@ module.exports = {
         usuario: 'Ricardo Jesus', //----------------------------Audio--------------------------//
         nombre: 'Ricardo Jesus',
         apellidos: 'Rodriguez Herrera',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1483,7 +1484,7 @@ module.exports = {
         usuario: 'Luis Angel', //----------------------------Camarográfo--------------------------//
         nombre: 'Luis Angel',
         apellidos: 'Romero Jimenez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1494,7 +1495,7 @@ module.exports = {
         usuario: 'AlejandroQ', //----------------------------Camarográfo--------------------------//
         nombre: 'Alejandro',
         apellidos: 'Castañeda Quitero',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1505,7 +1506,7 @@ module.exports = {
          usuario: 'Juan Manuel', //----------------------------Camarográfo--------------------------//
         nombre: 'Juan Manuel',
         apellidos: 'Gomez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1516,7 +1517,7 @@ module.exports = {
         usuario: 'Crystian Alexis', //----------------------------Camarográfo--------------------------//
         nombre: 'Crystian Alexis',
         apellidos: 'Razgado Garcia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1527,7 +1528,7 @@ module.exports = {
         usuario: 'Luis Alberto', //----------------------------Camarográfo--------------------------//
         nombre: 'Luis Alberto',
         apellidos: 'Martinez Chavez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1538,7 +1539,7 @@ module.exports = {
         usuario: 'JoelG', //----------------------------Camarográfo--------------------------//
         nombre: 'Joel',
         apellidos: 'Spargo Gonzalez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1549,7 +1550,7 @@ module.exports = {
          usuario: 'Oscar Alberto', //----------------------------Camarográfo--------------------------//
         nombre: 'Oscar Alberto',
         apellidos: 'Hernandez Meneses',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1560,7 +1561,7 @@ module.exports = {
          usuario: 'Benjamin', //----------------------------Camarográfo--------------------------//
         nombre: 'Benjamin',
         apellidos: 'Ramos Aldana',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1571,7 +1572,7 @@ module.exports = {
          usuario: 'Aldo', //----------------------------Camarográfo--------------------------//
         nombre: 'Aldo',
         apellidos: 'Polvo Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1582,7 +1583,7 @@ module.exports = {
          usuario: 'Rocio Carolina', //----------------------------Produccion--------------------------//
         nombre: 'Rocio Carolina',
         apellidos: 'Rivera Martinez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1593,7 +1594,7 @@ module.exports = {
          usuario: 'Jesus', //----------------------------Produccion--------------------------//
         nombre: 'Jesus',
         apellidos: 'Ramirez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1604,7 +1605,7 @@ module.exports = {
         usuario: 'Raul', //----------------------------Deportes--------------------------//
         nombre: 'Raul',
         apellidos: 'Bautista Ibarra',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1615,7 +1616,7 @@ module.exports = {
         usuario: 'Jose Alberto', //----------------------------Deportes--------------------------//
         nombre: 'Jose Alberto',
         apellidos: 'Perez Hernandez Lara',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1626,7 +1627,7 @@ module.exports = {
         usuario: 'Erick Daniel', //----------------------------Deportes--------------------------//
         nombre: 'Erick Daniel',
         apellidos: 'Paredes Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1637,7 +1638,7 @@ module.exports = {
         usuario: 'Santiago', //----------------------------Coordinador de Staff------------------------//
         nombre: 'Santiago',
         apellidos: 'Mejia Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1648,7 +1649,7 @@ module.exports = {
         usuario: 'German', //----------------------------Escenografia--------------------------//
         nombre: 'German',
         apellidos: 'Herrera Castillo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1659,7 +1660,7 @@ module.exports = {
         usuario: 'Salvador', //----------------------------Escenografia--------------------------//
         nombre: 'Salvador',
         apellidos: 'Alejandre Maldonado',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1670,7 +1671,7 @@ module.exports = {
         usuario: 'ClementeE', //----------------------------Escenografia--------------------------//
         nombre: 'Clemente',
         apellidos: 'Alcantara Estrada',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1681,7 +1682,7 @@ module.exports = {
         usuario: 'Ignacio Aristeo', //----------------------------Escenografia--------------------------//
         nombre: 'Ignacio Aristeo',
         apellidos: 'Lopez Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1692,7 +1693,7 @@ module.exports = {
         usuario: 'Josue Eddgar', //----------------------------Edición--------------------------//
         nombre: 'Josue Eddgar',
         apellidos: 'Melo Sandoval',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1703,7 +1704,7 @@ module.exports = {
          usuario: 'Marco Antonio', //----------------------------Iluminación--------------------------//
         nombre: 'Marco Antonio',
         apellidos: 'Acosta Flores',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1714,7 +1715,7 @@ module.exports = {
          usuario: 'Jose Ignacio', //----------------------------Iluminación--------------------------//
         nombre: 'Jose Ignacio',
         apellidos: 'Galvan Bocanegra',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1725,7 +1726,7 @@ module.exports = {
          usuario: 'Anderson', //----------------------------Iluminación--------------------------//
         nombre: 'Anderson',
         apellidos: 'Hernandez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1736,7 +1737,7 @@ module.exports = {
          usuario: 'Gerardo', //----------------------------Imagen--------------------------//
         nombre: 'Gerardo',
         apellidos: 'Guasso Gonzalez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1747,7 +1748,7 @@ module.exports = {
          usuario: 'Juan Jose', //----------------------------Imagen--------------------------//
         nombre: 'Juan Jose',
         apellidos: 'Sanchez Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1758,7 +1759,7 @@ module.exports = {
         usuario: 'Maria Magdalena', //----------------------------Maquillista--------------------------//
         nombre: 'Maria Magdalena',
         apellidos: 'Diaz Benitez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1769,7 +1770,7 @@ module.exports = {
          usuario: 'Jesus Angel', //----------------------------Master--------------------------//
         nombre: 'Jesus Angel',
         apellidos: 'Vargas Flores',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1780,7 +1781,7 @@ module.exports = {
         usuario: 'Judith Alejandra', //----------------------------Master--------------------------//
         nombre: 'Judith Alejandra',
         apellidos: 'Bernardino Cruz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1791,7 +1792,7 @@ module.exports = {
         usuario: 'Juan Alberto', //----------------------------Master--------------------------//
         nombre: 'Juan Alberto',
         apellidos: 'Acosta Flores',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1802,7 +1803,7 @@ module.exports = {
         usuario: 'Leopoldo', //----------------------------Master--------------------------//
         nombre: 'Leopoldo',
         apellidos: 'Juarez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1813,7 +1814,7 @@ module.exports = {
         usuario: 'Leslie Shanik', //----------------------------Switcher--------------------------//
         nombre: 'Leslie Shanik',
         apellidos: 'Cabrera Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1824,7 +1825,7 @@ module.exports = {
         usuario: 'Enrique Roman', //----------------------------Switcher--------------------------//
         nombre: 'Enrique Roman',
         apellidos: 'Monroy Ruiz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1835,7 +1836,7 @@ module.exports = {
         usuario: 'Ana Gabriela', //----------------------------Titulador--------------------------//
         nombre: 'Ana Gabriela',
         apellidos: 'Gomez Soto',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1846,7 +1847,7 @@ module.exports = {
         usuario: 'Alejandra', //----------------------------Titulador--------------------------//
         nombre: 'Alejandra',
         apellidos: 'Pineda Espinoza',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1857,7 +1858,7 @@ module.exports = {
         usuario: 'Estephania Sarahi', //----------------------------Titulador--------------------------//
         nombre: 'Estephania Sarahi',
         apellidos: 'Cruz Muñoz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1868,7 +1869,7 @@ module.exports = {
         usuario: 'Alba Johana', //----------------------------Videoteca--------------------------//
         nombre: 'Alba Johana',
         apellidos: 'Reyes Gutierrez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1879,7 +1880,7 @@ module.exports = {
         usuario: 'Alberto Carlos', //----------------------------Videoteca--------------------------//
         nombre: 'Alberto Carlos',
         apellidos: 'Echavarri Ayala',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1890,7 +1891,7 @@ module.exports = {
         usuario: 'Ruben Eduardo', //----------------------------Videoteca--------------------------//
         nombre: 'Ruben Eduardo',
         apellidos: 'Perez Anaya',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1901,7 +1902,7 @@ module.exports = {
         usuario: 'Areli', //----------------------------Play-Out--------------------------//
         nombre: 'Areli',
         apellidos: 'Cruz Sosa',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1912,7 +1913,7 @@ module.exports = {
          usuario: 'Carlos AlbertoI', //----------------------------Play-Out--------------------------//
         nombre: 'Carlos Alberto',
         apellidos: 'Henandez Ibarra',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1923,7 +1924,7 @@ module.exports = {
         usuario: 'Ariana', //----------------------------Dirección de Vinculación--------------------------//
         nombre: 'Ariana',
         apellidos: 'Flores Gomez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1934,7 +1935,7 @@ module.exports = {
         usuario: 'Milton', //----------------------------Dirección de Vinculación--------------------------//
         nombre: 'Milton',
         apellidos: 'Pelcastre Rubio',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1945,7 +1946,7 @@ module.exports = {
         usuario: 'KarinaN', //----------------------------Dirección de Vinculación--------------------------//
         nombre: 'Karina',
         apellidos: 'Sanchez Nochebuena',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1956,7 +1957,7 @@ module.exports = {
         usuario: 'Angel', //----------------------------Dirección de Vinculación--------------------------//
         nombre: 'Angel',
         apellidos: 'Ventura Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1967,7 +1968,7 @@ module.exports = {
         usuario: 'Martha Adriana', //----------------------------Dirección de Vinculación--------------------------//
         nombre: 'Martha Adriana',
         apellidos: 'Martinez Retama',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1978,7 +1979,7 @@ module.exports = {
         usuario: 'Alan', //----------------------------Dirección-General--------------------------//
         nombre: 'Alan',
         apellidos: 'Austria Anaya',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -1989,7 +1990,7 @@ module.exports = {
         usuario: 'Adrian Rodrigo', //----------------------------Dirección-General--------------------------//
         nombre: 'Adrian Rodrigo',
         apellidos: 'Jimenez Perez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2000,7 +2001,7 @@ module.exports = {
         usuario: 'Jesus Martin', //----------------------------Dirección-General--------------------------//
         nombre: 'Jesus Martin',
         apellidos: 'Galvan Ramos',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2011,7 +2012,7 @@ module.exports = {
         usuario: 'Adriana Gabriela', //----------------------------Dirección-General--------------------------//
         nombre: 'Adriana Gabriela',
         apellidos: 'Cruz Sosa',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2022,7 +2023,7 @@ module.exports = {
         usuario: 'RicardoV', //----------------------------Dirección-Juridica--------------------------//
         nombre: 'Ricardo',
         apellidos: 'Gonzalez Valencia',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2033,7 +2034,7 @@ module.exports = {
         usuario: 'Mirna', //----------------------------Dirección-Juridica--------------------------//
         nombre: 'Mirna',
         apellidos: 'Samperio Gomez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2044,7 +2045,7 @@ module.exports = {
         usuario: 'Maria Deyanira', //----------------------------Dirección-Juridica--------------------------//
         nombre: 'Maria Deyanira',
         apellidos: 'Chavez Maldonado',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2055,7 +2056,7 @@ module.exports = {
         usuario: 'Job', //----------------------------Dirección-Juridica--------------------------//
         nombre: 'Job',
         apellidos: 'Licona Martinez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2066,7 +2067,7 @@ module.exports = {
         usuario: 'Mario Felix', //----------------------------Comisionado Subsecretaría De Protección Civil Y Gestión De Riesgos--------------------------//
         nombre: 'Mario Felix',
         apellidos: 'Castillo Granillo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2077,7 +2078,7 @@ module.exports = {
         usuario: 'Felipe Fernando', //----------------------------Servicios-Generales--------------------------//
         nombre: 'Felipe Fernando',
         apellidos: 'Rodriguez Lopez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2088,7 +2089,7 @@ module.exports = {
         usuario: 'Jose', //----------------------------Archivo y Servicios Generales--------------------------//
         nombre: 'Jose',
         apellidos: 'Hernandez Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2099,7 +2100,7 @@ module.exports = {
         usuario: 'Cesar Alberto', //----------------------------Direccion de Proyectos Estrategicos--------------------------//
         nombre: 'Cesar Alberto',
         apellidos: 'Cravioto Aguirre',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2110,7 +2111,7 @@ module.exports = {
         usuario: 'Eddert Yonn', //----------------------------Coordinador Personal Cerros de Tx--------------------------//
         nombre: 'Eddert Yonn',
         apellidos: 'Hernandez Ricaño',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2121,7 +2122,7 @@ module.exports = {
         usuario: 'Frida Elizabeth', //----------------------------Reporteros--------------------------//
         nombre: 'Frida Elizabeth',
         apellidos: 'Maya Guzman',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2132,7 +2133,7 @@ module.exports = {
         usuario: 'Hector', //----------------------------Mantenimientos y Tx. De Futbol y Eventos Especiales--------------------------//
         nombre: 'Hector',
         apellidos: 'Fuentes Cervantes',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2143,7 +2144,7 @@ module.exports = {
         usuario: 'Brenda', //----------------------------Conductora--------------------------//
         nombre: 'Brenda',
         apellidos: 'Monzalvo Uribe',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2154,7 +2155,7 @@ module.exports = {
         usuario: 'ElizabethG', //----------------------------Conductora--------------------------//
         nombre: 'Elizabeth',
         apellidos: 'Patiño Gonzalez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2165,7 +2166,7 @@ module.exports = {
         usuario: 'Claudia Guadalupe', //----------------------------Conductora--------------------------//
         nombre: 'Claudia Guadalupe',
         apellidos: 'Jimenez Cruz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2176,7 +2177,7 @@ module.exports = {
         usuario: 'Maura Alejandra Rosario', //----------------------------Conductora--------------------------//
         nombre: 'Maura Alejandra Rosario',
         apellidos: 'del Rio Calderon',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2187,7 +2188,7 @@ module.exports = {
         usuario: 'Luis EnriqueD', //----------------------------Edición--------------------------//
         nombre: 'Luis Enrique',
         apellidos: 'Gonzalez Duran',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2198,7 +2199,7 @@ module.exports = {
         usuario: 'Edgar Fernando', //----------------------------Escengrafo--------------------------//
         nombre: 'Edgar Fernando',
         apellidos: 'Olguin Gonzalez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2209,7 +2210,7 @@ module.exports = {
         usuario: 'Daniela Itzamar', //----------------------------Imagen--------------------------//
         nombre: 'Daniela Itzamar',
         apellidos: 'Gonzalez Alvidrez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2220,7 +2221,7 @@ module.exports = {
         usuario: 'Blanca Guadalupe', //----------------------------Master--------------------------//
         nombre: 'Blanca Guadalupe',
         apellidos: 'Lopez Gonzalez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2231,7 +2232,7 @@ module.exports = {
         usuario: 'GerardoM', //----------------------------Producción--------------------------//
         nombre: 'Gerardo',
         apellidos: 'Islas Muñoz',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2242,7 +2243,7 @@ module.exports = {
         usuario: 'Luis Manuel', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Luis Manuel',
         apellidos: 'Garcia Aguirre',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2253,7 +2254,7 @@ module.exports = {
         usuario: 'Christian Alejandro', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Christian Alejandro',
         apellidos: 'Leines del Castillo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2264,7 +2265,7 @@ module.exports = {
         usuario: 'GerardoO', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Gerardo',
         apellidos: 'Castillo Osorio',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2275,7 +2276,7 @@ module.exports = {
         usuario: 'Gabriela del Mar', //----------------------------Producción y Conductor --------------------------//
         nombre: 'Gabriela del Mar',
         apellidos: 'Diaz Enriquez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2286,7 +2287,7 @@ module.exports = {
         usuario: 'Maria Isabel', //----------------------------Videoteca--------------------------//
         nombre: 'Maria Isabel',
         apellidos: 'Santillan Montiel',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2297,7 +2298,7 @@ module.exports = {
         usuario: 'Yazmin Sarahi', //----------------------------Dirección de Televisión--------------------------//
         nombre: 'Yazmin Sarahi',
         apellidos: 'Esparza Hernandez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2308,7 +2309,7 @@ module.exports = {
         usuario: 'Irene Esperanza', //----------------------------Recepción--------------------------//
         nombre: 'Irene Esperanza',
         apellidos: 'Rodriguez Altamirano',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2319,7 +2320,7 @@ module.exports = {
         usuario: 'Sebastian', //----------------------------Producción--------------------------//
         nombre: 'Sebastian',
         apellidos: 'Guarneros Dominguez',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
@@ -2330,15 +2331,58 @@ module.exports = {
         usuario: 'Silvia Maryne', //----------------------------Direccion de Contraloria--------------------------//
         nombre: 'Silvia Maryne',
         apellidos: 'Salinas Argumedo',
-        empleado_id: null,
+        usuario_id: null,
         rol: 'empleado',
         password_hash: '$2a$12$B379B.n8PvCusWrRejO3N./oASsiclqb5BqrFz/Ww7PzhhoMmtH86', // Otro hash de ejemplo
         createdAt: new Date(),
         updatedAt: new Date()
       },
-    ], {});
+    ];
+
+    const columnasEmpleados = [
+      'id',
+      'nombre',
+      'apellidos',
+      'curp',
+      'usuario_id',
+      'rfc',
+      'nss',
+      'grado_de_estudios',
+      'tipo_Sanguineo',
+      'fecha_ingreso',
+      'tipo_contrato',
+      'estatus',
+      'direccion_id',
+      'departamento_id',
+      'puesto_id',
+      'jefe_directo_id',
+      'clabe_bancaria',
+      'contacto_nombre',
+      'contacto_parentesco',
+      'contacto_telefono',
+      'fecha_baja',
+      'motivo_baja',
+      'documento_baja',
+      'createdAt',
+      'updatedAt',
+    ];
+
+    const empleadosNormalizados = empleados.map((empleado) => {
+      const normalizado = {};
+      for (const columna of columnasEmpleados) {
+        if (Object.prototype.hasOwnProperty.call(empleado, columna)) {
+          normalizado[columna] = empleado[columna];
+        }
+      }
+      normalizado.estatus = normalizado.estatus || 'activo';
+      normalizado.createdAt = normalizado.createdAt || new Date();
+      normalizado.updatedAt = normalizado.updatedAt || new Date();
+      return normalizado;
+    });
+
+    await queryInterface.bulkInsert('empleados', empleadosNormalizados, {});
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('usuarios', null, {});
+    await queryInterface.bulkDelete('empleados', null, {});
   }
 };

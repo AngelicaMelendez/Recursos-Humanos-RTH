@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     curp: { type: DataTypes.STRING(18), unique: true, allowNull: true },
     rfc: { type: DataTypes.STRING(13), allowNull: true },
     nss: { type: DataTypes.STRING, allowNull: true },
+    grado_de_estudios: { type: DataTypes.STRING, allowNull: true },
     tipo_Sanguineo: { type: DataTypes.STRING(3), allowNull: true },
     fecha_ingreso: { type: DataTypes.DATEONLY, allowNull: true },
     tipo_contrato: { 
