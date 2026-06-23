@@ -76,20 +76,20 @@ export const modulePermissions = {
 };
 
 const actionCatalog = {
-  createEmployee: { label: "Alta empleado", icon: "plus", operation: "C" },
+  createEmployee: { label: "Alta Empleado", icon: "plus", operation: "C" },
   deactivateEmployee: { label: "Baja Lógica", icon: "archive", operation: "D" },
   editEmployee: { label: "Actualizar Expediente", icon: "edit", operation: "U" },
   viewDirectory: { label: "Consultar Directorio", icon: "users", operation: "R" },
-  updatePersonalData: { label: "Actualizar mis datos", icon: "edit", operation: "U" },
-  uploadPersonalDocument: { label: "Subir documento", icon: "upload", operation: "C" },
-  viewWorkHistory: { label: "Historial laboral", icon: "activity", operation: "R" },
+  updatePersonalData: { label: "Actualizar Mis Datos", icon: "edit", operation: "U" },
+  uploadPersonalDocument: { label: "Subir Documento", icon: "upload", operation: "C" },
+  viewWorkHistory: { label: "Historial Laboral", icon: "activity", operation: "R" },
   createRequest: { label: "Nueva Solicitud", icon: "plus", operation: "C" },
   deleteRequest: { label: "Eliminar Solicitud", icon: "garbage", operation: "D" },
   approveRequest: { label: "Aprobar Solicitud", icon: "check", operation: "U" },
   rejectRequest: { label: "Rechazar Solicitud", icon: "x", operation: "U" },
   manageIncident: { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
   viewRequests: { label: "Consultar Solicitudes", icon: "file", operation: "R" },
-  downloadRequestDocument: { label: "Descargar Documento", icon: "download", operation: "R" },
+  downloadRequestDocument: { label: "Descargar Documento", icon: "saveAlt", operation: "R" },
   publishVacancy: { label: "Publicar Vacante", icon: "plus", operation: "C" },
   closeVacancy: { label: "Cerrar Vacante", icon: "archive", operation: "U" },
   viewVacancies: { label: "Consultar Vacantes", icon: "briefcase", operation: "R" },
@@ -102,23 +102,23 @@ const actionCatalog = {
   assignBadge: { label: "Asignar Gafete", icon: "tag", operation: "U" },
   viewVisitors: { label: "Visitantes Activos", icon: "door", operation: "R" },
   fullAudit: { label: "Auditoria Completa", icon: "activity", operation: "R" },
-  crearComunicado: { label: "Publicar comunicado", icon: "plus", operation: "C" },
-  editarComunicado: { label: "Editar comunicado", icon: "edit", operation: "U" },
-  eliminarComunicado: { label: "Eliminar comunicado", icon: "trash", operation: "D" },
-  verComunicados: { label: "Ver comunicados", icon: "send", operation: "R" },
+  crearComunicado: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
+  editarComunicado: { label: "Editar Comunicado", icon: "edit", operation: "U" },
+  eliminarComunicado: { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
+  verComunicados: { label: "Ver Comunicados", icon: "send", operation: "R" },
   reaccionarComunicado: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
-  verHistorialAsistencia: { label: "Ver historial", icon: "activity", operation: "R" },
-  registrarAsistencia: { label: "Registrar asistencia", icon: "check", operation: "C" }
+  verHistorialAsistencia: { label: "Ver Historial", icon: "activity", operation: "R" },
+  registrarAsistencia: { label: "Registrar Asistencia", icon: "check", operation: "C" }
 };
 
 export const roleActionsByModule = {
   directory: {
-    [ROLE_KEYS.SUPER_USER]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
+    [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
     [ROLE_KEYS.ADMIN_RH]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.EMPLEADO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"]
   },
   requests: {
-    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
+    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest","viewRequests"],
     [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"]
   },

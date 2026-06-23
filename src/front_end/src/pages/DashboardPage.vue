@@ -58,7 +58,7 @@
           type="button"
           @click="showHistory = !showHistory"
         >
-          {{ showHistory ? "Ocultar historial" : "Ver historial" }}
+          {{ showHistory ? "Ocultar Historial" : "Ver Historial" }}
         </button>
       </div>
 
@@ -111,7 +111,7 @@
             </div>
 
             <div class="module-tools">
-              <router-link class="ghost-button" to="/comunicados">Ver todos</router-link>
+              <router-link class="ghost-button" to="/comunicados">Ver Todos</router-link>
               <button
                 v-if="canManageAnnouncements"
                 class="electric-button"
@@ -212,7 +212,7 @@
                 type="button"
                 @click="openAnnouncementModal(announcement)"
               >
-                Ver detalle
+                Ver Detalle
               </button>
             </article>
           </div>
@@ -223,7 +223,7 @@
             @submit.prevent="saveAnnouncement"
           >
             <div class="form-title">
-              <h4>{{ announcementForm.id ? "Editar comunicado" : "Crear comunicado" }}</h4>
+              <h4>{{ announcementForm.id ? "Editar Comunicado" : "Crear Comunicado" }}</h4>
               <button class="icon-button icon-button--plain" type="button" @click="closeAnnouncementForm">
                 x
               </button>

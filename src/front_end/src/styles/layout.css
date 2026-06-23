@@ -11,7 +11,7 @@
 .content-frame {
   min-height: calc(100vh - 48px);
   background:
-    linear-gradient(180deg, rgba(255, 253, 249, 0.98), rgba(246, 241, 234, 0.96));
+  linear-gradient(180deg, rgba(255, 253, 249, 0.98), rgba(246, 241, 234, 0.96));
   border: 1px solid rgba(221, 207, 191, 0.92);
   border-radius: 32px;
   box-shadow: 0 20px 60px var(--color-shadow);
@@ -20,6 +20,7 @@
 
 .page-section {
   padding: 0px 20px;
+  
 }
 
 .grid {

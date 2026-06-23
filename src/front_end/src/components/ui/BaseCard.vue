@@ -31,6 +31,7 @@ defineProps({
   width: 100%;
   margin-top: 20px;
   margin-bottom: 20px;
+  
 }
 
 .base-card__header {
@@ -58,5 +59,7 @@ defineProps({
   width: 100%;
   display: block;
 }
+
+
 </style>
 

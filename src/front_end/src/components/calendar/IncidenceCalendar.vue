@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-container">
-    <div class="Simbologia">
-      <h3>Simbolog&iacute;a</h3>
+  <div class="calendar-layout">
+    <div class="legend-card">
+      <h3>Simbología</h3>
 
       <ul class="legend-list">
         <li>
@@ -27,9 +27,11 @@
             />
             <span class="checkmark" :style="{ '--legend-color': category.color }"></span>
             <span class="legend-color" :style="{ backgroundColor: category.color }"></span>
+
             <svg class="legend-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
               <path :d="eventIconPaths[category.icon]" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
+
             <span>{{ category.label }}</span>
           </label>
         </li>
@@ -45,12 +47,15 @@
             />
             <span class="checkmark" :style="{ '--legend-color': incidenceColor }"></span>
             <span class="legend-color" :style="{ backgroundColor: incidenceColor }"></span>
+
             <svg class="legend-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
               <path :d="eventIconPaths.activity" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
+
             <span>Incidencias</span>
           </label>
         </li>
+
         <li
           v-for="category in incidenceLegendCategories"
           :key="category.label"
@@ -63,20 +68,23 @@
               @change="toggleCategory(category.color)"
             />
             <span class="checkmark" :style="{ '--legend-color': category.color }"></span>
+
             <svg class="legend-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
               <path :d="eventIconPaths[category.icon]" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
+
             <span>{{ category.label }}</span>
           </label>
         </li>
       </ul>
     </div>
 
-    <div class="calendar-wrapper">
+    <div class="calendar-card">
       <FullCalendar :options="calendarOptions" />
     </div>
   </div>
 </template>
+
 
 <script setup>
 import FullCalendar from "@fullcalendar/vue3";
@@ -238,32 +246,47 @@ const calendarOptions = computed(() => ({
 </script>
 
 <style scoped>
-.flex-container {
+
+.calendar-layout {
   display: flex;
   flex-direction: row;
-  gap: 40px;
+
   align-items: flex-start;
+  gap: 24px;
   width: 100%;
 }
 
-.calendar-wrapper {
-  flex: 1;
-  min-width: 0;
-}
-
-.Simbologia {
-  width: 230px;
+.legend-card {
+  width: 280px;
   flex-shrink: 0;
-  margin-bottom: 95px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  
 }
 
-.Simbologia h3 {
+.calendar-card {
+  flex: 1;
+  width: 280;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.legend-card h3 {
   font-family: 'Montserrat', sans-serif;
   text-transform: uppercase;
   font-size: 0.9rem;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 15px;
+  
+  
+
 }
 
 .legend-list {
@@ -452,6 +475,7 @@ const calendarOptions = computed(() => ({
   padding: 2px 6px;
 }
 
+
 :deep(.fc-event-main) {
   display: flex !important;
   align-items: flex-start !important;
@@ -511,13 +535,14 @@ const calendarOptions = computed(() => ({
 }
 
 @media (max-width: 768px) {
-  .flex-container {
+  .calendar-layout {
     flex-direction: column;
   }
 
-  .Simbologia {
+  .legend-card,
+  .calendar-card {
     width: 100%;
-    margin-top: 20px;
+
   }
 
   .legend-list {
@@ -531,4 +556,9 @@ const calendarOptions = computed(() => ({
     margin-bottom: 0;
   }
 }
+
+.page-section {
+  width: 600px;
+}
+
 </style>

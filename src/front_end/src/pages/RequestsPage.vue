@@ -5,7 +5,7 @@
       title="Solicitudes e Incidencias"
       description="Todos pueden generar solicitudes. La consulta, aprobacion y rechazo queda restringida a administración."
     >
-      <RoleActionBar :actions="headerActions" @select="selectAction" />
+
     </PageHeader>
 
     <div v-if="toast.visible" class="toast" :class="`toast--${toast.tone}`">
@@ -35,8 +35,10 @@
         <label>
           Busqueda
           <input
+          ref=""
             v-model.trim="filters.term"
             type="search"
+            list=""
             :placeholder="filterPlaceholder"
           />
         </label>
@@ -47,7 +49,7 @@
           </button>
           <button class="secondary-button" type="button" @click="clearSearch">
             <IconSymbol name="clear" />
-            Limpiar
+            Limpiar 
           </button>
           <button class="ghost-button" type="button" @click="loadRequests">
           <IconSymbol name="reset" />
@@ -214,6 +216,7 @@ const modal = reactive({
 });
 const form = reactive({
   tipo: "vacaciones",
+  oficio: "",
   fecha_inicio: "",
   fecha_fin: "",
   motivo: ""
@@ -795,6 +798,7 @@ onMounted(loadRequests);
 .page-header{
   margin-bottom: 20px;
   margin-top: 20px;
+  margin-right: 5px;;
 }
 
 button:disabled {

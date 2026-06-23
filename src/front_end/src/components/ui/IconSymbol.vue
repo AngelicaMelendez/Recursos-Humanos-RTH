@@ -47,7 +47,12 @@ const iconMap = {
   broom: "M3 16h18M5 8h14M7 4h10M9 12h6",
   eraser: "M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2m5-3h4m-4 0a1 1 0 0 0-1 1v3h6V4a1 1 0 0 0-1-1m-4 0h4",
   reset: "M3 12a9 9 0 1 0 3-6.7M3 5v6h6",
-  down: "M12 4v16m8-8H4"
+  down: "M12 4v16m8-8H4",
+  fileDown: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M12 18v-6M9 15l3 3 3-3",
+    saveAlt: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM12 11v6M9 14l3 3 3-3",
+
+
+  
 };
 
 const iconPath = computed(() => iconMap[props.name] || iconMap.grid);

@@ -23,9 +23,9 @@ const dashboardData = {
     ],
   },
   recentActivity: [
-    { title: 'Aprobacion de vacaciones', description: 'Direccion aprobo una solicitud de vacaciones.', time: 'Hace 18 minutos' },
-    { title: 'Alta de visitante', description: 'Recepcion registro una visita institucional.', time: 'Hace 39 minutos' },
-    { title: 'Carga documental', description: 'RH agrego constancias de servicio a expedientes.', time: 'Hace 1 hora' },
+    { title: 'Aprobacion de Vacaciones', description: 'Direccion aprobo una solicitud de vacaciones.', time: 'Hace 18 minutos' },
+    { title: 'Alta de Visitante', description: 'Recepcion registro una visita institucional.', time: 'Hace 39 minutos' },
+    { title: 'Carga Documental', description: 'RH agrego constancias de servicio a expedientes.', time: 'Hace 1 hora' },
   ],
   upcomingBirthdays: [
     { name: 'Ana Laura Perez', date: '09 mayo', area: 'Direccion Administrativa' },
@@ -37,10 +37,10 @@ const dashboardData = {
     { name: 'Beatriz Lopez', period: '07-14 mayo', relief: 'Finanzas' },
   ],
   quickActions: [
-    { title: 'Registrar visitante', route: '/visitantes' },
-    { title: 'Nueva solicitud', route: '/solicitudes' },
-    { title: 'Ver comunicados', route: '/comunicados' },
-    { title: 'Subir normatividad', route: '/normatividad' },
+    { title: 'Registrar Visitante', route: '/visitantes' },
+    { title: 'Nueva Solicitud', route: '/solicitudes' },
+    { title: 'Ver Comunicados', route: '/comunicados' },
+    { title: 'Subir Normatividad', route: '/normatividad' },
   ],
 };
 

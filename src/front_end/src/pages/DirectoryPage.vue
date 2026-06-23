@@ -7,8 +7,8 @@
 
     <p v-if="notice" class="notice">{{ notice }}</p>
 
-    <BaseCard title="Busqueda">
-  <div class="filter-grid">
+    <BaseCard class="headd" title="Busqueda">
+  <form class="filter-grid" @submit.prevent="resetPaginationAndFetch" >
     <label class="field">
       <span>NO. de Empleado o Nombre</span>
       <input
@@ -68,10 +68,12 @@
     </template>
 
     <div class="filter-actions">
-      <button type="button" class="primary" @click="fetchEmployees"> <IconSymbol name="search" /> Buscar</button>
+      <button type="submit" class="primary-button" @click="resetPaginationAndFetch"> <IconSymbol name="search" /> Buscar</button>
       <button type="button" class="secondary" @click="clearFilters"> <IconSymbol name="clear" /> Limpiar</button>
+      <button type="button" class="ghost-button" @click="loadDirectory"> <IconSymbol name="reset"/> Actualizar </button>
+ 
     </div>
-  </div>
+  </form>
 </BaseCard>
 
     <div class="section-gap">
@@ -88,10 +90,36 @@
           </template>
         </AppTable>
         <p v-if="!employees.length && !loading" class="empty-state">No se encontraron empleados con esos filtros.</p>
+
+
+        <div v-if="employees.length" class="pagination-container">
+          <button
+          type="button"
+          class="pagination-button"
+          :disabled="currentPage == 1 || loading"
+          @click="changePage(-1)"
+          >
+          Anterior
+
+          </button>
+
+          <span class="pagination-info">Pagina  <strong> {{ currentPage }}</strong> De <strong> {{ totalPages }} </strong> </span>
+
+          <button
+          type="button"
+          class="pagination-button"
+          :disabled="currentPage >= totalPages || loading"
+          @click="changePage(1)"
+          >
+            Siguiente
+          </button>
+
+        </div>
+
       </BaseCard>
     </div>
 
-    <div class="section-gap">
+    <div class="section-gap"  ref="employeeDetailsRef"> 
       <BaseCard title="Datos Generales" subtitle="Información del empleado seleccionado para consulta inmediata.">
         <div v-if="selectedEmployee" class="employee-details">
           <div class="details-grid">
@@ -145,13 +173,13 @@
           </div>
 
           <div class="employee-actions">
-            <button type="button" class="primary" @click="viewOrganigrama(selectedEmployee)">Ver Organigrama</button>
+            <button type="button" class="primary-2" @click="viewOrganigrama(selectedEmployee)">Ver Organigrama</button>
             <button type="button" class="secondary" @click="selectedEmployee = null">Cerrar Ficha</button>
           </div>
         </div>
 
         <div v-else class="empty-state">
-          Selecciona ver datos en un empleado para ver su información personal y empresarial aquí.
+          Selecciona "Ver Datos" en un empleado para ver su información personal y empresarial aquí.
         </div>
       </BaseCard>
     </div>
@@ -177,6 +205,7 @@ const notice = ref("");
 const loading = ref(false);
 const searchTerm = ref("");
 const searchInputRef = ref(null);
+const employeeDetailsRef = ref(null);
 const direccionName = ref("");
 const departamentoName = ref("");
 const puestoName = ref("");
@@ -189,7 +218,15 @@ const direcciones = ref([]);
 const departamentos = ref([]);
 const puestos = ref([]);
 const employeeSuggestions = ref([]);
-const showAreaPuesto = ref(false);
+const showDepartamentoPuesto = ref(false);
+
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const totalRows = ref(0);
+
+const totalPages = computed(() => {
+  return Math.ceil(totalRows.value / itemsPerPage.value) || 1;
+});
 
 const actions = computed(() => getRoleActions(authStore.user?.rol, "directory"));
 
@@ -204,10 +241,34 @@ const columns = [
   { key: "acciones", label: "Acciones" }
 ];
 
-const filteredPuestos = computed(() => {
-  if (!selectedAreaId.value) return puestos.value;
-  return puestos.value.filter((puesto) => puesto.area_id === Number(selectedAreaId.value));
+const filteredDepartamentos = computed(() => {
+  if (!selectedDireccionId.value) return departamentos.value;
+  return departamentos.value.filter((dep) => dep.direccion_id === Number(selectedDireccionId.value));
+  });
+
+  const filteredPuestos = computed(() => {
+  if (!selectedDepartamentoId.value) return puestos.value;
+  return puestos.value.filter((puesto) => puesto.departamento_id === Number(selectedDepartamentoId.value));
 });
+
+const loadDirectory = async () => {
+  searchTerm.value = "";
+  direccionName.value = "";
+  departamentoName.value = "";
+  puestoName.value = "";
+  selectedDireccionId.value = "";
+  selectedDepartamentoId.value = "";
+  selectedPuestoId.value = "";
+  selectedEmployee.value = null;
+  showDepartamentoPuesto.value = false;
+  currentPage.value = 1;
+
+  await fetchFilters();
+  await fetchEmployees();
+
+  
+};
+
 
 const formatEmployeeNumber = (id) => `EMP-${String(id).padStart(3, "0")}`;
 
@@ -254,8 +315,8 @@ const fetchEmployees = async () => {
   loading.value = true;
   try {
     const params = {
-      limit: 100,
-      page: 1
+      limit: itemsPerPage.value,
+      page: currentPage.value 
     };
 
     if (searchTerm.value.trim()) params.search = searchTerm.value.trim();
@@ -264,9 +325,11 @@ const fetchEmployees = async () => {
     if (selectedPuestoId.value) params.puesto_id = selectedPuestoId.value;
 
     const response = await organogramaService.listarEmpleados(params);
+
     const raw = response.data.rows ?? response.data;
-    employees.value = raw.map(normalizeEmployee);
-    employeeSuggestions.value = employees.value.map((employee) => `${employee.numero} - ${employee.nombre}`);
+    totalRows.value = response.data.count ?? raw.length;
+
+    employees.value = Array.isArray(raw) ? raw.map(normalizeEmployee): [] ;
   } catch (error) {
     notice.value = "Error al cargar empleados. Intenta nuevamente.";
     console.error(error);
@@ -274,6 +337,37 @@ const fetchEmployees = async () => {
     loading.value = false;
   }
 };
+
+const fetchEmployeeSuggestions = async () => {
+  try {
+    const response = await organogramaService.listarEmpleados({
+      page: 1,
+      limit: 1000
+    });
+
+    const raw = response.data.rows ?? response.data;
+    employeeSuggestions.value = Array.isArray(raw)
+      ? raw.map(normalizeEmployee).map((employee) => `${employee.numero} - ${employee.nombre}`)
+      : [];
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+const resetPaginationAndFetch = () => {
+  currentPage.value = 1;
+  fetchEmployees();
+}
+
+
+const changePage = (step) => {
+  currentPage.value += step;
+  if (currentPage.value < 1) currentPage.value = 1;
+  if (currentPage.value > totalPages.value) currentPage.value = totalPages.value;
+  fetchEmployees();
+}
+
 
 const resolveDireccionSelection = () => {
   const match = direcciones.value.find(
@@ -309,19 +403,22 @@ const resolvePuestoSelection = () => {
   selectedPuestoId.value = match ? String(match.id) : "";
 };
 
-watch(direccionName,departamentoName,(value) => {
+watch(direccionName, (value) => {
   if (!value) {
     selectedDireccionId.value = "";
-    selectedDepartamentoId.value = "";  
+    selectedDepartamentoId.value = "";
     selectedPuestoId.value = "";
+    departamentoName.value = "";
     puestoName.value = "";
   }
 
 });
 
-watch(puestoName, (value) => {
+watch(departamentoName, (value) => {
   if (!value) {
+    selectedDepartamentoId.value = "";
     selectedPuestoId.value = "";
+    puestoName.value = "";
   }
 });
 
@@ -331,14 +428,15 @@ const resolveEmployeeSelection = () => {
   if (match) {
     const formatted = `EMP-${String(match[1]).padStart(3, "0")}`;
     searchTerm.value = formatted;
-    showAreaPuesto.value = true;
+
 
     const found = employees.value.find((e) => e.numero === formatted || e.id === Number(match[1]));
     if (found) {
       direccionName.value = found.direccion || "";
       departamentoName.value = found.departamento || "";
       puestoName.value = found.puesto || "";
-      resolveAreaSelection();
+      resolveDireccionSelection();
+      resolveDepartamentoSelection();
       resolvePuestoSelection();
       selectEmployee(found);
     }
@@ -350,8 +448,7 @@ const resolveEmployeeSelection = () => {
 
   const byName = employees.value.find((e) => `${e.numero} - ${e.nombre}`.toLowerCase() === trimmed.toLowerCase() || e.nombre.toLowerCase().includes(trimmed.toLowerCase()));
   if (byName) {
-    showDireccionPuesto.value = true;
-    showDepartamentoPuesto.value = true;
+
     searchTerm.value = `${byName.numero} - ${byName.nombre}`;
     direccionName.value = byName.direccion || "";
     departamentoName.value = byName.departamento || "";
@@ -373,6 +470,17 @@ const selectEmployee = async (row) => {
       edad: calculateAge(response.data.fecha_nacimiento)
     };
     notice.value = "";
+
+    await nextTick();
+
+
+    if (employeeDetailsRef.value) {
+      employeeDetailsRef.value.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
   } catch (error) {
     notice.value = "No se pudo cargar el empleado seleccionado.";
     console.error(error);
@@ -392,7 +500,9 @@ const clearFilters = async () => {
   selectedDepartamentoId.value = "";
   selectedPuestoId.value = "";
   selectedEmployee.value = null;
-  showAreaPuesto.value = false;
+  showDepartamentoPuesto.value = false;
+  currentPage.value = 1;
+
   await fetchEmployees();
   await nextTick();
   searchInputRef.value?.focus?.();
@@ -400,19 +510,23 @@ const clearFilters = async () => {
 
 onMounted(async () => {
   await fetchFilters();
+  await fetchEmployeeSuggestions();
   await fetchEmployees();
 });
 </script>
 
 <style scoped>
+
 .filter-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: flex-end;
+  
 }
 .header-summary{
   padding: 15px;
+  
 }
 .field {
   display: flex;
@@ -421,6 +535,7 @@ onMounted(async () => {
   gap: 6px;
   flex: 1 1 220px;
   min-width: 200px;
+  
 }
 
 .field span {
@@ -447,13 +562,19 @@ onMounted(async () => {
   margin-left: auto;
 }
 
-.filter-actions .primary,
-.employee-actions .primary {
+.headd {
+    background: var(--color-surface-muted);
+
+}
+
+.filter-actions .primary-button,
+.employee-actions .primary-button,
+.primary-2 {
   display: inline-flex;
   justify-content: center;
   border: none;
   gap: 8px;
-  border: none;
+
   background: var(--color-primary);
   color: #fff;
   padding: 12px 20px;
@@ -465,33 +586,100 @@ onMounted(async () => {
 .employee-actions .secondary {
   display: inline-flex;
   justify-content: center;
-  border: none;
+
   gap: 8px;
   border: 1px solid var(--color-border);
-  background: transparent;
+  background: #fff;
   color: var(--color-text);
   padding: 12px 20px;
   border-radius: 999px;
   cursor: pointer;
 }
 
+.ghost-button,
+.icon-action,
+.primary-button,
+.primary-2,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.primary-button,
+.primary-2,
+.secondary {
+  min-height: 42px;
+  padding: 10px 16px;
+}
+
+.primary-button,
+.primary-2 {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.primary-button--danger {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-2--danger {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+}
+
+.primary-2:hover {
+  transform: translateY(-1px);
+}
+
+.secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.secondary:hover {
+  transform: translateY(-1px);
+}
+
+.ghost-button {
+  min-height: 38px;
+  padding: 9px 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.ghost-button:hover {
+  transform: translateY(-1px);
+}
+
+
 .link-button {
-  background: var (--color-surface);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-text);
   cursor: pointer;
   text-align: center;
   justify-content: center;
   align-items: center;
-  display:inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex;
   min-height: 38px;
   padding: 9px 14px;
   border-radius: 12px;
   font-weight: 700;
   
 }
+
 
 .link-button:hover {
   background: var(--color-surface);
@@ -504,21 +692,16 @@ onMounted(async () => {
   flex-wrap: wrap;
 }
 
-.act-buttom {
-  background: var (--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  cursor: pointer;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  
+.fil{
+  background: var(--color-surface-muted);
+
 }
 
 .details-grid {
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  
 }
 
 .details-grid section {
@@ -526,6 +709,7 @@ onMounted(async () => {
   border: 1px solid var(--color-border);
   border-radius: 18px;
   padding: 20px;
+  
 }
 
 .details-grid h3 {
@@ -575,6 +759,42 @@ onMounted(async () => {
   font-weight: 700;
 }
 
+/* Estilo de Pagina */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.pagination-button {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background: var(--color-border);
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+}
+
 @media (max-width: 1100px) {
   .details-grid {
     grid-template-columns: 1fr;
@@ -583,6 +803,7 @@ onMounted(async () => {
   .filter-grid {
     flex-direction: column;
     align-items: stretch;
+    
   }
 
   .field {
@@ -594,11 +815,11 @@ onMounted(async () => {
   }
 }
 
-/* espaciado entre cards del directorio */
+
 .section-gap {
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin-top: 14px;
-}
-</style>
+  
+}</style>
