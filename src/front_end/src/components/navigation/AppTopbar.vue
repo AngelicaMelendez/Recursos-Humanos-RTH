@@ -64,10 +64,9 @@
       </div>
 
       <div class="user-profile">
-        <div class="profile-image-container" title="Perfil" @click="verPerfil(usuarioLogueado.id)">{{ usuarioLogueado.nombre }}
-          <img src=" " alt="Perfil" class="profile-image" />
+        <div class="profile-image-container" title="Perfil">
+          <img :src="iconoPerfil" alt="Perfil" class="profile-image" @click="verPerfil" />
         </div>
-        
         <input 
           type="file" 
           ref="fileInput" 
@@ -101,8 +100,8 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-area">Área:</label>
-        <input type="text" id="edit-area" v-model="editForm.area" />
+        <label for="edit-area">Departamento:</label>
+        <input type="text" id="edit-departamento" v-model="editForm.departamento" />
       </div>
       <div class="form-group">
         <label for="edit-role">Rol / Puesto:</label>
@@ -123,6 +122,8 @@ import { useNotificationsStore } from "@/store/notificaciones";
 import {useRouter} from 'vue-router';
 import iconoPerfil from "@/assets/icono.png";
 
+const router = useRouter(); 
+
 const props = defineProps({
   user: {
     type: Object,
@@ -141,7 +142,7 @@ const notificationsWrap = ref(null);
 const fileInput = ref(null);
 const isModalOpen = ref(false);
 const localName = ref("");
-const localArea = ref("");
+const localDepartment = ref("");
 const localRole = ref("");
 const editForm = ref({ nombre: "", departamento: "", rol: "" });
 
@@ -213,7 +214,6 @@ const openEditModal = () => {
   editForm.value.nombre = localName.value;
   editForm.value.departamento = localDepartment.value;
   editForm.value.rol = localRole.value;
-  editForm.value.area = localArea.value;
   isModalOpen.value = true;
 };
 
@@ -245,28 +245,25 @@ onBeforeUnmount(() => {
   globalThis.document?.removeEventListener("click", handleOutsideClick);
 });
 
-const usuarioLogueado = ref({
-  id: 'id',
-  nombre: ''
-});
-
-onMounted(() => {
-  const datosSesion = localStorage.getItem('usuario_sesion');
-  if (datosSesion) {
-    const usuarioReal = JSON.parse(datosSesion);
-    usuarioLogueado.value = {
-      id: usuarioReal.id,
-      nombre: usuarioReal.nombre
-    };
-  }
-});
 
 // 3. CORRECCIÓN DEL ERROR: Tu función ya no debe llevar "router.push"
-const verPerfil = (id) => {
-  if (!id) {
-    alert("Error: No se encontró el ID del usuario.");
+const verPerfil = () => {
+  console.log("1. ¡El click funciona perfectamente!");
+  
+  if (!router) {
+    console.error("ERROR: El 'router' no está inicializado.");
     return;
   }
+  
+  console.log("2. Intentando redirigir a /perfil...");
+  
+  router.push('/perfil')
+    .then(() => {
+      console.log("3. ¡Redirección exitosa!");
+    })
+    .catch((error) => {
+      console.error("3. Hubo un error en la redirección:", error);
+    });
 };
 </script>
 

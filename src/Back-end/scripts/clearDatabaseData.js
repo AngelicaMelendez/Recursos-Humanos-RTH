@@ -16,8 +16,7 @@ const tablesToClear = [
   'reacciones_comunicados',
   'solicitudes',
   'usuarios',
-  'vacantes',
-  'visitantes'
+  'vacantes'
 ];
 
 async function clearDatabaseData() {

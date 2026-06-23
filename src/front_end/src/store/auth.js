@@ -17,7 +17,6 @@ export const useAuthStore = defineStore("auth", {
       if (this.initialized) {
         return;
       }
-
       const storedAuth = readStoredAuth();
       this.token = storedAuth.token;
       this.user = storedAuth.user;

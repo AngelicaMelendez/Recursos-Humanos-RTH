@@ -254,7 +254,7 @@ const fetchEmployees = async () => {
   loading.value = true;
   try {
     const params = {
-      limit: 100,
+      limit: 212,
       page: 1
     };
 
