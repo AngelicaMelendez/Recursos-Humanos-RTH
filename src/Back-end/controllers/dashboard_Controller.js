@@ -1,9 +1,6 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 
-
-// Pon esto hasta arriba de tu controlador del dashboard, justo abajo de tus imports
-console.log("📍 RUTA REAL DEL INDEX DE MODELOS:", require.resolve('../models'));
 exports.getStats = async (req, res) => {
   try {
     
@@ -25,10 +22,10 @@ exports.getStats = async (req, res) => {
     // 3. Enviar la respuesta con lo que sí existe
     res.json({
       success: true,
-      totalActivos,          // Retorna los 5 de tus seeders
-      totalEx,               // Retorna 0
-      solicitudesPendientes, // Retorna 1 (Angelica)
-      vacantesAbiertas: 0    // Déjalo en 0 estático por ahora si no tienes la tabla
+      totalActivos,          
+      totalEx,               
+      solicitudesPendientes, 
+      vacantesAbiertas: 0 
     });
 
   } catch (error) {

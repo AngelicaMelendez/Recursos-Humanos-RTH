@@ -51,7 +51,6 @@ module.exports = (sequelize, DataTypes) => {
     if (models.HistorialPuesto) Empleado.hasMany(models.HistorialPuesto, { foreignKey: 'empleado_id', as: 'historial' });
     if (models.Incidencia) Empleado.hasMany(models.Incidencia, { foreignKey: 'empleado_id', as: 'incidencias' });
     if (models.Solicitud) Empleado.hasMany(models.Solicitud, { foreignKey: 'empleado_id', as: 'solicitudes' });
-    if (models.Usuario) Empleado.hasOne(models.Usuario, { foreignKey: 'empleado_id', as: 'usuario' });
   };
 
   return Empleado;

@@ -23,18 +23,6 @@ module.exports = {
         unique: true,
       },
 
-      usuario_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        unique: true,
-        references: {       // llave foranea
-          model: 'usuarios', // Nombre real de la tabla en tu base de datos
-          key: 'id'           // Columna a la que apunta
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'  // Si se borra el empleado, el usuario queda libre en NULL
-      },
-
       rfc: {
         type: Sequelize.STRING(13),
         allowNull: true,

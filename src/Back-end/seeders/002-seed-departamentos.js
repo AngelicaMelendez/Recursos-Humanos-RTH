@@ -434,6 +434,13 @@ module.exports = {
         direccion_id: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+      },
+      {
+        id:62,
+        nombre: "Radiodifusora Huejutla FM",
+        direccion_id: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]
 

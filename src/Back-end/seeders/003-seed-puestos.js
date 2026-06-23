@@ -43,7 +43,7 @@ module.exports = {
       },
       {
         id: 5,
-        nombre: "Director de Administrador y Finanzas",
+        nombre: "Director de Administracion y Finanzas",
         nivel: "11B",
         departamento_id: null,
         createdAt: new Date(),

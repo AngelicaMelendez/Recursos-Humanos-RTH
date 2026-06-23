@@ -64,13 +64,9 @@
       </div>
 
       <div class="user-profile">
-        <div class="profile-image-container" @click="triggerPhotoUpload" title="Cambiar foto de perfil">
-          <img :src="avatarPreview || user?.avatar || iconoPerfil" alt="Perfil" class="profile-image" />
-          <div class="profile-image-overlay">
-            <IconSymbol name="edit" class="overlay-icon" />
-          </div>
+        <div class="profile-image-container" title="Perfil">
+          <img :src="iconoPerfil" alt="Perfil" class="profile-image" @click="verPerfil" />
         </div>
-        
         <input 
           type="file" 
           ref="fileInput" 
@@ -83,7 +79,7 @@
           <strong class="user-name">
             {{ localName || "Usuario" }}
           </strong>
-          <span>{{ localDireccion || "Dirección" }}</span>
+          <span>{{ localDepartment || "Departamento" }}</span>
           <br></br>
           <span>{{ localRole || "Administrador" }}</span>
         </div>
@@ -104,8 +100,8 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-direccion">Dirección:</label>
-        <input type="text" id="edit-direccion" v-model="editForm.direccion" />
+        <label for="edit-area">Departamento:</label>
+        <input type="text" id="edit-departamento" v-model="editForm.departamento" />
       </div>
       <div class="form-group">
         <label for="edit-role">Rol / Puesto:</label>
@@ -123,7 +119,10 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
 import { useNotificationsStore } from "@/store/notificaciones";
+import {useRouter} from 'vue-router';
 import iconoPerfil from "@/assets/icono.png";
+
+const router = useRouter(); 
 
 const props = defineProps({
   user: {
@@ -141,19 +140,18 @@ const notificationsWrap = ref(null);
 
 // MODIFICADO: Estados reactivos para el control de edición de usuario
 const fileInput = ref(null);
-const avatarPreview = ref(null);
 const isModalOpen = ref(false);
 const localName = ref("");
-const localDireccion = ref("");
+const localDepartment = ref("");
 const localRole = ref("");
-const editForm = ref({ nombre: "", rol: "", area:"" });
+const editForm = ref({ nombre: "", departamento: "", rol: "" });
 
 // Sincronizar props iniciales con variables locales
 watch(() => props.user, (newUser) => {
   if (newUser) {
     localName.value = newUser.nombre || newUser.name || newUser.usuario || "Usuario";
+    localDepartment.value = newUser.departamento || "Departamento";
     localRole.value = newUser.rol || "Administrador";
-    localDireccion.value = newUser.area || "Dirección";
   }
 }, { immediate: true });
 
@@ -197,11 +195,6 @@ const showMessages = () => { globalThis.alert?.("Mensajes"); };
 const showFiles = () => { globalThis.alert?.("Archivos"); };
 const showHelp = () => { globalThis.alert?.("Ayuda"); };
 
-// MODIFICADO: Funciones lógicas para manejo de imagen y modal de datos
-const triggerPhotoUpload = () => {
-  fileInput.value.click();
-};
-
 const handlePhotoChange = (event) => {
   const file = event.target.files[0];
   if (!file) return;
@@ -219,8 +212,8 @@ const handlePhotoChange = (event) => {
 
 const openEditModal = () => {
   editForm.value.nombre = localName.value;
+  editForm.value.departamento = localDepartment.value;
   editForm.value.rol = localRole.value;
-  editForm.value.direccion = localDireccion.value;
   isModalOpen.value = true;
 };
 
@@ -230,15 +223,15 @@ const closeEditModal = () => {
 
 const saveUserData = () => {
   localName.value = editForm.value.nombre;
+  localDepartment.value = editForm.value.departamento;
   localRole.value = editForm.value.rol;
-  localDireccion.value = editForm.value.direccion;
-   
+
   // Emitir cambios de texto al padre
   emit("update-user", { 
     action: "update-info", 
     nombre: localName.value, 
     rol: localRole.value, 
-    direccion: localDireccion.value
+    departamento: localDepartment.value
   });
   
   closeEditModal();
@@ -251,6 +244,27 @@ onMounted(() => {
 onBeforeUnmount(() => {
   globalThis.document?.removeEventListener("click", handleOutsideClick);
 });
+
+
+// 3. CORRECCIÓN DEL ERROR: Tu función ya no debe llevar "router.push"
+const verPerfil = () => {
+  console.log("1. ¡El click funciona perfectamente!");
+  
+  if (!router) {
+    console.error("ERROR: El 'router' no está inicializado.");
+    return;
+  }
+  
+  console.log("2. Intentando redirigir a /perfil...");
+  
+  router.push('/perfil')
+    .then(() => {
+      console.log("3. ¡Redirección exitosa!");
+    })
+    .catch((error) => {
+      console.error("3. Hubo un error en la redirección:", error);
+    });
+};
 </script>
 
 <style scoped>

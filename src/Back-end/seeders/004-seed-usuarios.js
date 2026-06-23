@@ -8,7 +8,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('usuarios', [
       {
-        id: 14,
+        id: 1,
         usuario: 'Omar Efren',
         nombre: 'Omar Efren',
         apellidos: 'Vazquez Moreno',
@@ -19,7 +19,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 15,
+        id: 2,
         usuario: 'Axel',
         nombre: 'Axel',
         apellidos: 'Antonio Alarcon',
@@ -30,7 +30,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 16,
+        id: 3,
         usuario: 'Angelica',
         nombre: 'Angelica',
         apellidos: 'Melendez Lopez',
@@ -41,7 +41,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 21,
+        id: 4,
         usuario: 'Lorena',
         nombre: 'Lorena',
         apellidos: 'Barrera Soto',
@@ -52,7 +52,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 22,
+        id: 5,
         usuario: 'Maribel',
         nombre: 'Maribel',
         apellidos: 'Leal Rico',
@@ -63,7 +63,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 23,
+        id: 6,
         usuario: 'Ariadna Albertina',
         nombre: 'Ariadna Albertina',
         apellidos: 'Ramirez Trejo',

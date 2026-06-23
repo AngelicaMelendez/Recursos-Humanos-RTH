@@ -48,7 +48,7 @@ async function undoSeeders() {
     console.error('Error al revertir seeders:', error);
     process.exitCode = 1;
   } finally {
-    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1;').catch(() => {});
+    await sequelize.query('SET FORE IGN_KEY_CHECKS = 1;').catch(() => {});
     await sequelize.close();
   }
 }
