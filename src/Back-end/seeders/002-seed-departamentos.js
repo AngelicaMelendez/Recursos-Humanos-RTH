@@ -11,434 +11,372 @@ module.exports = {
       {
         id: 1,
         nombre:"Contraloria Interna",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id: 2,
         nombre: "Direccion de Administracion y finanzas",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:3,
         nombre: "Planeacion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:4,
         nombre: "Archivo",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:5,
         nombre: "Contabilidad",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:6,
         nombre: "Finanzas y Contabilidad",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:7,
         nombre: "Teconologias de la Informacion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:8,
         nombre: "Almacen",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:9,
         nombre: "Inventarios",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:10,
         nombre: "Recursos Humanos",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:11,
         nombre: "Servicios Generales",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:12,
         nombre: "Direccion de Proyectos Estrategicos",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:13,
         nombre: "Direccion de Ingenieria",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:14,
         nombre: "Repetidor de Tv.Cerro Juarez",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:15,
         nombre: "Repetidor de Tv.Huejutla",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:16,
         nombre: "Repetidor de Tv.Tepeapulco",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:17,
         nombre: "Repetidor de Tv.Tula",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:18,
         nombre: "Repetidor de Tv.Tulancingo",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:19,
         nombre: "Transmisor Cerro Cubitos",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:20,
         nombre: "Dirección de Noticias",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:21,
         nombre: "Conductores",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:22,
         nombre: "Camarografo",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:23,
         nombre: "Edicion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:24,
         nombre: "Reporteros",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:25,
         nombre: "Direccion de Promocion y Mejora Continua",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:26,
         nombre: "Direccion de Radio",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:27,
         nombre: "Radiodifusora Pachuca",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:28,
         nombre: "Tx.Radio Actopan",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:29,
         nombre: "Tx.Radiodifusoras de Huejutla AM y FM",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),  
+        updatedAt: new Date()  
       },
       {
         id:30,
         nombre: "Radiodifusora Huejutla AM",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:31,
         nombre: "Radiodifusora Jacala",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:32,
         nombre: "Radiodifusora de Tlanchinol",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:33,
         nombre: "Secretaria",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:34,
         nombre: "Produccion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:35,
         nombre: "Contenidos",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:36,
         nombre: "Audio",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:37,
         nombre: "Camarografo",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:38,
         nombre: "Deportes",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:39,
         nombre: "Coordinador de Staff",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:40,
         nombre: "Escenografia",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:41,
         nombre: "Iluminacion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:42,
         nombre: "Imagen",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:43,
         nombre: "Maquillista",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:44,
         nombre: "Master",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:45,
         nombre: "Switcher",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:46,
         nombre: "Titulador",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:47,
         nombre: "Videoteca",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:48,
         nombre: "Play Out",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:49,
         nombre: "Direccion de Vinculacion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:50,
         nombre: "Direccion General",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:51,
         nombre: "Direccion Juridica",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:52,
         nombre: "Comisionado Subsecretaria de Proteccion Civil y Gestion de Riesgos",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:53,
         nombre: "Archivo y Servicios Generales",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:54,
         nombre: "Coordinador Personal Cerros de Tx",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:55,
         nombre: "Mantenimientos y Tx de Futbol y Eventos Especiales",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:56,
         nombre: "Conductora",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:57,
         nombre: "Escenografo",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:58,
         nombre: "Produccion y Conductor",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:59,
         nombre: "Direccion de Television",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:60,
         nombre: "Recepcion",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:61,
         nombre: "Direccion de Contraloria",
-        direccion_id: null,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id:62,
         nombre: "Radiodifusora Huejutla FM",
-        direccion_id: null,
         createdAt: new Date(),
         updatedAt: new Date()
       }

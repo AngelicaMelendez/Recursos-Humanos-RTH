@@ -1,7 +1,8 @@
 export const ROLE_KEYS = {
   SUPER_USER: "super_usuario",
-  ADMIN_RH: "admin_rh",
-  EMPLEADO: "empleado"
+  RECURSOS_HUMANOS: "Recursos Humanos",
+  DIRECTOR: "Director",
+  USUARIO: "Usuario"
 };
 
 const ALL_ROLES = Object.values(ROLE_KEYS);
@@ -9,36 +10,33 @@ const ALL_ROLES = Object.values(ROLE_KEYS);
 export const ROLE_GROUPS = {
   APPROVERS: [
     ROLE_KEYS.SUPER_USER,
-    ROLE_KEYS.ADMIN_RH
+    ROLE_KEYS.RECURSOS_HUMANOS
   ],
-  ANNOUNCEMENT_MANAGERS: [
+  VIEWERS: [
     ROLE_KEYS.SUPER_USER,
-    ROLE_KEYS.ADMIN_RH
+    ROLE_KEYS.DIRECTOR
     
   ],
-  ATTENDANCE_REVIEW: [
+  SOLICITORS: [
     ROLE_KEYS.SUPER_USER,
-    ROLE_KEYS.ADMIN_RH,
-    ROLE_KEYS.EMPLEADO
+    ROLE_KEYS.RECURSOS_HUMANOS
   ]
 };
 
-const roleAliases = {
-  "superuser": ROLE_KEYS.SUPER_USER,
+export const roleAliases = {
   "super_usuario": ROLE_KEYS.SUPER_USER,
   "super usuario": ROLE_KEYS.SUPER_USER,
+  "superusuario": ROLE_KEYS.SUPER_USER,
   "super-usuario": ROLE_KEYS.SUPER_USER,
-
-  "admin": ROLE_KEYS.ADMIN_RH,
-  "administrador": ROLE_KEYS.ADMIN_RH,
-  "admin_rh": ROLE_KEYS.ADMIN_RH,
-  "admin-rh": ROLE_KEYS.ADMIN_RH,
-  "administrador rh": ROLE_KEYS.ADMIN_RH,
-  "administrador_rh": ROLE_KEYS.ADMIN_RH,
-
-  "empleado": ROLE_KEYS.EMPLEADO,
-  "user": ROLE_KEYS.EMPLEADO,
-  "usuario": ROLE_KEYS.EMPLEADO
+  "recursos_humanos": ROLE_KEYS.RECURSOS_HUMANOS,
+  "rh": ROLE_KEYS.RECURSOS_HUMANOS,
+  "recursos-humanos": ROLE_KEYS.RECURSOS_HUMANOS,
+  "recursoshumanos": ROLE_KEYS.RECURSOS_HUMANOS,
+  "director": ROLE_KEYS.DIRECTOR,
+  "direc": ROLE_KEYS.DIRECTOR,
+  "usua": ROLE_KEYS.USUARIO,
+  "user": ROLE_KEYS.USUARIO,
+  "usuario": ROLE_KEYS.USUARIO
 };
 
 const moduleByRoute = {
@@ -49,69 +47,104 @@ const moduleByRoute = {
   "/solicitudes": "requests",
   "/normatividad": "normativity",
   "/vacantes": "vacancies",
-  "/visitantes": "visitors",
   "/auditoria": "audit",
   "/comunicados": "comunicados",
   "/asistencia": "attendance"
 };
 
 export const roleLabels = {
-  [ROLE_KEYS.SUPER_USER]: "Super Usuario",
-  [ROLE_KEYS.ADMIN_RH]: "Administrador RH",
-  [ROLE_KEYS.EMPLEADO]: "Empleado"
+  [ROLE_KEYS.SUPER_USER]: 'Super Usuario',
+  [ROLE_KEYS.RECURSOS_HUMANOS]: 'Recursos Humanos',
+  [ROLE_KEYS.DIRECTOR]: 'Director',
+  [ROLE_KEYS.USUARIO]: 'Usuario'
 };
 
 export const modulePermissions = {
   dashboard: ALL_ROLES,
   calendar: ALL_ROLES,
   directory: ALL_ROLES,
-  organograma: ALL_ROLES,
+  organigram: ALL_ROLES,
   requests: ALL_ROLES,
   normativity: ALL_ROLES,
   vacancies: ALL_ROLES,
-  visitors: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.ADMIN_RH],
-  audit: [ROLE_KEYS.SUPER_USER],
-  comunicados: ALL_ROLES,
+  announcements: ALL_ROLES,
+  audit: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.DIRECTOR],
+ 
   attendance: ALL_ROLES
 };
 
 const actionCatalog = {
-  createEmployee: { label: "Alta Empleado", icon: "plus", operation: "C" },
-  deactivateEmployee: { label: "Baja Lógica", icon: "archive", operation: "D" },
-  editEmployee: { label: "Actualizar Expediente", icon: "edit", operation: "U" },
-  viewDirectory: { label: "Consultar Directorio", icon: "users", operation: "R" },
-  updatePersonalData: { label: "Actualizar Mis Datos", icon: "edit", operation: "U" },
-  uploadPersonalDocument: { label: "Subir Documento", icon: "upload", operation: "C" },
-  viewWorkHistory: { label: "Historial Laboral", icon: "activity", operation: "R" },
-  createRequest: { label: "Nueva Solicitud", icon: "plus", operation: "C" },
-  deleteRequest: { label: "Eliminar Solicitud", icon: "garbage", operation: "D" },
-  approveRequest: { label: "Aprobar Solicitud", icon: "check", operation: "U" },
-  rejectRequest: { label: "Rechazar Solicitud", icon: "x", operation: "U" },
-  manageIncident: { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
-  viewRequests: { label: "Consultar Solicitudes", icon: "file", operation: "R" },
-  downloadRequestDocument: { label: "Descargar Documento", icon: "saveAlt", operation: "R" },
-  publishVacancy: { label: "Publicar Vacante", icon: "plus", operation: "C" },
-  closeVacancy: { label: "Cerrar Vacante", icon: "archive", operation: "U" },
-  viewVacancies: { label: "Consultar Vacantes", icon: "briefcase", operation: "R" },
-  uploadNormativity: { label: "Subir Normatividad", icon: "upload", operation: "C" },
-  updateNormativity: { label: "Actualizar Documento", icon: "edit", operation: "U" },
-  deactivateNormativity: { label: "Baja Lógica", icon: "archive", operation: "D" },
-  viewNormativity: { label: "Consultar Repositorio", icon: "shield", operation: "R" },
-  registerVisitor: { label: "Registrar Entrada", icon: "plus", operation: "C" },
-  registerVisitorExit: { label: "Registrar Salida", icon: "check", operation: "U" },
-  assignBadge: { label: "Asignar Gafete", icon: "tag", operation: "U" },
-  viewVisitors: { label: "Visitantes Activos", icon: "door", operation: "R" },
-  fullAudit: { label: "Auditoria Completa", icon: "activity", operation: "R" },
-  crearComunicado: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
-  editarComunicado: { label: "Editar Comunicado", icon: "edit", operation: "U" },
-  eliminarComunicado: { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
-  verComunicados: { label: "Ver Comunicados", icon: "send", operation: "R" },
-  reaccionarComunicado: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
-  verHistorialAsistencia: { label: "Ver Historial", icon: "activity", operation: "R" },
-  registrarAsistencia: { label: "Registrar Asistencia", icon: "check", operation: "C" }
+  createEmployee: 
+  { label: "Alta Empleado", icon: "plus", operation: "C" },
+  deactivateEmployee: 
+  { label: "Baja Lógica", icon: "archive", operation: "D" },
+  editEmployee: 
+  { label: "Actualizar Expediente", icon: "edit", operation: "U" },
+  viewDirectory: 
+  { label: "Consultar Directorio", icon: "users", operation: "R" },
+  updatePersonalData: 
+  { label: "Actualizar Mis Datos", icon: "edit", operation: "U" },
+  uploadPersonalDocument: 
+  { label: "Subir Documento", icon: "upload", operation: "C" },
+  viewWorkHistory: 
+  { label: "Historial Laboral", icon: "activity", operation: "R" },
+  createRequest: 
+  { label: "Nueva Solicitud", icon: "plus", operation: "C" },
+  deleteRequest: 
+  { label: "Eliminar Solicitud", icon: "garbage", operation: "D" },
+  approveRequest: 
+  { label: "Aprobar Solicitud", icon: "check", operation: "U" },
+  rejectRequest: 
+  { label: "Rechazar Solicitud", icon: "x", operation: "U" },
+  manageIncident: 
+  { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
+  viewRequests: 
+  { label: "Consultar Solicitudes", icon: "file", operation: "R" },
+  downloadRequestDocument: 
+  { label: "Descargar Documento", icon: "saveAlt", operation: "R" },
+  publishVacancy: 
+  { label: "Publicar Vacante", icon: "plus", operation: "C" },
+  closeVacancy: 
+  { label: "Cerrar Vacante", icon: "archive", operation: "U" },
+  viewVacancies: 
+  { label: "Consultar Vacantes", icon: "briefcase", operation: "R" },
+  uploadNormativity: 
+  { label: "Subir Normatividad", icon: "upload", operation: "C" },
+  updateNormativity: 
+  { label: "Actualizar Documento", icon: "edit", operation: "U" },
+  deactivateNormativity: 
+  { label: "Baja Lógica", icon: "archive", operation: "D" },
+  viewNormativity: 
+  { label: "Consultar Repositorio", icon: "shield", operation: "R" },
+  registerVisitor: 
+  { label: "Registrar Entrada", icon: "plus", operation: "C" },
+  registerVisitorExit: 
+  { label: "Registrar Salida", icon: "check", operation: "U" },
+  fullAudit: 
+  { label: "Auditoria Completa", icon: "activity", operation: "R" },
+  crearComunicado:
+   { label: "Publicar Comunicado", icon: "plus", operation: "C" },
+  editarComunicado: 
+  { label: "Editar Comunicado", icon: "edit", operation: "U" },
+  eliminarComunicado: 
+  { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
+  verComunicados: 
+  { label: "Ver Comunicados", icon: "send", operation: "R" },
+  reaccionarComunicado: 
+  { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
+  verHistorialAsistencia: 
+  { label: "Ver Historial", icon: "activity", operation: "R" },
+  registrarAsistencia: 
+  { label: "Registrar Asistencia", icon: "check", operation: "C" }
 };
 
 export const roleActionsByModule = {
+  dashboard:{
+    [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
+    [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
+    [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
+  },
   directory: {
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
     [ROLE_KEYS.ADMIN_RH]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],

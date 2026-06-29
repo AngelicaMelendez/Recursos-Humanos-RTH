@@ -7,7 +7,7 @@ module.exports = {
         id:1,
         nombre: "Organo Interno de Control",
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id: 2,
@@ -31,13 +31,13 @@ module.exports = {
         id: 5,
         nombre: "Direccion de Noticias",
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id: 6,
         nombre: "Direccion de Promocion y Mejora Continua",
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       {
         id: 7,
