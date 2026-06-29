@@ -31,6 +31,7 @@ const dashboardData = {
     { name: 'Ana Laura Perez', date: '09 mayo', area: 'Direccion Administrativa' },
     { name: 'Jose Miguel Vargas', date: '11 mayo', area: 'Produccion' },
     { name: 'Monica Duran', date: '14 mayo', area: 'Recursos Humanos' },
+    {name : 'Pablo Martinez', date: '30 de Junio', area: 'TI'}
   ],
   employeesOnVacation: [
     { name: 'Carlos Ortega', period: '06-10 mayo', relief: 'Comunicacion Social' },
@@ -221,8 +222,15 @@ exports.calendario = async (req, res) => {
       ...createMonthlyEvents('Día Naranja', 25, '#F97316', currentYear),
       ...createMonthlyEvents('Entrega de Informes', 14, '#0ea5e9', currentYear),
       ...createMonthlyEvents('Día para Realizar Actividad', 9, '#16a34a', currentYear),
-      
-    ];
+
+       {
+    id: 'CUMPLEAÑOS-PABLO-2026-06-30',
+    title: 'Cumpleaños - Pablo',
+    start: '2026-06-30',
+    allDay: true,
+    color: '#2f6b4f',
+  },
+];
 
     const [incidents, solicitudes] = await Promise.all([
       db.Incidencia.findAll({
@@ -303,7 +311,145 @@ exports.solicitudes = async (req, res) => withFallback(res, fallback.solicitudes
   }));
 });
 
-exports.normatividad = async (req, res) => withFallback(res, fallback.normatividad, async () => db.Normatividad.findAll());
+// 1. Modificar la consulta para que devuelva los datos reales de la BD
+exports.normatividad = async (req, res) => withFallback(res, fallback.normatividad, async () => {
+  return await db.Normatividad.findAll({
+    order: [['createdAt', 'DESC']] // Para mostrar las más recientes primero
+  });
+});
+
+// 2. Agregar la lógica para crear el registro con el PDF adjunto
+exports.createNormatividad = async (req, res) => {
+  console.log("Modelos disponibles en db:", Object.keys(db)); // 👈 ESTO TE DIRÁ EL NOMBRE EXACTO DEL MODELO
+  try {
+    const { nombre, tipo, version, fecha_publicacion, estatus } = req.body;
+
+    // Validamos que el nombre sea obligatorio
+    if (!nombre) {
+      return res.status(400).json({ error: 'El nombre de la normatividad es obligatorio' });
+    }
+
+    // Si Multer procesó el archivo con éxito, su ruta estará en req.file.path
+    let rutaPdf = null;
+    if (req.file) {
+      // Reemplazamos diagonales invertidas si estás en Windows para normalizar a URLs válidas
+      rutaPdf = req.file.path.replace(/\\/g, '/'); 
+    }
+
+    // Creamos el registro en la base de datos utilizando el modelo de Sequelize
+    const nuevaNormatividad = await db.Normatividad.create({
+      nombre,
+      tipo: tipo || null,
+      version: version || null,
+      fecha_publicacion: fecha_publicacion || null,
+      estatus: estatus || 'activa',
+      archivo_pdf: rutaPdf // Aquí guardamos 'uploads/nombre-del-archivo.pdf'
+    });
+
+    // Respondemos con éxito al cliente (Vue)
+    return res.status(201).json({
+      message: 'Normatividad creada y archivo subido con éxito',
+      data: nuevaNormatividad
+    });
+
+  } catch (error) {
+    console.error("❌ Error al crear normatividad:", error);
+    return res.status(500).json({
+      error: 'Error interno al intentar guardar la normatividad',
+      details: error.message
+    });
+  }
+};
+
+// 1. Actualizar datos o reemplazar el PDF de una normatividad existente
+exports.updateNormatividad = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre, tipo, version, fecha_publicacion, estatus } = req.body;
+
+    const documento = await db.Normatividad.findByPk(id);
+    if (!documento) {
+      return res.status(404).json({ error: 'Documento normativo no encontrado' });
+    }
+
+    // Si subieron un nuevo PDF, actualizamos la ruta, si no, dejamos la que ya tenía
+    let rutaPdf = documento.archivo_pdf;
+    if (req.file) {
+      rutaPdf = req.file.path.replace(/\\/g, '/');
+    }
+
+    await documento.update({
+      nombre: nombre || documento.nombre,
+      tipo: tipo || documento.tipo,
+      version: version || documento.version,
+      fecha_publicacion: fecha_publicacion || documento.fecha_publicacion,
+      estatus: estatus || documento.estatus,
+      archivo_pdf: rutaPdf
+    });
+
+    return res.json({ message: 'Documento actualizado con éxito', data: documento });
+  } catch (error) {
+    console.error("❌ Error al actualizar normatividad:", error);
+    return res.status(500).json({ error: 'Error interno al actualizar', details: error.message });
+  }
+};
+
+// 2. Baja lógica (Cambiar estatus a inactiva)
+exports.bajaLogicaNormatividad = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const documento = await db.Normatividad.findByPk(id);
+
+    if (!documento) {
+      return res.status(404).json({ error: 'Documento no encontrado' });
+    }
+
+    // Cambiamos el estatus a inactiva sin borrar el registro físico
+    await documento.update({ estatus: 'inactiva' });
+
+    return res.json({ message: `El documento "${documento.nombre}" ha sido deshabilitado.` });
+  } catch (error) {
+    console.error("❌ Error en la baja lógica:", error);
+    return res.status(500).json({ error: 'Error al procesar la baja lógica' });
+  }
+};
+
+const fs = require('fs');
+const path = require('path');
+
+exports.deleteNormatividad = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar el documento para obtener la ruta del archivo
+    const documento = await db.Normatividad.findByPk(id);
+    if (!documento) {
+      return res.status(404).json({ error: 'El documento no existe o ya fue eliminado.' });
+    }
+
+    //  Borrar el archivo PDF físico de la carpeta uploads si existe
+    if (documento.archivo_pdf) {
+      // Ajusta la ruta física relativa al servidor
+      const rutaArchivo = path.join(__dirname, '..', documento.archivo_pdf); 
+      
+      fs.unlink(rutaArchivo, (err) => {
+        if (err) {
+          console.error("⚠️ No se pudo borrar el archivo físico, tal vez no exista:", err.message);
+        } else {
+          console.log(`🗑️ Archivo físico eliminado: ${rutaArchivo}`);
+        }
+      });
+    }
+
+    //  Eliminar el registro de la Base de Datos
+    await documento.destroy();
+
+    return res.json({ message: 'Documento y archivo eliminados permanentemente.' });
+  } catch (error) {
+    console.error("❌ Error al eliminar normatividad:", error);
+    return res.status(500).json({ error: 'Error interno al eliminar el documento.' });
+  }
+};
 
 exports.vacantes = async (req, res) => withFallback(res, fallback.vacantes, async () => {
   const rows = await db.Vacante.findAll({ include: [{ model: db.Departamento, as: 'departamento', required: false }] });

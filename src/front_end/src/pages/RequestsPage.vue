@@ -20,9 +20,18 @@
       </div>
     </section>
 
+
+    <ModalNormatividad 
+    :isOpen="isNormativityModalOpen"
+    :documentos="normatividades"
+    @close="isNormativityModalOpen = false"
+    @accepted="procederAlFormularioCreacion"
+    />
+
+
     <BaseCard
       v-if="canManageRequests">
-    
+
 
       <form class="request-filters" @submit.prevent="applySearch">
         <label>
@@ -58,6 +67,7 @@
         </div>
       </form>
 
+
       <div class="request-actions-below-filter">
         <button
           v-for="action in headerActions"
@@ -70,6 +80,7 @@
           {{ action.label }}
         </button>
       </div>
+
 
       <AppTable :columns="columns" :rows="rows">
         <template #estatus="{ row }">
@@ -190,6 +201,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
+import axios from "axios";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import AppTable from "@/components/ui/AppTable.vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
@@ -199,6 +211,10 @@ import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
 import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
+import ModalNormatividad from "./ModalNormatividad.vue";
+
+const isNormatividadModalOpen = ref(false);
+const normatividades = ref(false);
 
 const authStore = useAuthStore();
 const rows = ref([]);
@@ -283,7 +299,7 @@ const getRequestErrorMessage = (error) =>
   error.response?.data?.details ||
   error.response?.data?.error ||
   error.message ||
-  "Verifica conexion con el servidor/BD.";
+  "Verifica la conexión con el servidor/BD.";
 
 const normalizeRow = (row) => ({
   ...row,
@@ -315,6 +331,36 @@ const loadRequests = async () => {
   }
 };
 
+
+const fetchNormatividadesVigentes = async () => {
+  try{
+    const response = await axios.get("http://localhost:8000/api/normatividad");
+    normatividades.value = response.data
+  }catch (error){
+    console.error("Error al obtener normatividades para solicitudes:", error);
+  }
+  };
+
+  const evaluarNormatividad = () => {
+    if(normatividades.value.length > 0) {
+
+       isNormatividadModalOpen.value = true;
+
+    }else{
+      openCreateModal ();
+    }
+    };
+
+
+    const procederAlFormularioCreacion = () => {
+      isNormatividadModalOpen.value = false;
+      openCreateModal();
+
+
+    }
+  
+
+
 const applySearch = () => {
   loadRequests();
 };
@@ -342,7 +388,7 @@ const actionsForRow = (row) => {
 
 const selectAction = (action, row = null) => {
   if (action.key === "createRequest") {
-    openCreateModal();
+    evaluarNormatividad();
     return;
   }
 
@@ -479,6 +525,8 @@ const replaceRow = (updated) => {
 };
 
 onMounted(loadRequests);
+
+
 </script>
 
 <style scoped>
@@ -523,7 +571,7 @@ onMounted(loadRequests);
   margin-bottom: 18px;
   padding: 14px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--color-surface-muted);
   margin-top: 18px;
 }
@@ -568,7 +616,7 @@ onMounted(loadRequests);
   gap: 8px;
   padding: 12px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -612,7 +660,7 @@ onMounted(loadRequests);
   justify-content: center;
   gap: 8px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 700;
 }
@@ -651,7 +699,7 @@ onMounted(loadRequests);
   gap: 4px;
   margin-bottom: 16px;
   padding: 14px 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid rgba(47, 107, 79, 0.22);
   background: rgba(47, 107, 79, 0.1);
   color: var(--color-success);
@@ -676,7 +724,7 @@ onMounted(loadRequests);
 .request-modal {
   width: min(560px, 100%);
   padding: 22px;
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--color-surface);
   box-shadow: 0 18px 50px rgba(47, 38, 48, 0.18);
 }
@@ -717,7 +765,7 @@ onMounted(loadRequests);
 .request-form textarea {
   width: 100%;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 11px 12px;
   color: var(--color-text);
   font: inherit;
@@ -750,7 +798,7 @@ onMounted(loadRequests);
 .confirm-panel dl div {
   padding: 12px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--color-surface-muted);
 }
 

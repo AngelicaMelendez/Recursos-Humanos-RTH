@@ -96,6 +96,7 @@ const actionCatalog = {
   uploadNormativity: { label: "Subir Normatividad", icon: "upload", operation: "C" },
   updateNormativity: { label: "Actualizar Documento", icon: "edit", operation: "U" },
   deactivateNormativity: { label: "Baja Lógica", icon: "archive", operation: "D" },
+  downloadNormartivity: {label: "Descargar Normatividad", icon: "saveAlt", operation: "R" },
   viewNormativity: { label: "Consultar Repositorio", icon: "shield", operation: "R" },
   registerVisitor: { label: "Registrar Entrada", icon: "plus", operation: "C" },
   registerVisitorExit: { label: "Registrar Salida", icon: "check", operation: "U" },
@@ -104,7 +105,7 @@ const actionCatalog = {
   fullAudit: { label: "Auditoria Completa", icon: "activity", operation: "R" },
   crearComunicado: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
   editarComunicado: { label: "Editar Comunicado", icon: "edit", operation: "U" },
-  eliminarComunicado: { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
+  eliminarComunicado: { label: "Eliminar Comunicado", icon: "garbage", operation: "D" },
   verComunicados: { label: "Ver Comunicados", icon: "send", operation: "R" },
   reaccionarComunicado: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
   verHistorialAsistencia: { label: "Ver Historial", icon: "activity", operation: "R" },
@@ -118,17 +119,17 @@ export const roleActionsByModule = {
     [ROLE_KEYS.EMPLEADO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"]
   },
   requests: {
-    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest","viewRequests"],
+    [ROLE_KEYS.SUPER_USER]: ["viewRequests"],
     [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"]
   },
   vacancies: {
-    [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
+    [ROLE_KEYS.SUPER_USER]: ["viewVacancies"],
     [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
     [ROLE_KEYS.EMPLEADO]: ["viewVacancies"]
   },
   normativity: {
-    [ROLE_KEYS.SUPER_USER]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
+    [ROLE_KEYS.SUPER_USER]: ["viewNormativity"],
     [ROLE_KEYS.ADMIN_RH]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
     [ROLE_KEYS.EMPLEADO]: ["viewNormativity"]
   },
@@ -137,7 +138,7 @@ export const roleActionsByModule = {
     [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"]
   },
   comunicados: {
-    [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.ADMIN_RH]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"]
   },
