@@ -127,22 +127,18 @@ export const roleActionsByModule = {
   },
   vacancies: {
     [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.EMPLEADO]: ["viewVacancies"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
+    [ROLE_KEYS.USUARIO]: ["viewVacancies"]
   },
   normativity: {
     [ROLE_KEYS.SUPER_USER]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.ADMIN_RH]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.EMPLEADO]: ["viewNormativity"]
-  },
-  visitors: {
-    [ROLE_KEYS.SUPER_USER]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
-    [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
+    [ROLE_KEYS.USUARIO]: ["viewNormativity"]
   },
   comunicados: {
     [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.ADMIN_RH]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.USUARIO]: ["verComunicados", "reaccionarComunicado"]
   },
   attendance: {
     [ROLE_KEYS.SUPER_USER]: ["registrarAsistencia", "verHistorialAsistencia"],
