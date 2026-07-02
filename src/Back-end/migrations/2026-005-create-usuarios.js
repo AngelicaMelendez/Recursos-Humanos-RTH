@@ -5,27 +5,23 @@ module.exports = {
     await queryInterface.createTable('usuarios', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        autoIncrement: false,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
       usuario: {
         type: Sequelize.STRING(100),
         allowNull: true,
-        unique: true,
-      },
-      nombre: {
-        type: Sequelize.STRING(200),
-        allowNull: true,
-      },
-      apellidos: {
-        type: Sequelize.STRING(200),
-        allowNull: true,
       },
       empleado_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        unique: true,
+        references: {
+          model: 'empleados',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       rol: {
         type: Sequelize.STRING(50),
@@ -33,8 +29,8 @@ module.exports = {
         defaultValue: 'empleado',
       },
       password_hash: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.STRING(100),
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

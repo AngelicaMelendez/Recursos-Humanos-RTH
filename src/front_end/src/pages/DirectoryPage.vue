@@ -26,19 +26,6 @@
     <template v-if="showDepartamentoPuesto">
       
       <label class="field">
-        <span>Dirección</span>
-        <input
-          v-model="direccionName"
-          @change="resolveDireccionSelection"
-          list="direccionList"
-          placeholder="Selecciona o Escribe Dirección"
-        />
-        <datalist id="direccionList">
-          <option v-for="dir in direcciones" :key="dir.id" :value="dir.nombre" />
-        </datalist>
-      </label>
-
-      <label class="field">
         <span>Departamento</span>
         <input
           v-model="departamentoName"
@@ -49,6 +36,18 @@
         />
         <datalist id="departamentoList">
           <option v-for="dep in filteredDepartamentos" :key="dep.id" :value="dep.nombre" />
+        </datalist>
+      </label>
+      <label class="field">
+        <span>Dirección</span>
+        <input
+          v-model="direccionName"
+          @change="resolveDireccionSelection"
+          list="direccionList"
+          placeholder="Selecciona o Escribe Dirección"
+        />
+        <datalist id="direccionList">
+          <option v-for="dir in direcciones" :key="dir.id" :value="dir.nombre" />
         </datalist>
       </label>
 
@@ -234,27 +233,29 @@ const actions = computed(() => getRoleActions(authStore.user?.rol, "directory"))
 const columns = [
   { key: "numero", label: "No. empleado" },
   { key: "nombre", label: "Nombre" },
-  { key: "direccion", label: "Direccion" },
   { key: "departamento", label: "Departamento" },
+  { key: "direccion", label: "Direccion" },
   { key: "puesto", label: "Puesto" },
   { key: "estatus", label: "Estatus" },
   { key: "acciones", label: "Acciones" }
 ];
+
+const filteredPuestos = computed(() => {
+  if (!selectedDepartamentoId.value) return puestos.value;
+  return puestos.value.filter((puesto) => puesto.departamento_id === Number(selectedDepartamentoId.value));
+});
 
 const filteredDepartamentos = computed(() => {
   if (!selectedDireccionId.value) return departamentos.value;
   return departamentos.value.filter((dep) => dep.direccion_id === Number(selectedDireccionId.value));
   });
 
-  const filteredPuestos = computed(() => {
-  if (!selectedDepartamentoId.value) return puestos.value;
-  return puestos.value.filter((puesto) => puesto.departamento_id === Number(selectedDepartamentoId.value));
-});
+  
 
 const loadDirectory = async () => {
   searchTerm.value = "";
-  direccionName.value = "";
   departamentoName.value = "";
+  direccionName.value = "";
   puestoName.value = "";
   selectedDireccionId.value = "";
   selectedDepartamentoId.value = "";
@@ -290,8 +291,8 @@ const normalizeEmployee = (empleado) => ({
   id: empleado.id,
   numero: formatEmployeeNumber(empleado.id),
   nombre: [empleado.nombre, empleado.apellidos].filter(Boolean).join(" "),
-  direccion: empleado.direccion?.nombre || "Sin Direccion",
   departamento: empleado.departamento?.nombre || "Sin Departamento",
+  direccion: empleado.direccion?.nombre || "Sin Direccion",
   puesto: empleado.puesto?.nombre || "Sin Puesto",
   estatus: empleado.estatus === "activo" ? "activo" : "Baja"
 });
@@ -299,12 +300,12 @@ const normalizeEmployee = (empleado) => ({
 const fetchFilters = async () => {
   try {
     const [direccionesResp, departamentosResp, puestosResp] = await Promise.all([
-      organogramaService.listarDirecciones(),
       organogramaService.listarDepartamentos(),
+      organogramaService.listarDirecciones(),
       organogramaService.listarPuestos()
     ]);
-    direcciones.value = direccionesResp.data || [];
     departamentos.value = departamentosResp.data || [];
+    direcciones.value = direccionesResp.data || [];
     puestos.value = puestosResp.data || [];
   } catch (error) {
     console.error(error);
@@ -320,8 +321,8 @@ const fetchEmployees = async () => {
     };
 
     if (searchTerm.value.trim()) params.search = searchTerm.value.trim();
-    if (selectedDireccionId.value) params.direccion_id = selectedDireccionId.value;
     if (selectedDepartamentoId.value) params.departamento_id = selectedDepartamentoId.value;
+    if (selectedDireccionId.value) params.direccion_id = selectedDireccionId.value;
     if (selectedPuestoId.value) params.puesto_id = selectedPuestoId.value;
 
     const response = await organogramaService.listarEmpleados(params);
@@ -384,7 +385,7 @@ const resolveDepartamentoSelection = () => {
   const match = departamentos.value.find(
     (departamento) =>
       departamento.nombre.toLowerCase() === departamentoName.value.trim().toLowerCase() &&
-      (!selectedDireccionId.value || departamento.direccion_id === Number(selectedDireccionId.value))
+      (!selectedDireccionId.value || departamento.departamento_id === Number(selectedDireccionId.value))
   );
   selectedDepartamentoId.value = match ? String(match.id) : "";
   if (!selectedDepartamentoId.value) {
@@ -443,7 +444,7 @@ const resolveEmployeeSelection = () => {
     if (!found) {
       selectEmployee({ id: Number(match[1]) });
     }
-    return;
+    return actions;
   }
 
   const byName = employees.value.find((e) => `${e.numero} - ${e.nombre}`.toLowerCase() === trimmed.toLowerCase() || e.nombre.toLowerCase().includes(trimmed.toLowerCase()));

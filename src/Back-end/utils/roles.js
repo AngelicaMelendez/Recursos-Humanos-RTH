@@ -5,6 +5,23 @@ const ROLE_KEYS = {
   DIRECTOR: 'director' /* DIRECTOR (VISOR) */
 };
 
+ const ROLE_GROUPS = {
+  APPROVERS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.RECURSOS_HUMANOS
+  ],
+  VIEWERS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.DIRECTOR,
+    ROLE_KEYS.RECURSOS_HUMANOS
+    
+  ],
+  SOLICITORS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.RECURSOS_HUMANOS
+  ]
+};
+
 const roleAliases = {
   "super_usuario": ROLE_KEYS.SUPER_USER,
   "super usuario": ROLE_KEYS.SUPER_USER,
@@ -57,6 +74,7 @@ function hasRole(roleOrUser, allowedRoles = []) {
 // 2. HASTA EL FINAL EXPORTAMOS TODO YA EXISTENTE
 module.exports = {
   ROLE_KEYS,
+  ROLE_GROUPS,
   PERMISSIONS,
   roleLabels,
   normalizeRole,

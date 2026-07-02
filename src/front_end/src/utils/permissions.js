@@ -1,6 +1,6 @@
 export const ROLE_KEYS = {
   SUPER_USER: "super_usuario",
-  RECURSOS_HUMANOS: "Recursos Humanos",
+  RECURSOS_HUMANOS: "recursos_humanos",
   DIRECTOR: "Director",
   USUARIO: "Usuario"
 };
@@ -19,7 +19,7 @@ export const ROLE_GROUPS = {
   ],
   SOLICITORS: [
     ROLE_KEYS.SUPER_USER,
-    ROLE_KEYS.RECURSOS_HUMANOS
+    ROLE_KEYS.RECURSOS_HUMANOS 
   ]
 };
 
@@ -60,8 +60,8 @@ export const roleLabels = {
 };
 
 export const modulePermissions = {
-  dashboard: ALL_ROLES,
   calendar: ALL_ROLES,
+  dashboard: ALL_ROLES,
   directory: ALL_ROLES,
   organigram: ALL_ROLES,
   requests: ALL_ROLES,
@@ -69,7 +69,6 @@ export const modulePermissions = {
   vacancies: ALL_ROLES,
   announcements: ALL_ROLES,
   audit: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.DIRECTOR],
- 
   attendance: ALL_ROLES
 };
 
@@ -147,37 +146,33 @@ export const roleActionsByModule = {
   },
   directory: {
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
-    [ROLE_KEYS.ADMIN_RH]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
-    [ROLE_KEYS.EMPLEADO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
+    [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"]
   },
   requests: {
     [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest","viewRequests"],
-    [ROLE_KEYS.ADMIN_RH]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.EMPLEADO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
+    [ROLE_KEYS.USUARIO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"]
   },
   vacancies: {
     [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.EMPLEADO]: ["viewVacancies"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
+    [ROLE_KEYS.USUARIO]: ["viewVacancies"]
   },
   normativity: {
     [ROLE_KEYS.SUPER_USER]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.ADMIN_RH]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.EMPLEADO]: ["viewNormativity"]
-  },
-  visitors: {
-    [ROLE_KEYS.SUPER_USER]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
-    [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
+    [ROLE_KEYS.USUARIO]: ["viewNormativity"]
   },
   comunicados: {
     [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.ADMIN_RH]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.USUARIO]: ["verComunicados", "reaccionarComunicado"]
   },
   attendance: {
     [ROLE_KEYS.SUPER_USER]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.ADMIN_RH]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.EMPLEADO]: ["registrarAsistencia", "verHistorialAsistencia"]
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["registrarAsistencia", "verHistorialAsistencia"],
+    [ROLE_KEYS.USUARIO]: ["registrarAsistencia", "verHistorialAsistencia"]
   }
 };
 
@@ -189,7 +184,7 @@ const resolveRoleValue = (roleOrUser) => {
   return String(roleOrUser).trim().toLowerCase();
 };
 
-export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.EMPLEADO;
+export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 
 export const hasAnyRole = (roleOrUser, allowedRoles = []) =>
   allowedRoles.flat().filter(Boolean).includes(normalizeRole(roleOrUser));

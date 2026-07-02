@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const db = require('../models');
+const bcrypt = require('bcryptjs');
 const { roleLabels, normalizeRole } = require('../utils/roles');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -67,55 +68,24 @@ exports.login = async (req, res) => {
       });
     }
 
-    if (!usuarioRecord || !(await usuarioRecord.validPassword(password))) {
+    if (!usuarioRecord) {
       return res.status(401).json({ error: 'Credenciales invalidas' });
     }
+    
+    const esPasswordValido = usuarioRecord.password_hash
+      ? await usuarioRecord.validPassword(password)
+      : false;
 
-    res.json({ token: signUser(usuarioRecord), user: toFrontendUser(usuarioRecord) });
+    if (!esPasswordValido) {
+      return res.status(401).json({ error: 'Credenciales invalidas' });
+    }
+    const tokenGen = signUser(usuarioRecord);
+
+    const userFront = toFrontendUser(usuarioRecord);
+
+    res.json({ token: tokenGen, user: userFront });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo iniciar sesion' });
-  }
-};
-
-exports.register = async (req, res) => {
-  const { usuario: username, password, nombre, empleado_id } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Usuario y contraseña son requeridos' });
-  }
-
-  try {
-    const existingUser = await db.Usuario.findOne({ where: { usuario: username } });
-    if (existingUser) {
-      return res.status(409).json({ error: 'El nombre de usuario ya está en uso' });
-    }
-
-    if (empleado_id) {
-      const empleado = await db.Empleado.findByPk(empleado_id);
-      if (!empleado) {
-        return res.status(400).json({ error: 'Empleado no encontrado para el usuario' });
-      }
-    }
-
-    const usuarioRecord = await db.Usuario.create({
-      usuario: username,
-      nombre: nombre || null,
-      password_hash: password,
-      empleado_id: empleado_id || null,
-      rol: 'empleado',
-    });
-
-    const usuarioWithEmpleado = await db.Usuario.findByPk(usuarioRecord.id, {
-      include: [{
-        model: db.Empleado,
-        as: 'empleado',
-        attributes: ['id', 'nombre', 'departamento_id', 'direccion_id'],
-      }],
-    });
-
-    res.status(201).json({ token: signUser(usuarioWithEmpleado), user: toFrontendUser(usuarioWithEmpleado) });
-  } catch (error) {
-    res.status(500).json({ error: 'No se pudo registrar el usuario' });
   }
 };
 

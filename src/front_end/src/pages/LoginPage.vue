@@ -57,7 +57,8 @@ const submitLogin = async () => {
     });
     router.push({ name: "dashboard" });
   } catch (error) {
-    alert(error?.response?.data?.error || "No fue posible autenticar. Verifica tus credenciales.");
+  console.error("EL ERROR DE AXIOS CRUDO ES:", error); // <-- Pon esto para ver el chisme completo
+  alert(error?.response?.data?.error || "No fue posible autenticar...");
   }
 };
 </script>

@@ -10,9 +10,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-app.use('/api/auth', require('./routes/auth'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));app.use('/api/auth', require('./routes/auth'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/calendario', require('./routes/calendario'));
 app.use('/api/directorio', require('./routes/directorio'));
@@ -34,7 +32,7 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 async function connectDatabase() {
   try {

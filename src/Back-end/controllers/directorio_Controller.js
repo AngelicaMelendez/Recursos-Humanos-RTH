@@ -6,7 +6,7 @@ exports.obtenerOrganigrama = async (req, res) => {
   try {
     const empleados = await db.Empleado.findAll({
       where: { estatus: 'activo' },
-      // 💡 Ahora incluimos todo plano y limpio
+      //  Ahora incluimos todo plano y limpio
       include: [
         { model: db.Direccion, as: 'direccion' },
         { model: db.Departamento, as: 'departamento' },
@@ -14,8 +14,8 @@ exports.obtenerOrganigrama = async (req, res) => {
         { model: db.Empleado, as: 'jefe', attributes: ['id', 'nombre'] },
       ],
       order: [
-        ['direccion_id', 'ASC'],
         ['departamento_id', 'ASC'],
+        ['direccion_id', 'ASC'],
         ['puesto_id', 'ASC']
       ],
     });
@@ -28,7 +28,7 @@ exports.obtenerOrganigrama = async (req, res) => {
         id: emp.id,
         nombre: emp.nombre,
         puesto: emp.puesto ? emp.puesto.nombre : 'Sin puesto',
-        // 💡 Ahora lee tanto dirección como departamento al mismo nivel
+        //  Ahora lee tanto dirección como departamento al mismo nivel
         unidad: emp.departamento?.nombre || emp.direccion?.nombre || 'Sin unidad',
         jefe_directo_id: emp.jefe_directo_id,
         hijos: [],
@@ -57,7 +57,7 @@ exports.listar = async (req, res) => {
     const where = {};
 
     if (estatus) where.estatus = estatus;
-    
+  
     // 💡 Filtros directos y planos ya que las columnas sí existen en la tabla empleados
     if (direccion_id && direccion_id !== 'null' && direccion_id !== 'undefined') where.direccion_id = direccion_id;
     if (departamento_id && departamento_id !== 'null' && departamento_id !== 'undefined') where.departamento_id = departamento_id;
@@ -148,9 +148,10 @@ exports.baja = async (req, res) => {
 exports.listarDirecciones = async (req, res) => {
   try {
     const direcciones = await db.Direccion.findAll({
-      include: [{ model: db.Departamento, as: 'departamentos', attributes: ['id', 'nombre'] }],
+      attributes: ['id', 'nombre', 'createdAt', 'updatedAt'], // Trae solo lonecesario
       order: [['nombre', 'ASC']],
     });
+
     return res.json(direcciones);
   } catch (error) {
     console.error('Error al listar direcciones:', error);
@@ -161,16 +162,12 @@ exports.listarDirecciones = async (req, res) => {
 // Listar todos los departamentos
 exports.listarDepartamentos = async (req, res) => {
   try {
-    const where = {};
-    if (req.query.direccion_id) {
-      where.direccion_id = req.query.direccion_id;
-    }
-
+    // Eliminamos por completo el filtro de direccion_id ya que no existe esa columna en el modelo
     const departamentos = await db.Departamento.findAll({
-      where,
-      include: [{ model: db.Direccion, as: 'direccion', attributes: ['id', 'nombre'] }],
+      attributes: ['id', 'nombre', 'createdAt', 'updatedAt'], // Trae solo lo necesario
       order: [['nombre', 'ASC']],
     });
+
     return res.json(departamentos);
   } catch (error) {
     console.error('Error al listar departamentos:', error);

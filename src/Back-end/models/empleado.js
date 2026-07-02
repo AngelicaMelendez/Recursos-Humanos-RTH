@@ -28,10 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     contacto_parentesco: { type: DataTypes.STRING, allowNull: true },
     contacto_telefono: { type: DataTypes.STRING, allowNull: true },
     fecha_baja: { type: DataTypes.DATEONLY, allowNull: true },
-    
-    // 💡 NUEVO: Te faltaba agregar la columna 'motivo_baja' que sí se ve en tu controlador
-    motivo_baja: { type: DataTypes.STRING, allowNull: true }, 
-    
+    motivo_baja: { type: DataTypes.STRING, allowNull: true },     
     documento_baja: { type: DataTypes.STRING, allowNull: true }
   }, {
     tableName: 'empleados',
@@ -39,9 +36,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Empleado.associate = (models) => {
-    // 💡 AGREGADO: Como 'direccion_id' existe en la tabla, declaramos su relación directa.
     Empleado.belongsTo(models.Direccion, { foreignKey: 'direccion_id', as: 'direccion' });
-    
+    Empleado.hasOne(models.Usuario,{foreignKey: 'empleado_id', as: 'usuario'});
     Empleado.belongsTo(models.Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
     Empleado.belongsTo(models.Puesto, { foreignKey: 'puesto_id', as: 'puesto' });
     Empleado.belongsTo(models.Empleado, { foreignKey: 'jefe_directo_id', as: 'jefe' });
