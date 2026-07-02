@@ -9,4 +9,6 @@ const storage = multer.diskStorage({
   },
 });
 
-module.exports = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+module.exports = multer({ 
+  storage, 
+  limits: { fileSize: 25 * 1024 * 1024 } });  //Para el limite de peso de archivos a subir en Normatividad

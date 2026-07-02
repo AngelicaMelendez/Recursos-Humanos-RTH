@@ -9,8 +9,12 @@ const { runSeeders } = require('./scripts/runSeeders');
 const app = express();
 
 app.use(cors());
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));app.use('/api/auth', require('./routes/auth'));
+
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ limit: '25mb', extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/calendario', require('./routes/calendario'));
 app.use('/api/directorio', require('./routes/directorio'));

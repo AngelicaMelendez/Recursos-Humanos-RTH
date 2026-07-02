@@ -73,68 +73,39 @@ export const modulePermissions = {
 };
 
 const actionCatalog = {
-  createEmployee: 
-  { label: "Alta Empleado", icon: "plus", operation: "C" },
-  deactivateEmployee: 
-  { label: "Baja Lógica", icon: "archive", operation: "D" },
-  editEmployee: 
-  { label: "Actualizar Expediente", icon: "edit", operation: "U" },
-  viewDirectory: 
-  { label: "Consultar Directorio", icon: "users", operation: "R" },
-  updatePersonalData: 
-  { label: "Actualizar Mis Datos", icon: "edit", operation: "U" },
-  uploadPersonalDocument: 
-  { label: "Subir Documento", icon: "upload", operation: "C" },
-  viewWorkHistory: 
-  { label: "Historial Laboral", icon: "activity", operation: "R" },
-  createRequest: 
-  { label: "Nueva Solicitud", icon: "plus", operation: "C" },
-  deleteRequest: 
-  { label: "Eliminar Solicitud", icon: "garbage", operation: "D" },
-  approveRequest: 
-  { label: "Aprobar Solicitud", icon: "check", operation: "U" },
-  rejectRequest: 
-  { label: "Rechazar Solicitud", icon: "x", operation: "U" },
-  manageIncident: 
-  { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
-  viewRequests: 
-  { label: "Consultar Solicitudes", icon: "file", operation: "R" },
-  downloadRequestDocument: 
-  { label: "Descargar Documento", icon: "saveAlt", operation: "R" },
-  publishVacancy: 
-  { label: "Publicar Vacante", icon: "plus", operation: "C" },
-  closeVacancy: 
-  { label: "Cerrar Vacante", icon: "archive", operation: "U" },
-  viewVacancies: 
-  { label: "Consultar Vacantes", icon: "briefcase", operation: "R" },
-  uploadNormativity: 
-  { label: "Subir Normatividad", icon: "upload", operation: "C" },
-  updateNormativity: 
-  { label: "Actualizar Documento", icon: "edit", operation: "U" },
-  deactivateNormativity: 
-  { label: "Baja Lógica", icon: "archive", operation: "D" },
-  viewNormativity: 
-  { label: "Consultar Repositorio", icon: "shield", operation: "R" },
-  registerVisitor: 
-  { label: "Registrar Entrada", icon: "plus", operation: "C" },
-  registerVisitorExit: 
-  { label: "Registrar Salida", icon: "check", operation: "U" },
-  fullAudit: 
-  { label: "Auditoria Completa", icon: "activity", operation: "R" },
-  crearComunicado:
-   { label: "Publicar Comunicado", icon: "plus", operation: "C" },
-  editarComunicado: 
-  { label: "Editar Comunicado", icon: "edit", operation: "U" },
-  eliminarComunicado: 
-  { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
-  verComunicados: 
-  { label: "Ver Comunicados", icon: "send", operation: "R" },
-  reaccionarComunicado: 
-  { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
-  verHistorialAsistencia: 
-  { label: "Ver Historial", icon: "activity", operation: "R" },
-  registrarAsistencia: 
-  { label: "Registrar Asistencia", icon: "check", operation: "C" }
+  createEmployee: { label: "Alta Empleado", icon: "plus", operation: "C" },
+  deactivateEmployee: { label: "Baja Lógica", icon: "archive", operation: "D" },
+  editEmployee: { label: "Actualizar Expediente", icon: "edit", operation: "U" },
+  viewDirectory: { label: "Consultar Directorio", icon: "users", operation: "R" },
+  updatePersonalData: { label: "Actualizar Mis Datos", icon: "edit", operation: "U" },
+  uploadPersonalDocument: { label: "Subir Documento", icon: "upload", operation: "C" },
+  viewWorkHistory: { label: "Historial Laboral", icon: "activity", operation: "R" },
+  createRequest: { label: "Nueva Solicitud", icon: "plus", operation: "C" },
+  deleteRequest: { label: "Eliminar Solicitud", icon: "garbage", operation: "D" },
+  approveRequest: { label: "Aprobar Solicitud", icon: "check", operation: "U" },
+  rejectRequest: { label: "Rechazar Solicitud", icon: "x", operation: "U" },
+  manageIncident: { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
+  viewRequests: { label: "Consultar Solicitudes", icon: "file", operation: "R" },
+  downloadRequestDocument: { label: "Descargar Documento", icon: "saveAlt", operation: "R" },
+  publishVacancy: { label: "Publicar Vacante", icon: "plus", operation: "C" },
+  closeVacancy: { label: "Cerrar Vacante", icon: "archive", operation: "U" },
+  viewVacancies: { label: "Consultar Vacantes", icon: "briefcase", operation: "R" },
+  uploadNormativity: { label: "Subir Normatividad", icon: "upload", operation: "C" },
+  updateNormativity: { label: "Actualizar Documento", icon: "edit", operation: "U" },
+  deactivateNormativity: { label: "Baja Lógica", icon: "archive", operation: "D" },
+  viewNormativity: { label: "Consultar Repositorio", icon: "shield", operation: "R" },
+  registerVisitor: { label: "Registrar Entrada", icon: "plus", operation: "C" },
+  registerVisitorExit: { label: "Registrar Salida", icon: "check", operation: "U" },
+  assignBadge: { label: "Asignar Gafete", icon: "tag", operation: "U" },
+  viewVisitors: { label: "Visitantes Activos", icon: "door", operation: "R" },
+  fullAudit: { label: "Auditoria Completa", icon: "activity", operation: "R" },
+  crearComunicado: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
+  editarComunicado: { label: "Editar Comunicado", icon: "edit", operation: "U" },
+  eliminarComunicado: { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
+  verComunicados: { label: "Ver Comunicados", icon: "send", operation: "R" },
+  reaccionarComunicado: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
+  verHistorialAsistencia: { label: "Ver Historial", icon: "activity", operation: "R" },
+  registrarAsistencia: { label: "Registrar Asistencia", icon: "check", operation: "C" }
 };
 
 export const roleActionsByModule = {
@@ -156,18 +127,22 @@ export const roleActionsByModule = {
   },
   vacancies: {
     [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.USUARIO]: ["viewVacancies"]
+    [ROLE_KEYS.ADMIN_RH]: ["publishVacancy", "closeVacancy", "viewVacancies"],
+    [ROLE_KEYS.EMPLEADO]: ["viewVacancies"]
   },
   normativity: {
     [ROLE_KEYS.SUPER_USER]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.USUARIO]: ["viewNormativity"]
+    [ROLE_KEYS.ADMIN_RH]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
+    [ROLE_KEYS.EMPLEADO]: ["viewNormativity"]
+  },
+  visitors: {
+    [ROLE_KEYS.SUPER_USER]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
+    [ROLE_KEYS.ADMIN_RH]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"]
   },
   comunicados: {
     [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.USUARIO]: ["verComunicados", "reaccionarComunicado"]
+    [ROLE_KEYS.ADMIN_RH]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.EMPLEADO]: ["verComunicados", "reaccionarComunicado"]
   },
   attendance: {
     [ROLE_KEYS.SUPER_USER]: ["registrarAsistencia", "verHistorialAsistencia"],

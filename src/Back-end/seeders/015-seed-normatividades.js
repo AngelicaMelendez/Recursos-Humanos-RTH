@@ -12,10 +12,11 @@ module.exports = {
         version: '1.0',
         fecha_publicacion: '2022-08-09',
         estatus: 'activa',
-        archivo_pdf: 'uploads/normatividad/Ley de Responsabilidades Administrativas del Estado de Hidalgo.pdf',
+        archivo_pdf: 'uploads/Ley de Responsabilidades Administrativas del Estado de Hidalgo.pdf',
         createdAt: now,
         updatedAt: now,
       },
+
       {
         id: 2,
         nombre: 'Pobalines',
@@ -23,7 +24,7 @@ module.exports = {
         version: '1.0',
         fecha_publicacion: '2026-02-27',
         estatus: 'activa',
-        archivo_pdf: 'uploads/normatividad/Pobalines.pdf',
+        archivo_pdf: 'uploads/Pobalines.pdf',
         createdAt: now,
         updatedAt: now,
       },
