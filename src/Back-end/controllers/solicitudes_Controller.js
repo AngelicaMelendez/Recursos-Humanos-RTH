@@ -1,6 +1,6 @@
 const db = require('../models');
 const { Op } = require('sequelize');
-const { ROLE_GROUPS, hasRole } = require('../utils/roles');
+const { ROLE_GROUPS, PERMISSIONS, hasRole } = require('../utils/roles');
 
 const tiposIncidencia = ['vacaciones', 'permiso', 'incapacidad', 'maternidad', 'paternidad', 'comision', 'otro'];
 
@@ -10,7 +10,7 @@ function normalizarTipoIncidencia(tipo) {
 }
 
 function esAutorizador(rol) {
-  return hasRole(rol, ROLE_GROUPS.REQUEST_APPROVERS);
+  return hasRole(rol, PERMISSIONS.REQUEST_APPROVERS);
 }
 
 function fechaLocalActual() {

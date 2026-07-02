@@ -5,7 +5,7 @@
       title="Vacantes institucionales"
       description="Seguimiento de puestos abiertos, perfil requerido, tipo de contratación y estatus de cobertura."
     >
-      <RoleActionBar :actions="actions" @select="selectAction" />
+    
     </PageHeader>
     <p v-if="notice" class="notice">{{ notice }}</p>
     <BaseCard title="Vacantes Abiertas" subtitle="Consulta de posiciones por área y prioridad.">

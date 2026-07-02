@@ -3,7 +3,7 @@
     <PageHeader
       eyebrow="Flujo de autorizaciones"
       title="Solicitudes e Incidencias"
-      description="Todos pueden generar solicitudes. La consulta, aprobacion y rechazo queda restringida a administración."
+      description="Todos pueden generar Solicitudes. La Consulta, Aprobacion y Rechazo queda Restringida a Administración."
     >
 
     </PageHeader>
@@ -20,19 +20,15 @@
       </div>
     </section>
 
-
-    <ModalNormatividad 
-    :isOpen="isNormativityModalOpen"
-    :documentos="normatividades"
-    @close="isNormativityModalOpen = false"
-    @accepted="procederAlFormularioCreacion"
+    <!-- MODAL DE ACEPTACIÓN DE NORMATIVIDADES -->
+    <ModalNormatividad
+      :isOpen="isNormativityModalOpen"
+      :documentos="normatividades"
+      @close="isNormativityModalOpen = false"
+      @accepted="procederAlFormularioCreacion"
     />
 
-
-    <BaseCard
-      v-if="canManageRequests">
-
-
+    <BaseCard v-if="canManageRequests">
       <form class="request-filters" @submit.prevent="applySearch">
         <label>
           Filtro
@@ -44,11 +40,10 @@
         <label>
           Busqueda
           <input
-          ref=""
+          
             v-model.trim="filters.term"
             type="search"
-            list=""
-            :placeholder="filterPlaceholder"
+            placeholder="filterPlaceholder"
           />
         </label>
         <div class="request-filters__actions">
@@ -61,9 +56,9 @@
             Limpiar 
           </button>
           <button class="ghost-button" type="button" @click="loadRequests">
-          <IconSymbol name="reset" />
-          Actualizar
-        </button>
+            <IconSymbol name="reset" />
+            Actualizar
+          </button>
         </div>
       </form>
 
@@ -104,16 +99,15 @@
       </AppTable>
     </BaseCard>
 
-  
     <BaseCard 
       v-else
-      title="Generar solicitud"     
-      subtitle="Tu solicitud quedara pendiente para revision administrativa."    
+      title="Generar Solicitud"     
+      subtitle="Tu Solicitud quedara pendiente para Revision Administrativa."    
     >
       <p class="request-access-note">
         La consulta, aprobacion y rechazo de solicitudes esta disponible solo para administradores.
       </p>
-      <button class="primary-button" type="button" @click="openCreateModal">
+      <button class="primary-button" type="button" @click="evaluarNormatividad">
         <IconSymbol name="plus" />
         Nueva Solicitud
       </button>
@@ -131,7 +125,8 @@
           </button>
         </header>
 
-        <form v-if="modal.mode === 'create'" class="request-form" @submit.prevent="submitRequest">
+        <!-- FORMULARIO ESTÁNDAR (Para Vacaciones, Permisos, Incapacidades, etc.) -->
+        <form v-if="modal.mode === 'create' && form.tipo !== 'comision'" class="request-form" @submit.prevent="submitRequest">
           <label>
             Tipo
             <select v-model="form.tipo" required>
@@ -144,28 +139,87 @@
               <option value="otro">Otro</option>
             </select>
           </label>
+         
           <div class="form-grid">
             <label>
               Inicio
-              <input v-model="form.fecha_inicio" type="date" :min="today" required />
+              <input 
+              v-model="form.fecha_inicio" 
+              type="date" 
+              :min="today" 
+              required />
             </label>
+
             <label>
               Fin
-              <input v-model="form.fecha_fin" type="date" :min="form.fecha_inicio || today" required />
+              <input 
+              v-model="form.fecha_fin" 
+              type="date" 
+              :min="form.fecha_inicio || today" 
+              :class="{ 'input-error': fechasInvalidas}"
+              required />
             </label>
           </div>
+          <span v-if="fechasInvalidas" class="error-text-hint">
+            La Fecha de Fin no puede ser Anterior a la de Inicio.
+          </span>
+
+          <!-- INPUT DE PDF DINÁMICO PARA INCAPACIDAD, MATERNIDAD O PATERNIDAD -->
+          <label class="upload-button" v-if="['incapacidad', 'maternidad', 'paternidad'].includes(form.tipo)">
+            Documento Justificante (PDF)
+            <div style="margin-top: 5px;">
+              <button class="primary-button" type="button" @click="$refs.fileInput.click()">
+                <IconSymbol name="upload" />
+                {{ form.archivoBinario ? form.archivoBinario.name : 'Cargar PDF' }}
+              </button>
+              <input 
+                ref="fileInput"
+                type="file" 
+                accept="application/pdf" 
+                style="display: none;" 
+                @change="manejarArchivo" 
+              />
+            </div>
+          </label>
+         
           <label>
             Motivo
-            <textarea v-model="form.motivo" rows="4" required placeholder="Describe brevemente el motivo de la solicitud o incidencia" />
+            <textarea v-model="form.motivo" rows="4" required placeholder="Describe brevemente el motivo de la Solicitud o Incidencia" />
           </label>
+
           <footer class="modal-actions">
             <button class="secondary-button" type="button" @click="closeModal">Cancelar</button>
-            <button class="primary-button" type="submit" :disabled="saving">
-              {{ saving ? "Guardando..." : "Crear solicitud" }}
+            <button class="primary-button" type="submit" :disabled="saving || fechasInvalidas">
+              <span v-if="saving" class="spinner-container">
+                <span class="spinner-icon"></span>
+                Procesando...
+              </span>
+              <span v-else>
+                Crear Solicitud
+              </span>
             </button>
           </footer>
         </form>
 
+        <!-- REDIRECCIÓN EXTERNA AL COMPONENTE PROPIO DE COMISIÓN -->
+        <div v-else-if="modal.mode === 'create' && form.tipo === 'comision'">
+          <label style="display: grid; gap: 7px; margin-bottom: 14px; font-weight: 700; color: var(--color-text-soft);">
+            Tipo
+            <select v-model="form.tipo" style="width: 100%; border: 1px solid var(--color-border); border-radius: 12px; padding: 11px 12px;">
+              <option value="vacaciones">Vacaciones</option>
+              <option value="permiso">Permiso</option>
+              <option value="incapacidad">Incapacidad</option>
+              <option value="maternidad">Maternidad</option>
+              <option value="paternidad">Paternidad</option>
+              <option value="comision">Comision</option>
+              <option value="otro">Otro</option>
+            </select>
+          </label>
+          
+          <FormularioComision @success="handleComisionSuccess" @cancel="closeModal" />
+        </div>
+
+        <!-- PANEL DE CONFIRMACIONES DE ACCIÓN (APROBAR/RECHAZAR/ELIMINAR) -->
         <div v-else class="confirm-panel">
           <p>
             {{ modal.message }}
@@ -201,7 +255,8 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import axios from "axios";
+import { watch } from "vue";
+import axios from "axios"; // Axios importado para traer las normatividades
 import BaseCard from "@/components/ui/BaseCard.vue";
 import AppTable from "@/components/ui/AppTable.vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
@@ -211,15 +266,20 @@ import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
 import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
-import ModalNormatividad from "./ModalNormatividad.vue";
+import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";
+import FormularioComision from "@/components/shared/FormularioComision.vue";
 
-const isNormatividadModalOpen = ref(false);
-const normatividades = ref(false);
+
 
 const authStore = useAuthStore();
 const rows = ref([]);
 
 const saving = ref(false);
+
+// VARIABLES REACTIVAS PARA LAS NORMATIVIDADES
+const isNormativityModalOpen = ref(false);
+const normatividades = ref([]);
+
 const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
 const modal = reactive({
   visible: false,
@@ -230,13 +290,16 @@ const modal = reactive({
   confirmLabel: "",
   row: null
 });
+
 const form = reactive({
   tipo: "vacaciones",
   oficio: "",
   fecha_inicio: "",
   fecha_fin: "",
-  motivo: ""
+  motivo: "",
+  archivoBinario: null
 });
+
 const filters = reactive({
   type: "empleado",
   term: ""
@@ -264,6 +327,8 @@ const columns = [
   { key: "acciones", label: "Acciones" }
 ];
 
+
+
 const roleActions = computed(() => getRoleActions(authStore.user, "requests"));
 const headerActions = computed(() =>
   roleActions.value.filter((action) => ["createRequest", "viewRequests"].includes(action.key))
@@ -278,6 +343,28 @@ const canManageRequests = computed(() => canApproveRequests.value);
 const filterPlaceholder = computed(() =>
   filters.type === "rfc" ? "Ej. GAAL850101AB1" : "Ej. EMP-001"
 );
+
+const manejarArchivo = (event) => {
+  const archivo = event.target.files[0];
+  if (archivo) {
+  if (archvio.type !== "application/pdf")  {
+    showToast("Archivo Invalido: ", "Por Favor suba únicamente un archivo PDF.", "warning");
+    return;
+  }
+  form.archivoBinario.archivo
+  }
+};
+
+const isDragging = ref (false);
+
+
+
+const handleComisionSuccess = (nuevaComision) => {
+  rows.value.unshift(normalizeRow(nuevaComision));
+  showToast("Comisión Creada", "El formato de Comisión fue registrado exitosamente.");
+
+}
+
 
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
@@ -332,34 +419,33 @@ const loadRequests = async () => {
 };
 
 
+
+// CARGAR DOCUMENTOS DESDE TU API
 const fetchNormatividadesVigentes = async () => {
-  try{
+  try {
     const response = await axios.get("http://localhost:8000/api/normatividad");
-    normatividades.value = response.data
-  }catch (error){
+    normatividades.value = response.data;
+  } catch (error) {
     console.error("Error al obtener normatividades para solicitudes:", error);
   }
-  };
+};
 
-  const evaluarNormatividad = () => {
-    if(normatividades.value.length > 0) {
+// INTERCEPTOR PARA EVALUAR TÉRMINOS ANTES DE CREAR
+const evaluarNormatividad = () => {
+  if (normatividades.value.length > 0) {
+    // Si hay leyes o normatividades vigentes, abrimos la ventana de aceptación
+    isNormativityModalOpen.value = true;
+  } else {
+    // Si no hay normatividades registradas en el sistema, abre el formulario directo
+    openCreateModal();
+  }
+};
 
-       isNormatividadModalOpen.value = true;
-
-    }else{
-      openCreateModal ();
-    }
-    };
-
-
-    const procederAlFormularioCreacion = () => {
-      isNormatividadModalOpen.value = false;
-      openCreateModal();
-
-
-    }
-  
-
+// PROCEDER CUANDO EL USUARIO DA CLICK EN CONTINUAR
+const procederAlFormularioCreacion = () => {
+  isNormativityModalOpen.value = false;
+  openCreateModal(); // Abre tu modal de captura original
+};
 
 const applySearch = () => {
   loadRequests();
@@ -381,14 +467,14 @@ const actionsForRow = (row) => {
     if (["approveRequest", "rejectRequest"].includes(action.key)) return pending && canApproveRequests.value;
     if (action.key === "manageIncident") return canApproveRequests.value;
     if (action.key === "downloadRequestDocument") {
-  return canApproveRequests.value;
-}
+      return canApproveRequests.value;
+    }
   });
 };
 
 const selectAction = (action, row = null) => {
   if (action.key === "createRequest") {
-    evaluarNormatividad();
+    evaluarNormatividad(); //  Modificado para interceptar también en el botón de cabecera de admin
     return;
   }
 
@@ -408,9 +494,9 @@ const selectAction = (action, row = null) => {
   }
 
   if (action.key === "downloadRequestDocument") {
-  showToast("Descargar", `Descargando documento de ${row.id}.`);
-  return;
-}
+    showToast("Descargar", `Descargando documento de ${row.id}.`);
+    return;
+  }
 
   showToast(action.label, row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.");
 };
@@ -460,6 +546,7 @@ const closeModal = () => {
   modal.visible = false;
 };
 
+
 const submitRequest = async () => {
   if (form.fecha_inicio < today || form.fecha_fin < today) {
     showToast("Fecha no permitida", "Selecciona el dia actual o una fecha posterior.", "warning");
@@ -472,23 +559,32 @@ const submitRequest = async () => {
   }
 
   saving.value = true;
-  const payload = { ...form };
+
+
+
+  const formData = new FormData ();
+  formData.append("tipo", form.tipo);
+  formData.append("fecha_inicio", form.fecha_inicio);
+  formData.append("fecha_fin", formData.fecha_fin);
+  formData.append("motivo", formData.motivo);
+  if (formData.archivoBinario) {
+    formData.append("archivo_pdf", form.archivoBinario);
+  }
 
   try {
-    const created = await requestsService.create(payload);
-    rows.value.unshift(normalizeRow(created));
-    showToast("Solicitud creada", "La solicitud quedo pendiente de revision.");
-  } catch (error) {
-    showToast(
-      "No se pudo crear la solicitud",
-      getRequestErrorMessage(error),
-      "warning"
-    );
-  } finally {
+
+    const create = await requestsService.create(formData);
+    rows.value.unshift(normalizeRow(created))
+    showToast("La Solicitud ha sido creada", "La Solicitud queda pendiente a revisión");
+  }catch (error) {
+    showToast("No se pudo crear la Solicitud", getRequestErrorMessage(error), "warning"); 
+  }{
     saving.value = false;
     closeModal();
   }
 };
+
+  
 
 const confirmResolution = async () => {
   if (!modal.row) return;
@@ -524,12 +620,32 @@ const replaceRow = (updated) => {
   rows.value = rows.value.map((row) => (row.id === updated.id ? { ...row, ...updated } : row));
 };
 
-onMounted(loadRequests);
+
+watch (() => form.tipo, (nuevoTipo) => {
+  if (!['incapacidad', 'maternidad', 'paternidad'].includes(nuevoTipo)) {
+    form.archivoBinario = null;
+    if (fileInput.value) fileInput.value.value = ""; 
+  }
+} );
 
 
+const fileInput = ref(null);
+
+
+const fechasInvalidas = computed(() => {
+  if(!form.fecha_inicio || !fecha_fin) return false;
+  return form.fecha_fin < form.fecha_inicio;
+})
+
+// Ejecutamos ambas consultas al montar la vista
+onMounted(() => {
+  loadRequests();
+  fetchNormatividadesVigentes(); 
+});
 </script>
 
 <style scoped>
+
 .request-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -694,6 +810,38 @@ onMounted(loadRequests);
   color: var(--color-danger);
 }
 
+.input-error {
+  border-color: var(--color-danger) !important;
+  background-color: rgba(157, 45, 62, 0.05) !important;
+}
+
+
+.error-text-hint {
+  font-size: 0.6rem;
+  color: var(--color-danger);
+  margin-top: -6px;
+  display: block;
+  font-weight: 500;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg);}
+}
+
 .toast {
   display: grid;
   gap: 4px;
@@ -843,6 +991,13 @@ onMounted(loadRequests);
   transform: translateY(-1px);
 }
 
+.upload-button {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
 .page-header{
   margin-bottom: 20px;
   margin-top: 20px;
@@ -870,8 +1025,11 @@ button:disabled {
 
   .request-filters{
     margin-bottom: 50px;
-    padding: 14px 10px;
+    
 
+
+
+    padding: 14px 10px;
   }
 
   .request-filters__actions {
@@ -892,5 +1050,4 @@ button:disabled {
   .request-filters__actions .secondary-button {
     flex: 1 1 140px;
   }
-}
-</style>
+}</style>

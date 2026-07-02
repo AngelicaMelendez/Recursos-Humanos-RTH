@@ -1,8 +1,8 @@
 export const ROLE_KEYS = {
   SUPER_USER: "super_usuario",
-  RECURSOS_HUMANOS: "recursos_humanos",
-  DIRECTOR: "Director",
-  USUARIO: "Usuario"
+  RECURSOS_HUMANOS: "recursos humanos",
+  DIRECTOR: "director",
+  USUARIO: "usuario"
 };
 
 const ALL_ROLES = Object.values(ROLE_KEYS);
@@ -13,13 +13,16 @@ export const ROLE_GROUPS = {
     ROLE_KEYS.RECURSOS_HUMANOS
   ],
   VIEWERS: [
+    ROLE_KEYS.RECURSOS_HUMANOS,
     ROLE_KEYS.SUPER_USER,
-    ROLE_KEYS.DIRECTOR
+    ROLE_KEYS.DIRECTOR,
+    ROLE_KEYS.USUARIO
     
   ],
   SOLICITORS: [
     ROLE_KEYS.SUPER_USER,
-    ROLE_KEYS.RECURSOS_HUMANOS 
+    ROLE_KEYS.RECURSOS_HUMANOS,
+    ROLE_KEYS.USUARIO
   ]
 };
 
@@ -43,7 +46,7 @@ const moduleByRoute = {
   "/": "dashboard",
   "/calendario": "calendar",
   "/directorio": "directory",
-  "/organigrama": "organograma",
+  "/organigram": "organigram",
   "/solicitudes": "requests",
   "/normatividad": "normativity",
   "/vacantes": "vacancies",
@@ -93,7 +96,7 @@ const actionCatalog = {
   uploadNormativity: { label: "Subir Normatividad", icon: "upload", operation: "C" },
   updateNormativity: { label: "Actualizar Documento", icon: "edit", operation: "U" },
   deactivateNormativity: { label: "Baja Lógica", icon: "archive", operation: "D" },
-  viewNormativity: { label: "Consultar Repositorio", icon: "shield", operation: "R" },
+  viewNormativity: { label: "Consultar Normatividad", icon: "shield", operation: "R" },
   registerVisitor: { label: "Registrar Entrada", icon: "plus", operation: "C" },
   registerVisitorExit: { label: "Registrar Salida", icon: "check", operation: "U" },
   assignBadge: { label: "Asignar Gafete", icon: "tag", operation: "U" },
@@ -109,7 +112,7 @@ const actionCatalog = {
 };
 
 export const roleActionsByModule = {
-  dashboard:{
+  dashboard: {
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
@@ -118,14 +121,20 @@ export const roleActionsByModule = {
   directory: {
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
-    [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"]
+    [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
+    [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
   },
   requests: {
-    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest","viewRequests"],
+    [ROLE_KEYS.SUPER_USER]: ["viewRequests"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.USUARIO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"]
+    [ROLE_KEYS.USUARIO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"],
+    [ROLE_KEYS.DIRECTOR]: ["viewRequests"]
   },
   vacancies: {
+    [ROLE_KEYS.SUPER_USER]: ["viewVacancies"],
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
+    [ROLE_KEYS.USUARIO]: ["viewVacancies"],
+    [ROLE_KEYS.DIRECTOR]: ["viewVacancies"]
     [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
     [ROLE_KEYS.USUARIO]: ["viewVacancies"]
@@ -143,7 +152,7 @@ export const roleActionsByModule = {
   attendance: {
     [ROLE_KEYS.SUPER_USER]: ["registrarAsistencia", "verHistorialAsistencia"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["registrarAsistencia", "verHistorialAsistencia"],
-    [ROLE_KEYS.USUARIO]: ["registrarAsistencia", "verHistorialAsistencia"]
+    [ROLE_KEYS.USUARIO]: ["registrarAsistencia", "verHistorialAsistencia"],
   }
 };
 
@@ -155,6 +164,7 @@ const resolveRoleValue = (roleOrUser) => {
   return String(roleOrUser).trim().toLowerCase();
 };
 
+export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 
 export const hasAnyRole = (roleOrUser, allowedRoles = []) =>

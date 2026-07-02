@@ -31,7 +31,6 @@ const dashboardData = {
     { name: 'Ana Laura Perez', date: '09 mayo', area: 'Direccion Administrativa' },
     { name: 'Jose Miguel Vargas', date: '11 mayo', area: 'Produccion' },
     { name: 'Monica Duran', date: '14 mayo', area: 'Recursos Humanos' },
-    {name : 'Pablo Martinez', date: '30 de Junio', area: 'TI'}
   ],
   employeesOnVacation: [
     { name: 'Carlos Ortega', period: '06-10 mayo', relief: 'Comunicacion Social' },
@@ -156,7 +155,7 @@ exports.dashboard = async (req, res) => {
       ],
     });
   } catch (error) {
-    console.error("❌ Error real en controlador de dashboard:", error);
+    console.error(" Error real en controlador de dashboard:", error);
     res.status(500).json({
       error: 'No se pudo obtener el dashboard desde la base de datos',
       details: error.message,
@@ -298,6 +297,7 @@ exports.organigrama = async (req, res) => withFallback(res, fallback.organigram,
   return { name: 'Dirección General', role: 'Titular del organismo', children: byDireccion };
 });
 
+
 exports.solicitudes = async (req, res) => withFallback(res, fallback.solicitudes, async () => {
   const rows = await db.Solicitud.findAll();
   return rows.map((row) => ({
@@ -311,28 +311,28 @@ exports.solicitudes = async (req, res) => withFallback(res, fallback.solicitudes
   }));
 });
 
-// 1. Modificar la consulta para que devuelva los datos reales de la BD
+
 exports.normatividad = async (req, res) => withFallback(res, fallback.normatividad, async () => {
   return await db.Normatividad.findAll({
-    order: [['createdAt', 'DESC']] // Para mostrar las más recientes primero
+    order: [['createdAt', 'DESC']] 
   });
 });
 
-// 2. Agregar la lógica para crear el registro con el PDF adjunto
+
 exports.createNormatividad = async (req, res) => {
-  console.log("Modelos disponibles en db:", Object.keys(db)); // 👈 ESTO TE DIRÁ EL NOMBRE EXACTO DEL MODELO
+  console.log("Modelos disponibles en db:", Object.keys(db)); 
   try {
     const { nombre, tipo, version, fecha_publicacion, estatus } = req.body;
 
-    // Validamos que el nombre sea obligatorio
+
     if (!nombre) {
       return res.status(400).json({ error: 'El nombre de la normatividad es obligatorio' });
     }
 
-    // Si Multer procesó el archivo con éxito, su ruta estará en req.file.path
+
     let rutaPdf = null;
     if (req.file) {
-      // Reemplazamos diagonales invertidas si estás en Windows para normalizar a URLs válidas
+      
       rutaPdf = req.file.path.replace(/\\/g, '/'); 
     }
 
@@ -353,7 +353,7 @@ exports.createNormatividad = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ Error al crear normatividad:", error);
+    console.error("Error al crear normatividad:", error);
     return res.status(500).json({
       error: 'Error interno al intentar guardar la normatividad',
       details: error.message
@@ -389,7 +389,7 @@ exports.updateNormatividad = async (req, res) => {
 
     return res.json({ message: 'Documento actualizado con éxito', data: documento });
   } catch (error) {
-    console.error("❌ Error al actualizar normatividad:", error);
+    console.error("Error al actualizar normatividad:", error);
     return res.status(500).json({ error: 'Error interno al actualizar', details: error.message });
   }
 };
@@ -409,7 +409,7 @@ exports.bajaLogicaNormatividad = async (req, res) => {
 
     return res.json({ message: `El documento "${documento.nombre}" ha sido deshabilitado.` });
   } catch (error) {
-    console.error("❌ Error en la baja lógica:", error);
+    console.error("Error en la baja lógica:", error);
     return res.status(500).json({ error: 'Error al procesar la baja lógica' });
   }
 };
@@ -434,9 +434,9 @@ exports.deleteNormatividad = async (req, res) => {
       
       fs.unlink(rutaArchivo, (err) => {
         if (err) {
-          console.error("⚠️ No se pudo borrar el archivo físico, tal vez no exista:", err.message);
+          console.error("No se pudo borrar el archivo físico, tal vez no exista:", err.message);
         } else {
-          console.log(`🗑️ Archivo físico eliminado: ${rutaArchivo}`);
+          console.log(`Archivo físico eliminado: ${rutaArchivo}`);
         }
       });
     }
@@ -446,7 +446,7 @@ exports.deleteNormatividad = async (req, res) => {
 
     return res.json({ message: 'Documento y archivo eliminados permanentemente.' });
   } catch (error) {
-    console.error("❌ Error al eliminar normatividad:", error);
+    console.error("Error al eliminar normatividad:", error);
     return res.status(500).json({ error: 'Error interno al eliminar el documento.' });
   }
 };
