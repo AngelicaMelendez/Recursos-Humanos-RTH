@@ -5,7 +5,7 @@
       title="Normatividad y repositorio PDF"
       description="Biblioteca Institucional versionada para manuales, lineamientos, reglamentos y documentos oficiales."
     >
-      <RoleActionBar :actions="actions" @select="selectAction" />
+
     </PageHeader>
     
     <p v-if="notice" class="notice">{{ notice }}</p>
@@ -90,6 +90,7 @@ const notice = ref("");
 const rows = ref([]); // Inicializa vacío para llenarlo desde tu API
 const guardando = ref(false);
 const mostrarFormulario = ref(false); // Controla la vista del formulario
+
 
 // Estado del formulario reactivo
 const formulario = ref({
@@ -200,7 +201,7 @@ const selectAction = async (action, row = null) => {
 
   // 3. Botón en fila: Baja Lógica (Llave del catálogo: deactivateNormativity)
   // Acción: Eliminar permanentemente (Botón de la fila con icono de archivo/bote)
-if (action.key === "deactivateNormativity" && row) {
+if (action.key === "desactivateNormativity" && row) {
   if (confirm(`¿Estás completamente seguro de ELIMINAR PERMANENTEMENTE el documento "${row.nombre}"? Esta acción no se puede deshacer.`)) {
     try {
       await axios.delete(`http://localhost:8000/api/normatividad/${row.id}`, {
@@ -269,6 +270,11 @@ const descargarDocumento = async (row) => {
 
 <style scoped>
 
+.page-header {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .form-card {
   margin-bottom: 20px;
   background: var(--color-surface-muted, #f9f9f9);
@@ -334,4 +340,6 @@ const descargarDocumento = async (row) => {
 .download-link:hover {
     transform: translateY(-1px);
 
-  }</style>
+  }
+  
+  </style>

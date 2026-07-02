@@ -28,9 +28,28 @@ const roleLabels = {
   [ROLE_KEYS.USUARIO]: 'Usuario'
 };
 
+const ROLE_GROUPS = {
+  APPROVERS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.RECURSOS_HUMANOS
+  ],
+  VIEWERS: [
+    ROLE_KEYS.RECURSOS_HUMANOS,
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.DIRECTOR,
+    ROLE_KEYS.USUARIO
+    
+  ],
+  SOLICITORS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.RECURSOS_HUMANOS,
+    ROLE_KEYS.USUARIO
+  ]
+};
+
 const PERMISSIONS = {
-  REQUEST_APROVERS:[ROLE_KEYS.SUPER_USER, ROLE_KEYS.RECURSOS_HUMANOS], // Aprueban Solicitudes
-  VIEWERS:[ROLE_KEYS.SUPER_USER,ROLE_KEYS.DIRECTOR],  // Visualizan o Leen solamente sin manipular nada
+  REQUESTS_APPROVERS:[ROLE_KEYS.SUPER_USER, ROLE_KEYS.RECURSOS_HUMANOS], // Aprueban Solicitudes
+  VIEWERS:[ROLE_KEYS.SUPER_USER, ROLE_KEYS.RECURSOS_HUMANOS, ROLE_KEYS.DIRECTOR],  // Visualizan o Leen solamente sin manipular nada
   SOLICITORS: [ROLE_KEYS.USUARIO,ROLE_KEYS.RECURSOS_HUMANOS] // Solicitan peticiones
 };
 
@@ -57,6 +76,7 @@ function hasRole(roleOrUser, allowedRoles = []) {
 // 2. HASTA EL FINAL EXPORTAMOS TODO YA EXISTENTE
 module.exports = {
   ROLE_KEYS,
+  ROLE_GROUPS,
   PERMISSIONS,
   roleLabels,
   normalizeRole,
