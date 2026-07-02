@@ -63,7 +63,6 @@ export const useAuthStore = defineStore("auth", {
         this.token = "";
         this.user = null;
 
-        const response = await authService.register(credentials);
         this.token = response.token;
         this.user = response.user;
         writeStoredAuth(response);

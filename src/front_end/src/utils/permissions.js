@@ -63,8 +63,8 @@ export const roleLabels = {
 };
 
 export const modulePermissions = {
-  dashboard: ALL_ROLES,
   calendar: ALL_ROLES,
+  dashboard: ALL_ROLES,
   directory: ALL_ROLES,
   organigram: ALL_ROLES,
   requests: ALL_ROLES,
@@ -72,7 +72,6 @@ export const modulePermissions = {
   vacancies: ALL_ROLES,
   announcements: ALL_ROLES,
   audit: [ROLE_KEYS.SUPER_USER,ROLE_KEYS.DIRECTOR],
- 
   attendance: ALL_ROLES
 };
 
@@ -168,6 +167,7 @@ const resolveRoleValue = (roleOrUser) => {
   return String(roleOrUser).trim().toLowerCase();
 };
 
+export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 
 export const hasAnyRole = (roleOrUser, allowedRoles = []) =>

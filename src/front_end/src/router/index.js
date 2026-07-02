@@ -15,8 +15,6 @@ import AttendancePage from "@/pages/AttendancePage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 import { useAuthStore } from "@/store/auth";
 import { canAccessModule } from "@/utils/permissions";
-import ProfilePage from "@/pages/ProfilePage.vue";
-
 const routes = [
   {
     path: "/login",
@@ -30,7 +28,7 @@ const routes = [
     children: [
       { path: "", name: "dashboard", component: DashboardPage, meta: { module: "dashboard" } },
       { path: "calendario", name: "calendar", component: CalendarPage, meta: { module: "calendar" } },
-      { path: "organigrama", name: "organigram", component: OrganogramaPage, meta: { module: "organograma" } },
+      { path: "organigrama", name: "organigram", component: OrganogramaPage, meta: { module: "organigrama" } },
       { path: "directorio", name: "directory", component: DirectoryPage, meta: { module: "directory" } },
       { path: "solicitudes", name: "requests", component: RequestsPage, meta: { module: "requests" } },
       { path: "normatividad", name: "normativity", component: NormativityPage, meta: { module: "normativity" } },
@@ -38,7 +36,7 @@ const routes = [
       { path: "auditoria", name: "audit", component: AuditPage, meta: { module: "audit" } },
       { path: "comunicados", name: "comunicados", component: ComunicadosPage, meta: { module: "comunicados" } },
       { path: "asistencia", name: "attendance", component: AttendancePage, meta: { module: "attendance" } },
-      { path: "perfil" ,name: "profile", component: ProfilePage}
+
     ]
   },
   {
@@ -64,14 +62,21 @@ router.beforeEach(async (to) => {
     await authStore.initialize();
   }
 
+  // 1. Si no es pública y no está autenticado, al login
   if (!to.meta.public && !authStore.isAuthenticated) {
     return { name: "login" };
   }
 
+  if (to.name === "dashboard") {
+    return true;
+  }
+
+  // 3. Si no tiene acceso al módulo, mándalo al dashboard seguro (que ya sabemos que no ciclará)
   if (to.meta.module && !canAccessModule(authStore.user?.rol, to.meta.module)) {
     return { name: "dashboard" };
   }
 
+  // 4. Si va a login pero ya está logueado, mándalo al dashboard
   if (to.name === "login" && authStore.isAuthenticated) {
     return { name: "dashboard" };
   }

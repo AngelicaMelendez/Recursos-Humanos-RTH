@@ -3,12 +3,13 @@
     <PageHeader
       eyebrow="Estructura organizacional"
       title="Organigrama"
-      description="Vista jerarquica de la organizacion basada en relaciones de subordinacion."
+      description="Vista jerárquica de la organización basada en relaciones de subordinación."
     >
       <div class="organograma-metrics" v-if="!loading && !error && stats.total">
-        <span class="pill primary">{{ stats.total }} Puestos</span>
-        <span class="pill neutral">{{ stats.areas }} Áreas</span>
-        <span class="pill warning">{{ stats.niveles }} Niveles</span>
+        <span>{{ stats.total }} Puestos</span>
+        <span>{{ stats.departamentos }} Departamentos</span>
+        <span>{{ stats.direcciones }} Direcciones</span>
+        <span>{{ stats.niveles }} Niveles</span>
       </div>
     </PageHeader>
 
@@ -18,7 +19,7 @@
 
     <BaseCard class="organograma-card">
       <div class="organograma-actions">
-        <p class="organograma-hint">Desplazate horizontalmente si el arbol ocupa mas espacio en pantalla.</p>
+        <p class="organograma-hint">Desplázate horizontalmente si el árbol ocupa más espacio en pantalla.</p>
         <button
           type="button"
           class="pdf-download"
@@ -71,11 +72,15 @@ const selectedEmployeeNumber = computed(() =>
 
 const stats = computed(() => {
   const nodes = collectNodes(arbol.value);
-  const uniqueAreas = new Set(nodes.map((node) => node.area).filter(Boolean));
+  
+  // Extraemos los IDs únicos para departamentos y direcciones
+  const uniqueDepartamentos = new Set(nodes.map((node) => node.departamento_id).filter(Boolean));
+  const uniqueDirecciones = new Set(nodes.map((node) => node.direccion_id).filter(Boolean));
 
   return {
     total: nodes.length,
-    areas: uniqueAreas.size,
+    departamentos: uniqueDepartamentos.size,
+    direcciones: uniqueDirecciones.size,
     niveles: getMaxDepth(arbol.value)
   };
 });
@@ -117,19 +122,55 @@ onMounted(async () => {
   }
 });
 </script>
-
 <style scoped>
 .organograma-card {
   width: 100%;
 }
 
+.page-header {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* MÉTRICAS Y PILLS */
 .organograma-metrics {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 10px;
+  margin-top: 12px;
 }
 
+.pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.pill.total {
+  background-color: var(--color-primary-light, #e3effa);
+  color: var(--color-primary, #1e40af);
+}
+
+.pill.depto {
+  background-color: rgba(197, 155, 82, 0.12);
+  color: var(--color-accent-strong, #856404);
+  border-color: rgba(197, 155, 82, 0.24);
+}
+
+.pill.dirección {
+  background-color: var(--color-info-light, #e0f2fe);
+  color: var(--color-info, #0369a1);
+}
+
+.pill.niveles {
+  background-color: var(--color-warning-light, #fef3c7);
+  color: var(--color-warning, #b45309);
+}
+
+/* ACCIONES */
 .organograma-actions {
   display: flex;
   align-items: center;
@@ -144,16 +185,7 @@ onMounted(async () => {
   font-size: 0.92rem;
 }
 
-.loading,
-.error {
-  padding: 20px;
-  text-align: center;
-}
-
-.error {
-  color: var(--color-danger);
-}
-
+/* CONTENEDOR DEL ÁRBOL */
 .arbol-shell {
   overflow-x: auto;
   padding-bottom: 8px;
@@ -173,6 +205,7 @@ onMounted(async () => {
   display: none;
 }
 
+/* BOTÓN PDF */
 .pdf-download {
   cursor: pointer;
   padding: 12px 18px;
@@ -203,23 +236,42 @@ onMounted(async () => {
   box-shadow: 0 16px 28px rgba(197, 155, 82, 0.32);
 }
 
+/* ESTADOS DE CARGA/ERROR */
+.loading,
+.error {
+  padding: 40px 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.selected-employee-note {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background-color: rgba(197, 155, 82, 0.06);
+  border-left: 4px solid rgba(197, 155, 82, 0.6);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* RESPONSIVE */
 @media (max-width: 920px) {
   .organograma-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
   }
 
   .organograma-metrics {
     justify-content: flex-start;
+    margin-top: 8px;
   }
 
   .pdf-download {
     width: 100%;
   }
-}
-
-.page-header{
-  margin-bottom: 20px;
-  margin-top: 20px;
 }
 </style>

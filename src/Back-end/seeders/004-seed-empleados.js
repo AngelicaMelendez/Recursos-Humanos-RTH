@@ -2424,7 +2424,6 @@ module.exports = {
       },
       {
         id: 94,
-        usuario: 'Maricelda', //----------------------------Radiofusora de Huejutla AM-----------------------------//
         nombre: 'Maricelda',
         apellidos: 'Bautista Granados',
         curp: null,
@@ -4219,7 +4218,6 @@ module.exports = {
       },
       {
         id: 163,
-        usuario: 'Juan Alberto', //----------------------------Master--------------------------//
         nombre: 'Juan Alberto',
         apellidos: 'Acosta Flores',
         curp: null,

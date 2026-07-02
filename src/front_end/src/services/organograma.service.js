@@ -3,7 +3,7 @@ import api from './api';
 export default {
   // Obtener organigrama completo (árbol)
   obtenerOrganigrama() {
-    return api.get("/organigrama");
+    return api.get("/organograma");
   },
 
   // Listar empleados (directorio)
@@ -20,15 +20,18 @@ export default {
   darDeBaja(id, motivo) {
     return api.put(`/directorio/${id}/baja`, { motivo });
   },
+
+   listarDepartamentos(departamentoId = null) {
+    const params = departamentoId ? { departamento_id: departamentoId } : {};
+    return api.get("/directorio/departamentos", { params });
+  },
+  
   listarDirecciones(direccionId = null) {
     const params = direccionId ? { direccion_id: direccionId } : {};
     return api.get("/directorio/direcciones", { params });
   },
 
-  listarDepartamentos(departamentoId = null) {
-    const params = departamentoId ? { departamento_id: departamentoId } : {};
-    return api.get("/directorio/departamentos", { params });
-  },
+ 
 
   // Listar puestos
   listarPuestos() {

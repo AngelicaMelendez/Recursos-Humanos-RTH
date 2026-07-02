@@ -13,16 +13,6 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      direccion_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true, // Cambia a false si es obligatorio que todo departamento tenga dirección
-        references: {
-          model: 'direcciones',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

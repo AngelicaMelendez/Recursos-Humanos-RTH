@@ -8,6 +8,8 @@ const preferredOrder = [
   '001-seed-direcciones.js',
   '002-seed-departamentos.js',
   '003-seed-puestos.js'
+  '004-seed-empleados.js'
+  '005-seed-usuarios.js'
 ];
 
 function getSeederFiles() {

@@ -76,7 +76,7 @@ async function obtenerSolicitudes(query = {}) {
   const empleadoInclude = {
     model: db.Empleado,
     as: 'empleado',
-    attributes: ['id', 'nombre', 'apellidos', 'rfc'],
+    attributes: ['id', 'nombre', 'apellidos'],
   };
 
   if (filtroEmpleado) {

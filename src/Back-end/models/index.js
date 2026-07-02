@@ -49,7 +49,7 @@ Object.keys(db).forEach(modelName => {
     try {
       db[modelName].associate(db);
     } catch (assocError) {
-      console.error(`⚠️ Error en las asociaciones del modelo [${modelName}]:`, assocError.message);
+      console.error(` Error en las asociaciones del modelo [${modelName}]:`, assocError.message);
     }
   }
 });

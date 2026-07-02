@@ -5,6 +5,23 @@ const ROLE_KEYS = {
   DIRECTOR: 'director' /* DIRECTOR (VISOR) */
 };
 
+ const ROLE_GROUPS = {
+  APPROVERS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.RECURSOS_HUMANOS
+  ],
+  VIEWERS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.DIRECTOR,
+    ROLE_KEYS.RECURSOS_HUMANOS
+    
+  ],
+  SOLICITORS: [
+    ROLE_KEYS.SUPER_USER,
+    ROLE_KEYS.RECURSOS_HUMANOS
+  ]
+};
+
 const roleAliases = {
   "super_usuario": ROLE_KEYS.SUPER_USER,
   "super usuario": ROLE_KEYS.SUPER_USER,
