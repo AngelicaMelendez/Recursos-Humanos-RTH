@@ -77,7 +77,7 @@ export const modulePermissions = {
 
 const actionCatalog = {
   createEmployee: { label: "Alta Empleado", icon: "plus", operation: "C" },
-  deactivateEmployee: { label: "Baja Lógica", icon: "archive", operation: "D" },
+  desactivateEmployee: { label: "Baja Lógica", icon: "archive", operation: "D" },
   editEmployee: { label: "Actualizar Expediente", icon: "edit", operation: "U" },
   viewDirectory: { label: "Consultar Directorio", icon: "users", operation: "R" },
   updatePersonalData: { label: "Actualizar Mis Datos", icon: "edit", operation: "U" },
@@ -89,18 +89,18 @@ const actionCatalog = {
   rejectRequest: { label: "Rechazar Solicitud", icon: "x", operation: "U" },
   manageIncident: { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
   viewRequests: { label: "Consultar Solicitudes", icon: "file", operation: "R" },
-  downloadRequestDocument: { label: "Descargar Documento", icon: "saveAlt", operation: "R" },
+  downloadRequestDocument: { label: "Descargar Solicitud", icon: "saveAlt", operation: "R" },
   publishVacancy: { label: "Publicar Vacante", icon: "plus", operation: "C" },
   closeVacancy: { label: "Cerrar Vacante", icon: "archive", operation: "U" },
   viewVacancies: { label: "Consultar Vacantes", icon: "briefcase", operation: "R" },
   uploadNormativity: { label: "Subir Normatividad", icon: "upload", operation: "C" },
-  updateNormativity: { label: "Actualizar Documento", icon: "edit", operation: "U" },
-  deactivateNormativity: { label: "Baja Lógica", icon: "archive", operation: "D" },
-  viewNormativity: { label: "Consultar Normatividad", icon: "shield", operation: "R" },
-  registerVisitor: { label: "Registrar Entrada", icon: "plus", operation: "C" },
-  registerVisitorExit: { label: "Registrar Salida", icon: "check", operation: "U" },
+  updateNormativity: { label: "Actualizar Normatividad", icon: "edit", operation: "U" },
+  desactivateNormativity: { label: "Baja Lógica", icon: "x", operation: "D" }, //Desactivar Normatividad en caso de que se requiera eliminarla, pero no se quiera perder el registro de la misma
+  activateNormativity: { label: "Activar Normatividad", icon: "check", operation: "U" }, //Activar Normatividad en caso de que se requiera reactivar una normatividad que fue desactivada
+  downloadNormativity: {label: "Descargar Normatividad", icon: "saveAlt", operation: "R"},
+  viewNormativity: { label: "Consultar Normatividad", icon: "eye", operation: "R" },
   assignBadge: { label: "Asignar Gafete", icon: "tag", operation: "U" },
-  viewVisitors: { label: "Visitantes Activos", icon: "door", operation: "R" },
+  
   fullAudit: { label: "Auditoria Completa", icon: "activity", operation: "R" },
   crearComunicado: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
   editarComunicado: { label: "Editar Comunicado", icon: "edit", operation: "U" },
@@ -114,13 +114,13 @@ const actionCatalog = {
 export const roleActionsByModule = {
   dashboard: {
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "desactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
-    [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
+    
   },
   directory: {
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "desactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
     [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
   },
@@ -134,23 +134,20 @@ export const roleActionsByModule = {
     [ROLE_KEYS.SUPER_USER]: ["viewVacancies"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
     [ROLE_KEYS.USUARIO]: ["viewVacancies"],
-    [ROLE_KEYS.DIRECTOR]: ["viewVacancies"]
+
   },
   normativity: {
     [ROLE_KEYS.SUPER_USER]: ["viewNormativity"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
-    [ROLE_KEYS.USUARIO]: ["viewNormativity"],
+    [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "desactivateNormativity", "activateNormativity", "viewNormativity"],
+    [ROLE_KEYS.USUARIO]: ["viewNormativity", "downloadNormativity", "updateNormativity", "uploadNormativity", "desactivateNormativity", "activateNormativity"],
     [ROLE_KEYS.DIRECTOR]: ["viewNormativity"]
   },
-  visitors: {
-    [ROLE_KEYS.SUPER_USER]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["registerVisitor", "registerVisitorExit", "assignBadge", "viewVisitors", "fullAudit"]
-  },
+
   comunicados: {
     [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.USUARIO]: ["verComunicados", "reaccionarComunicado"],
-    [ROLE_KEYS.DIRECTOR]: ["verComunicados"] // Corregido de viewComunicados a verComunicados
+    [ROLE_KEYS.DIRECTOR]: ["verComunicados"] 
   },
   attendance: {
     [ROLE_KEYS.SUPER_USER]: ["registrarAsistencia", "verHistorialAsistencia"],
@@ -167,7 +164,7 @@ const resolveRoleValue = (roleOrUser) => {
   return String(roleOrUser).trim().toLowerCase();
 };
 
-export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
+
 export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 
 export const hasAnyRole = (roleOrUser, allowedRoles = []) =>

@@ -5,12 +5,8 @@
 
 
     <div class="form-grid-comision">
-        <label>
-            Lugar o Destino de la Comisión
-            <input class="input-lugar" v-model="comision.lugar" type="text" required placeholder="Ej. Pachuca" />
-        </label>
-
-        <label>
+        
+          <label>
             No. de Oficio de la Comisión
             <input 
             class="input-oficio" 
@@ -22,18 +18,33 @@
             />
         </label>
 
+       <label>
+        Fecha de la Comision
+        <input
+        class="input-fecha-comision"
+        v-model="comision.fecha_comision"
+        type="date" required />
+       </label>
+
     </div>
 
     <div class="form-grid-comision">
         <label>
-            Fecha y Hora de Salida
-            <input class="input-fecha" v-model="comision.fecha_inicio" type="date" required />
+            Hora de Salida
+            <input class="input-fecha" v-model="comision.fecha_inicio" type="time" required />
         </label>
 
         <label>
-            Fecha Estimada de Retorno
-            <input class="input-fecha" v-model="comision.fecha_fin" type="date" :min="comision.fecha_inicio" required />
+            Hora Estimada de Regreso
+            <input class="input-fecha" v-model="comision.fecha_fin" type="time" :min="comision.fecha_inicio" required />
         </label>
+    </div>
+
+<div class="check-regreso">
+    <label>
+        Sin Regreso
+        <input class="input-regreso" v-model="comision.regreso" type="checkbox" style="background-color: #A02142;" required /> 
+    </label>
     </div>
 
         <label>
@@ -65,10 +76,13 @@ const loading = ref(false);
 
 const comision = reactive ({
     tipo: 'comision',
-    lugar: '',
+
     oficio_num: '',
+    fecha_comision:'',
+    lugar: '',
     fecha_inicio: '',
     fecha_fin: '',
+    regreso: '',
     motivo: ''
 });
 
@@ -130,7 +144,10 @@ label{
 }
 
 
-.input-lugar {
+
+
+
+.input-oficio {
     border-radius: 12px;
     border: 1px solid var(--color-border);
     padding: 8px;
@@ -139,9 +156,8 @@ label{
     box-sizing: border-box;
 }
 
-
-.input-oficio {
-    border-radius: 12px;
+.input-fecha-comision {
+     border-radius: 12px;
     border: 1px solid var(--color-border);
     padding: 8px;
     font-size: 14px;
@@ -158,6 +174,24 @@ label{
     width: 100%;
     box-sizing: border-box;
 }
+
+.input-regreso {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+
+}
+
+
+.check-regreso {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 .input-actividad {

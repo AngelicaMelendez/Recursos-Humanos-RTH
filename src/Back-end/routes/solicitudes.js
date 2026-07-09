@@ -7,9 +7,9 @@ const { ROLE_GROUPS, PERMISSIONS } = require('../utils/roles');
 
 
 
-router.get('/', auth, ctrl.listar);
-router.post('/', auth, ctrl.crear);
-router.delete('/:id', auth, ctrl.eliminar);
+router.get('/', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.listar);
+router.post('/', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.crear);
+router.delete('/:id', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.eliminar);
 router.patch('/:id/aprobar', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.aprobar);
 router.patch('/:id/rechazar', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.rechazar);
 

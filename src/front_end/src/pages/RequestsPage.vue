@@ -20,12 +20,16 @@
       </div>
     </section>
 
-    <!-- MODAL DE ACEPTACIÓN DE NORMATIVIDADES -->
+    <!-- Modal de Aceptación de Normatividades -->
     <ModalNormatividad
+
+    
       :isOpen="isNormativityModalOpen"
       :documentos="normatividades"
       @close="isNormativityModalOpen = false"
-      @accepted="procederAlFormularioCreacion"
+
+      
+      @accepted="procederAlFormularioCreacion" 
     />
 
     <BaseCard v-if="canManageRequests">
@@ -254,33 +258,39 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { watch } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";//Importación de funciones reactivas de Vue3
+import { watch } from "vue";//Importación de función para observar cambios en variables reactivas
 import axios from "axios"; // Axios importado para traer las normatividades
-import BaseCard from "@/components/ui/BaseCard.vue";
-import AppTable from "@/components/ui/AppTable.vue";
-import IconSymbol from "@/components/ui/IconSymbol.vue";
-import PageHeader from "@/components/shared/PageHeader.vue";
-import RoleActionBar from "@/components/shared/RoleActionBar.vue";
-import StatusBadge from "@/components/shared/StatusBadge.vue";
-import requestsService from "@/services/requests.service";
-import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
-import { useAuthStore } from "@/store/auth";
-import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";
-import FormularioComision from "@/components/shared/FormularioComision.vue";
+import BaseCard from "@/components/ui/BaseCard.vue";//Componente de targeta madre para mostrar contenido en secciones
+import AppTable from "@/components/ui/AppTable.vue";//Componente de tabla para mostrar datos en formato tabular
+import IconSymbol from "@/components/ui/IconSymbol.vue";//Componente para mostrar iconos de botones
+import PageHeader from "@/components/shared/PageHeader.vue";//Componente de encabezado de pagina con titulo y subtitulos
+import RoleActionBar from "@/components/shared/RoleActionBar.vue";//Componente para botones de acción según el rol del usuario
+import StatusBadge from "@/components/shared/StatusBadge.vue";//Componente para mostrar el estatus de un registro con un badge visual
+import requestsService from "@/services/requests.service";//Servicio para gestionar las solicitudes
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";//Manejo de permisos, accesos a botones y acciones según el rol del usuario
+import { useAuthStore } from "@/store/auth";//Acceso al store de autenticación para obtener el token y rol del usuario
+import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";//Importación del componente del modal para Leer y aceptar las Normatividades
+import FormularioComision from "@/components/shared/FormularioComision.vue";// Importacion del Componente del Formulario especifico para Comisiones
 
 
 
-const authStore = useAuthStore();
-const rows = ref([]);
+const authStore = useAuthStore();//Acceso al store de Autenticación para obtener el token y el rol del usuario
 
-const saving = ref(false);
+const rows = ref([]);//Inicializa vacío para llenar desde la API
 
-// VARIABLES REACTIVAS PARA LAS NORMATIVIDADES
+const saving = ref(false);// Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
+
+// Variables reactivas para las Normatividades
 const isNormativityModalOpen = ref(false);
+
+// Variable reactiva para almacenar las normatividades obtenidas desde la API
 const normatividades = ref([]);
 
+// Variable reactiva para el Toast de notificaciones - el toast es un mensaje emergente que aparece temporalmente para informar al usuario sobre el resultado de una acción.
 const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
+
+// Variable reactiva para el modal de creación y resolución de solicitudes
 const modal = reactive({
   visible: false,
   mode: "",
@@ -291,6 +301,7 @@ const modal = reactive({
   row: null
 });
 
+// Variables reactivas para el formulario de creación de solicitudes
 const form = reactive({
   tipo: "vacaciones",
   oficio: "",
@@ -300,20 +311,31 @@ const form = reactive({
   archivoBinario: null
 });
 
+// Variables reactivas para los filtros de búsqueda
 const filters = reactive({
   type: "empleado",
   term: ""
 });
 
+
+// Función para formatear la fecha en formato YYYY-MM-DD para los inputs de tipo date
 const formatDateInputValue = (date) => {
+
+  // Asegurarse de que la fecha sea un objeto Date válido
   const year = date.getFullYear();
+
+  // Obtener el mes y el día, asegurándose de que tengan dos dígitos
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
+
+  // Devolver la fecha en formato YYYY-MM-DD
   return `${year}-${month}-${day}`;
 };
 
+// Obtener la fecha de hoy en formato YYYY-MM-DD para usarla como mínimo en los inputs de fecha
 const today = formatDateInputValue(new Date());
 
+//Formato de la tabla en que se muestra la información de Solicitudes - esto de acuerdo a la migración y modelo de solicitudes
 const columns = [
   { key: "id", label: "Folio" },
   { key: "empleado_numero", label: "No. empleado" },
@@ -328,34 +350,66 @@ const columns = [
 ];
 
 
-
+//Función Reactiva pqrq obtener las acciones de acuerdo a los roles
 const roleActions = computed(() => getRoleActions(authStore.user, "requests"));
+
+//
 const headerActions = computed(() =>
+
+//
   roleActions.value.filter((action) => ["createRequest", "viewRequests"].includes(action.key))
 );
+
+//
 const currentEmployeeId = computed(() =>
+
+   //
   authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
 );
+
+//Función para traer el rol de quienes pueden aprobar solicitudes
 const canApproveRequests = computed(() =>
+
+//Rol dentro de todos los grupos
   hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS)
 );
+
+//Acciones que se pueden hacer según el rol
 const canManageRequests = computed(() => canApproveRequests.value);
+
+//Filtro en el formulario
 const filterPlaceholder = computed(() =>
+
+//Ejemplo de busqueda o usuario
   filters.type === "rfc" ? "Ej. GAAL850101AB1" : "Ej. EMP-001"
 );
 
+
+//Función para manejar la selección de archivo PDF y almacenarlo en el formulario
 const manejarArchivo = (event) => {
+
+  //Obtiene el primer archivo seleccionado por el usuario
   const archivo = event.target.files[0];
+
+  //Si no hay un archivo seleccionado, se limpia el campo de ArchivoBinario en el formulario
   if (archivo) {
+  
+  //  
   if (archvio.type !== "application/pdf")  {
+
+    //Mensaje en caso de cargar un formato distinto al requerido o al intentar subir más de un archivo 
     showToast("Archivo Invalido: ", "Por Favor suba únicamente un archivo PDF.", "warning");
+
+    //
     return;
+
+    //
   }
   form.archivoBinario.archivo
   }
 };
 
-const isDragging = ref (false);
+
 
 
 
