@@ -144,7 +144,7 @@ export const roleActionsByModule = {
   },
 
   comunicados: {
-    [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "verComunicados", "reaccionarComunicado"],
+    [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.USUARIO]: ["verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.DIRECTOR]: ["verComunicados"] 
