@@ -264,7 +264,7 @@ exports.calendario = async (req, res) => {
           color: colorPorTipo[item.tipo] || colorPorTipo.otro,
         })),
         ...solicitudes.map((item) => ({
-          id: `SOL-${item.id}`,
+          id: `FOL-${item.id}`,
           title: `Solicitud Pendiente - ${item.empleado?.nombre || `EMP-${String(item.empleado_id).padStart(3, '0')}`}`,
           start: item.fecha_inicio,
           end: addOneDay(item.fecha_fin),
@@ -301,7 +301,7 @@ exports.organigrama = async (req, res) => withFallback(res, fallback.organigram,
 exports.solicitudes = async (req, res) => withFallback(res, fallback.solicitudes, async () => {
   const rows = await db.Solicitud.findAll();
   return rows.map((row) => ({
-    id: `SOL-${row.id}`,
+    id: `FOL-${row.id}`,
     empleado_id: `EMP-${String(row.empleado_id).padStart(3, '0')}`,
     tipo: row.tipo,
     fecha_inicio: row.fecha_inicio,

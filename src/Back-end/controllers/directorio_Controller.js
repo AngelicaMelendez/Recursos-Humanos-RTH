@@ -1,6 +1,28 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 
+function obtenerNumeroEmpleado(valor) {
+  const texto = String(valor || '').trim().toUpperCase();
+  const sinPrefijo = texto.replace(/^EMP-?/i, '');
+  const soloDigitos = sinPrefijo.replace(/\D/g, '');
+  return soloDigitos || null;
+}
+
+function construirFiltroNumeroEmpleado(valor) {
+  const numero = obtenerNumeroEmpleado(valor);
+  if (!numero) {
+    return [];
+  }
+
+  const padded = numero.length >= 3 ? numero : String(numero).padStart(3, '0');
+  return [
+    { No_de_empleado: numero },
+    { No_de_empleado: padded },
+    { No_de_empleado: `EMP-${padded}` },
+    { id: Number(numero) }
+  ];
+}
+
 // Obtener organigrama completo (árbol jerárquico)
 exports.obtenerOrganigrama = async (req, res) => {
   try {
@@ -28,7 +50,6 @@ exports.obtenerOrganigrama = async (req, res) => {
         id: emp.id,
         nombre: emp.nombre,
         puesto: emp.puesto ? emp.puesto.nombre : 'Sin puesto',
-        //  Ahora lee tanto dirección como departamento al mismo nivel
         unidad: emp.departamento?.nombre || emp.direccion?.nombre || 'Sin unidad',
         jefe_directo_id: emp.jefe_directo_id,
         hijos: [],
@@ -57,21 +78,17 @@ exports.listar = async (req, res) => {
     const where = {};
 
     if (estatus) where.estatus = estatus;
-  
-    // 💡 Filtros directos y planos ya que las columnas sí existen en la tabla empleados
+    //  Filtros directos y planos ya que las columnas sí existen en la tabla empleados
     if (direccion_id && direccion_id !== 'null' && direccion_id !== 'undefined') where.direccion_id = direccion_id;
     if (departamento_id && departamento_id !== 'null' && departamento_id !== 'undefined') where.departamento_id = departamento_id;
     if (puesto_id && puesto_id !== 'null' && puesto_id !== 'undefined') where.puesto_id = puesto_id;
 
     if (search) {
       const trimmed = search.trim();
-      const employeeCode = trimmed.match(/EMP-?0*(\d+)/i);
-      const numberMatch = trimmed.match(/^\d+$/);
+      const filtrosNumero = construirFiltroNumeroEmpleado(trimmed);
 
-      if (employeeCode) {
-        where.id = employeeCode[1];
-      } else if (numberMatch) {
-        where.id = trimmed;
+      if (filtrosNumero.length) {
+        where[Op.or] = filtrosNumero;
       } else {
         where[Op.or] = [
           { nombre: { [Op.like]: `%${trimmed}%` } },
@@ -84,7 +101,6 @@ exports.listar = async (req, res) => {
 
     const empleados = await db.Empleado.findAndCountAll({
       where,
-      // 💡 Corregido: Se quitó la variable rota y se usan los alias limpios con required: false
       include: [
         { model: db.Direccion, as: 'direccion', required: false },
         { model: db.Departamento, as: 'departamento', required: false },

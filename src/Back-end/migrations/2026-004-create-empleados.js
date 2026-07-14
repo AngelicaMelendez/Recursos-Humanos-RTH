@@ -17,17 +17,61 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      correo_electronico: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      numero_telefono: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      //-------------------------DOCUMENTOS, SEGURIDAD SOCIAL Y SEGUROS--------------------------------------------//
       curp: {
         type: Sequelize.STRING(18),
         allowNull: true,
         unique: true,
       },
-
       rfc: {
         type: Sequelize.STRING(13),
         allowNull: true,
       },
+      fecha_nacimiento: {
+        type: Sequelize.DATEONLY,
+        allowNull: true,
+      },
+      grado_de_estudios: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      No_de_empleado: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      nivel: { 
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       nss: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      numero_imss: {
+        type: Sequelize.STRING,
+        allowNull: true, 
+      },
+      numero_afiliacion_isste: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      unidad_medica_asignada:{
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      num_poliza_seguro_vida: { //  (OPCIONAL)
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      num_poliza_seguro_gastos_medicos: { //  (OPCIONAL)
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -49,8 +93,12 @@ module.exports = {
       },
       estatus: {
         type: Sequelize.ENUM('activo', 'baja'),
-        allowNull: false,
+        allowNull: true,
         defaultValue: 'activo',
+      },
+      fecha_ingreso: { //   FECHA DE INGRESO
+        type: Sequelize.DATEONLY,
+        allowNull: true,
       },
       direccion_id: {
         type: Sequelize.INTEGER,
@@ -62,6 +110,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
+      
       departamento_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -73,25 +122,47 @@ module.exports = {
         onDelete: 'SET NULL',
       },
       
-      puesto_id: {
+      puesto_id: {  // CARGO DEL EMPLEADO o ADSCRIPCION DEL EMPLEADO
         type: Sequelize.INTEGER,
         allowNull: true,
 
-        references: {       // llave foranea
-          model: 'puestos', // Nombre real de la tabla en tu base de datos
-          key: 'id'         // Columna a la que apunta
+        references: {       
+          model: 'puestos', 
+          key: 'id'         
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      jefe_directo_id: {
+      jefe_directo_id: { // JEFE INMEDIATO DEL EMPLEADO
         type: Sequelize.INTEGER,
-        allowNull: true, // Si se borra el jefe directo, el campo queda libre en NULL
+        allowNull: true,
+      },
+      horario_laboral: {
+        type: Sequelize.ENUM('FIJO','NO-FIJO'),
+        allowNull: true,
+        defaultValue: 'FIJO',
       },
       clabe_bancaria: {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      alergias: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      enfermedades: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      discapacidad_o_condicion_especial: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      medicamentos_necesarios: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      //------------------- CONTACTOS DE EMERGENCIA -------------------------//
       contacto_nombre: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -99,8 +170,16 @@ module.exports = {
       contacto_parentesco: {
         type: Sequelize.STRING,
         allowNull: true,
-      },
+      },  
       contacto_telefono: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      contacto_telefono_alternativo: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      contacto_direccion:{
         type: Sequelize.STRING,
         allowNull: true,
       },

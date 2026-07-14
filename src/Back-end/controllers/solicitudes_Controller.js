@@ -10,7 +10,11 @@ function normalizarTipoIncidencia(tipo) {
 }
 
 function esAutorizador(rol) {
-  return hasRole(rol, PERMISSIONS.REQUEST_APPROVERS);
+  return hasRole(rol, ROLE_GROUPS.APPROVERS);
+}
+
+function puedeVerTodasLasSolicitudes(rol) {
+  return hasRole(rol, PERMISSIONS.VIEWERS);
 }
 
 function fechaLocalActual() {
@@ -45,6 +49,22 @@ function obtenerNumeroEmpleado(valor) {
   return numero ? Number.parseInt(numero, 10) : null;
 }
 
+function construirFiltroNumeroEmpleado(valor) {
+  const numero = obtenerNumeroEmpleado(valor);
+  if (!numero) {
+    return [];
+  }
+
+  const texto = String(numero).padStart(3, '0');
+  return [
+    { No_de_empleado: texto },
+    { No_de_empleado: String(numero) },
+    { id: numero },
+  ];
+}
+
+// Modificamos esta función para que busque por coincidencia parcial (LIKE) 
+// tanto en RFC como en el nuevo campo No_de_empleado
 function construirFiltroEmpleado(query) {
   const buscar = String(query.buscar || query.search || query.q || '').trim();
   const filtro = String(query.filtro || query.tipoFiltro || query.campo || '').toLowerCase();
@@ -53,38 +73,62 @@ function construirFiltroEmpleado(query) {
     return null;
   }
 
+  // 1. Si el usuario eligió explícitamente filtrar solo por Número de Empleado
   if (filtro === 'empleado' || filtro === 'no_empleado' || filtro === 'numero_empleado') {
-    const empleadoId = obtenerNumeroEmpleado(buscar);
-    return { id: empleadoId || -1 };
+    return { No_de_empleado: { [Op.like]: `%${buscar}%` } };
   }
 
+  // 2. Si el usuario eligió explícitamente filtrar solo por RFC
   if (filtro === 'rfc') {
     return { rfc: { [Op.like]: `%${buscar.toUpperCase()}%` } };
   }
 
-  const empleadoId = obtenerNumeroEmpleado(buscar);
+  // 3. AUTOCOMPLETADO MIXTO (Buscador único): 
+  // Retornamos un objeto especial para que obtenerSolicitudes lo maneje a nivel global
   return {
-    [Op.or]: [
-      { rfc: { [Op.like]: `%${buscar.toUpperCase()}%` } },
-      ...(empleadoId ? [{ id: empleadoId }] : []),
-    ],
+    autocompletar: true,
+    buscar: buscar
   };
 }
 
-async function obtenerSolicitudes(query = {}) {
+async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
   const filtroEmpleado = construirFiltroEmpleado(query);
+  const esVisorGlobal = puedeVerTodasLasSolicitudes(usuarioActual);
+  
+  // Base del WHERE para la Solicitud
+  let whereSolicitud = esVisorGlobal ? {} : { empleado_id: usuarioActual.empleado_id || -1 };
+
+  // Definición de la tabla Empleado que vamos a incluir (JOIN)
   const empleadoInclude = {
     model: db.Empleado,
     as: 'empleado',
-    attributes: ['id', 'nombre', 'apellidos'],
+    attributes: ['id', 'nombre', 'apellidos', 'rfc', 'No_de_empleado'],
   };
 
+  // Aplicamos la lógica de autocompletado o filtros específicos
   if (filtroEmpleado) {
-    empleadoInclude.where = filtroEmpleado;
-    empleadoInclude.required = true;
+    if (filtroEmpleado.autocompletar) {
+      // AQUÍ ESTÁ EL TRUCO PARA EL AUTOCOMPLETADO:
+      // Usamos la sintaxis '$as.columna$' a nivel raíz de la consulta.
+      // Esto le dice a Sequelize: "Busca en la Solicitud, pero filtra si el RFC del empleado O el No_de_empleado coinciden"
+      whereSolicitud = {
+        ...whereSolicitud,
+        [Op.or]: [
+          { '$empleado.rfc$': { [Op.like]: `%${filtroEmpleado.buscar.toUpperCase()}%` } },
+          { '$empleado.No_de_empleado$': { [Op.like]: `%${filtroEmpleado.buscar}%` } }
+        ]
+      };
+      // Obligamos a que el JOIN sea INNER JOIN para que solo traiga solicitudes de empleados que cumplan la condición
+      empleadoInclude.required = true;
+    } else {
+      // Si era un filtro específico (solo rfc o solo número), se queda dentro del include
+      empleadoInclude.where = filtroEmpleado;
+      empleadoInclude.required = true;
+    }
   }
 
   return db.Solicitud.findAll({
+    where: whereSolicitud,
     include: [
       empleadoInclude,
       {
@@ -97,37 +141,9 @@ async function obtenerSolicitudes(query = {}) {
   });
 }
 
-async function crearNotificacionSolicitud({ solicitud, tipo, titulo, mensaje }) {
-  const usuarioSolicitante = await db.Usuario.findOne({
-    where: { empleado_id: solicitud.empleado_id },
-  });
-
-  if (!usuarioSolicitante) {
-    return;
-  }
-
-  await db.Notificacion.create({
-    usuario_id: usuarioSolicitante.id,
-    tipo,
-    titulo,
-    mensaje,
-    metadata: {
-      solicitud_id: solicitud.id,
-      empleado_id: solicitud.empleado_id,
-      fecha_inicio: solicitud.fecha_inicio,
-      fecha_fin: solicitud.fecha_fin,
-      estatus: solicitud.estatus,
-    },
-  });
-}
-
 exports.listar = async (req, res) => {
   try {
-    if (!esAutorizador(req.user.rol)) {
-      return res.status(403).json({ error: 'Solo un administrador puede consultar solicitudes' });
-    }
-
-    const solicitudes = await obtenerSolicitudes(req.query);
+    const solicitudes = await obtenerSolicitudes(req.query, req.user);
     res.json(solicitudes.map(toFrontendSolicitud));
   } catch (error) {
     res.status(500).json({ error: 'No se pudieron obtener las solicitudes', details: error.message });
@@ -143,6 +159,7 @@ exports.crear = async (req, res) => {
 
     const solicitud = await db.Solicitud.create({
       ...req.body,
+      documento_adjunto: req.file ? `uploads/${req.file.filename}` : req.body.documento_adjunto,
       empleado_id: req.user.empleado_id,
       estatus: 'pendiente',
     });
@@ -162,6 +179,7 @@ exports.aprobar = async (req, res) => {
     }
 
     solicitud.estatus = 'aprobado';
+    // CORRECCIÓN: Usamos empleado_id de manera consistente para evitar errores de validación
     solicitud.aprobado_por = req.user.empleado_id;
     solicitud.fecha_resolucion = new Date();
     await solicitud.save();
@@ -169,7 +187,7 @@ exports.aprobar = async (req, res) => {
     await db.Incidencia.create({
       empleado_id: solicitud.empleado_id,
       tipo: normalizarTipoIncidencia(solicitud.tipo),
-      titulo: `${solicitud.tipo} - solicitud SOL-${solicitud.id}`,
+      titulo: `${solicitud.tipo} - solicitud FOL-${solicitud.id}`,
       descripcion: solicitud.motivo,
       fecha_inicio: solicitud.fecha_inicio,
       fecha_fin: solicitud.fecha_fin,
@@ -200,6 +218,8 @@ exports.rechazar = async (req, res) => {
     }
 
     solicitud.estatus = 'rechazado';
+    // CORRECCIÓN: Cambiado de No_de_empleado a empleado_id para mantener consistencia con "aprobar"
+    // y evitar que rompa las restricciones de clave foránea (Foreign Key) en la BD.
     solicitud.aprobado_por = req.user.empleado_id;
     solicitud.fecha_resolucion = new Date();
     await solicitud.save();
@@ -246,10 +266,12 @@ function toFrontendSolicitud(row) {
   const empleadoNombre = [row.empleado?.nombre, row.empleado?.apellidos].filter(Boolean).join(' ');
 
   return {
-    id: `SOL-${row.id}`,
+    id: `FOL-${row.id}`,
     raw_id: row.id,
     empleado_id: `EMP-${String(row.empleado_id).padStart(3, '0')}`,
-    empleado_numero: `EMP-${String(row.empleado_id).padStart(3, '0')}`,
+    // CAMBIO: Ahora toma directamente el valor real 'No_de_empleado' traído desde la tabla Empleado,
+    // en lugar de calcularlo o inventarlo a partir del ID de la solicitud.
+    No_de_empleado: row.empleado?.No_de_empleado || 'S/N',
     empleado_nombre: empleadoNombre || row.empleado?.nombre || null,
     empleado_rfc: row.empleado?.rfc || null,
     tipo: row.tipo,

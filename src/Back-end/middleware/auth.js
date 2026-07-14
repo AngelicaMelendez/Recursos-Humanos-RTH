@@ -12,11 +12,12 @@ module.exports = (req, res, next) => {
     return res.status(401).json({ error: 'Formato de token invalido' });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: 'Token invalido' });
-  }
+// middleware de auth.js
+try {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
+  req.user = decoded;
+  next();
+} catch (err) {
+  return res.status(401).json({ error: 'Token invalido' });
+}
 };
