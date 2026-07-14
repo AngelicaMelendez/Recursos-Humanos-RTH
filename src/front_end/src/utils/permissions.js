@@ -1,6 +1,6 @@
 export const ROLE_KEYS = {
   SUPER_USER: "super_usuario",
-  RECURSOS_HUMANOS: "recursos humanos",
+  RECURSOS_HUMANOS: "recursos_humanos",
   DIRECTOR: "director",
   USUARIO: "usuario"
 };
@@ -33,6 +33,8 @@ export const roleAliases = {
   "super-usuario": ROLE_KEYS.SUPER_USER,
   "recursos_humanos": ROLE_KEYS.RECURSOS_HUMANOS,
   "rh": ROLE_KEYS.RECURSOS_HUMANOS,
+  "RECURSOSHUMANOS": ROLE_KEYS.RECURSOS_HUMANOS,
+  "RECURSOS_HUMANOS": ROLE_KEYS.RECURSOS_HUMANOS,
   "recursos-humanos": ROLE_KEYS.RECURSOS_HUMANOS,
   "recursoshumanos": ROLE_KEYS.RECURSOS_HUMANOS,
   "director": ROLE_KEYS.DIRECTOR,
@@ -102,49 +104,45 @@ const actionCatalog = {
   assignBadge: { label: "Asignar Gafete", icon: "tag", operation: "U" },
   viewVisitors: { label: "Visitantes Activos", icon: "door", operation: "R" },
   fullAudit: { label: "Auditoria Completa", icon: "activity", operation: "R" },
-  crearComunicado: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
-  editarComunicado: { label: "Editar Comunicado", icon: "edit", operation: "U" },
-  eliminarComunicado: { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
-  verComunicados: { label: "Ver Comunicados", icon: "send", operation: "R" },
-  reaccionarComunicado: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
-  verHistorialAsistencia: { label: "Ver Historial", icon: "activity", operation: "R" },
-  registrarAsistencia: { label: "Registrar Asistencia", icon: "check", operation: "C" }
+  createStatement: { label: "Publicar Comunicado", icon: "plus", operation: "C" },
+  editStatement: { label: "Editar Comunicado", icon: "edit", operation: "U" },
+  deleteStatement: { label: "Eliminar Comunicado", icon: "trash", operation: "D" },
+  viewStatements: { label: "Ver Comunicados", icon: "send", operation: "R" },
+  reactStatements: { label: "Reaccionar", icon: "thumbs-up", operation: "U" },
+  viewStatementsHistory: { label: "Ver Historial", icon: "activity", operation: "R" },
+  registerAttendance: { label: "Registrar Asistencia", icon: "check", operation: "C" }
 };
 
-export const roleActionsByModule = {
-  dashboard: {
+export const roleActionsByModule = { // Acciones por modulo:
+  dashboard: {  // Dashboard
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
     [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
   },
-  directory: {
+  directory: {  // Directorio
     [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "deactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
     [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
   },
-  requests: {
-    [ROLE_KEYS.SUPER_USER]: ["viewRequests"],
+  requests: {   // Solicitudes
+    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.USUARIO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"],
-    [ROLE_KEYS.DIRECTOR]: ["viewRequests"]
+    [ROLE_KEYS.DIRECTOR]: ["viewRequests", "downloadRequestDocument"]
   },
-  vacancies: {
-    [ROLE_KEYS.SUPER_USER]: ["viewVacancies"],
+  vacancies: {  // Vacantes
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.USUARIO]: ["viewVacancies"],
-    [ROLE_KEYS.DIRECTOR]: ["viewVacancies"]
     [ROLE_KEYS.SUPER_USER]: ["publishVacancy", "closeVacancy", "viewVacancies"],
-    [ROLE_KEYS.RECURSOS_HUMANOS]: ["publishVacancy", "closeVacancy", "viewVacancies"],
     [ROLE_KEYS.USUARIO]: ["viewVacancies"]
   },
-  normativity: {
+  normativity: {  // Normatividad
     [ROLE_KEYS.SUPER_USER]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "deactivateNormativity", "viewNormativity"],
     [ROLE_KEYS.USUARIO]: ["viewNormativity"]
   },
-  comunicados: {
+  statements: { //Comunicados
     [ROLE_KEYS.SUPER_USER]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["crearComunicado", "editarComunicado", "eliminarComunicado", "verComunicados", "reaccionarComunicado"],
     [ROLE_KEYS.USUARIO]: ["verComunicados", "reaccionarComunicado"]
@@ -164,7 +162,6 @@ const resolveRoleValue = (roleOrUser) => {
   return String(roleOrUser).trim().toLowerCase();
 };
 
-export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 export const normalizeRole = (roleOrUser) => roleAliases[resolveRoleValue(roleOrUser)] || ROLE_KEYS.USUARIO;
 
 export const hasAnyRole = (roleOrUser, allowedRoles = []) =>

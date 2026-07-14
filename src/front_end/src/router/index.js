@@ -15,6 +15,7 @@ import AttendancePage from "@/pages/AttendancePage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 import { useAuthStore } from "@/store/auth";
 import { canAccessModule } from "@/utils/permissions";
+
 const routes = [
   {
     path: "/login",
@@ -36,7 +37,6 @@ const routes = [
       { path: "auditoria", name: "audit", component: AuditPage, meta: { module: "audit" } },
       { path: "comunicados", name: "comunicados", component: ComunicadosPage, meta: { module: "comunicados" } },
       { path: "asistencia", name: "attendance", component: AttendancePage, meta: { module: "attendance" } },
-
     ]
   },
   {
@@ -58,26 +58,28 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   const authStore = useAuthStore();
 
+  // Asegurar inicialización de estado de sesión
   if (!authStore.initialized) {
     await authStore.initialize();
   }
 
-  // 1. Si no es pública y no está autenticado, al login
+  // 1. Si va a login pero ya está logueado, mándalo directo al home
+  if (to.name === "login" && authStore.isAuthenticated) {
+    return { name: "dashboard" };
+  }
+
+  // 2. Si la ruta no es pública y no está autenticado, al login sin escalas
   if (!to.meta.public && !authStore.isAuthenticated) {
     return { name: "login" };
   }
 
+  // 3. El dashboard es la zona segura compartida, exenta de verificación de módulo restrictivo
   if (to.name === "dashboard") {
     return true;
   }
 
-  // 3. Si no tiene acceso al módulo, mándalo al dashboard seguro (que ya sabemos que no ciclará)
+  // 4. Verificación de permisos por Rol
   if (to.meta.module && !canAccessModule(authStore.user?.rol, to.meta.module)) {
-    return { name: "dashboard" };
-  }
-
-  // 4. Si va a login pero ya está logueado, mándalo al dashboard
-  if (to.name === "login" && authStore.isAuthenticated) {
     return { name: "dashboard" };
   }
 
@@ -85,4 +87,3 @@ router.beforeEach(async (to) => {
 });
 
 export default router;
-

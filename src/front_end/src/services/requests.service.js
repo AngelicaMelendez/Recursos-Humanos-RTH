@@ -1,7 +1,7 @@
 
 import api from "/src/services/api.js";
 
-const normalizeId = (id) => String(id).replace("SOL-", "");
+const normalizeId = (id) => String(id).replace("FOL-", "");
 
 export default {
   async list(params = {}) {

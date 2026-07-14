@@ -78,7 +78,7 @@ const enviarComision = async () => {
     try {
         const response = await axios.post('http://localhost:8000/api/solicitudes', comision, {
             headers: {
-                'Authorization': `Bearer ${authStore.token}` 
+                'authorization': `Bearer ${authStore.token}` 
             }
         });
         emit('success', response.data);

@@ -187,7 +187,7 @@ const selectAction = async (action, row = null) => {
       await axios.put(`http://localhost:8000/api/normatividad/${row.id}`, {
         version: nuevaVersion
       }, {
-        headers: { 'Authorization': `Bearer ${authStore.token}` }
+        headers: { 'authorization': `Bearer ${authStore.token}` }
       });
 
       notice.value = `¡${row.nombre} actualizado con éxito a la versión ${nuevaVersion}!`;
@@ -205,7 +205,7 @@ if (action.key === "desactivateNormativity" && row) {
   if (confirm(`¿Estás completamente seguro de ELIMINAR PERMANENTEMENTE el documento "${row.nombre}"? Esta acción no se puede deshacer.`)) {
     try {
       await axios.delete(`http://localhost:8000/api/normatividad/${row.id}`, {
-        headers: { 'Authorization': `Bearer ${authStore.token}` }
+        headers: { 'authorization': `Bearer ${authStore.token}` }
       });
 
       notice.value = `El documento "${row.nombre}" ha sido eliminado del sistema de manera permanente.`;

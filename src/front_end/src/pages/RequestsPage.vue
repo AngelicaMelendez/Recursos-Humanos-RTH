@@ -1,26 +1,27 @@
 <template>
   <div>
+    <!-- Encabezado dinámico de la sección -->
     <PageHeader
       eyebrow="Flujo de autorizaciones"
       title="Solicitudes e Incidencias"
-      description="Todos pueden generar Solicitudes. La Consulta, Aprobacion y Rechazo queda Restringida a Administración."
-    >
+      description="Las solicitudes se muestran según el rol asignado. Administración puede aprobar o rechazar."
+    />
 
-    </PageHeader>
-
+    <!-- Alertas globales (Toasts) del sistema -->
     <div v-if="toast.visible" class="toast" :class="`toast--${toast.tone}`">
       <strong>{{ toast.title }}</strong>
       <span>{{ toast.message }}</span>
     </div>
 
-    <section v-if="canManageRequests" class="request-summary">
+    <!-- Panel de contadores rápidos (Sólo visible para personal autorizado) -->
+    <section v-if="canViewRequests" class="request-summary">
       <div v-for="item in summary" :key="item.label" class="request-summary__item">
         <span>{{ item.label }}</span>
         <strong>{{ item.value }}</strong>
       </div>
     </section>
 
-    <!-- MODAL DE ACEPTACIÓN DE NORMATIVIDADES -->
+    <!-- Modal para términos, condiciones y normatividad vigente -->
     <ModalNormatividad
       :isOpen="isNormativityModalOpen"
       :documentos="normatividades"
@@ -28,24 +29,45 @@
       @accepted="procederAlFormularioCreacion"
     />
 
-    <BaseCard v-if="canManageRequests">
+    <!-- Bloque principal con filtros y tabla de datos -->
+    <BaseCard v-if="canViewRequests">
       <form class="request-filters" @submit.prevent="applySearch">
         <label>
           Filtro
           <select v-model="filters.type">
+            <option value="folio">Folio</option>
             <option value="empleado">No. empleado</option>
             <option value="rfc">RFC</option>
           </select>
         </label>
-        <label>
-          Busqueda
+        
+        <label style="position: relative;">
+          Búsqueda
+          <!-- INPUT INTERACTIVO: Escucha eventos de navegación por teclado y auto-detección inteligente -->
           <input
-          
+            ref="searchInputRef"
             v-model.trim="filters.term"
             type="search"
-            placeholder="filterPlaceholder"
+            :placeholder="searchPlaceholder"
+            @input="onSearchInput"
+            @keydown="onSearchKeyDown"
+            @focus="showSuggestions = true"
+            @blur="closeSuggestionsWithDelay"
           />
+          
+          <!-- DROPDOWN DE SUGERENCIAS INTEGRADAS (Control por CSS y Teclado) -->
+          <ul v-if="showSuggestions && filteredSuggestions.length > 0" class="search-suggestions-dropdown">
+            <li 
+              v-for="(suggestion, index) in filteredSuggestions" 
+              :key="suggestion.id"
+              :class="{ 'suggestion-active': index === activeSuggestionIndex }"
+              @mousedown="selectSuggestion(suggestion)"
+            >
+              {{ suggestion.text }}
+            </li>
+          </ul>
         </label>
+        
         <div class="request-filters__actions">
           <button class="primary-button" type="submit">
             <IconSymbol name="search" />
@@ -62,7 +84,7 @@
         </div>
       </form>
 
-
+      <!-- Botones de acciones principales basados en permisos -->
       <div class="request-actions-below-filter">
         <button
           v-for="action in headerActions"
@@ -76,7 +98,7 @@
         </button>
       </div>
 
-
+      <!-- Tabla general de Solicitudes -->
       <AppTable :columns="columns" :rows="rows">
         <template #estatus="{ row }">
           <StatusBadge :value="row.estatus" />
@@ -99,13 +121,14 @@
       </AppTable>
     </BaseCard>
 
+    <!-- Vista alternativa para usuarios sin permisos de administrador (Rol Empleado) -->
     <BaseCard 
       v-else
-      title="Generar Solicitud"     
-      subtitle="Tu Solicitud quedara pendiente para Revision Administrativa."    
+      title="Generar Solicitud"    
+      subtitle="Tu Solicitud quedará pendiente para Revisión Administrativa."    
     >
       <p class="request-access-note">
-        La consulta, aprobacion y rechazo de solicitudes esta disponible solo para administradores.
+        La consulta, aprobación y rechazo de solicitudes está disponible solo para administradores.
       </p>
       <button class="primary-button" type="button" @click="evaluarNormatividad">
         <IconSymbol name="plus" />
@@ -113,6 +136,7 @@
       </button>
     </BaseCard>
 
+    <!-- MODAL DINÁMICO: Altas, Aprobaciones, Rechazos y Eliminaciones -->
     <div v-if="modal.visible" class="modal-backdrop" @click="closeModal">
       <section class="request-modal" @click.stop>
         <header class="request-modal__header">
@@ -125,7 +149,7 @@
           </button>
         </header>
 
-        <!-- FORMULARIO ESTÁNDAR (Para Vacaciones, Permisos, Incapacidades, etc.) -->
+        <!-- FORMULARIO ESTÁNDAR: Incidencias comunes -->
         <form v-if="modal.mode === 'create' && form.tipo !== 'comision'" class="request-form" @submit.prevent="submitRequest">
           <label>
             Tipo
@@ -135,40 +159,42 @@
               <option value="incapacidad">Incapacidad</option>
               <option value="maternidad">Maternidad</option>
               <option value="paternidad">Paternidad</option>
-              <option value="comision">Comision</option>
+              <option value="comision">Comisión</option>
               <option value="otro">Otro</option>
             </select>
           </label>
-         
+          
           <div class="form-grid">
             <label>
               Inicio
               <input 
-              v-model="form.fecha_inicio" 
-              type="date" 
-              :min="today" 
-              required />
+                v-model="form.fecha_inicio" 
+                type="date" 
+                :min="today" 
+                required 
+              />
             </label>
 
             <label>
               Fin
               <input 
-              v-model="form.fecha_fin" 
-              type="date" 
-              :min="form.fecha_inicio || today" 
-              :class="{ 'input-error': fechasInvalidas}"
-              required />
+                v-model="form.fecha_fin" 
+                type="date" 
+                :min="form.fecha_inicio || today" 
+                :class="{ 'input-error': fechasInvalidas}"
+                required 
+              />
             </label>
           </div>
           <span v-if="fechasInvalidas" class="error-text-hint">
             La Fecha de Fin no puede ser Anterior a la de Inicio.
           </span>
 
-          <!-- INPUT DE PDF DINÁMICO PARA INCAPACIDAD, MATERNIDAD O PATERNIDAD -->
+          <!-- INPUT COMPLEMENTARIO DE PDF DINÁMICO (Médicos, Oficiales, etc.) -->
           <label class="upload-button" v-if="['incapacidad', 'maternidad', 'paternidad'].includes(form.tipo)">
             Documento Justificante (PDF)
             <div style="margin-top: 5px;">
-              <button class="primary-button" type="button" @click="$refs.fileInput.click()">
+              <button class="primary-button" type="button" @click="fileInput.click()">
                 <IconSymbol name="upload" />
                 {{ form.archivoBinario ? form.archivoBinario.name : 'Cargar PDF' }}
               </button>
@@ -181,7 +207,7 @@
               />
             </div>
           </label>
-         
+          
           <label>
             Motivo
             <textarea v-model="form.motivo" rows="4" required placeholder="Describe brevemente el motivo de la Solicitud o Incidencia" />
@@ -201,7 +227,7 @@
           </footer>
         </form>
 
-        <!-- REDIRECCIÓN EXTERNA AL COMPONENTE PROPIO DE COMISIÓN -->
+        <!-- SUB-FORMULARIO EXTERNO: Redirección condicional para Comisiones Oficiales -->
         <div v-else-if="modal.mode === 'create' && form.tipo === 'comision'">
           <label style="display: grid; gap: 7px; margin-bottom: 14px; font-weight: 700; color: var(--color-text-soft);">
             Tipo
@@ -211,7 +237,7 @@
               <option value="incapacidad">Incapacidad</option>
               <option value="maternidad">Maternidad</option>
               <option value="paternidad">Paternidad</option>
-              <option value="comision">Comision</option>
+              <option value="comision">Comisión</option>
               <option value="otro">Otro</option>
             </select>
           </label>
@@ -219,7 +245,7 @@
           <FormularioComision @success="handleComisionSuccess" @cancel="closeModal" />
         </div>
 
-        <!-- PANEL DE CONFIRMACIONES DE ACCIÓN (APROBAR/RECHAZAR/ELIMINAR) -->
+        <!-- PANEL DE CONFIRMACIONES DE RESOLUCIÓN (Flujos de Aprobación / Rechazo / Borrado) -->
         <div v-else class="confirm-panel">
           <p>
             {{ modal.message }}
@@ -254,14 +280,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { watch } from "vue";
-import axios from "axios"; // Axios importado para traer las normatividades
+import { computed, onMounted, reactive, ref, watch, nextTick } from "vue";
+import axios from "@/services/api.js"; 
 import BaseCard from "@/components/ui/BaseCard.vue";
 import AppTable from "@/components/ui/AppTable.vue";
 import IconSymbol from "@/components/ui/IconSymbol.vue";
 import PageHeader from "@/components/shared/PageHeader.vue";
-import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
 import requestsService from "@/services/requests.service";
 import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
@@ -269,18 +293,26 @@ import { useAuthStore } from "@/store/auth";
 import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";
 import FormularioComision from "@/components/shared/FormularioComision.vue";
 
-
-
+// ============================================================================
+// ESTADOS REACTIVOS (ESTRUCTURAS DE DATOS)
+// ============================================================================
 const authStore = useAuthStore();
-const rows = ref([]);
+const rows = ref([]);                         // Almacena las solicitudes crudas obtenidas del Backend/API.
+const saving = ref(false);                    // Bloqueador global de botones mientras se procesan llamadas POST/PUT/DELETE.
+const fileInput = ref(null);                  // Referencia DOM al input tipo file invisible para adjuntar PDFs.
+const isNormativityModalOpen = ref(false);    // Controla si se despliega el modal de términos normativos vigentes.
+const normatividades = ref([]);               // Colección local con la lista de documentos regulatorios legales.
 
-const saving = ref(false);
+// --- GESTIÓN INTERACTIVA DEL AUTOCOMPLETADO (UX) ---
+const showSuggestions = ref(false);           // Interruptor visual del menú desplegable de sugerencias rápidas.
+const searchInputRef = ref(null);             // Referencia DOM para devolver el enfoque (foco) al input de búsqueda.
+const activeSuggestionIndex = ref(-1);        // Puntero entero que rastrea cuál sugerencia está seleccionada con las flechas del teclado.
+let debounceTimeout = null;                   // ID del temporizador para el retraso del input (evita peticiones excesivas a BD).
 
-// VARIABLES REACTIVAS PARA LAS NORMATIVIDADES
-const isNormativityModalOpen = ref(false);
-const normatividades = ref([]);
-
+// Notificaciones flotantes integradas (Toasts)
 const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
+
+// Estado dinámico del modal multiusos (Alta, Edición, Borrado, Aprobación)
 const modal = reactive({
   visible: false,
   mode: "",
@@ -291,20 +323,49 @@ const modal = reactive({
   row: null
 });
 
+// Campos del formulario reactivo para la creación de incidencias
 const form = reactive({
   tipo: "vacaciones",
   oficio: "",
   fecha_inicio: "",
   fecha_fin: "",
-  motivo: "",
+  motive: "",
   archivoBinario: null
 });
 
+// Valores base del filtro de búsqueda
 const filters = reactive({
-  type: "empleado",
+  type: "empleado", 
   term: ""
 });
 
+// ============================================================================
+// WATCHERS (OBSERVADORES DE ESTADO)
+// ============================================================================
+
+/**
+ * OBSERVADOR DE CAMBIO DE FILTRO:
+ * Si el usuario cambia el tipo de filtro (ej: de Empleado a RFC), limpia el 
+ * término actual para prevenir búsquedas incongruentes, oculta sugerencias,
+ * refresca la lista y re-enfoca el cursor del teclado automáticamente.
+ */
+watch(() => filters.type, async () => {
+  filters.term = "";
+  showSuggestions.value = false;
+  activeSuggestionIndex.value = -1;
+  loadRequests(); 
+
+  await nextTick(); // Espera a que Vue redibuje la UI antes de buscar el elemento DOM
+  if (searchInputRef.value) searchInputRef.value.focus();
+});
+
+// ============================================================================
+// PROPIEDADES COMPUTADAS (COMPUTED PROPERTIES)
+// ============================================================================
+
+/**
+ * FORMATEADOR DE FECHAS: Convierte objetos Date a formato estándar YYYY-MM-DD para los inputs nativos.
+ */
 const formatDateInputValue = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -312,66 +373,145 @@ const formatDateInputValue = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-const today = formatDateInputValue(new Date());
+const today = formatDateInputValue(new Date()); // Fecha actual del día de hoy
 
+// Definición estricta de las columnas requeridas por el componente <AppTable>
 const columns = [
   { key: "id", label: "Folio" },
-  { key: "empleado_numero", label: "No. empleado" },
+  { key: "No_de_empleado", label: "No. empleado" },
   { key: "empleado_nombre", label: "Nombre" },
   { key: "empleado_rfc", label: "RFC" },
   { key: "tipo", label: "Tipo" },
   { key: "fecha_inicio", label: "Inicio" },
   { key: "fecha_fin", label: "Fin" },
   { key: "estatus", label: "Estatus" },
-  { key: "aprobado_por", label: "Revision" },
+  { key: "aprobado_por", label: "Revisión" },
   { key: "acciones", label: "Acciones" }
 ];
 
+/**
+ * TEXTO DE AYUDA (PLACEHOLDER):
+ * Modifica dinámicamente el placeholder del buscador según el tipo de filtro activo.
+ */
+const searchPlaceholder = computed(() => {
+  if (filters.type === "rfc") return "Ej. GAAL850101AB1";
+  if (filters.type === "folio") return "Ej. FOL-001";
+  return "Ej. 042 o Juan Pérez";
+});
 
+/**
+ * LÓGICA FILTRADO DE AUTOCOMPLETADO (SUGERENCIAS):
+ * Filtra en caliente (memoria) el arreglo completo de filas buscando coincidencias.
+ * Retorna objetos estandarizados con `{ id, text, value }` listos para ser renderizados.
+ */
+const filteredSuggestions = computed(() => {
+  const term = filters.term.toLowerCase().trim();
+  
+  // Si no hay texto, extrae las primeras 5 filas generales como sugerencia rápida
+  if (!term) { 
+    return rows.value.slice(0, 5).map(row => ({ 
+      id: row.id,
+      text: filters.type === 'rfc' ? row.empleado_rfc : filters.type === 'folio' ? row.id : row.empleado_nombre,
+      value: filters.type === 'rfc' ? row.empleado_rfc : filters.type === 'folio' ? row.id : row.No_de_empleado
+    }));
+  }
 
+  // Filtra la colección con base en la opción del selector principal
+  return rows.value
+    .filter((row) => {
+      if (filters.type === "rfc") return String(row.empleado_rfc).toLowerCase().includes(term);
+      if (filters.type === "folio") return String(row.id).toLowerCase().includes(term);
+      
+      const nombreCoincide = String(row.empleado_nombre).toLowerCase().includes(term);
+      const numeroCoincide = String(row.No_de_empleado).toLowerCase().includes(term);
+      return nombreCoincide || numeroCoincide;
+    })
+    .slice(0, 8) // Capa de rendimiento: máximo 8 opciones simultáneas en pantalla
+    .map((row) => {
+      let text = row.empleado_nombre;
+      let value = row.No_de_empleado;
+
+      if (filters.type === "rfc") {
+        text = row.empleado_rfc;
+        value = row.empleado_rfc;
+      } else if (filters.type === "folio") {
+        text = row.id;
+        value = row.id;
+      } else if (filters.type === "empleado") {
+        const numeroString = String(row.No_de_empleado).toLowerCase();
+        if (numeroString.includes(term)) {
+          text = `${row.No_de_empleado} - ${row.empleado_nombre}`;
+        }
+      }
+
+      return { id: row.id, text, value };
+    });
+});
+
+// --- SEGURIDAD Y PERMISOS COMPUTADOS ---
 const roleActions = computed(() => getRoleActions(authStore.user, "requests"));
-const headerActions = computed(() =>
-  roleActions.value.filter((action) => ["createRequest", "viewRequests"].includes(action.key))
-);
-const currentEmployeeId = computed(() =>
-  authStore.user?.empleado_id ? `EMP-${String(authStore.user.empleado_id).padStart(3, "0")}` : null
-);
-const canApproveRequests = computed(() =>
-  hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS)
-);
-const canManageRequests = computed(() => canApproveRequests.value);
-const filterPlaceholder = computed(() =>
-  filters.type === "rfc" ? "Ej. GAAL850101AB1" : "Ej. EMP-001"
-);
+const headerActions = computed(() => roleActions.value.filter((action) => ["createRequest", "viewRequests"].includes(action.key)));
+const canViewRequests = computed(() => roleActions.value.some((action) => action.key === "viewRequests"));
+const currentEmployeeId = computed(() => authStore.user?.empleado_id ? `EMP-${String(authStore.user.No_de_empleado).padStart(3, "0")}` : null);
+const canApproveRequests = computed(() => hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS));
 
-const manejarArchivo = (event) => {
-  const archivo = event.target.files[0];
-  if (archivo) {
-  if (archvio.type !== "application/pdf")  {
-    showToast("Archivo Invalido: ", "Por Favor suba únicamente un archivo PDF.", "warning");
-    return;
-  }
-  form.archivoBinario.archivo
-  }
-};
-
-const isDragging = ref (false);
-
-
-
-const handleComisionSuccess = (nuevaComision) => {
-  rows.value.unshift(normalizeRow(nuevaComision));
-  showToast("Comisión Creada", "El formato de Comisión fue registrado exitosamente.");
-
-}
-
-
+/**
+ * CONTADORES RÁPIDOS: Agrupa la suma total por estatus para renderizar tarjetas en el dashboard.
+ */
 const summary = computed(() => [
   { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
   { label: "Aprobadas", value: rows.value.filter((row) => row.estatus === "aprobada" || row.estatus === "aprobado").length },
   { label: "Rechazadas", value: rows.value.filter((row) => row.estatus === "rechazada" || row.estatus === "rechazado").length }
 ]);
 
+/**
+ * VALIDACIÓN DE REGLAS DE NEGOCIO EN TIEMPO REAL:
+ * Retorna true si la fecha de finalización es menor a la de inicio (Bloquea botones de envío).
+ */
+const fechasInvalidas = computed(() => {
+  if (!form.fecha_inicio || !form.fecha_fin) return false;
+  return form.fecha_fin < form.fecha_inicio;
+});
+
+// ============================================================================
+// MÉTODOS Y MANEJADORES DE OPERACIONES (METHDOOLOGÍA Y FUNCIONES)
+// ============================================================================
+
+/**
+ * EJECUTOR DE BÚSQUEDA MANUAL: Disparado al presionar Enter o dar clic al botón de buscar.
+ */
+const applySearch = () => {
+  loadRequests();
+};
+
+/**
+ * VALIDADOR Y CARGADOR DE ADJUNTOS BINARIOS:
+ * Captura el evento nativo onChange del file input y restringe que sea estrictamente PDF.
+ */
+const manejarArchivo = (event) => {
+  const archivo = event.target.files[0];
+  if (archivo) {
+    if (archivo.type !== "application/pdf") {
+      showToast("Archivo Inválido", "Por favor suba únicamente un archivo PDF.", "warning");
+      if (fileInput.value) fileInput.value.value = "";
+      return;
+    }
+    form.archivoBinario = archivo;
+  }
+};
+
+/**
+ * ESCUCHA DE FORMULARIO DE COMISIÓN EXTERNO:
+ * Se activa mediante el callback emitido por el subcomponente <FormularioComision>.
+ */
+const handleComisionSuccess = (nuevaComision) => {
+  rows.value.unshift(normalizeRow(nuevaComision));
+  showToast("Comisión Creada", "El formato de Comisión fue registrado exitosamente.");
+};
+
+/**
+ * DISPARADOR DE NOTIFICACIONES TOAST: Muestra un banner temporal auto-ocultable en UI.
+ */
 const showToast = (title, message, tone = "success") => {
   toast.visible = true;
   toast.title = title;
@@ -382,45 +522,54 @@ const showToast = (title, message, tone = "success") => {
   }, 3200);
 };
 
+/**
+ * DESTRUPTOR / PARSER DE ERRORES HTTP:
+ * Extrae el mensaje de error real devuelto por la API de Laravel/Node, evitando el clásico "[object Object]".
+ */
 const getRequestErrorMessage = (error) =>
   error.response?.data?.details ||
   error.response?.data?.error ||
   error.message ||
   "Verifica la conexión con el servidor/BD.";
 
+/**
+ * NORMALIZADOR DE SOLICITUDES:
+ * Homologa la estructura que viene de BD (campos null, folios sin prefijo, variaciones de strings) 
+ * para garantizar consistencia total dentro de los slots de la tabla.
+ */
 const normalizeRow = (row) => ({
   ...row,
-  id: row.id?.startsWith?.("SOL-") ? row.id : `SOL-${row.id}`,
-  empleado_numero: row.empleado_numero || row.empleado_id || "Sin empleado",
-  empleado_nombre: row.empleado_nombre || "Sin nombre",
+  id: row.id?.startsWith?.("FOL-") ? row.id : `FOL-${row.id}`,
+  No_de_empleado: row.No_de_empleado || row.empleado_id || "Sin empleado",
+  empleado_nombre: row.empleado_nombre || row.nombre || "Sin nombre",
   empleado_rfc: row.empleado_rfc || "Sin RFC",
   tipo: row.tipo ? row.tipo.charAt(0).toUpperCase() + row.tipo.slice(1) : "Otro",
   estatus: row.estatus === "aprobado" ? "aprobada" : row.estatus === "rechazado" ? "rechazada" : row.estatus,
   aprobado_por: row.aprobado_por || "Pendiente"
 });
 
+/**
+ * CONSUMIDOR DE API (LISTADO): Envía términos de búsqueda al endpoint central de solicitudes.
+ */
 const loadRequests = async () => {
-  if (!canManageRequests.value) {
+  if (!canViewRequests.value) {
     rows.value = [];
     return;
   }
 
   try {
-    const params = filters.term
-      ? { buscar: filters.term, filtro: filters.type }
-      : {};
+    const params = filters.term ? { buscar: filters.term, filtro: filters.type } : {};
     const data = await requestsService.list(params);
     rows.value = data.map(normalizeRow);
-    showToast("Solicitudes actualizadas", "Se cargo la informacion mas reciente.");
-  } catch (error) {
+  } catch (error) { 
     rows.value = [];
-    showToast("No se pudo cargar el modulo", getRequestErrorMessage(error), "warning");
+    showToast("No se pudo cargar el módulo", getRequestErrorMessage(error), "warning");
   }
 };
 
-
-
-// CARGAR DOCUMENTOS DESDE TU API
+/**
+ * CONSUMIDOR DE API (NORMATIVA VIGENTE): Obtiene los reglamentos para su posterior lectura obligatoria.
+ */
 const fetchNormatividadesVigentes = async () => {
   try {
     const response = await axios.get("http://localhost:8000/api/normatividad");
@@ -430,33 +579,120 @@ const fetchNormatividadesVigentes = async () => {
   }
 };
 
-// INTERCEPTOR PARA EVALUAR TÉRMINOS ANTES DE CREAR
+/**
+ * EVALUADOR LEGAL PREVIO A LA ACCIÓN:
+ * Si existen lineamientos legales cargados, obliga al usuario a visualizarlos. Si no, salta al formulario.
+ */
 const evaluarNormatividad = () => {
   if (normatividades.value.length > 0) {
-    // Si hay leyes o normatividades vigentes, abrimos la ventana de aceptación
     isNormativityModalOpen.value = true;
   } else {
-    // Si no hay normatividades registradas en el sistema, abre el formulario directo
     openCreateModal();
   }
 };
 
-// PROCEDER CUANDO EL USUARIO DA CLICK EN CONTINUAR
 const procederAlFormularioCreacion = () => {
   isNormativityModalOpen.value = false;
-  openCreateModal(); // Abre tu modal de captura original
+  openCreateModal();
 };
 
-const applySearch = () => {
+/**
+ * AUTO-CAMBIO DE FILTROS (DETECCIÓN PREDICTIVA INTELIGENTE):
+ * Analiza en tiempo real los caracteres introducidos por el usuario:
+ * - Si escribe "FOL-" o inicia con "F", cambia el combo automáticamente a búsqueda por Folio.
+ * - Si coincide con un formato inicial de RFC (4 letras consecutivas y un número), cambia el combo a RFC.
+ */
+const onSearchInput = () => {
+  showSuggestions.value = true;
+  activeSuggestionIndex.value = -1; 
+  const cleanTerm = filters.term.toLowerCase().trim();
+
+  if (filters.type === "empleado" && (cleanTerm.startsWith("f") || cleanTerm.startsWith("fol"))) {
+    filters.type = "folio";
+    return; 
+  }
+  
+  const rfcPattern = /^[a-z]{4}\d/;
+  if (filters.type === "empleado" && rfcPattern.test(cleanTerm)) {
+    filters.type = "rfc";
+    return;
+  }
+
+  // Lógica Debounce: Cancela la petición previa y espera 300ms de calma en el teclado para no saturar el servidor
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    loadRequests();
+  }, 300);
+};
+
+/**
+ * ACCESIBILIDAD POR TECLADO (ACCIONES KEYDOWN):
+ * Permite moverse con la flecha de arriba/abajo por la lista flotante, 
+ * seleccionar con 'Enter' y cerrar con 'Esc' sin necesidad de quitar las manos del teclado.
+ */
+const onSearchKeyDown = (event) => {
+  if (!showSuggestions.value || filteredSuggestions.value.length === 0) return;
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault(); // Detiene el scroll natural de la página web
+    activeSuggestionIndex.value = (activeSuggestionIndex.value + 1) % filteredSuggestions.value.length;
+  } else if (event.key === "ArrowUp") {
+    event.preventDefault();
+    activeSuggestionIndex.value = (activeSuggestionIndex.value - 1 + filteredSuggestions.value.length) % filteredSuggestions.value.length;
+  } else if (event.key === "Enter") {
+    event.preventDefault();
+    if (activeSuggestionIndex.value >= 0 && activeSuggestionIndex.value < filteredSuggestions.value.length) {
+      selectSuggestion(filteredSuggestions.value[activeSuggestionIndex.value]);
+    }
+  } else if (event.key === "Escape") {
+    showSuggestions.value = false;
+    activeSuggestionIndex.value = -1;
+  }
+};
+
+/**
+ * ASIGNADOR DE SUGERENCIA SELECCIONADA:
+ * Toma la sugerencia elegida (clic o teclado), la inyecta al input y refresca el listado principal.
+ */
+const selectSuggestion = (suggestion) => {
+  if (filters.type === "empleado" && suggestion.text.includes(" - ")) {
+    filters.term = suggestion.text.split(" - ")[0]; // Limpia la cadena y extrae solo el número de empleado
+  } else {
+    filters.term = suggestion.text;
+  }
+  showSuggestions.value = false;
+  activeSuggestionIndex.value = -1;
   loadRequests();
 };
 
+/**
+ * BOTÓN DE LIMPIEZA TOTAL: Resetea el buscador y restaura el estado inicial.
+ */
 const clearSearch = () => {
   filters.term = "";
   filters.type = "empleado";
+  showSuggestions.value = false;
+  activeSuggestionIndex.value = -1;
   loadRequests();
 };
 
+/**
+ * CIERRE CON RETRASO CONTROLADO:
+ * Evita que el dropdown desaparezca instantáneamente al perder el foco (onBlur), 
+ * dando margen de tiempo para procesar los clics de selección rápidos.
+ */
+const closeSuggestionsWithDelay = () => {
+  setTimeout(() => {
+    showSuggestions.value = false;
+    activeSuggestionIndex.value = -1;
+  }, 250);
+};
+
+/**
+ * MOTOR DINÁMICO DE ACCIONES POR FILA:
+ * Evalúa los permisos del usuario logueado en combinación con las reglas de negocio
+ * (Ej: solo se borran solicitudes si están 'pendientes' y pertenecen al creador original).
+ */
 const actionsForRow = (row) => {
   const pending = row.estatus === "pendiente";
   const isOwner = row.empleado_id === currentEmployeeId.value;
@@ -466,43 +702,44 @@ const actionsForRow = (row) => {
     if (action.key === "deleteRequest") return pending && isOwner;
     if (["approveRequest", "rejectRequest"].includes(action.key)) return pending && canApproveRequests.value;
     if (action.key === "manageIncident") return canApproveRequests.value;
-    if (action.key === "downloadRequestDocument") {
-      return canApproveRequests.value;
-    }
+    if (action.key === "downloadRequestDocument") return canApproveRequests.value || isOwner;
   });
 };
 
+/**
+ * ENRUTADOR DE ACCIONES PRINCIPALES:
+ * Intercepta los clics de botones de acción y los redirige al modal o función correspondiente.
+ */
 const selectAction = (action, row = null) => {
   if (action.key === "createRequest") {
-    evaluarNormatividad(); //  Modificado para interceptar también en el botón de cabecera de admin
+    evaluarNormatividad();
     return;
   }
-
   if (action.key === "approveRequest") {
     openResolutionModal("approve", row);
     return;
   }
-
   if (action.key === "rejectRequest") {
     openResolutionModal("reject", row);
     return;
   }
-
   if (action.key === "deleteRequest") {
     openResolutionModal("delete", row);
     return;
   }
-
   if (action.key === "downloadRequestDocument") {
     showToast("Descargar", `Descargando documento de ${row.id}.`);
     return;
   }
-
   showToast(action.label, row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.");
 };
 
+/**
+ * CONSTRUCTOR DEL MODAL DE ALTA: Inicializa los estados del formulario a sus valores por defecto.
+ */
 const openCreateModal = () => {
-  Object.assign(form, { tipo: "vacaciones", fecha_inicio: "", fecha_fin: "", motivo: "" });
+  Object.assign(form, { tipo: "vacaciones", oficio: "", fecha_inicio: "", fecha_fin: "", motivo: "", archivoBinario: null });
+  if (fileInput.value) fileInput.value.value = "";
   Object.assign(modal, {
     visible: true,
     mode: "create",
@@ -512,26 +749,15 @@ const openCreateModal = () => {
   });
 };
 
+/**
+ * CONSTRUCTOR DEL MODAL DE RESOLUCIÓN (APROBACIONES/RECHAZOS/ELIMINACIÓN):
+ * Centraliza las etiquetas de texto según la acción crítica seleccionada.
+ */
 const openResolutionModal = (mode, row) => {
   const config = {
-    approve: {
-      eyebrow: "Autorizacion",
-      title: "Aprobar solicitud",
-      message: "Vas a aprobar la solicitud",
-      confirmLabel: "Aprobar"
-    },
-    reject: {
-      eyebrow: "Resolucion",
-      title: "Rechazar solicitud",
-      message: "Vas a rechazar la solicitud",
-      confirmLabel: "Rechazar"
-    },
-    delete: {
-      eyebrow: "Eliminacion",
-      title: "Eliminar solicitud",
-      message: "Vas a eliminar la solicitud",
-      confirmLabel: "Eliminar"
-    }
+    approve: { eyebrow: "Autorización", title: "Aprobar solicitud", message: "Vas a aprobar la solicitud", confirmLabel: "Aprobar" },
+    reject: { eyebrow: "Resolución", title: "Rechazar solicitud", message: "Vas a rechazar la solicitud", confirmLabel: "Rechazar" },
+    delete: { eyebrow: "Eliminación", title: "Eliminar solicitud", message: "Vas a eliminar la solicitud", confirmLabel: "Eliminar" }
   };
 
   Object.assign(modal, {
@@ -546,46 +772,49 @@ const closeModal = () => {
   modal.visible = false;
 };
 
-
+/**
+ * PROCESADOR DE ENVÍO (HTTP POST):
+ * Construye una instancia multipart/form-data (FormData) necesaria para adjuntar
+ * archivos binarios (PDF) y campos planos hacia la API de backend.
+ */
 const submitRequest = async () => {
   if (form.fecha_inicio < today || form.fecha_fin < today) {
-    showToast("Fecha no permitida", "Selecciona el dia actual o una fecha posterior.", "warning");
+    showToast("Fecha no permitida", "Selecciona el día actual o una fecha posterior.", "warning");
     return;
   }
-
   if (form.fecha_fin < form.fecha_inicio) {
-    showToast("Periodo no valido", "La fecha final no puede ser anterior a la fecha de inicio.", "warning");
+    showToast("Periodo no válido", "La fecha final no puede ser anterior a la fecha de inicio.", "warning");
     return;
   }
 
   saving.value = true;
-
-
-
-  const formData = new FormData ();
+  const formData = new FormData();
   formData.append("tipo", form.tipo);
+  formData.append("oficio", form.oficio);
   formData.append("fecha_inicio", form.fecha_inicio);
-  formData.append("fecha_fin", formData.fecha_fin);
-  formData.append("motivo", formData.motivo);
-  if (formData.archivoBinario) {
+  formData.append("fecha_fin", form.fecha_fin);
+  formData.append("motivo", form.motivo);
+  if (form.archivoBinario) {
     formData.append("archivo_pdf", form.archivoBinario);
   }
 
   try {
-
-    const create = await requestsService.create(formData);
-    rows.value.unshift(normalizeRow(created))
+    const created = await requestsService.create(formData);
+    rows.value.unshift(normalizeRow(created)); // Inyecta la nueva solicitud al inicio de la tabla en caliente
     showToast("La Solicitud ha sido creada", "La Solicitud queda pendiente a revisión");
-  }catch (error) {
-    showToast("No se pudo crear la Solicitud", getRequestErrorMessage(error), "warning"); 
-  }{
+  } catch (error) {
+    showToast("No se pudo crear la Solicitud", getRequestErrorMessage(error), "warning");
+  } finally {
     saving.value = false;
     closeModal();
   }
 };
 
-  
-
+/**
+ * PROCESADOR DE RESOLUCIONES (HTTP PATCH/DELETE):
+ * Ejecuta la actualización de estatus a nivel de base de datos e impacta localmente
+ * el arreglo en memoria para evitar llamadas innecesarias de refresco completo.
+ */
 const confirmResolution = async () => {
   if (!modal.row) return;
   saving.value = true;
@@ -601,50 +830,65 @@ const confirmResolution = async () => {
       showToast("Solicitud actualizada", `${modal.row.id} fue rechazada.`);
     } else if (modal.mode === "delete") {
       await requestsService.remove(modal.row.id);
-      rows.value = rows.value.filter((row) => row.id !== modal.row.id);
+      rows.value = rows.value.filter((row) => row.id !== modal.row.id); // Remueve la fila eliminada
       showToast("Solicitud eliminada", `${modal.row.id} fue eliminada correctamente.`);
     }
   } catch (error) {
-    showToast(
-      "No se pudo completar la accion",
-      getRequestErrorMessage(error),
-      "warning"
-    );
+    showToast("No se pudo completar la acción", getRequestErrorMessage(error), "warning");
   } finally {
     saving.value = false;
     closeModal();
   }
 };
 
+/**
+ * ACTUALIZADOR INTERNO: Intercambia los datos viejos de una fila por su respuesta actualizada.
+ */
 const replaceRow = (updated) => {
-  rows.value = rows.value.map((row) => (row.id === updated.id ? { ...row, ...updated } : row));
+  rows.value = rows.value.map((row) => (row.id === updated.id ? updated : row));
 };
 
-
-watch (() => form.tipo, (nuevoTipo) => {
-  if (!['incapacidad', 'maternidad', 'paternidad'].includes(nuevoTipo)) {
-    form.archivoBinario = null;
-    if (fileInput.value) fileInput.value.value = ""; 
-  }
-} );
-
-
-const fileInput = ref(null);
-
-
-const fechasInvalidas = computed(() => {
-  if(!form.fecha_inicio || !fecha_fin) return false;
-  return form.fecha_fin < form.fecha_inicio;
-})
-
-// Ejecutamos ambas consultas al montar la vista
+// --- CICLO DE VIDA ---
 onMounted(() => {
-  loadRequests();
-  fetchNormatividadesVigentes(); 
+  loadRequests();               // Al arrancar, monta las solicitudes iniciales.
+  fetchNormatividadesVigentes(); // Trae las normatividades desde la base de datos de manera asíncrona.
 });
 </script>
 
 <style scoped>
+/* Contenedor flotante para el autocompletado */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-bg-card, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  list-style: none;
+  padding: 4px 0;
+  margin: 4px 0 0 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.search-suggestions-dropdown li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text, #334155);
+  transition: background-color 0.15s ease;
+}
+
+/* Estado activo/hover de las filas del dropdown */
+.search-suggestions-dropdown li:hover,
+.search-suggestions-dropdown li.suggestion-active {
+  background-color: var(--color-bg-hover, #f1f5f9);
+  color: var(--color-primary, #6b1839);
+  font-weight: 600;
+}
 
 .request-summary {
   display: grid;
@@ -705,7 +949,7 @@ onMounted(() => {
   min-height: 42px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  padding: 10px 12px 10px 12px;
+  padding: 10px 12px;
   background: var(--color-surface);
   color: var(--color-text);
   font: inherit;
@@ -815,9 +1059,8 @@ onMounted(() => {
   background-color: rgba(157, 45, 62, 0.05) !important;
 }
 
-
 .error-text-hint {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   color: var(--color-danger);
   margin-top: -6px;
   display: block;
@@ -961,12 +1204,6 @@ onMounted(() => {
   margin: 6px 0 0;
 }
 
-.primary-button,
-.secondary-button {
-  min-height: 42px;
-  padding: 10px 16px;
-}
-
 .primary-button {
   border-color: var(--color-primary);
   background: var(--color-primary);
@@ -978,7 +1215,8 @@ onMounted(() => {
   background: var(--color-danger);
 }
 
-.primary-button:hover {
+.primary-button:hover,
+.secondary-button:hover {
   transform: translateY(-1px);
 }
 
@@ -987,21 +1225,16 @@ onMounted(() => {
   color: var(--color-text);
 }
 
-.secondary-button:hover {
-  transform: translateY(-1px);
-}
-
 .upload-button {
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 
-
-.page-header{
+.page-header {
   margin-bottom: 20px;
   margin-top: 20px;
-  margin-right: 5px;;
+  margin-right: 5px;
 }
 
 button:disabled {
@@ -1014,6 +1247,7 @@ button:disabled {
   margin-top: 20px;
 }
 
+/* Ajustes Responsivos (Soporte Mobile) */
 @media (max-width: 680px) {
   .request-summary,
   .request-filters,
@@ -1022,13 +1256,8 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
-
-  .request-filters{
+  .request-filters {
     margin-bottom: 50px;
-    
-
-
-
     padding: 14px 10px;
   }
 
@@ -1050,4 +1279,5 @@ button:disabled {
   .request-filters__actions .secondary-button {
     flex: 1 1 140px;
   }
-}</style>
+}
+</style>
