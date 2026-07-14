@@ -1,3 +1,5 @@
+
+
 const db = require('../models');
 
 const dashboardData = {
@@ -319,8 +321,25 @@ exports.normatividad = async (req, res) => withFallback(res, fallback.normativid
 });
 
 
-exports.createNormatividad = async (req, res) => {
-  console.log("Modelos disponibles en db:", Object.keys(db)); 
+exports.getNormatividadById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const documento = await db.Normatividad.findByPk(id);
+    
+    if (!documento) {
+      return res.status(404).json({ error: 'Documento normativo no encontrado' });
+    }
+    
+    return res.json(documento);
+  } catch (error) {
+    console.error("Error al obtener documento:", error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+
+exports.createNormatividad = async (req, res) =>  {
+
   try {
     const { nombre, tipo, version, fecha_publicacion, estatus } = req.body;
 
@@ -332,7 +351,7 @@ exports.createNormatividad = async (req, res) => {
 
     let rutaPdf = null;
     if (req.file) {
-      
+
       rutaPdf = req.file.path.replace(/\\/g, '/'); 
     }
 
@@ -352,6 +371,7 @@ exports.createNormatividad = async (req, res) => {
       data: nuevaNormatividad
     });
 
+    
   } catch (error) {
     console.error("Error al crear normatividad:", error);
     return res.status(500).json({
@@ -417,39 +437,7 @@ exports.bajaLogicaNormatividad = async (req, res) => {
 const fs = require('fs');
 const path = require('path');
 
-exports.deleteNormatividad = async (req, res) => {
-  try {
-    const { id } = req.params;
 
-    // Buscar el documento para obtener la ruta del archivo
-    const documento = await db.Normatividad.findByPk(id);
-    if (!documento) {
-      return res.status(404).json({ error: 'El documento no existe o ya fue eliminado.' });
-    }
-
-    //  Borrar el archivo PDF físico de la carpeta uploads si existe
-    if (documento.archivo_pdf) {
-      // Ajusta la ruta física relativa al servidor
-      const rutaArchivo = path.join(__dirname, '..', documento.archivo_pdf); 
-      
-      fs.unlink(rutaArchivo, (err) => {
-        if (err) {
-          console.error("No se pudo borrar el archivo físico, tal vez no exista:", err.message);
-        } else {
-          console.log(`Archivo físico eliminado: ${rutaArchivo}`);
-        }
-      });
-    }
-
-    //  Eliminar el registro de la Base de Datos
-    await documento.destroy();
-
-    return res.json({ message: 'Documento y archivo eliminados permanentemente.' });
-  } catch (error) {
-    console.error("Error al eliminar normatividad:", error);
-    return res.status(500).json({ error: 'Error interno al eliminar el documento.' });
-  }
-};
 
 exports.vacantes = async (req, res) => withFallback(res, fallback.vacantes, async () => {
   const rows = await db.Vacante.findAll({ include: [{ model: db.Departamento, as: 'departamento', required: false }] });

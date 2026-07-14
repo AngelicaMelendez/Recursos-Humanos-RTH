@@ -21,12 +21,17 @@
       </div>
     </section>
 
+    <!-- Modal de Aceptación de Normatividades -->
     <!-- Modal para términos, condiciones y normatividad vigente -->
     <ModalNormatividad
+
+    
       :isOpen="isNormativityModalOpen"
       :documentos="normatividades"
       @close="isNormativityModalOpen = false"
-      @accepted="procederAlFormularioCreacion"
+
+      
+      @accepted="procederAlFormularioCreacion" 
     />
 
     <!-- Bloque principal con filtros y tabla de datos -->
@@ -280,39 +285,39 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref, watch, nextTick } from "vue";
-import axios from "@/services/api.js"; 
-import BaseCard from "@/components/ui/BaseCard.vue";
-import AppTable from "@/components/ui/AppTable.vue";
-import IconSymbol from "@/components/ui/IconSymbol.vue";
-import PageHeader from "@/components/shared/PageHeader.vue";
-import StatusBadge from "@/components/shared/StatusBadge.vue";
-import requestsService from "@/services/requests.service";
-import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";
-import { useAuthStore } from "@/store/auth";
-import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";
-import FormularioComision from "@/components/shared/FormularioComision.vue";
+import { computed, onMounted, reactive, ref } from "vue";//Importación de funciones reactivas de Vue3
+import { watch } from "vue";//Importación de función para observar cambios en variables reactivas
+import axios from "axios"; // Axios importado para traer las normatividades
+import BaseCard from "@/components/ui/BaseCard.vue";//Componente de targeta madre para mostrar contenido en secciones
+import AppTable from "@/components/ui/AppTable.vue";//Componente de tabla para mostrar datos en formato tabular
+import IconSymbol from "@/components/ui/IconSymbol.vue";//Componente para mostrar iconos de botones
+import PageHeader from "@/components/shared/PageHeader.vue";//Componente de encabezado de pagina con titulo y subtitulos
+import RoleActionBar from "@/components/shared/RoleActionBar.vue";//Componente para botones de acción según el rol del usuario
+import StatusBadge from "@/components/shared/StatusBadge.vue";//Componente para mostrar el estatus de un registro con un badge visual
+import requestsService from "@/services/requests.service";//Servicio para gestionar las solicitudes
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";//Manejo de permisos, accesos a botones y acciones según el rol del usuario
+import { useAuthStore } from "@/store/auth";//Acceso al store de autenticación para obtener el token y rol del usuario
+import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";//Importación del componente del modal para Leer y aceptar las Normatividades
+import FormularioComision from "@/components/shared/FormularioComision.vue";// Importacion del Componente del Formulario especifico para Comisiones
 
-// ============================================================================
-// ESTADOS REACTIVOS (ESTRUCTURAS DE DATOS)
-// ============================================================================
-const authStore = useAuthStore();
-const rows = ref([]);                         // Almacena las solicitudes crudas obtenidas del Backend/API.
-const saving = ref(false);                    // Bloqueador global de botones mientras se procesan llamadas POST/PUT/DELETE.
-const fileInput = ref(null);                  // Referencia DOM al input tipo file invisible para adjuntar PDFs.
-const isNormativityModalOpen = ref(false);    // Controla si se despliega el modal de términos normativos vigentes.
-const normatividades = ref([]);               // Colección local con la lista de documentos regulatorios legales.
 
-// --- GESTIÓN INTERACTIVA DEL AUTOCOMPLETADO (UX) ---
-const showSuggestions = ref(false);           // Interruptor visual del menú desplegable de sugerencias rápidas.
-const searchInputRef = ref(null);             // Referencia DOM para devolver el enfoque (foco) al input de búsqueda.
-const activeSuggestionIndex = ref(-1);        // Puntero entero que rastrea cuál sugerencia está seleccionada con las flechas del teclado.
-let debounceTimeout = null;                   // ID del temporizador para el retraso del input (evita peticiones excesivas a BD).
 
-// Notificaciones flotantes integradas (Toasts)
+const authStore = useAuthStore();//Acceso al store de Autenticación para obtener el token y el rol del usuario
+
+const rows = ref([]);//Inicializa vacío para llenar desde la API
+
+const saving = ref(false);// Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
+
+// Variables reactivas para las Normatividades
+const isNormativityModalOpen = ref(false);
+
+// Variable reactiva para almacenar las normatividades obtenidas desde la API
+const normatividades = ref([]);
+
+// Variable reactiva para el Toast de notificaciones - el toast es un mensaje emergente que aparece temporalmente para informar al usuario sobre el resultado de una acción.
 const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
 
-// Estado dinámico del modal multiusos (Alta, Edición, Borrado, Aprobación)
+// Variable reactiva para el modal de creación y resolución de solicitudes
 const modal = reactive({
   visible: false,
   mode: "",
@@ -323,7 +328,7 @@ const modal = reactive({
   row: null
 });
 
-// Campos del formulario reactivo para la creación de incidencias
+// Variables reactivas para el formulario de creación de solicitudes
 const form = reactive({
   tipo: "vacaciones",
   oficio: "",
@@ -333,49 +338,31 @@ const form = reactive({
   archivoBinario: null
 });
 
-// Valores base del filtro de búsqueda
+// Variables reactivas para los filtros de búsqueda
 const filters = reactive({
   type: "empleado", 
   term: ""
 });
 
-// ============================================================================
-// WATCHERS (OBSERVADORES DE ESTADO)
-// ============================================================================
 
-/**
- * OBSERVADOR DE CAMBIO DE FILTRO:
- * Si el usuario cambia el tipo de filtro (ej: de Empleado a RFC), limpia el 
- * término actual para prevenir búsquedas incongruentes, oculta sugerencias,
- * refresca la lista y re-enfoca el cursor del teclado automáticamente.
- */
-watch(() => filters.type, async () => {
-  filters.term = "";
-  showSuggestions.value = false;
-  activeSuggestionIndex.value = -1;
-  loadRequests(); 
-
-  await nextTick(); // Espera a que Vue redibuje la UI antes de buscar el elemento DOM
-  if (searchInputRef.value) searchInputRef.value.focus();
-});
-
-// ============================================================================
-// PROPIEDADES COMPUTADAS (COMPUTED PROPERTIES)
-// ============================================================================
-
-/**
- * FORMATEADOR DE FECHAS: Convierte objetos Date a formato estándar YYYY-MM-DD para los inputs nativos.
- */
+// Función para formatear la fecha en formato YYYY-MM-DD para los inputs de tipo date
 const formatDateInputValue = (date) => {
+
+  // Asegurarse de que la fecha sea un objeto Date válido
   const year = date.getFullYear();
+
+  // Obtener el mes y el día, asegurándose de que tengan dos dígitos
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
+
+  // Devolver la fecha en formato YYYY-MM-DD
   return `${year}-${month}-${day}`;
 };
 
-const today = formatDateInputValue(new Date()); // Fecha actual del día de hoy
+// Obtener la fecha de hoy en formato YYYY-MM-DD para usarla como mínimo en los inputs de fecha
+const today = formatDateInputValue(new Date());
 
-// Definición estricta de las columnas requeridas por el componente <AppTable>
+//Formato de la tabla en que se muestra la información de Solicitudes - esto de acuerdo a la migración y modelo de solicitudes
 const columns = [
   { key: "id", label: "Folio" },
   { key: "No_de_empleado", label: "No. empleado" },
@@ -489,14 +476,25 @@ const applySearch = () => {
  * Captura el evento nativo onChange del file input y restringe que sea estrictamente PDF.
  */
 const manejarArchivo = (event) => {
+
+  //Obtiene el primer archivo seleccionado por el usuario
   const archivo = event.target.files[0];
+
+  //Si no hay un archivo seleccionado, se limpia el campo de ArchivoBinario en el formulario
   if (archivo) {
-    if (archivo.type !== "application/pdf") {
-      showToast("Archivo Inválido", "Por favor suba únicamente un archivo PDF.", "warning");
-      if (fileInput.value) fileInput.value.value = "";
-      return;
-    }
-    form.archivoBinario = archivo;
+  
+  //  
+  if (archvio.type !== "application/pdf")  {
+
+    //Mensaje en caso de cargar un formato distinto al requerido o al intentar subir más de un archivo 
+    showToast("Archivo Invalido: ", "Por Favor suba únicamente un archivo PDF.", "warning");
+
+    //
+    return;
+
+    //
+  }
+  form.archivoBinario.archivo
   }
 };
 

@@ -7,12 +7,13 @@ const { ROLE_GROUPS } = require('../utils/roles');
 
 
 
-// La lista se muestra segun rol: administracion/direccion ven todo; usuarios solo sus solicitudes.
-router.get('/', auth, roles(ROLE_GROUPS.VIEWERS), ctrl.listar);
-router.post('/', auth, roles(ROLE_GROUPS.SOLICITORS), upload.single('archivo_pdf'), ctrl.crear);
-router.delete('/:id', auth, ctrl.eliminar);
-router.patch('/:id/aprobar', auth, roles(ROLE_GROUPS.APPROVERS), ctrl.aprobar);
-router.patch('/:id/rechazar', auth, roles(ROLE_GROUPS.APPROVERS), ctrl.rechazar);
+router.get('/', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.listar);
+router.post('/', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.crear);
+router.delete('/:id', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.eliminar);
+router.patch('/:id/aprobar', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.aprobar);
+router.patch('/:id/rechazar', auth, roles(ROLE_GROUPS.REQUESTS_APPROVERS), ctrl.rechazar);
+
+
 
 
 module.exports = router;
