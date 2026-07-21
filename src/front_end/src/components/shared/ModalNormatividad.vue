@@ -123,7 +123,7 @@ const confirmarAceptacion = () => {
 }
 
 .modal-header {
-  background: #A02142; 
+  background: #691B31; 
   color: white;
   padding: 16px;
   font-size: 1.1rem;
@@ -206,7 +206,7 @@ const confirmarAceptacion = () => {
 
 .btn-cancelar {
   padding: 8px 16px;
-  background: #691B31;
+  background: #A02142;
   color: white;
   border: none;
   border-radius: 6px;
@@ -215,7 +215,7 @@ const confirmarAceptacion = () => {
 
 .btn-aceptar {
   padding: 8px 16px;
-  background: #A02142;
+  background: #d81045;
   color: white;
   border: none;
   border-radius: 6px;

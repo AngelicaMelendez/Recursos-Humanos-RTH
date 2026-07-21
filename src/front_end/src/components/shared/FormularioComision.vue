@@ -31,14 +31,17 @@
     <div class="form-grid-comision">
         <label>
             Hora de Salida
-            <input class="input-fecha" v-model="comision.fecha_inicio" type="time" required />
+            <input class="input-fecha" v-model="comision.hora_salida" type="time" required />
         </label>
 
         <label>
             Hora Estimada de Regreso
-            <input class="input-fecha" v-model="comision.fecha_fin" type="time" :min="comision.fecha_inicio" required />
+            <input class="input-fecha" v-model="comision.hora_regreso" :min="comision.hora_salida" :class=" {'input-error': horasInvalidas}" type="time"  required />
         </label>
     </div>
+    <span v-if="horasInvalidas" class="error-text-hint">
+        La Hora de Regreso no puede ser ANTERIOR a la de Salida.
+    </span>
 
 <div class="check-regreso">
     <label>
@@ -65,8 +68,10 @@
 <script setup>
 
 import { reactive, ref } from 'vue';
-import axios from 'axios';
+import { computed , onMounted } from "vue";
 import { useAuthStore } from '@/store/auth';
+import axios from 'axios';
+
 
 
 const emit = defineEmits (['success', 'cancel']);
@@ -74,14 +79,20 @@ const authStore = useAuthStore;
 const loading = ref(false);
 
 
+const horasInvalidas = computed(() => {
+  if(!comision.hora_salida || !hora_regreso) return false;
+  return comision.hora_regreso < comision.hora_salida;
+});
+
+
 const comision = reactive ({
     tipo: 'comision',
 
     oficio_num: '',
-    fecha_comision:'',
+    fecha_comision: '',
     lugar: '',
-    fecha_inicio: '',
-    fecha_fin: '',
+    hora_salida: '',
+    hora_regreso: '',
     regreso: '',
     motivo: ''
 });
@@ -102,6 +113,8 @@ const enviarComision = async () => {
         loading.value = false;
     }
 };
+
+
 </script>
 
 
@@ -201,6 +214,19 @@ label{
     font-size: 14px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.input-error {
+    border-color: var(--color-danger) !important;
+    background-color: rgba(157, 45, 62, 0.05) !important;
+}
+
+.error-text-hint {
+    font-size: 0.6rem;
+    color: var(--color-danger);
+    margin-top: -6px;
+    display: block;
+    font-weight: 500;
 }
 
 

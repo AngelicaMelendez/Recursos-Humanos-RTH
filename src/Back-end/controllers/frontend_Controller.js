@@ -451,8 +451,7 @@ exports.vacantes = async (req, res) => withFallback(res, fallback.vacantes, asyn
   }));
 });
 
-exports.visitantes = async (req, res) => withFallback(res, fallback.visitantes, async () => db.Visitante.findAll());
-exports.pasantes = (req, res) => res.json(fallback.pasantes);
+
 
 exports.accesos = async (req, res) => withFallback(res, fallback.accesos, async () => {
   const rows = await db.Usuario.findAll();

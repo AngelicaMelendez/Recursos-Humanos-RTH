@@ -79,7 +79,7 @@
           <strong class="user-name">
             {{ localName || "Usuario" }}
           </strong>
-          <span>{{ localDepartment || "Departamento" }}</span>
+          <span>{{ localDepartment || "Departamento: " }}</span>
           <br></br>
           <span>{{ localRole || "Administrador" }}</span>
         </div>
@@ -150,7 +150,7 @@ const editForm = ref({ nombre: "", departamento: "", rol: "" });
 watch(() => props.user, (newUser) => {
   if (newUser) {
     localName.value = newUser.nombre || newUser.name || newUser.usuario || "Usuario";
-    localDepartment.value = newUser.departamento || "Departamento";
+    localDepartment.value = newUser.departamento || "Departamento: ";
     localRole.value = newUser.rol || "Administrador";
   }
 }, { immediate: true });

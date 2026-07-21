@@ -138,9 +138,9 @@ export const roleActionsByModule = { // Acciones por modulo:
     [ROLE_KEYS.USUARIO]: ["viewVacancies"]
   },
   normativity: {
-    [ROLE_KEYS.SUPER_USER]: ["viewNormativity"],
+    [ROLE_KEYS.SUPER_USER]: ["viewNormativity", "downloadNormativity"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "desactivateNormativity", "activateNormativity", "viewNormativity"],
-    [ROLE_KEYS.USUARIO]: ["viewNormativity", "downloadNormativity", "updateNormativity", "uploadNormativity", "desactivateNormativity", "activateNormativity"],
+    [ROLE_KEYS.USUARIO]: ["viewNormativity", "downloadNormativity"],
     [ROLE_KEYS.DIRECTOR]: ["viewNormativity"]
   },
   statements: { //Comunicados

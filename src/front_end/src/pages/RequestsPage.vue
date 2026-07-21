@@ -281,8 +281,128 @@
         </div>
       </section>
     </div>
+
   </div>
+
+
+   <div class="test-container">
+    <div class="control-panel">
+      <h2>Generador de Oficios de Comisión (Hidalgo)</h2>
+      <p>Vista previa del documento oficial. Haz clic en el botón para descargar el PDF limpio.</p>
+      
+      <div class="button-group">
+        <button @click="exportarPDF" class="btn btn-primary">
+          Descargar Oficio en PDF
+        </button>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <div ref="reporteRef" class="pdf-document">
+        
+        <table class="header-table">
+          <tr>
+            <td class="header-left">
+              <img 
+              :src="logoUrl" 
+              alt="Logo Hidalgo" 
+              class="pdf-logo" />
+            </td>
+            <td class="header-right">
+              <div class="sec-gob">Secretaría de Gobierno</div>
+              <div class="rth-text">Radio y Televisión de Hidalgo</div>
+              <div class="oficio-title">Oficio de Comisión</div>
+              <div class="oficio-num">RTH/DAF/TI/051/2026</div>
+            </td>
+          </tr>
+        </table>
+
+        <div class="date-section">
+          Pachuca de Soto, Hgo., a 20 de julio de 2026
+        </div>
+
+        <table class="data-table">
+          <tr>
+            <td class="label-cell">Nombre del trabajador:</td>
+            <td class="value-cell bold-text">Omar Efrén Vázquez Moreno</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Adscripción:</td>
+            <td class="value-cell">Dirección de Administración y Finanzas</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Tipo de nombramiento:</td>
+            <td class="value-cell">Jefe de Área A</td>
+          </tr>
+          <tr>
+            <td class="label-cell">No. de Empleado:</td>
+            <td class="value-cell">029333</td>
+          </tr>
+        </table>
+
+        <div class="checkbox-container">
+          <table class="checkbox-table">
+            <tr>
+              <td class="checkbox-item">
+                BASE <div class="checkbox-box"></div>
+              </td>
+              <td class="checkbox-item">
+                CONFIANZA <div class="checkbox-box marked">X</div>
+              </td>
+              <td class="checkbox-item">
+                HONORARIOS <div class="checkbox-box"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="content-section">
+          <p class="content-text">
+            Por este conducto me permito informarle que ha sido comisionado para el día <strong>viernes, 20 de julio del año en curso</strong>, para asistir a la <strong>Dirección de Innovación</strong> para revisar las credenciales del portal CyberArk que no permite el acceso para la carga de información en el servidor de transparencia.
+          </p>
+        </div>
+
+        <table class="schedule-table">
+          <tr>
+            <td class="schedule-cell">
+              <strong>Salida:</strong> 16:30 hrs.
+            </td>
+            <td class="schedule-cell">
+              <strong>Regreso:</strong> 18:00 hrs. Aproximadamente.
+            </td>
+          </tr>
+        </table>
+
+        <div class="farewell-text">
+          Agradeciendo de antemano su apoyo, quedo de usted.
+        </div>
+
+        <table class="signature-table">
+          <tr>
+            <td class="signature-cell">
+              <div class="signature-role">Autorizó</div>
+              <div class="signature-space"></div> <div class="signature-line"></div>
+              <div class="signature-name">Mtra. Isela Guadalupe Espinosa López</div>
+              <div class="signature-title">Directora de Administración y Finanzas</div>
+            </td>
+            <td class="signature-cell">
+              <div class="signature-role">Acepto Comisión</div>
+              <div class="signature-space"></div> <div class="signature-line"></div>
+              <div class="signature-name">Omar Efrén Vázquez Moreno</div>
+              <div class="signature-title">Jefe de Área A</div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+
+ 
 </template>
+
+
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";//Importación de funciones reactivas de Vue3
@@ -291,6 +411,8 @@ import axios from "axios"; // Axios importado para traer las normatividades
 import BaseCard from "@/components/ui/BaseCard.vue";//Componente de targeta madre para mostrar contenido en secciones
 import AppTable from "@/components/ui/AppTable.vue";//Componente de tabla para mostrar datos en formato tabular
 import IconSymbol from "@/components/ui/IconSymbol.vue";//Componente para mostrar iconos de botones
+import html2pdf from "html2pdf.js";
+import logopdf from "@/assets/logopdf.png"
 import PageHeader from "@/components/shared/PageHeader.vue";//Componente de encabezado de pagina con titulo y subtitulos
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";//Componente para botones de acción según el rol del usuario
 import StatusBadge from "@/components/shared/StatusBadge.vue";//Componente para mostrar el estatus de un registro con un badge visual
@@ -300,7 +422,8 @@ import { useAuthStore } from "@/store/auth";//Acceso al store de autenticación 
 import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";//Importación del componente del modal para Leer y aceptar las Normatividades
 import FormularioComision from "@/components/shared/FormularioComision.vue";// Importacion del Componente del Formulario especifico para Comisiones
 
-
+const logoUrl = logopdf
+const reporteRef = ref(null);
 
 const authStore = useAuthStore();//Acceso al store de Autenticación para obtener el token y el rol del usuario
 
@@ -851,6 +974,7 @@ onMounted(() => {
   loadRequests();               // Al arrancar, monta las solicitudes iniciales.
   fetchNormatividadesVigentes(); // Trae las normatividades desde la base de datos de manera asíncrona.
 });
+
 </script>
 
 <style scoped>
