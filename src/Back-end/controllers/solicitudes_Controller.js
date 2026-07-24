@@ -1,6 +1,15 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 const { ROLE_GROUPS, PERMISSIONS, hasRole } = require('../utils/roles');
+const { registrarAuditoria } = require('../utils/audit');
+
+// IMPORTANTE: Asegúrate de importar tu función de notificaciones. 
+// Si la tienes en otro archivo, cambia esta línea:
+// const { crearNotificacionSolicitud } = require('../utils/notificaciones');
+async function crearNotificacionSolicitud({ solicitud, tipo, titulo, mensaje }) {
+  console.log(`[Notificación - ${tipo}]: ${titulo} - ${mensaje}`);
+  // Aquí va tu lógica real de base de datos para guardar/enviar la notificación.
+}
 
 const tiposIncidencia = ['vacaciones', 'permiso', 'incapacidad', 'maternidad', 'paternidad', 'comision', 'otro'];
 
@@ -43,26 +52,6 @@ function validarPeriodoSolicitud({ fecha_inicio, fecha_fin }) {
   return null;
 }
 
-function obtenerNumeroEmpleado(valor) {
-  const texto = String(valor || '').trim().toUpperCase();
-  const numero = texto.replace(/^EMP-?/, '').replace(/\D/g, '');
-  return numero ? Number.parseInt(numero, 10) : null;
-}
-
-function construirFiltroNumeroEmpleado(valor) {
-  const numero = obtenerNumeroEmpleado(valor);
-  if (!numero) {
-    return [];
-  }
-
-  const texto = String(numero).padStart(3, '0');
-  return [
-    { No_de_empleado: texto },
-    { No_de_empleado: String(numero) },
-    { id: numero },
-  ];
-}
-
 // Modificamos esta función para que busque por coincidencia parcial (LIKE) 
 // tanto en RFC como en el nuevo campo No_de_empleado
 function construirFiltroEmpleado(query) {
@@ -73,18 +62,17 @@ function construirFiltroEmpleado(query) {
     return null;
   }
 
-  // 1. Si el usuario eligió explícitamente filtrar solo por Número de Empleado
+  // 1. Si el usuario eligió filtrar solo por Número de Empleado
   if (filtro === 'empleado' || filtro === 'no_empleado' || filtro === 'numero_empleado') {
     return { No_de_empleado: { [Op.like]: `%${buscar}%` } };
   }
 
-  // 2. Si el usuario eligió explícitamente filtrar solo por RFC
+  // 2. Si el usuario eligió filtrar solo por RFC
   if (filtro === 'rfc') {
     return { rfc: { [Op.like]: `%${buscar.toUpperCase()}%` } };
   }
 
-  // 3. AUTOCOMPLETADO MIXTO (Buscador único): 
-  // Retornamos un objeto especial para que obtenerSolicitudes lo maneje a nivel global
+  // 3. AUTOCOMPLETADO MIXTO
   return {
     autocompletar: true,
     buscar: buscar
@@ -93,7 +81,7 @@ function construirFiltroEmpleado(query) {
 
 async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
   const filtroEmpleado = construirFiltroEmpleado(query);
-  const esVisorGlobal = puedeVerTodasLasSolicitudes(usuarioActual);
+  const esVisorGlobal = puedeVerTodasLasSolicitudes(usuarioActual.rol);
   
   // Base del WHERE para la Solicitud
   let whereSolicitud = esVisorGlobal ? {} : { empleado_id: usuarioActual.empleado_id || -1 };
@@ -105,12 +93,12 @@ async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
     attributes: ['id', 'nombre', 'apellidos', 'rfc', 'No_de_empleado'],
   };
 
+  // Necesitamos subQuery en false si filtramos por campos de la tabla hija/asociada
+  let forceSubQueryFalse = false;
+
   // Aplicamos la lógica de autocompletado o filtros específicos
   if (filtroEmpleado) {
     if (filtroEmpleado.autocompletar) {
-      // AQUÍ ESTÁ EL TRUCO PARA EL AUTOCOMPLETADO:
-      // Usamos la sintaxis '$as.columna$' a nivel raíz de la consulta.
-      // Esto le dice a Sequelize: "Busca en la Solicitud, pero filtra si el RFC del empleado O el No_de_empleado coinciden"
       whereSolicitud = {
         ...whereSolicitud,
         [Op.or]: [
@@ -118,10 +106,9 @@ async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
           { '$empleado.No_de_empleado$': { [Op.like]: `%${filtroEmpleado.buscar}%` } }
         ]
       };
-      // Obligamos a que el JOIN sea INNER JOIN para que solo traiga solicitudes de empleados que cumplan la condición
       empleadoInclude.required = true;
+      forceSubQueryFalse = true; // Forzamos a Sequelize a no meter esto en una subconsulta
     } else {
-      // Si era un filtro específico (solo rfc o solo número), se queda dentro del include
       empleadoInclude.where = filtroEmpleado;
       empleadoInclude.required = true;
     }
@@ -137,6 +124,8 @@ async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
         attributes: ['id', 'nombre'],
       },
     ],
+    // Si metimos filtros avanzados en asociaciones, subQuery debe ser false
+    ...(forceSubQueryFalse && { subQuery: false }), 
     order: [['createdAt', 'DESC']],
   });
 }
@@ -144,7 +133,8 @@ async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
 exports.listar = async (req, res) => {
   try {
     const solicitudes = await obtenerSolicitudes(req.query, req.user);
-    res.json(solicitudes.map(toFrontendSolicitud));
+    // Convertimos cada registro a JSON plano antes de formatear
+    res.json(solicitudes.map(sol => toFrontendSolicitud(sol.toJSON ? sol.toJSON() : sol)));
   } catch (error) {
     res.status(500).json({ error: 'No se pudieron obtener las solicitudes', details: error.message });
   }
@@ -163,7 +153,14 @@ exports.crear = async (req, res) => {
       empleado_id: req.user.empleado_id,
       estatus: 'pendiente',
     });
-    res.status(201).json(toFrontendSolicitud(solicitud));
+
+    await registrarAuditoria(req, {
+      modulo: 'Solicitudes',
+      accion: `Creo solicitud FOL-${solicitud.id}`,
+    });
+
+    // Lo pasamos a objeto plano antes del formato frontend
+    res.status(201).json(toFrontendSolicitud(solicitud.get({ plain: true })));
   } catch (error) {
     res.status(400).json({ error: 'No se pudo crear la solicitud', details: error.message });
   }
@@ -179,7 +176,6 @@ exports.aprobar = async (req, res) => {
     }
 
     solicitud.estatus = 'aprobado';
-    // CORRECCIÓN: Usamos empleado_id de manera consistente para evitar errores de validación
     solicitud.aprobado_por = req.user.empleado_id;
     solicitud.fecha_resolucion = new Date();
     await solicitud.save();
@@ -202,7 +198,12 @@ exports.aprobar = async (req, res) => {
       mensaje: `Tu solicitud de ${solicitud.tipo} fue aprobada y ya cuenta con seguimiento en el sistema.`,
     });
 
-    res.json(toFrontendSolicitud(solicitud));
+    await registrarAuditoria(req, {
+      modulo: 'Solicitudes',
+      accion: `Aprobo solicitud FOL-${solicitud.id}`,
+    });
+
+    res.json(toFrontendSolicitud(solicitud.get({ plain: true })));
   } catch (error) {
     res.status(400).json({ error: 'No se pudo aprobar la solicitud', details: error.message });
   }
@@ -218,8 +219,6 @@ exports.rechazar = async (req, res) => {
     }
 
     solicitud.estatus = 'rechazado';
-    // CORRECCIÓN: Cambiado de No_de_empleado a empleado_id para mantener consistencia con "aprobar"
-    // y evitar que rompa las restricciones de clave foránea (Foreign Key) en la BD.
     solicitud.aprobado_por = req.user.empleado_id;
     solicitud.fecha_resolucion = new Date();
     await solicitud.save();
@@ -231,7 +230,12 @@ exports.rechazar = async (req, res) => {
       mensaje: `Tu solicitud de ${solicitud.tipo} fue rechazada.`,
     });
 
-    res.json(toFrontendSolicitud(solicitud));
+    await registrarAuditoria(req, {
+      modulo: 'Solicitudes',
+      accion: `Rechazo solicitud FOL-${solicitud.id}`,
+    });
+
+    res.json(toFrontendSolicitud(solicitud.get({ plain: true })));
   } catch (error) {
     res.status(400).json({ error: 'No se pudo rechazar la solicitud', details: error.message });
   }
@@ -256,6 +260,10 @@ exports.eliminar = async (req, res) => {
     }
 
     await solicitud.destroy();
+    await registrarAuditoria(req, {
+      modulo: 'Solicitudes',
+      accion: `Elimino solicitud FOL-${id}`,
+    });
     res.json({ mensaje: 'Solicitud eliminada correctamente' });
   } catch (error) {
     res.status(400).json({ error: 'No se pudo eliminar la solicitud', details: error.message });
@@ -263,14 +271,13 @@ exports.eliminar = async (req, res) => {
 };
 
 function toFrontendSolicitud(row) {
+  if (!row) return {};
   const empleadoNombre = [row.empleado?.nombre, row.empleado?.apellidos].filter(Boolean).join(' ');
 
   return {
     id: `FOL-${row.id}`,
     raw_id: row.id,
     empleado_id: `EMP-${String(row.empleado_id).padStart(3, '0')}`,
-    // CAMBIO: Ahora toma directamente el valor real 'No_de_empleado' traído desde la tabla Empleado,
-    // en lugar de calcularlo o inventarlo a partir del ID de la solicitud.
     No_de_empleado: row.empleado?.No_de_empleado || 'S/N',
     empleado_nombre: empleadoNombre || row.empleado?.nombre || null,
     empleado_rfc: row.empleado?.rfc || null,

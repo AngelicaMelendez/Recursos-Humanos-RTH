@@ -1,4 +1,5 @@
 const db = require('../models');
+const { registrarAuditoria } = require('../utils/audit');
 
 async function obtenerIncidencias() {
   return db.Incidencia.findAll({
@@ -43,6 +44,10 @@ exports.crear = async (req, res) => {
       documento_pdf,
       estatus: 'aprobado',
     });
+    await registrarAuditoria(req, {
+      modulo: 'Incidencias',
+      accion: `Creo incidencia INC-${incidencia.id}`,
+    });
     res.status(201).json(toFrontendIncidencia(incidencia));
   } catch (error) {
     res.status(400).json({ error: 'No se pudo crear la incidencia', details: error.message });
@@ -79,6 +84,10 @@ exports.actualizar = async (req, res) => {
       estatus: estatus || incidencia.estatus,
       documento_pdf: documento_pdf || incidencia.documento_pdf,
     });
+    await registrarAuditoria(req, {
+      modulo: 'Incidencias',
+      accion: `Actualizo incidencia INC-${incidencia.id}`,
+    });
     res.json(toFrontendIncidencia(incidencia));
   } catch (error) {
     res.status(400).json({ error: 'No se pudo actualizar la incidencia', details: error.message });
@@ -93,6 +102,10 @@ exports.eliminar = async (req, res) => {
       return res.status(404).json({ error: 'Incidencia no encontrada' });
     }
     await incidencia.destroy();
+    await registrarAuditoria(req, {
+      modulo: 'Incidencias',
+      accion: `Elimino incidencia INC-${id}`,
+    });
     res.json({ mensaje: 'Incidencia eliminada correctamente' });
   } catch (error) {
     res.status(400).json({ error: 'No se pudo eliminar la incidencia', details: error.message });

@@ -38,7 +38,7 @@
         :class="{ activo: yaRegistroEntrada }"
       >
         <span v-if="loading && ultimoRegistro?.tipo === 'entrada'" class="spinner"></span>
-        <span v-else>📍</span>
+        <span v-else></span>
         {{ yaRegistroEntrada ? "Entrada registrada" : "Registrar entrada" }}
       </button>
 
@@ -49,7 +49,7 @@
         :class="{ activo: yaRegistroSalida }"
       >
         <span v-if="loading && ultimoRegistro?.tipo === 'salida'" class="spinner"></span>
-        <span v-else>👋</span>
+        <span v-else></span>
         {{ yaRegistroSalida ? "Salida registrada" : "Registrar salida" }}
       </button>
     </div>

@@ -1,6 +1,7 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 const { ROLE_GROUPS, hasRole } = require('../utils/roles');
+const { registrarAuditoria } = require('../utils/audit');
 
 function esGestorComunicados(rol) {
   return hasRole(rol, ROLE_GROUPS.ANNOUNCEMENT_MANAGERS);
@@ -37,7 +38,7 @@ async function construirFiltroVisibilidad(req) {
     return where;
   }
 
-  const usuario = await obtenerUsuarioConArea(req.user.id);
+  const usuario = await obtenerUsuarioConDireccion(req.user.id);
   const departamentoId = usuario?.empleado?.departamento_id || null;
   const direccionId = usuario?.empleado?.direccion_id || null;
   const filtro = [
@@ -117,6 +118,11 @@ exports.crearComunicado = async (req, res) => {
       estatus: 'activo',
     });
 
+    await registrarAuditoria(req, {
+      modulo: 'Comunicados',
+      accion: `Creo comunicado ${comunicado.id}`,
+    });
+
     res.status(201).json(comunicado);
   } catch (error) {
     res.status(500).json({ error: 'No se pudo crear el comunicado', details: error.message });
@@ -142,6 +148,11 @@ exports.editarComunicado = async (req, res) => {
       fecha_vencimiento,
     });
 
+    await registrarAuditoria(req, {
+      modulo: 'Comunicados',
+      accion: `Actualizo comunicado ${comunicado.id}`,
+    });
+
     res.json(comunicado);
   } catch (error) {
     res.status(500).json({ error: 'No se pudo editar el comunicado', details: error.message });
@@ -159,6 +170,10 @@ exports.eliminarComunicado = async (req, res) => {
     }
 
     await comunicado.destroy();
+    await registrarAuditoria(req, {
+      modulo: 'Comunicados',
+      accion: `Elimino comunicado ${id}`,
+    });
     res.json({ mensaje: 'Comunicado eliminado' });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo eliminar el comunicado', details: error.message });
@@ -182,6 +197,10 @@ exports.agregarReaccion = async (req, res) => {
 
     if (reaccionExistente) {
       await reaccionExistente.destroy();
+      await registrarAuditoria(req, {
+        modulo: 'Comunicados',
+        accion: `Quito reaccion comunicado ${id}`,
+      });
       return res.json({ mensaje: 'Reaccion removida' });
     }
 
@@ -189,6 +208,11 @@ exports.agregarReaccion = async (req, res) => {
       comunicado_id: id,
       usuario_id,
       tipo: 'like',
+    });
+
+    await registrarAuditoria(req, {
+      modulo: 'Comunicados',
+      accion: `Reacciono comunicado ${id}`,
     });
 
     res.status(201).json(reaccion);

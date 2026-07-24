@@ -1,6 +1,7 @@
 
 
 const db = require('../models');
+const { registrarAuditoria } = require('../utils/audit');
 
 const dashboardData = {
   summary: [
@@ -366,6 +367,11 @@ exports.createNormatividad = async (req, res) =>  {
     });
 
     // Respondemos con éxito al cliente (Vue)
+    await registrarAuditoria(req, {
+      modulo: 'Normatividad',
+      accion: `Creo normatividad ${nuevaNormatividad.nombre}`,
+    });
+
     return res.status(201).json({
       message: 'Normatividad creada y archivo subido con éxito',
       data: nuevaNormatividad
@@ -407,6 +413,11 @@ exports.updateNormatividad = async (req, res) => {
       archivo_pdf: rutaPdf
     });
 
+    await registrarAuditoria(req, {
+      modulo: 'Normatividad',
+      accion: `${estatus === 'inactiva' ? 'Desactivo' : estatus === 'activa' ? 'Activo' : 'Actualizo'} normatividad ${documento.nombre}`,
+    });
+
     return res.json({ message: 'Documento actualizado con éxito', data: documento });
   } catch (error) {
     console.error("Error al actualizar normatividad:", error);
@@ -426,6 +437,11 @@ exports.bajaLogicaNormatividad = async (req, res) => {
 
     // Cambiamos el estatus a inactiva sin borrar el registro físico
     await documento.update({ estatus: 'inactiva' });
+
+    await registrarAuditoria(req, {
+      modulo: 'Normatividad',
+      accion: `Desactivo normatividad ${documento.nombre}`,
+    });
 
     return res.json({ message: `El documento "${documento.nombre}" ha sido deshabilitado.` });
   } catch (error) {

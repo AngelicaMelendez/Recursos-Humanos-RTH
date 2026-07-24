@@ -15,23 +15,22 @@
 
     <!-- Panel de contadores rápidos (Sólo visible para personal autorizado) -->
     <section v-if="canViewRequests" class="request-summary">
-      <div v-for="item in summary" :key="item.label" class="request-summary__item">
+      <div
+        v-for="item in summary"
+        :key="item.label"
+        class="request-summary__item"
+      >
         <span>{{ item.label }}</span>
         <strong>{{ item.value }}</strong>
       </div>
     </section>
 
     <!-- Modal de Aceptación de Normatividades -->
-    <!-- Modal para términos, condiciones y normatividad vigente -->
     <ModalNormatividad
-
-    
       :isOpen="isNormativityModalOpen"
       :documentos="normatividades"
       @close="isNormativityModalOpen = false"
-
-      
-      @accepted="procederAlFormularioCreacion" 
+      @accepted="procederAlFormularioCreacion"
     />
 
     <!-- Bloque principal con filtros y tabla de datos -->
@@ -45,10 +44,9 @@
             <option value="rfc">RFC</option>
           </select>
         </label>
-        
-        <label style="position: relative;">
+
+        <label style="position: relative; display: inline-block; width: 100%">
           Búsqueda
-          <!-- INPUT INTERACTIVO: Escucha eventos de navegación por teclado y auto-detección inteligente -->
           <input
             ref="searchInputRef"
             v-model.trim="filters.term"
@@ -59,11 +57,14 @@
             @focus="showSuggestions = true"
             @blur="closeSuggestionsWithDelay"
           />
-          
-          <!-- DROPDOWN DE SUGERENCIAS INTEGRADAS (Control por CSS y Teclado) -->
-          <ul v-if="showSuggestions && filteredSuggestions.length > 0" class="search-suggestions-dropdown">
-            <li 
-              v-for="(suggestion, index) in filteredSuggestions" 
+
+          <!-- DROPDOWN DE SUGERENCIAS -->
+          <ul
+            v-if="showSuggestions && filteredSuggestions.length > 0"
+            class="search-suggestions-dropdown"
+          >
+            <li
+              v-for="(suggestion, index) in filteredSuggestions"
               :key="suggestion.id"
               :class="{ 'suggestion-active': index === activeSuggestionIndex }"
               @mousedown="selectSuggestion(suggestion)"
@@ -72,7 +73,7 @@
             </li>
           </ul>
         </label>
-        
+
         <div class="request-filters__actions">
           <button class="primary-button" type="submit">
             <IconSymbol name="search" />
@@ -80,7 +81,7 @@
           </button>
           <button class="secondary-button" type="button" @click="clearSearch">
             <IconSymbol name="clear" />
-            Limpiar 
+            Limpiar
           </button>
           <button class="ghost-button" type="button" @click="loadRequests">
             <IconSymbol name="reset" />
@@ -95,7 +96,11 @@
           v-for="action in headerActions"
           :key="action.key"
           type="button"
-          :class="[action.key === 'createRequest' ? 'primary-button' : 'secondary-button']"
+          :class="[
+            action.key === 'createRequest'
+              ? 'primary-button'
+              : 'secondary-button',
+          ]"
           @click="selectAction(action)"
         >
           <IconSymbol :name="action.icon" />
@@ -126,14 +131,15 @@
       </AppTable>
     </BaseCard>
 
-    <!-- Vista alternativa para usuarios sin permisos de administrador (Rol Empleado) -->
-    <BaseCard 
+    <!-- Vista alternativa para usuarios sin permisos de administrador -->
+    <BaseCard
       v-else
-      title="Generar Solicitud"    
-      subtitle="Tu Solicitud quedará pendiente para Revisión Administrativa."    
+      title="Generar Solicitud"
+      subtitle="Tu Solicitud quedará pendiente para Revisión Administrativa."
     >
       <p class="request-access-note">
-        La consulta, aprobación y rechazo de solicitudes está disponible solo para administradores.
+        La consulta, aprobación y rechazo de solicitudes está disponible solo
+        para administradores.
       </p>
       <button class="primary-button" type="button" @click="evaluarNormatividad">
         <IconSymbol name="plus" />
@@ -149,13 +155,22 @@
             <span>{{ modal.eyebrow }}</span>
             <h3>{{ modal.title }}</h3>
           </div>
-          <button class="icon-action" type="button" title="Cerrar" @click="closeModal">
+          <button
+            class="icon-action"
+            type="button"
+            title="Cerrar"
+            @click="closeModal"
+          >
             <IconSymbol name="x" />
           </button>
         </header>
 
         <!-- FORMULARIO ESTÁNDAR: Incidencias comunes -->
-        <form v-if="modal.mode === 'create' && form.tipo !== 'comision'" class="request-form" @submit.prevent="submitRequest">
+        <form
+          v-if="modal.mode === 'create' && form.tipo !== 'comision'"
+          class="request-form"
+          @submit.prevent="submitRequest"
+        >
           <label>
             Tipo
             <select v-model="form.tipo" required>
@@ -168,26 +183,26 @@
               <option value="otro">Otro</option>
             </select>
           </label>
-          
+
           <div class="form-grid">
             <label>
               Inicio
-              <input 
-                v-model="form.fecha_inicio" 
-                type="date" 
-                :min="today" 
-                required 
+              <input
+                v-model="form.fecha_inicio"
+                type="date"
+                :min="today"
+                required
               />
             </label>
 
             <label>
               Fin
-              <input 
-                v-model="form.fecha_fin" 
-                type="date" 
-                :min="form.fecha_inicio || today" 
-                :class="{ 'input-error': fechasInvalidas}"
-                required 
+              <input
+                v-model="form.fecha_fin"
+                type="date"
+                :min="form.fecha_inicio || today"
+                :class="{ 'input-error': fechasInvalidas }"
+                required
               />
             </label>
           </div>
@@ -195,48 +210,84 @@
             La Fecha de Fin no puede ser Anterior a la de Inicio.
           </span>
 
-          <!-- INPUT COMPLEMENTARIO DE PDF DINÁMICO (Médicos, Oficiales, etc.) -->
-          <label class="upload-button" v-if="['incapacidad', 'maternidad', 'paternidad'].includes(form.tipo)">
+          <!-- INPUT COMPLEMENTARIO DE PDF DINÁMICO -->
+          <label
+            class="upload-button"
+            v-if="
+              ['incapacidad', 'maternidad', 'paternidad'].includes(form.tipo)
+            "
+          >
             Documento Justificante (PDF)
-            <div style="margin-top: 5px;">
-              <button class="primary-button" type="button" @click="fileInput.click()">
+            <div style="margin-top: 5px">
+              <button
+                class="primary-button"
+                type="button"
+                @click="triggerFileInput"
+              >
                 <IconSymbol name="upload" />
-                {{ form.archivoBinario ? form.archivoBinario.name : 'Cargar PDF' }}
+                {{
+                  form.archivoBinario ? form.archivoBinario.name : "Cargar PDF"
+                }}
               </button>
-              <input 
+              <input
                 ref="fileInput"
-                type="file" 
-                accept="application/pdf" 
-                style="display: none;" 
-                @change="manejarArchivo" 
+                type="file"
+                accept="application/pdf"
+                style="display: none"
+                @change="manejarArchivo"
               />
             </div>
           </label>
-          
+
           <label>
             Motivo
-            <textarea v-model="form.motivo" rows="4" required placeholder="Describe brevemente el motivo de la Solicitud o Incidencia" />
+            <textarea
+              v-model="form.motivo"
+              rows="4"
+              required
+              placeholder="Describe brevemente el motivo de la Solicitud o Incidencia"
+            />
           </label>
 
           <footer class="modal-actions">
-            <button class="secondary-button" type="button" @click="closeModal">Cancelar</button>
-            <button class="primary-button" type="submit" :disabled="saving || fechasInvalidas">
+            <button class="secondary-button" type="button" @click="closeModal">
+              Cancelar
+            </button>
+            <button
+              class="primary-button"
+              type="submit"
+              :disabled="saving || fechasInvalidas"
+            >
               <span v-if="saving" class="spinner-container">
                 <span class="spinner-icon"></span>
                 Procesando...
               </span>
-              <span v-else>
-                Crear Solicitud
-              </span>
+              <span v-else> Crear Solicitud </span>
             </button>
           </footer>
         </form>
 
-        <!-- SUB-FORMULARIO EXTERNO: Redirección condicional para Comisiones Oficiales -->
+        <!-- SUB-FORMULARIO EXTERNO: Comisiones -->
         <div v-else-if="modal.mode === 'create' && form.tipo === 'comision'">
-          <label style="display: grid; gap: 7px; margin-bottom: 14px; font-weight: 700; color: var(--color-text-soft);">
+          <label
+            style="
+              display: grid;
+              gap: 7px;
+              margin-bottom: 14px;
+              font-weight: 700;
+              color: var(--color-text-soft);
+            "
+          >
             Tipo
-            <select v-model="form.tipo" style="width: 100%; border: 1px solid var(--color-border); border-radius: 12px; padding: 11px 12px;">
+            <select
+              v-model="form.tipo"
+              style="
+                width: 100%;
+                border: 1px solid var(--color-border);
+                border-radius: 12px;
+                padding: 11px 12px;
+              "
+            >
               <option value="vacaciones">Vacaciones</option>
               <option value="permiso">Permiso</option>
               <option value="incapacidad">Incapacidad</option>
@@ -246,11 +297,14 @@
               <option value="otro">Otro</option>
             </select>
           </label>
-          
-          <FormularioComision @success="handleComisionSuccess" @cancel="closeModal" />
+
+          <FormularioComision
+            @success="handleComisionSuccess"
+            @cancel="closeModal"
+          />
         </div>
 
-        <!-- PANEL DE CONFIRMACIONES DE RESOLUCIÓN (Flujos de Aprobación / Rechazo / Borrado) -->
+        <!-- PANEL DE CONFIRMACIONES DE RESOLUCIÓN -->
         <div v-else class="confirm-panel">
           <p>
             {{ modal.message }}
@@ -263,15 +317,23 @@
             </div>
             <div>
               <dt>Periodo</dt>
-              <dd>{{ modal.row?.fecha_inicio }} / {{ modal.row?.fecha_fin }}</dd>
+              <dd>
+                {{ modal.row?.fecha_inicio }} / {{ modal.row?.fecha_fin }}
+              </dd>
             </div>
           </dl>
           <footer class="modal-actions">
-            <button class="secondary-button" type="button" @click="closeModal">Cancelar</button>
+            <button class="secondary-button" type="button" @click="closeModal">
+              Cancelar
+            </button>
             <button
               class="primary-button"
               type="button"
-              :class="{ 'primary-button--danger': ['reject', 'delete'].includes(modal.mode) }"
+              :class="{
+                'primary-button--danger': ['reject', 'delete'].includes(
+                  modal.mode,
+                ),
+              }"
               :disabled="saving"
               @click="confirmResolution"
             >
@@ -285,28 +347,26 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";//Importación de funciones reactivas de Vue3
-import { watch } from "vue";//Importación de función para observar cambios en variables reactivas
+import { computed, onMounted, reactive, ref } from "vue"; //Importación de funciones reactivas de Vue3
+import { watch } from "vue"; //Importación de función para observar cambios en variables reactivas
 import axios from "axios"; // Axios importado para traer las normatividades
-import BaseCard from "@/components/ui/BaseCard.vue";//Componente de targeta madre para mostrar contenido en secciones
-import AppTable from "@/components/ui/AppTable.vue";//Componente de tabla para mostrar datos en formato tabular
-import IconSymbol from "@/components/ui/IconSymbol.vue";//Componente para mostrar iconos de botones
-import PageHeader from "@/components/shared/PageHeader.vue";//Componente de encabezado de pagina con titulo y subtitulos
-import RoleActionBar from "@/components/shared/RoleActionBar.vue";//Componente para botones de acción según el rol del usuario
-import StatusBadge from "@/components/shared/StatusBadge.vue";//Componente para mostrar el estatus de un registro con un badge visual
-import requestsService from "@/services/requests.service";//Servicio para gestionar las solicitudes
-import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";//Manejo de permisos, accesos a botones y acciones según el rol del usuario
-import { useAuthStore } from "@/store/auth";//Acceso al store de autenticación para obtener el token y rol del usuario
-import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";//Importación del componente del modal para Leer y aceptar las Normatividades
-import FormularioComision from "@/components/shared/FormularioComision.vue";// Importacion del Componente del Formulario especifico para Comisiones
+import BaseCard from "@/components/ui/BaseCard.vue"; //Componente de targeta madre para mostrar contenido en secciones
+import AppTable from "@/components/ui/AppTable.vue"; //Componente de tabla para mostrar datos en formato tabular
+import IconSymbol from "@/components/ui/IconSymbol.vue"; //Componente para mostrar iconos de botones
+import PageHeader from "@/components/shared/PageHeader.vue"; //Componente de encabezado de pagina con titulo y subtitulos
+import RoleActionBar from "@/components/shared/RoleActionBar.vue"; //Componente para botones de acción según el rol del usuario
+import StatusBadge from "@/components/shared/StatusBadge.vue"; //Componente para mostrar el estatus de un registro con un badge visual
+import requestsService from "@/services/requests.service"; //Servicio para gestionar las solicitudes
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions"; //Manejo de permisos, accesos a botones y acciones según el rol del usuario
+import { useAuthStore } from "@/store/auth"; //Acceso al store de autenticación para obtener el token y rol del usuario
+import ModalNormatividad from "@/components/shared/ModalNormatividad.vue"; //Importación del componente del modal para Leer y aceptar las Normatividades
+import FormularioComision from "@/components/shared/FormularioComision.vue"; // Importacion del Componente del Formulario especifico para Comisiones
 
+const authStore = useAuthStore(); //Acceso al store de Autenticación para obtener el token y el rol del usuario
 
+const rows = ref([]); //Inicializa vacío para llenar desde la API
 
-const authStore = useAuthStore();//Acceso al store de Autenticación para obtener el token y el rol del usuario
-
-const rows = ref([]);//Inicializa vacío para llenar desde la API
-
-const saving = ref(false);// Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
+const saving = ref(false); // Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
 
 // Variables reactivas para las Normatividades
 const isNormativityModalOpen = ref(false);
@@ -315,7 +375,12 @@ const isNormativityModalOpen = ref(false);
 const normatividades = ref([]);
 
 // Variable reactiva para el Toast de notificaciones - el toast es un mensaje emergente que aparece temporalmente para informar al usuario sobre el resultado de una acción.
-const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
+const toast = reactive({
+  visible: false,
+  title: "",
+  message: "",
+  tone: "success",
+});
 
 // Variable reactiva para el modal de creación y resolución de solicitudes
 const modal = reactive({
@@ -325,7 +390,7 @@ const modal = reactive({
   eyebrow: "",
   message: "",
   confirmLabel: "",
-  row: null
+  row: null,
 });
 
 // Variables reactivas para el formulario de creación de solicitudes
@@ -335,19 +400,17 @@ const form = reactive({
   fecha_inicio: "",
   fecha_fin: "",
   motive: "",
-  archivoBinario: null
+  archivoBinario: null,
 });
 
 // Variables reactivas para los filtros de búsqueda
 const filters = reactive({
-  type: "empleado", 
-  term: ""
+  type: "empleado",
+  term: "",
 });
-
 
 // Función para formatear la fecha en formato YYYY-MM-DD para los inputs de tipo date
 const formatDateInputValue = (date) => {
-
   // Asegurarse de que la fecha sea un objeto Date válido
   const year = date.getFullYear();
 
@@ -373,7 +436,7 @@ const columns = [
   { key: "fecha_fin", label: "Fin" },
   { key: "estatus", label: "Estatus" },
   { key: "aprobado_por", label: "Revisión" },
-  { key: "acciones", label: "Acciones" }
+  { key: "acciones", label: "Acciones" },
 ];
 
 /**
@@ -393,42 +456,121 @@ const searchPlaceholder = computed(() => {
  */
 const filteredSuggestions = computed(() => {
   const term = filters.term.toLowerCase().trim();
-  
-  // Si no hay texto, extrae las primeras 5 filas generales como sugerencia rápida
-  if (!term) { 
-    return rows.value.slice(0, 5).map(row => ({ 
-      id: row.id,
-      text: filters.type === 'rfc' ? row.empleado_rfc : filters.type === 'folio' ? row.id : row.empleado_nombre,
-      value: filters.type === 'rfc' ? row.empleado_rfc : filters.type === 'folio' ? row.id : row.No_de_empleado
-    }));
+
+  // --- CASO 1: EL BUSCADOR ESTÁ VACÍO (Dió click al input sin escribir) ---
+  if (!term) {
+    return rows.value.slice(0, 5).map((row) => {
+      const folioNormalizado = row.id?.startsWith?.("FOL-")
+        ? row.id
+        : `FOL-${row.id}`;
+      return {
+        id: row.id,
+        text:
+          filters.type === "rfc"
+            ? `${row.empleado_rfc || "Sin RFC"} - ${row.empleado_nombre || "Sin nombre"}`
+            : filters.type === "folio"
+              ? folioNormalizado
+              : `${row.No_de_empleado || "S/N"} - ${row.empleado_nombre || "Sin nombre"}`,
+        value:
+          filters.type === "rfc"
+            ? row.empleado_rfc
+            : filters.type === "folio"
+              ? folioNormalizado
+              : row.No_de_empleado,
+      };
+    });
   }
 
-  // Filtra la colección con base en la opción del selector principal
-  return rows.value
-    .filter((row) => {
-      if (filters.type === "rfc") return String(row.empleado_rfc).toLowerCase().includes(term);
-      if (filters.type === "folio") return String(row.id).toLowerCase().includes(term);
-      
-      const nombreCoincide = String(row.empleado_nombre).toLowerCase().includes(term);
-      const numeroCoincide = String(row.No_de_empleado).toLowerCase().includes(term);
-      return nombreCoincide || numeroCoincide;
+  // --- CASO 2: EL USUARIO YA ESTÁ ESCRIBIENDO ---
+
+  // 1. Convertimos los términos para hacer comparaciones limpias sin importar si son números o letras
+  const esNumeroBuscado = /^\d+$/.test(term);
+  const terminoLimpioDeFolio = term.replace("fol-", "").trim(); // Si escribió "FOL-1", extrae solo el "1"
+
+  const sugerenciasFiltradas = rows.value.filter((row) => {
+    const rfc = String(row.empleado_rfc || "").toLowerCase();
+    const nombre = String(row.empleado_nombre || "").toLowerCase();
+    const numeroEmp = String(row.No_de_empleado || "").toLowerCase();
+
+    // Obtenemos el ID numérico puro (ej: 1) y el string normalizado (ej: "fol-1")
+    const idStringOriginal = String(row.id || "")
+      .toLowerCase()
+      .replace("fol-", "");
+    const folioCompletoStr = String(
+      row.id?.startsWith?.("FOL-") ? row.id : `FOL-${row.id}`,
+    ).toLowerCase();
+
+    // Filtro estricto para Folios
+    if (filters.type === "folio") {
+      if (esNumeroBuscado) {
+        // Si buscas "1", el ID original debe ser exactamente "1", o empezar con "1" (ej: 1, 10, 11... pero NUNCA el 2 o el 3)
+        return idStringOriginal.startsWith(term);
+      }
+      // Si escribió letras (ej: "fol-1"), lo busca en el string completo
+      return (
+        folioCompletoStr.includes(term) ||
+        idStringOriginal.includes(terminoLimpioDeFolio)
+      );
+    }
+
+    // Filtro para RFC
+    if (filters.type === "rfc") {
+      return rfc.includes(term);
+    }
+
+    // Filtro para Empleado
+    return nombre.includes(term) || numeroEmp.includes(term);
+  });
+
+  // 2. Ordenamiento inteligente (Prioriza que flote hasta arriba la coincidencia exacta)
+  return sugerenciasFiltradas
+    .sort((a, b) => {
+      const idA = String(a.id || "")
+        .toLowerCase()
+        .replace("fol-", "");
+      const idB = String(b.id || "")
+        .toLowerCase()
+        .replace("fol-", "");
+
+      if (filters.type === "folio") {
+        // Si uno es la coincidencia exacta del número (ej: escribió "1" e ID es "1"), va primero
+        if (idA === term) return -1;
+        if (idB === term) return 1;
+        return idA.localeCompare(idB, undefined, { numeric: true });
+      }
+
+      const valA =
+        filters.type === "rfc"
+          ? String(a.empleado_rfc || "")
+          : String(a.No_de_empleado || "");
+      const valB =
+        filters.type === "rfc"
+          ? String(b.empleado_rfc || "")
+          : String(b.No_de_empleado || "");
+
+      return (
+        valB.toLowerCase().startsWith(term) -
+        valA.toLowerCase().startsWith(term)
+      );
     })
-    .slice(0, 8) // Capa de rendimiento: máximo 8 opciones simultáneas en pantalla
+    .slice(0, 8) // Cortamos los mejores 8 resultados ya ordenados correctamente
     .map((row) => {
+      const folioNormalizado = row.id?.startsWith?.("FOL-")
+        ? row.id
+        : `FOL-${row.id}`;
+
       let text = row.empleado_nombre;
       let value = row.No_de_empleado;
 
       if (filters.type === "rfc") {
-        text = row.empleado_rfc;
+        text = `${row.empleado_rfc} - ${row.empleado_nombre}`;
         value = row.empleado_rfc;
       } else if (filters.type === "folio") {
-        text = row.id;
-        value = row.id;
+        text = folioNormalizado;
+        value = folioNormalizado; // Se inyectará "FOL-1" completito al input al dar click
       } else if (filters.type === "empleado") {
-        const numeroString = String(row.No_de_empleado).toLowerCase();
-        if (numeroString.includes(term)) {
-          text = `${row.No_de_empleado} - ${row.empleado_nombre}`;
-        }
+        text = `${row.No_de_empleado} - ${row.empleado_nombre}`;
+        value = row.No_de_empleado;
       }
 
       return { id: row.id, text, value };
@@ -437,18 +579,46 @@ const filteredSuggestions = computed(() => {
 
 // --- SEGURIDAD Y PERMISOS COMPUTADOS ---
 const roleActions = computed(() => getRoleActions(authStore.user, "requests"));
-const headerActions = computed(() => roleActions.value.filter((action) => ["createRequest", "viewRequests"].includes(action.key)));
-const canViewRequests = computed(() => roleActions.value.some((action) => action.key === "viewRequests"));
-const currentEmployeeId = computed(() => authStore.user?.empleado_id ? `EMP-${String(authStore.user.No_de_empleado).padStart(3, "0")}` : null);
-const canApproveRequests = computed(() => hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS));
+const headerActions = computed(() =>
+  roleActions.value.filter((action) =>
+    ["createRequest", "viewRequests"].includes(action.key),
+  ),
+);
+const canViewRequests = computed(() =>
+  roleActions.value.some((action) => action.key === "viewRequests"),
+);
+const currentEmployeeId = computed(() =>
+  authStore.user?.empleado_id
+    ? `EMP-${String(authStore.user.No_de_empleado).padStart(3, "0")}`
+    : null,
+);
+const canApproveRequests = computed(() =>
+  hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS),
+);
+const showSuggestions = ref(false); // Controla si se muestra el menú flotante de sugerencias
+const activeSuggestionIndex = ref(-1); // Controla la sugerencia seleccionada con el teclado (flechas)
+let debounceTimeout = null; // Almacena el temporizador para no saturar al servidor al escribir
 
 /**
  * CONTADORES RÁPIDOS: Agrupa la suma total por estatus para renderizar tarjetas en el dashboard.
  */
 const summary = computed(() => [
-  { label: "Pendientes", value: rows.value.filter((row) => row.estatus === "pendiente").length },
-  { label: "Aprobadas", value: rows.value.filter((row) => row.estatus === "aprobada" || row.estatus === "aprobado").length },
-  { label: "Rechazadas", value: rows.value.filter((row) => row.estatus === "rechazada" || row.estatus === "rechazado").length }
+  {
+    label: "Pendientes",
+    value: rows.value.filter((row) => row.estatus === "pendiente").length,
+  },
+  {
+    label: "Aprobadas",
+    value: rows.value.filter(
+      (row) => row.estatus === "aprobada" || row.estatus === "aprobado",
+    ).length,
+  },
+  {
+    label: "Rechazadas",
+    value: rows.value.filter(
+      (row) => row.estatus === "rechazada" || row.estatus === "rechazado",
+    ).length,
+  },
 ]);
 
 /**
@@ -471,30 +641,22 @@ const applySearch = () => {
   loadRequests();
 };
 
-/**
- * VALIDADOR Y CARGADOR DE ADJUNTOS BINARIOS:
- * Captura el evento nativo onChange del file input y restringe que sea estrictamente PDF.
- */
+// VALIDADOR Y CARGADOR DE ADJUNTOS BINARIOS:
+// Captura el evento nativo onChange del file input y restringe que sea estrictamente PDF.
 const manejarArchivo = (event) => {
-
-  //Obtiene el primer archivo seleccionado por el usuario
   const archivo = event.target.files[0];
 
-  //Si no hay un archivo seleccionado, se limpia el campo de ArchivoBinario en el formulario
   if (archivo) {
-  
-  //  
-  if (archvio.type !== "application/pdf")  {
-
-    //Mensaje en caso de cargar un formato distinto al requerido o al intentar subir más de un archivo 
-    showToast("Archivo Invalido: ", "Por Favor suba únicamente un archivo PDF.", "warning");
-
-    //
-    return;
-
-    //
-  }
-  form.archivoBinario.archivo
+    if (archivo.type !== "application/pdf") {
+      // <-- Corregido aquí
+      showToast(
+        "Archivo Invalido: ",
+        "Por Favor suba únicamente un archivo PDF.",
+        "warning",
+      );
+      return;
+    }
+    form.archivoBinario = archivo; // <-- Asegúrate también de asignar el archivo correctamente aquí
   }
 };
 
@@ -504,7 +666,10 @@ const manejarArchivo = (event) => {
  */
 const handleComisionSuccess = (nuevaComision) => {
   rows.value.unshift(normalizeRow(nuevaComision));
-  showToast("Comisión Creada", "El formato de Comisión fue registrado exitosamente.");
+  showToast(
+    "Comisión Creada",
+    "El formato de Comisión fue registrado exitosamente.",
+  );
 };
 
 /**
@@ -532,7 +697,7 @@ const getRequestErrorMessage = (error) =>
 
 /**
  * NORMALIZADOR DE SOLICITUDES:
- * Homologa la estructura que viene de BD (campos null, folios sin prefijo, variaciones de strings) 
+ * Homologa la estructura que viene de BD (campos null, folios sin prefijo, variaciones de strings)
  * para garantizar consistencia total dentro de los slots de la tabla.
  */
 const normalizeRow = (row) => ({
@@ -541,9 +706,16 @@ const normalizeRow = (row) => ({
   No_de_empleado: row.No_de_empleado || row.empleado_id || "Sin empleado",
   empleado_nombre: row.empleado_nombre || row.nombre || "Sin nombre",
   empleado_rfc: row.empleado_rfc || "Sin RFC",
-  tipo: row.tipo ? row.tipo.charAt(0).toUpperCase() + row.tipo.slice(1) : "Otro",
-  estatus: row.estatus === "aprobado" ? "aprobada" : row.estatus === "rechazado" ? "rechazada" : row.estatus,
-  aprobado_por: row.aprobado_por || "Pendiente"
+  tipo: row.tipo
+    ? row.tipo.charAt(0).toUpperCase() + row.tipo.slice(1)
+    : "Otro",
+  estatus:
+    row.estatus === "aprobado"
+      ? "aprobada"
+      : row.estatus === "rechazado"
+        ? "rechazada"
+        : row.estatus,
+  aprobado_por: row.aprobado_por || "Pendiente",
 });
 
 /**
@@ -556,12 +728,26 @@ const loadRequests = async () => {
   }
 
   try {
-    const params = filters.term ? { buscar: filters.term, filtro: filters.type } : {};
+    let terminoLimpio = filters.term;
+
+    // Si estás buscando por folio, le mochamos el "FOL-" para que el backend reciba el número limpio
+    if (filters.term && filters.type === "folio") {
+      terminoLimpio = filters.term.toLowerCase().replace("fol-", "").trim();
+    }
+
+    const params = filters.term
+      ? { buscar: terminoLimpio, filtro: filters.type } // Usamos terminoLimpio aquí
+      : {};
+
     const data = await requestsService.list(params);
     rows.value = data.map(normalizeRow);
-  } catch (error) { 
+  } catch (error) {
     rows.value = [];
-    showToast("No se pudo cargar el módulo", getRequestErrorMessage(error), "warning");
+    showToast(
+      "No se pudo cargar el módulo",
+      getRequestErrorMessage(error),
+      "warning",
+    );
   }
 };
 
@@ -602,21 +788,28 @@ const procederAlFormularioCreacion = () => {
  */
 const onSearchInput = () => {
   showSuggestions.value = true;
-  activeSuggestionIndex.value = -1; 
+  activeSuggestionIndex.value = -1;
   const cleanTerm = filters.term.toLowerCase().trim();
 
-  if (filters.type === "empleado" && (cleanTerm.startsWith("f") || cleanTerm.startsWith("fol"))) {
+  // Si escribe "f", "fol" o un número que coincide exactamente con un ID de folio existente
+  const esNumeroPuro = /^\d+$/.test(cleanTerm);
+  const coincideConAlgunFolio =
+    esNumeroPuro && rows.value.some((r) => String(r.id) === cleanTerm);
+
+  if (
+    filters.type === "empleado" &&
+    (cleanTerm.startsWith("f") ||
+      cleanTerm.startsWith("fol") ||
+      coincideConAlgunFolio)
+  ) {
     filters.type = "folio";
-    return; 
   }
-  
+
   const rfcPattern = /^[a-z]{4}\d/;
   if (filters.type === "empleado" && rfcPattern.test(cleanTerm)) {
     filters.type = "rfc";
-    return;
   }
 
-  // Lógica Debounce: Cancela la petición previa y espera 300ms de calma en el teclado para no saturar el servidor
   clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(() => {
     loadRequests();
@@ -625,7 +818,7 @@ const onSearchInput = () => {
 
 /**
  * ACCESIBILIDAD POR TECLADO (ACCIONES KEYDOWN):
- * Permite moverse con la flecha de arriba/abajo por la lista flotante, 
+ * Permite moverse con la flecha de arriba/abajo por la lista flotante,
  * seleccionar con 'Enter' y cerrar con 'Esc' sin necesidad de quitar las manos del teclado.
  */
 const onSearchKeyDown = (event) => {
@@ -633,13 +826,19 @@ const onSearchKeyDown = (event) => {
 
   if (event.key === "ArrowDown") {
     event.preventDefault(); // Detiene el scroll natural de la página web
-    activeSuggestionIndex.value = (activeSuggestionIndex.value + 1) % filteredSuggestions.value.length;
+    activeSuggestionIndex.value =
+      (activeSuggestionIndex.value + 1) % filteredSuggestions.value.length;
   } else if (event.key === "ArrowUp") {
     event.preventDefault();
-    activeSuggestionIndex.value = (activeSuggestionIndex.value - 1 + filteredSuggestions.value.length) % filteredSuggestions.value.length;
+    activeSuggestionIndex.value =
+      (activeSuggestionIndex.value - 1 + filteredSuggestions.value.length) %
+      filteredSuggestions.value.length;
   } else if (event.key === "Enter") {
     event.preventDefault();
-    if (activeSuggestionIndex.value >= 0 && activeSuggestionIndex.value < filteredSuggestions.value.length) {
+    if (
+      activeSuggestionIndex.value >= 0 &&
+      activeSuggestionIndex.value < filteredSuggestions.value.length
+    ) {
       selectSuggestion(filteredSuggestions.value[activeSuggestionIndex.value]);
     }
   } else if (event.key === "Escape") {
@@ -648,19 +847,14 @@ const onSearchKeyDown = (event) => {
   }
 };
 
-/**
- * ASIGNADOR DE SUGERENCIA SELECCIONADA:
- * Toma la sugerencia elegida (clic o teclado), la inyecta al input y refresca el listado principal.
- */
 const selectSuggestion = (suggestion) => {
-  if (filters.type === "empleado" && suggestion.text.includes(" - ")) {
-    filters.term = suggestion.text.split(" - ")[0]; // Limpia la cadena y extrae solo el número de empleado
-  } else {
-    filters.term = suggestion.text;
-  }
+  // En lugar de recortar cadenas con split, usamos directamente el "value"
+  // que ya viene procesado con el dato exacto para la búsqueda (RFC, Folio o No. Empleado)
+  filters.term = String(suggestion.value);
+
   showSuggestions.value = false;
   activeSuggestionIndex.value = -1;
-  loadRequests();
+  loadRequests(); // Dispara la búsqueda real
 };
 
 /**
@@ -676,7 +870,7 @@ const clearSearch = () => {
 
 /**
  * CIERRE CON RETRASO CONTROLADO:
- * Evita que el dropdown desaparezca instantáneamente al perder el foco (onBlur), 
+ * Evita que el dropdown desaparezca instantáneamente al perder el foco (onBlur),
  * dando margen de tiempo para procesar los clics de selección rápidos.
  */
 const closeSuggestionsWithDelay = () => {
@@ -696,11 +890,14 @@ const actionsForRow = (row) => {
   const isOwner = row.empleado_id === currentEmployeeId.value;
 
   return roleActions.value.filter((action) => {
-    if (action.key === "createRequest" || action.key === "viewRequests") return false;
+    if (action.key === "createRequest" || action.key === "viewRequests")
+      return false;
     if (action.key === "deleteRequest") return pending && isOwner;
-    if (["approveRequest", "rejectRequest"].includes(action.key)) return pending && canApproveRequests.value;
+    if (["approveRequest", "rejectRequest"].includes(action.key))
+      return pending && canApproveRequests.value;
     if (action.key === "manageIncident") return canApproveRequests.value;
-    if (action.key === "downloadRequestDocument") return canApproveRequests.value || isOwner;
+    if (action.key === "downloadRequestDocument")
+      return canApproveRequests.value || isOwner;
   });
 };
 
@@ -729,21 +926,31 @@ const selectAction = (action, row = null) => {
     showToast("Descargar", `Descargando documento de ${row.id}.`);
     return;
   }
-  showToast(action.label, row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.");
+  showToast(
+    action.label,
+    row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.",
+  );
 };
 
 /**
  * CONSTRUCTOR DEL MODAL DE ALTA: Inicializa los estados del formulario a sus valores por defecto.
  */
 const openCreateModal = () => {
-  Object.assign(form, { tipo: "vacaciones", oficio: "", fecha_inicio: "", fecha_fin: "", motivo: "", archivoBinario: null });
+  Object.assign(form, {
+    tipo: "vacaciones",
+    oficio: "",
+    fecha_inicio: "",
+    fecha_fin: "",
+    motivo: "",
+    archivoBinario: null,
+  });
   if (fileInput.value) fileInput.value.value = "";
   Object.assign(modal, {
     visible: true,
     mode: "create",
     eyebrow: "Captura",
     title: "Nueva solicitud",
-    row: null
+    row: null,
   });
 };
 
@@ -753,16 +960,31 @@ const openCreateModal = () => {
  */
 const openResolutionModal = (mode, row) => {
   const config = {
-    approve: { eyebrow: "Autorización", title: "Aprobar solicitud", message: "Vas a aprobar la solicitud", confirmLabel: "Aprobar" },
-    reject: { eyebrow: "Resolución", title: "Rechazar solicitud", message: "Vas a rechazar la solicitud", confirmLabel: "Rechazar" },
-    delete: { eyebrow: "Eliminación", title: "Eliminar solicitud", message: "Vas a eliminar la solicitud", confirmLabel: "Eliminar" }
+    approve: {
+      eyebrow: "Autorización",
+      title: "Aprobar solicitud",
+      message: "Vas a aprobar la solicitud",
+      confirmLabel: "Aprobar",
+    },
+    reject: {
+      eyebrow: "Resolución",
+      title: "Rechazar solicitud",
+      message: "Vas a rechazar la solicitud",
+      confirmLabel: "Rechazar",
+    },
+    delete: {
+      eyebrow: "Eliminación",
+      title: "Eliminar solicitud",
+      message: "Vas a eliminar la solicitud",
+      confirmLabel: "Eliminar",
+    },
   };
 
   Object.assign(modal, {
     visible: true,
     mode,
     row,
-    ...config[mode]
+    ...config[mode],
   });
 };
 
@@ -777,11 +999,19 @@ const closeModal = () => {
  */
 const submitRequest = async () => {
   if (form.fecha_inicio < today || form.fecha_fin < today) {
-    showToast("Fecha no permitida", "Selecciona el día actual o una fecha posterior.", "warning");
+    showToast(
+      "Fecha no permitida",
+      "Selecciona el día actual o una fecha posterior.",
+      "warning",
+    );
     return;
   }
   if (form.fecha_fin < form.fecha_inicio) {
-    showToast("Periodo no válido", "La fecha final no puede ser anterior a la fecha de inicio.", "warning");
+    showToast(
+      "Periodo no válido",
+      "La fecha final no puede ser anterior a la fecha de inicio.",
+      "warning",
+    );
     return;
   }
 
@@ -799,9 +1029,16 @@ const submitRequest = async () => {
   try {
     const created = await requestsService.create(formData);
     rows.value.unshift(normalizeRow(created)); // Inyecta la nueva solicitud al inicio de la tabla en caliente
-    showToast("La Solicitud ha sido creada", "La Solicitud queda pendiente a revisión");
+    showToast(
+      "La Solicitud ha sido creada",
+      "La Solicitud queda pendiente a revisión",
+    );
   } catch (error) {
-    showToast("No se pudo crear la Solicitud", getRequestErrorMessage(error), "warning");
+    showToast(
+      "No se pudo crear la Solicitud",
+      getRequestErrorMessage(error),
+      "warning",
+    );
   } finally {
     saving.value = false;
     closeModal();
@@ -829,10 +1066,17 @@ const confirmResolution = async () => {
     } else if (modal.mode === "delete") {
       await requestsService.remove(modal.row.id);
       rows.value = rows.value.filter((row) => row.id !== modal.row.id); // Remueve la fila eliminada
-      showToast("Solicitud eliminada", `${modal.row.id} fue eliminada correctamente.`);
+      showToast(
+        "Solicitud eliminada",
+        `${modal.row.id} fue eliminada correctamente.`,
+      );
     }
   } catch (error) {
-    showToast("No se pudo completar la acción", getRequestErrorMessage(error), "warning");
+    showToast(
+      "No se pudo completar la acción",
+      getRequestErrorMessage(error),
+      "warning",
+    );
   } finally {
     saving.value = false;
     closeModal();
@@ -848,7 +1092,7 @@ const replaceRow = (updated) => {
 
 // --- CICLO DE VIDA ---
 onMounted(() => {
-  loadRequests();               // Al arrancar, monta las solicitudes iniciales.
+  loadRequests(); // Al arrancar, monta las solicitudes iniciales.
   fetchNormatividadesVigentes(); // Trae las normatividades desde la base de datos de manera asíncrona.
 });
 </script>
@@ -981,7 +1225,11 @@ onMounted(() => {
 }
 
 .request-actions-below-filter .primary-button {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-soft));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-soft)
+  );
   color: #fff;
   box-shadow: 0 8px 16px rgba(107, 24, 57, 0.16);
 }
@@ -1080,7 +1328,9 @@ onMounted(() => {
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin {
-  to { transform: rotate(360deg);}
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .toast {

@@ -3,6 +3,7 @@ const path = require('path');
 const db = require('../models');
 const bcrypt = require('bcryptjs');
 const { roleLabels, normalizeRole } = require('../utils/roles');
+const { registrarAuditoria } = require('../utils/audit');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
@@ -82,6 +83,12 @@ exports.login = async (req, res) => {
     const tokenGen = signUser(usuarioRecord);
 
     const userFront = toFrontendUser(usuarioRecord);
+
+    await registrarAuditoria(req, {
+      usuario: usuarioRecord.usuario,
+      modulo: 'Autenticacion',
+      accion: 'Inicio sesion',
+    });
 
     res.json({ token: tokenGen, user: userFront });
   } catch (error) {

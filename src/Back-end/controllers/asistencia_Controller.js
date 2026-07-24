@@ -1,6 +1,7 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 const { ROLE_GROUPS, hasRole } = require('../utils/roles');
+const { registrarAuditoria } = require('../utils/audit');
 
 const calcularEstatusPuntualidad = (horaEntrada) => {
   if (!horaEntrada) return 'ausente';
@@ -85,6 +86,11 @@ exports.registrarEntrada = async (req, res) => {
       minutos_retardo: minutosRetardo,
       asistencia,
     });
+
+    await registrarAuditoria(req, {
+      modulo: 'Asistencia',
+      accion: `Registro entrada ${hoy}`,
+    });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo registrar entrada', details: error.message });
   }
@@ -130,6 +136,11 @@ exports.registrarSalida = async (req, res) => {
       mensaje: `Salida registrada a las ${horaActual}. Estatus: ${obtenerEtiquetaSalida(estatusSalida)}.`,
       estatus_salida: estatusSalida,
       asistencia,
+    });
+
+    await registrarAuditoria(req, {
+      modulo: 'Asistencia',
+      accion: `Registro salida ${hoy}`,
     });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo registrar salida', details: error.message });

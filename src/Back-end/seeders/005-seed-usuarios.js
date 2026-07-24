@@ -10,7 +10,7 @@ module.exports = {
         usuario: 'Marina12',
         empleado_id: 1,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -19,7 +19,7 @@ module.exports = {
         usuario: 'MariaA13',
         empleado_id: 2,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -28,7 +28,7 @@ module.exports = {
         usuario: 'EdgardJ',
         empleado_id: 3,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -37,7 +37,7 @@ module.exports = {
         usuario: 'CinthyaI',
         empleado_id: 4,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -46,7 +46,7 @@ module.exports = {
         usuario: 'WendyVal',
         empleado_id: 5,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -55,7 +55,7 @@ module.exports = {
         usuario: 'MariaDLA',
         empleado_id: 6,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -64,7 +64,7 @@ module.exports = {
         usuario: 'CarlosA1',
         empleado_id: 7,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -73,7 +73,7 @@ module.exports = {
         usuario: 'DanielaCJ',
         empleado_id: 8,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -82,7 +82,7 @@ module.exports = {
         usuario: 'MariadP',
         empleado_id: 9,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -91,7 +91,7 @@ module.exports = {
         usuario: 'JohanannCA',
         empleado_id: 10,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -100,7 +100,7 @@ module.exports = {
         usuario: 'AliciaRM',
         empleado_id: 11,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -109,7 +109,7 @@ module.exports = {
         usuario: 'LuzEVL',
         empleado_id: 12,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -118,7 +118,7 @@ module.exports = {
         usuario: 'JoelACB',
         empleado_id: 13,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -154,7 +154,7 @@ module.exports = {
         usuario: 'IvanMA',
         empleado_id: 17,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -163,7 +163,7 @@ module.exports = {
         usuario: 'JoseDPC',
         empleado_id: 18,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -172,7 +172,7 @@ module.exports = {
         usuario: 'MariaDLPAZ',
         empleado_id: 19,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         documento_baja: null,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -182,7 +182,7 @@ module.exports = {
         usuario: 'JorgeEFG',
         empleado_id: 20,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -218,7 +218,7 @@ module.exports = {
         usuario: 'RobertoED',
         empleado_id: 24,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -227,7 +227,7 @@ module.exports = {
         usuario: 'OscarIS',
         empleado_id: 25,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -236,7 +236,7 @@ module.exports = {
         usuario: 'AmparoLM',
         empleado_id: 26,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -245,7 +245,7 @@ module.exports = {
         usuario: 'MariaLAP',
         empleado_id: 27,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -254,7 +254,7 @@ module.exports = {
         usuario: 'AntonioJH',
         empleado_id: 28,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -263,7 +263,7 @@ module.exports = {
         usuario: 'MariaER',
         empleado_id: 29,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -272,7 +272,7 @@ module.exports = {
         usuario: 'VictorMGG',
         empleado_id: 30,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -281,7 +281,7 @@ module.exports = {
         usuario: 'EnriqueMAM',
         empleado_id: 31,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -290,7 +290,7 @@ module.exports = {
         usuario: 'FernandoHC',
         empleado_id: 32,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -299,7 +299,7 @@ module.exports = {
         usuario: 'JavierZM',
         empleado_id: 33,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -308,7 +308,7 @@ module.exports = {
         usuario: 'GuillermoVQ',
         empleado_id: 34,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -317,7 +317,7 @@ module.exports = {
         usuario: 'JonathanDGV',
         empleado_id: 35,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -326,7 +326,7 @@ module.exports = {
         usuario: 'MiguelSG',
         empleado_id: 36,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -335,7 +335,7 @@ module.exports = {
         usuario: 'DavidCH',
         empleado_id: 37,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -344,7 +344,7 @@ module.exports = {
         usuario: 'IvanEAC',
         empleado_id: 38,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -353,7 +353,7 @@ module.exports = {
         usuario: 'AlejandroBG',
         empleado_id: 39,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -362,7 +362,7 @@ module.exports = {
         usuario: 'HectorJSC',
         empleado_id: 40,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -371,7 +371,7 @@ module.exports = {
         usuario: 'YadiradelROL',
         empleado_id: 41,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -380,7 +380,7 @@ module.exports = {
         usuario: 'DianaFB',
         empleado_id: 42,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -389,7 +389,7 @@ module.exports = {
         usuario: 'JoseABC',
         empleado_id: 43,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -398,7 +398,7 @@ module.exports = {
         usuario: 'FlorencioGT',
         empleado_id: 44,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -407,7 +407,7 @@ module.exports = {
         usuario: 'JavierGT',
         empleado_id: 45,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -416,7 +416,7 @@ module.exports = {
         usuario: 'JoseJFG',
         empleado_id: 46,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -425,7 +425,7 @@ module.exports = {
         usuario: 'ArturoOTP',
         empleado_id: 47,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -434,7 +434,7 @@ module.exports = {
         usuario: 'JonatanEF',
         empleado_id: 48,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -443,7 +443,7 @@ module.exports = {
         usuario: 'LuisVL',
         empleado_id: 49,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -452,7 +452,7 @@ module.exports = {
         usuario: 'ClementeLH',
         empleado_id: 50,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -461,7 +461,7 @@ module.exports = {
         usuario: 'SabasLH',
         empleado_id: 51,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -470,7 +470,7 @@ module.exports = {
         usuario: 'MarioHE',
         empleado_id: 52,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -479,7 +479,7 @@ module.exports = {
         usuario: 'GregorioOJ',
         empleado_id: 53,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -488,7 +488,7 @@ module.exports = {
         usuario: 'ErikAN',
         empleado_id: 54,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -497,7 +497,7 @@ module.exports = {
         usuario: 'KeobelRRL',
         empleado_id: 55,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -506,7 +506,7 @@ module.exports = {
         usuario: 'KarinaAP',
         empleado_id: 56,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -515,7 +515,7 @@ module.exports = {
         usuario: 'MaraLOH',
         empleado_id: 57,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -524,7 +524,7 @@ module.exports = {
         usuario: 'UrielRV',
         empleado_id: 58,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -533,7 +533,7 @@ module.exports = {
         usuario: 'CitlallyIVG',
         empleado_id: 59,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -542,7 +542,7 @@ module.exports = {
         usuario: 'BriandaYGR',
         empleado_id: 60,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -551,7 +551,7 @@ module.exports = {
         usuario: 'VictorOCV',
         empleado_id: 61,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -560,7 +560,7 @@ module.exports = {
         usuario: 'JoseLOO',
         empleado_id: 62,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -569,7 +569,7 @@ module.exports = {
         usuario: 'FernandoLV',
         empleado_id: 63,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -578,7 +578,7 @@ module.exports = {
         usuario: 'DaniloABA',
         empleado_id: 64,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -587,7 +587,7 @@ module.exports = {
         usuario: 'LucioTM',
         empleado_id: 65,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -596,7 +596,7 @@ module.exports = {
         usuario: 'AlejandroJP',
         empleado_id: 66,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -605,7 +605,7 @@ module.exports = {
         usuario: 'IvanCP',
         empleado_id: 67,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -614,7 +614,7 @@ module.exports = {
         usuario: 'ChristianCI',
         empleado_id: 68,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -623,7 +623,7 @@ module.exports = {
         usuario: 'YazminAQH',
         empleado_id: 69,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -632,7 +632,7 @@ module.exports = {
         usuario: 'VianeyJP',
         empleado_id: 70,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -641,7 +641,7 @@ module.exports = {
         usuario: 'LuisEMO',
         empleado_id: 71,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -650,7 +650,7 @@ module.exports = {
         usuario: 'MariadlpRG',
         empleado_id: 72,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         documento_baja: null,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -660,7 +660,7 @@ module.exports = {
         usuario: 'FlorIHH',
         empleado_id: 73,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -669,7 +669,7 @@ module.exports = {
         usuario: 'JuanOBC',
         empleado_id: 74,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -678,7 +678,7 @@ module.exports = {
         usuario: 'GustavoGS',
         empleado_id: 75,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -687,7 +687,7 @@ module.exports = {
         usuario: 'AngelicaPA',
         empleado_id: 76,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -696,7 +696,7 @@ module.exports = {
         usuario: 'MarinaBC',
         empleado_id: 77,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -705,7 +705,7 @@ module.exports = {
         usuario: 'DavidLS',
         empleado_id: 78,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -714,7 +714,7 @@ module.exports = {
         usuario: 'AndresTA',
         empleado_id: 79,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -723,7 +723,7 @@ module.exports = {
         usuario: 'JuanAGY',
         empleado_id: 80,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         documento_baja: null,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -733,7 +733,7 @@ module.exports = {
         usuario: 'KarinaZMV',
         empleado_id: 81,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -742,7 +742,7 @@ module.exports = {
         usuario: 'EdgarMMS',
         empleado_id: 82,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -751,7 +751,7 @@ module.exports = {
         usuario: 'VaniaAGP',
         empleado_id: 83,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -760,7 +760,7 @@ module.exports = {
         usuario: 'GiselleMA',
         empleado_id: 84,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -769,7 +769,7 @@ module.exports = {
         usuario: 'LeonardoSOC',
         empleado_id: 85,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -778,7 +778,7 @@ module.exports = {
         usuario: 'MarioATN',
         empleado_id: 86,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -787,7 +787,7 @@ module.exports = {
         usuario: 'AldoEFJ',
         empleado_id: 87,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -796,7 +796,7 @@ module.exports = {
         usuario: 'JazminFJ',
         empleado_id: 88,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -805,7 +805,7 @@ module.exports = {
         usuario: 'BelindaSPR',
         empleado_id: 89,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -814,7 +814,7 @@ module.exports = {
         usuario: 'JuanCGT',
         empleado_id: 90,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -823,7 +823,7 @@ module.exports = {
         usuario: 'NicolasMM',
         empleado_id: 91,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -832,7 +832,7 @@ module.exports = {
         usuario: 'JulioFMH',
         empleado_id: 92,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -841,7 +841,7 @@ module.exports = {
         usuario: 'FranciscoEP',
         empleado_id: 93,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -850,7 +850,7 @@ module.exports = {
         usuario: 'MariceldaBG',
         empleado_id: 94,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -859,7 +859,7 @@ module.exports = {
         usuario: 'EldaNBR',
         empleado_id: 95,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -868,7 +868,7 @@ module.exports = {
         usuario: 'DelfinoSJH',
         empleado_id: 96,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -877,7 +877,7 @@ module.exports = {
         usuario: 'JessicaRV',
         empleado_id: 97,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -886,7 +886,7 @@ module.exports = {
         usuario: 'MariaFMH',
         empleado_id: 98,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -895,7 +895,7 @@ module.exports = {
         usuario: 'JoelVP',
         empleado_id: 99,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -904,7 +904,7 @@ module.exports = {
         usuario: 'ElizabethRC',
         empleado_id: 100,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -913,7 +913,7 @@ module.exports = {
         usuario: 'WendySC',
         empleado_id: 101,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -922,7 +922,7 @@ module.exports = {
         usuario: 'AdolfoOM',
         empleado_id: 102,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -931,7 +931,7 @@ module.exports = {
         usuario: 'RobertoGF',
         empleado_id: 103,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -940,7 +940,7 @@ module.exports = {
         usuario: 'MarcelaGR',
         empleado_id: 104,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -949,7 +949,7 @@ module.exports = {
         usuario: 'Ma de la LuzGM',
         empleado_id: 105,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -958,7 +958,7 @@ module.exports = {
         usuario: 'LeonidesLH',
         empleado_id: 106,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -967,7 +967,7 @@ module.exports = {
         usuario: 'FabiolaEPI',
         empleado_id: 107,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -976,7 +976,7 @@ module.exports = {
         usuario: 'LidiaSPG',
         empleado_id: 108,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -985,7 +985,7 @@ module.exports = {
         usuario: 'RicardoCM',
         empleado_id: 109,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -994,7 +994,7 @@ module.exports = {
         usuario: 'EduardoJPR',
         empleado_id: 110,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1003,7 +1003,7 @@ module.exports = {
         usuario: 'OscarRM',
         empleado_id: 111,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1012,7 +1012,7 @@ module.exports = {
         usuario: 'SocorroGT',
         empleado_id: 112,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1021,7 +1021,7 @@ module.exports = {
         usuario: 'Ma Cristina HV',
         empleado_id: 113,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1030,7 +1030,7 @@ module.exports = {
         usuario: 'RicardoJOM',
         empleado_id: 114,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1039,7 +1039,7 @@ module.exports = {
         usuario: 'PatriciaET',
         empleado_id: 115,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1048,7 +1048,7 @@ module.exports = {
         usuario: 'AuroraRR',
         empleado_id: 116,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1057,7 +1057,7 @@ module.exports = {
         usuario: 'LeticiaPC',
         empleado_id: 117,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1066,7 +1066,7 @@ module.exports = {
         usuario: 'IvetteEH',
         empleado_id: 118,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1075,7 +1075,7 @@ module.exports = {
         usuario: 'HugoGC',
         empleado_id: 119,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1084,7 +1084,7 @@ module.exports = {
         usuario: 'Astrid Minelli',
         empleado_id: 120,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1093,7 +1093,7 @@ module.exports = {
         usuario: 'IvetteAGM',
         empleado_id: 121,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1102,7 +1102,7 @@ module.exports = {
         usuario: 'GabrielPR',
         empleado_id: 122,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1111,7 +1111,7 @@ module.exports = {
         usuario: 'AnabellyEA',
         empleado_id: 123,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1120,7 +1120,7 @@ module.exports = {
         usuario: 'JoseOAG',
         empleado_id: 124,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1129,7 +1129,7 @@ module.exports = {
         usuario: 'SaulGA',
         empleado_id: 125,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1138,7 +1138,7 @@ module.exports = {
         usuario: 'SaulLP',
         empleado_id: 126,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1147,7 +1147,7 @@ module.exports = {
         usuario: 'LorenaERR',
         empleado_id: 127,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1156,7 +1156,7 @@ module.exports = {
         usuario: 'Maria del ConsueloCB',
         empleado_id: 128,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1165,7 +1165,7 @@ module.exports = {
         usuario: 'OmarAPC',
         empleado_id: 129,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1174,7 +1174,7 @@ module.exports = {
         usuario: 'SilviaRCP',
         empleado_id: 130,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1183,7 +1183,7 @@ module.exports = {
         usuario: 'CristianASO',
         empleado_id: 131,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1192,7 +1192,7 @@ module.exports = {
         usuario: 'RomualdoSJ',
         empleado_id: 132,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1201,7 +1201,7 @@ module.exports = {
         usuario: 'EnriqueP133',
         empleado_id: 133,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1210,7 +1210,7 @@ module.exports = {
         usuario: 'RicardoJRH',
         empleado_id: 134,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1219,7 +1219,7 @@ module.exports = {
         usuario: 'LuisARJ',
         empleado_id: 135,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1228,7 +1228,7 @@ module.exports = {
         usuario: 'AlejandroCQ',
         empleado_id: 136,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1237,7 +1237,7 @@ module.exports = {
         usuario: 'JuanMGH',
         empleado_id: 137,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1246,7 +1246,7 @@ module.exports = {
         usuario: 'CrystianARG',
         empleado_id: 138,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1255,7 +1255,7 @@ module.exports = {
         usuario: 'LuisAMC',
         empleado_id: 139,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1264,7 +1264,7 @@ module.exports = {
         usuario: 'JoelSG',
         empleado_id: 140,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1273,7 +1273,7 @@ module.exports = {
         usuario: 'OscarAHM',
         empleado_id: 141,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1282,7 +1282,7 @@ module.exports = {
         usuario: 'BenjaminRA',
         empleado_id: 142,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1291,7 +1291,7 @@ module.exports = {
         usuario: 'AldoPL',
         empleado_id: 143,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1300,7 +1300,7 @@ module.exports = {
         usuario: 'RocioCRM',
         empleado_id: 144,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1309,7 +1309,7 @@ module.exports = {
         usuario: 'JesusRH',
         empleado_id: 145,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1318,7 +1318,7 @@ module.exports = {
         usuario: 'RaulBI',
         empleado_id: 146,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1327,7 +1327,7 @@ module.exports = {
         usuario: 'JoseAPHL',
         empleado_id: 147,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1336,7 +1336,7 @@ module.exports = {
         usuario: 'ErickDPL',
         empleado_id: 148,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1345,7 +1345,7 @@ module.exports = {
         usuario: 'SantiagoMH',
         empleado_id: 149,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1354,7 +1354,7 @@ module.exports = {
         usuario: 'GemanHC',
         empleado_id: 150,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1363,7 +1363,7 @@ module.exports = {
         usuario: 'SalvadorAM',
         empleado_id: 151,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1372,7 +1372,7 @@ module.exports = {
         usuario: 'ClementeAE',
         empleado_id: 152,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1381,7 +1381,7 @@ module.exports = {
         usuario: 'GustavoGS',
         empleado_id: 153,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1390,7 +1390,7 @@ module.exports = {
         usuario: 'JosueEMS',
         empleado_id: 154,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1399,7 +1399,7 @@ module.exports = {
         usuario: 'MarcoAAF',
         empleado_id: 155,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1408,7 +1408,7 @@ module.exports = {
         usuario: 'JoseIGB',
         empleado_id: 156,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1417,7 +1417,7 @@ module.exports = {
         usuario: 'AndersonHH',
         empleado_id: 157,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1426,7 +1426,7 @@ module.exports = {
         usuario: 'GerardoGG',
         empleado_id: 158,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1435,7 +1435,7 @@ module.exports = {
         usuario: 'JuanJSL',
         empleado_id: 159,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1444,7 +1444,7 @@ module.exports = {
         usuario: 'MariaMDB',
         empleado_id: 160,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1453,7 +1453,7 @@ module.exports = {
         usuario: 'JesusAVF',
         empleado_id: 161,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1462,7 +1462,7 @@ module.exports = {
         usuario: 'JudithABC',
         empleado_id: 162,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1471,7 +1471,7 @@ module.exports = {
         usuario: 'JuanAAF',
         empleado_id: 163,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1480,7 +1480,7 @@ module.exports = {
         usuario: 'LeopoldoJH',
         empleado_id: 164,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1489,7 +1489,7 @@ module.exports = {
         usuario: 'LeslieSCL',
         empleado_id: 165,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1498,7 +1498,7 @@ module.exports = {
         usuario: 'EnriqueRMR',
         empleado_id: 166,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1507,7 +1507,7 @@ module.exports = {
         usuario: 'AnaGGS',
         empleado_id: 167,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1516,7 +1516,7 @@ module.exports = {
         usuario: 'AlejandroPE',
         empleado_id: 168,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1525,7 +1525,7 @@ module.exports = {
         usuario: 'EstephaniaSCM',
         empleado_id: 169,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1534,7 +1534,7 @@ module.exports = {
         usuario: 'AlbaJRG',
         empleado_id: 170,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1543,7 +1543,7 @@ module.exports = {
         usuario: 'AlbertoCEA',
         empleado_id: 171,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1552,7 +1552,7 @@ module.exports = {
         usuario: 'RubenEPA',
         empleado_id: 172,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1561,7 +1561,7 @@ module.exports = {
         usuario: 'AreliCS',
         empleado_id: 173,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1570,16 +1570,16 @@ module.exports = {
         usuario: 'CarlosAHI',
         empleado_id: 174,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 175,
         usuario: 'ArianaFG',
-        empleado_id: 158,
+        empleado_id: 175,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1588,7 +1588,7 @@ module.exports = {
         usuario: 'MiltonPR',
         empleado_id: 176,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1597,7 +1597,7 @@ module.exports = {
         usuario: 'KarinaSN',
         empleado_id: 177,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1606,7 +1606,7 @@ module.exports = {
         usuario: 'AngelVL',
         empleado_id: 178,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1615,7 +1615,7 @@ module.exports = {
         usuario: 'MarthaAMR',
         empleado_id: 179,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1633,7 +1633,7 @@ module.exports = {
         usuario: 'AdrianRJP',
         empleado_id: 181,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1642,7 +1642,7 @@ module.exports = {
         usuario: 'JesusMGR',
         empleado_id: 158,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1651,7 +1651,7 @@ module.exports = {
         usuario: 'AdrianaGCS',
         empleado_id: 183,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1660,7 +1660,7 @@ module.exports = {
         usuario: 'RicardoGV',
         empleado_id: 184,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1669,7 +1669,7 @@ module.exports = {
         usuario: 'MirnaSG',
         empleado_id: 185,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1678,7 +1678,7 @@ module.exports = {
         usuario: 'MariaDCM',
         empleado_id: 186,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1687,7 +1687,7 @@ module.exports = {
        usuario: 'JobLM',
         empleado_id: 187,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1696,7 +1696,7 @@ module.exports = {
         usuario: 'MarioFCG',
         empleado_id: 188,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1705,7 +1705,7 @@ module.exports = {
         usuario: 'FelipeFRL',
         empleado_id: 189,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1714,7 +1714,7 @@ module.exports = {
         usuario: 'JoseHH',
         empleado_id: 190,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1723,7 +1723,7 @@ module.exports = {
         usuario: 'GerardoGG',
         empleado_id: 191,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1732,7 +1732,7 @@ module.exports = {
         usuario: 'EddertYHR',
         empleado_id: 192,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1741,7 +1741,7 @@ module.exports = {
         usuario: 'FridaEMG',
         empleado_id: 193,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1750,7 +1750,7 @@ module.exports = {
         usuario: 'HectorFC',
         empleado_id: 194,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1759,7 +1759,7 @@ module.exports = {
         usuario: 'BrendaMU',
         empleado_id: 195,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1768,7 +1768,7 @@ module.exports = {
         usuario: 'GerardoGG',
         empleado_id: 196,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1777,7 +1777,7 @@ module.exports = {
         usuario: 'ClaudiaGJC',
         empleado_id: 197,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1786,7 +1786,7 @@ module.exports = {
         usuario: 'MauraARdelRC',
         empleado_id: 198,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1795,7 +1795,7 @@ module.exports = {
         usuario: 'LuisEGD',
         empleado_id: 199,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1804,16 +1804,16 @@ module.exports = {
         usuario: 'EdgarFOG',
         empleado_id: 200,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 201,
         usuario: 'DanielaIGA',
-        empleado_id: 158,
+        empleado_id: 201,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1822,7 +1822,7 @@ module.exports = {
         usuario: 'BlancaGLG',
         empleado_id: 202,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1831,7 +1831,7 @@ module.exports = {
         usuario: 'GerardoIM',
         empleado_id: 203,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1840,7 +1840,7 @@ module.exports = {
         usuario: 'LuisMGA',
         empleado_id: 204,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1849,7 +1849,7 @@ module.exports = {
         usuario: 'ChristianALdelC',
         empleado_id: 205,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1858,16 +1858,16 @@ module.exports = {
         usuario: 'ElverthCO',
         empleado_id: 206,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 207,
         usuario: 'Gabriela del Mar,DE',
-        empleado_id: 158,
+        empleado_id: 207,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1876,7 +1876,7 @@ module.exports = {
         usuario: 'MariaISM',
         empleado_id: 208,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1885,16 +1885,16 @@ module.exports = {
         usuario: 'YazminSEH',
         empleado_id: 209,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 210,
         usuario: 'IreneERA',
-        empleado_id: 158,
+        empleado_id: 210,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1903,7 +1903,7 @@ module.exports = {
         usuario: 'SebastianGD',
         empleado_id: 211,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -1912,7 +1912,7 @@ module.exports = {
         usuario: 'SilviaMSA',
         empleado_id: 212,
         rol: 'empleado',
-        password_hash: null,
+        password_hash: DEFAULT_PASSWORD_HASH,
         createdAt: new Date(),
         updatedAt: new Date()
       },
