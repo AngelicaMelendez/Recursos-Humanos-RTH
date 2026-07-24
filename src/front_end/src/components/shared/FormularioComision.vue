@@ -46,7 +46,7 @@
 <div class="check-regreso">
     <label>
         Sin Regreso
-        <input class="input-regreso" v-model="comision.regreso" type="checkbox" style="background-color: #A02142;" required /> 
+        <input class="input-regreso" v-model="comision.regreso" type="checkbox" style="background-color: #A02142;" /> 
     </label>
     </div>
 
@@ -68,19 +68,18 @@
 <script setup>
 
 import { reactive, ref } from 'vue';
-import { computed , onMounted } from "vue";
-import { useAuthStore } from '@/store/auth';
-import axios from 'axios';
+import { computed } from "vue";
+import requestsService from '@/services/requests.service';
 
 
 
 const emit = defineEmits (['success', 'cancel']);
-const authStore = useAuthStore;
+
 const loading = ref(false);
 
 
 const horasInvalidas = computed(() => {
-  if(!comision.hora_salida || !hora_regreso) return false;
+  if(!comision.hora_salida || !comision.hora_regreso) return false;
   return comision.hora_regreso < comision.hora_salida;
 });
 
@@ -90,7 +89,7 @@ const comision = reactive ({
 
     oficio_num: '',
     fecha_comision: '',
-    lugar: '',
+    
     hora_salida: '',
     hora_regreso: '',
     regreso: '',
@@ -99,14 +98,21 @@ const comision = reactive ({
 
 
 const enviarComision = async () => {
+    if (horasInvalidas.value) return;
     loading.value = true;
     try {
-        const response = await axios.post('http://localhost:8000/api/solicitudes', comision, {
-            headers: {
-                'authorization': `Bearer ${authStore.token}` 
-            }
+        const nuevaSolicitud = await requestsService.create({
+            tipo: 'comision',
+            oficio: comision.oficio_num,
+            fecha_inicio: comision.fecha_comision,
+            fecha_fin: comision.fecha_comision,
+            motivo: [
+                comision.motivo,
+                `Hora de salida: ${comision.hora_salida}`,
+                `Hora estimada de regreso: ${comision.regreso ? 'Sin regreso' : comision.hora_regreso}`
+            ].join('\n')
         });
-        emit('success', response.data);
+        emit('success', nuevaSolicitud);
     } catch (error) {
         alert("Error al Guardar la Comision: " + (error.response?.data?.error || error.message));
     } finally {

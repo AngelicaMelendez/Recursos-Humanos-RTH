@@ -2,7 +2,7 @@ import api from "@/services/api";
 
 export default {
   async list() {
-    const { data } = await api.get("/api/notificaciones/solicitudes");
+    const { data } = await api.get("/api/notificaciones/listar");
     return data;
   },
   async markAsRead(id) {

@@ -582,7 +582,7 @@ if (action.key === "downloadNormativity" && row) {
 }
 
 .icon {
-  width: px;
+  width: 10px;
   height: 20px;
   margin-right: 2px;
   margin-top: 2px;

@@ -67,7 +67,10 @@
     </template>
 
     <div class="filter-actions">
-      <button type="submit" class="primary-button" @click="resetPaginationAndFetch"> <IconSymbol name="search" /> Buscar</button>
+      <button type="button" class="secondary" @click="showDepartamentoPuesto = !showDepartamentoPuesto">
+        <IconSymbol name="filter" /> Filtros
+      </button>
+      <button type="submit" class="primary-button"> <IconSymbol name="search" /> Buscar</button>
       <button type="button" class="secondary" @click="clearFilters"> <IconSymbol name="clear" /> Limpiar</button>
       <button type="button" class="ghost-button" @click="loadDirectory"> <IconSymbol name="reset"/> Actualizar </button>
  
@@ -134,7 +137,7 @@
                 <dt class="field-title-data">RFC:</dt>
                 <dd class="field-data">{{ selectedEmployee.rfc || 'RFC no disponible' }}</dd>
                 <dt class="field-title-data">Tipo de Sangre:</dt>
-                <dd class="field-data">{{ selectedEmployee.tipo_sangre || 'Tipo de sangre no disponible' }}</dd>
+                <dd class="field-data">{{ selectedEmployee.tipo_sangre || selectedEmployee.tipo_Sanguineo || 'Tipo de sangre no disponible' }}</dd>
                 <dt class="field-title-data">Fecha de Nacimiento:</dt>
                 <dd class="field-data">{{ formatDate(selectedEmployee.fecha_nacimiento) }}</dd>
                 <dt class="field-title-data">Edad:</dt>
@@ -200,7 +203,7 @@
                 <dt class="field-title-data">Nivel</dt>
                 <dd class="field-data">{{ selectedEmployee.nivel }}</dd>
                 <dt class="field-title-data">Constancia de Vigencia de Derechos</dt>
-                <dd class="field-data">{{ selectedEmployee.estatus === 'Activo' ? 'Alta' : 'Baja' }}</dd>
+                <dd class="field-data">{{ String(selectedEmployee.estatus).toLowerCase() === 'activo' ? 'Alta' : 'Baja' }}</dd>
                 <dt class="field-title-data">NSS</dt>
                 <dd class="field-data">{{ selectedEmployee.nss || '-' }}</dd>
                 <dt class="field-title-data">Departamento:</dt>
@@ -343,7 +346,7 @@ const totalPages = computed(() => {
 /**
  * Obtiene las acciones permitidas en el directorio según el rol del usuario autenticado
  */
-const actions = computed(() => getRoleActions(authStore.user?.rol, "directory"));
+const actions = computed(() => getRoleActions(authStore.user, "directory"));
 
 /**
  * Recupera el ID del empleado logueado desde el almacén de autenticación
@@ -384,10 +387,7 @@ const filteredPuestos = computed(() => {
 /**
  * Filtra los departamentos reactivamente en base a la dirección seleccionada
  */
-const filteredDepartamentos = computed(() => {
-  if (!selectedDireccionId.value) return departamentos.value;
-  return departamentos.value.filter((dep) => dep.direccion_id === Number(selectedDireccionId.value));
-});
+const filteredDepartamentos = computed(() => departamentos.value);
 
 // ==========================================================
 // 4. MÉTODOS Y FUNCIONES DE CONTROL
@@ -477,12 +477,12 @@ const findEmployeeByNumber = (value) => {
 const fetchFilters = async () => {
   try {
     const [direccionesResp, departamentosResp, puestosResp] = await Promise.all([
-      organogramaService.listarDepartamentos(),
       organogramaService.listarDirecciones(),
+      organogramaService.listarDepartamentos(),
       organogramaService.listarPuestos()
     ]);
-    departamentos.value = departamentosResp.data || [];
     direcciones.value = direccionesResp.data || [];
+    departamentos.value = departamentosResp.data || [];
     puestos.value = puestosResp.data || [];
   } catch (error) {
     console.error("Error al cargar catálogos de filtros:", error);
@@ -576,8 +576,7 @@ const resolveDireccionSelection = () => {
 const resolveDepartamentoSelection = () => {
   const match = departamentos.value.find(
     (departamento) =>
-      departamento.nombre.toLowerCase() === departamentoName.value.trim().toLowerCase() &&
-      (!selectedDireccionId.value || departamento.departamento_id === Number(selectedDireccionId.value))
+      departamento.nombre.toLowerCase() === departamentoName.value.trim().toLowerCase()
   );
   selectedDepartamentoId.value = match ? String(match.id) : "";
   if (!selectedDepartamentoId.value) {

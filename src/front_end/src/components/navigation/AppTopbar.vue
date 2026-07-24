@@ -79,7 +79,7 @@
           <strong class="user-name">
             {{ localName || "Usuario" }}
           </strong>
-          <span>{{ localDepartment || "Departamento: " }}</span>
+          <span>{{ localDepartment || "Departamento" }}</span>
           <br></br>
           <span>{{ localRole || "Administrador" }}</span>
         </div>
@@ -100,7 +100,7 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-area">Departamento:</label>
+        <label for="edit-area">Departamento</label>
         <input type="text" id="edit-departamento" v-model="editForm.departamento" />
       </div>
       <div class="form-group">

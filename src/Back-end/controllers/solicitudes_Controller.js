@@ -4,6 +4,18 @@ const { ROLE_GROUPS, PERMISSIONS, hasRole } = require('../utils/roles');
 
 const tiposIncidencia = ['vacaciones', 'permiso', 'incapacidad', 'maternidad', 'paternidad', 'comision', 'otro'];
 
+//Esta linea es para cachear las columnas de la tabla empleados y evitar hacer múltiples consultas a la base de datos
+let empleadoColumnsCache = null;
+
+//Esta función obtiene las columnas de la tabla empleados y las cachea para evitar múltiples consultas a la base de datos
+async function obtenerColumnasEmpleado() {
+  if (!empleadoColumnsCache) {
+    const table = await db.sequelize.getQueryInterface().describeTable('empleados');
+    empleadoColumnsCache = new Set(Object.keys(table));
+  }
+  return empleadoColumnsCache;
+}
+
 function normalizarTipoIncidencia(tipo) {
   const normalizado = String(tipo || '').toLowerCase();
   return tiposIncidencia.includes(normalizado) ? normalizado : 'otro';
@@ -92,6 +104,8 @@ function construirFiltroEmpleado(query) {
 }
 
 async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
+  const columnasEmpleado = await obtenerColumnasEmpleado();
+  const tieneNumeroEmpleado = columnasEmpleado.has('No_de_empleado');
   const filtroEmpleado = construirFiltroEmpleado(query);
   const esVisorGlobal = puedeVerTodasLasSolicitudes(usuarioActual);
   
@@ -102,7 +116,20 @@ async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
   const empleadoInclude = {
     model: db.Empleado,
     as: 'empleado',
-    attributes: ['id', 'nombre', 'apellidos', 'rfc', 'No_de_empleado'],
+    attributes: ['id', 'nombre', 'apellidos', 'rfc'].concat(tieneNumeroEmpleado ? ['No_de_empleado'] : []),
+
+    include: [
+      {
+        model: db.Direccion,
+        as: 'direccion',
+        attributes: ['id', 'nombre'],
+      },
+      {
+        model: db.Puesto,
+        as: 'puesto', 
+        attributes: ['id', 'nombre', 'nivel'],
+      },
+    ],
   };
 
   // Aplicamos la lógica de autocompletado o filtros específicos
@@ -115,7 +142,8 @@ async function obtenerSolicitudes(query = {}, usuarioActual = {}) {
         ...whereSolicitud,
         [Op.or]: [
           { '$empleado.rfc$': { [Op.like]: `%${filtroEmpleado.buscar.toUpperCase()}%` } },
-          { '$empleado.No_de_empleado$': { [Op.like]: `%${filtroEmpleado.buscar}%` } }
+          ...(tieneNumeroEmpleado ? [{ '$empleado.No_de_empleado$': { [Op.like]: `%${filtroEmpleado.buscar}%` } }] : []),
+          ...construirFiltroNumeroEmpleado(filtroEmpleado.buscar).filter((filtro) => filtro.id)
         ]
       };
       // Obligamos a que el JOIN sea INNER JOIN para que solo traiga solicitudes de empleados que cumplan la condición
@@ -274,6 +302,12 @@ function toFrontendSolicitud(row) {
     No_de_empleado: row.empleado?.No_de_empleado || 'S/N',
     empleado_nombre: empleadoNombre || row.empleado?.nombre || null,
     empleado_rfc: row.empleado?.rfc || null,
+
+    empleado_adscripcion: row.empleado?.direccion?.nombre || 'N/A',
+    empleado_nombramiento: row.empleado?.puesto?.nombre || 'N/A',
+
+
+
     tipo: row.tipo,
     fecha_inicio: row.fecha_inicio,
     fecha_fin: row.fecha_fin,

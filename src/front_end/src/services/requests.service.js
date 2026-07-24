@@ -9,7 +9,8 @@ export default {
     return data;
   },
   async create(payload) {
-    const { data } = await api.post("/solicitudes", payload);
+    const config = payload instanceof FormData ? { headers: { "Content-Type": "multipart/form-data" } } : undefined;
+    const { data } = await api.post("/solicitudes", payload, config);
     return data;
   },
   async approve(id) {

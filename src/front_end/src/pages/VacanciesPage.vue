@@ -20,236 +20,180 @@
     </BaseCard>
   </div>
 
-
-  <div class="test-container">
-    <div class="control-panel">
-      <h2>Generador de Oficios de Comisión (Hidalgo)</h2>
-      <p>Vista previa del documento oficial. Haz clic en el botón para descargar el PDF limpio.</p>
-      
-      <div class="button-group">
-        <button @click="exportarPDF" class="btn btn-primary">
-          Descargar Oficio en PDF
-        </button>
-      </div>
-    </div>
-
-    <div class="preview-box">
-      <div ref="reporteRef" class="pdf-document">
-        
-        <table class="header-table">
-          <tr>
-            <td class="header-left">
-              <img :src="logoUrl" alt="Logo Hidalgo" class="pdf-logo" />
-            </td>
-          </tr>
-        </table>
-
-        <table class="header-tablee">
-          <tr>
-            <td class="header-right">
-              <div class="sec-gob">Secretaría de Gobierno</div>
-              <div class="rth-text">Radio y Televisión de Hidalgo</div>
-              <div class="oficio-title">Oficio de Comisión</div>
-              <div class="oficio-num">RTH/DAF/TI/051/2026</div>
-            </td>
-          </tr>
-        </table>
-
-        <div class="date-section">
-          Pachuca de Soto, Hgo., a 20 de julio de 2026
-        </div>
-
-        <table class="data-table">
-          <tr>
-            <td class="label-cell">Nombre del trabajador:</td>
-            <td class="value-cell bold-text">Omar Efrén Vázquez Moreno</td>
-          </tr>
-          <tr>
-            <td class="label-cell">Adscripción:</td>
-            <td class="value-cell">Dirección de Administración y Finanzas</td>
-          </tr>
-          <tr>
-            <td class="label-cell">Tipo de nombramiento:</td>
-            <td class="value-cell">Jefe de Área A</td>
-          </tr>
-          <tr>
-            <td class="label-cell">No. de Empleado:</td>
-            <td class="value-cell">029333</td>
-          </tr>
-        </table>
-
-        <div class="checkbox-container">
-          <table class="checkbox-table">
-            <tr>
-              <td class="checkbox-item">
-                Base <div class="checkbox-box"></div>
-              </td>
-              <td class="checkbox-item">
-                Confianza <div class="checkbox-box"></div>
-              </td>
-              <td class="checkbox-item">
-                Honorarios <div class="checkbox-box"></div>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="content-section">
-          <p class="content-text">
-          Por este conducto me permito informarle que ha sido comisionado para el día <strong> lunes, 20 de julio del año en curso</strong>, para asistir a  <strong> " "</strong> para " ".
-          </p>
-        </div>
-
-        <table class="schedule-table">
-          <tr>
-            <td class="schedule-cell">
-              <strong>Salida:</strong> 16:30 hrs.
-            </td>
-          </tr>
-        </table>
-
-        <table class="schedule-table">
-          <tr>
-            <td class="schedule-cell">
-              <strong>Regreso:</strong> 18:00 hrs. Aproximadamente.
-            </td>
-          </tr>
-        </table>
-
-        <div class="farewell-text">
-          Agradeciendo de antemano su apoyo, quedo de usted.
-        </div>
-
-        <table class="signature-table">
-          <tr>
-            <td class="signature-cell">
-              <div class="signature-role">Autorizó</div>
-              <div class="signature-space"></div>
-              <div class="signature-name">Mtra. Isela Guadalupe Espinosa López</div>
-              <div class="signature-title">Directora de Administración y Finanzas</div>
-            </td>
-            <td class="signature-cell">
-              <div class="signature-role">Acepto Comisión</div>
-              <div class="signature-space"></div>
-              <div class="signature-name">Omar Efrén Vázquez Moreno</div>
-              <div class="signature-title">Jefe de Área A</div>
-            </td>
-          </tr>
-        </table>
-
-      </div>
-    </div>
-  </div>
-
-
-
   
-  <div class="test-container">
-    <div class="control-panel">
-      <h2>Generador de Oficios de Comisión (Hidalgo)</h2>
-      <p>Vista previa del documento oficial. Haz clic en el botón para descargar el PDF limpio.</p>
+  <div class="pdf-editor-layout">
+    <!-- panel izquierdo: formulario de edición -->
+    <div class="editor-sidebar">
+      <h3>Editar Datos del Documento</h3>
       
-      <div class="button-group">
-        <button @click="exportarPDF" class="btn btn-primary">
-          Descargar Oficio en PDF
-        </button>
+      <div class="form-group">
+        <label>Tipo de Documento:</label>
+        <select v-model="tipoDocumento">
+          <option value="vacaciones-f1">Vacaciones (Formato 1 - DAF)</option>
+          <option value="vacaciones-f2">Vacaciones (Formato 2 - Director de Área)</option>
+        </select>
       </div>
+
+    
+      <template v-if="tipoDocumento === 'vacaciones-f2'">
+        <div class="form-group">
+          <label>Director de Área que Autoriza:</label>
+          <input type="text" v-model="form.director_area_nombre" />
+        </div>
+        <div class="form-group">
+          <label>Cargo / Área del Director:</label>
+          <input type="text" v-model="form.director_area_puesto" />
+        </div>
+        <div class="form-group">
+          <label>Jefe Inmediato:</label>
+          <input type="text" v-model="form.jefe_nombre" />
+        </div>
+        <div class="form-group">
+          <label>Cargo Jefe Inmediato:</label>
+          <input type="text" v-model="form.jefe_puesto" />
+        </div>
+      </template>
+
+      <button class="btn-primary" @click="generarPDF">
+         Descargar PDF
+      </button>
     </div>
 
-    <div class="preview-box">
-      <div ref="reporteRef" class="pdf-document">
+    <!-- PANEL DERECHO: VISTA PREVIA EN TIEMPO REAL -->
+    <div class="preview-area">
+      <div class="paper-sheet">
         
-        <table class="headeer-tablee">
-          <tr>
-            <td class="header-right">
-              <div class="secc-goob">Pachuca de Soto, Hgo., a 20 de julio 2026</div>
-              <div class="rth-texxt">Asunto: Solicitud de Autorizacin de Vacaciones </div>
-            </td>
-          </tr>
-        </table>
+        <!-- FORMATO 1 -->
+        <div v-if="tipoDocumento === 'vacaciones-f1'" id="pdf-to-print" class="pdf-container">
+          <div class="header-right">
+            <p><strong>Pachuca de Soto, Hgo., a {{ form.fecha_solicitud }}</strong></p>
+            <p><strong>Asunto:</strong> Solicitud de Autorización de Vacaciones</p>
+          </div>
 
-        <div class="date-section">
+          <div class="recipient-block">
+            <p><strong>Mtra. Isela Guadalupe Espinosa López</strong></p>
+            <p>Directora de Administración y Finanzas</p>
+            <p><strong>PRESENTE</strong></p>
+            <p class="attn">Atn. LASC. Lorena Barrera Soto<br>Subdirectora Adjunta de Recursos Humanos</p>
+          </div>
+
+          <div class="body-text">
+            <p>
+              Por medio del presente, aprovecho la ocasión para saludarlo cordialmente y a la vez, 
+              solicitar su autorización para que me sea otorgado <strong>{{ form.dias_solicitados }}</strong>, 
+              a cuenta de mi {{ form.periodo }} periodo vacacional del ejercicio {{ form.ejercicio }}, 
+              reanudando mis actividades el día <strong>{{ form.fecha_reanudacion }}</strong>.
+            </p>
+            <p>
+              Esta solicitud se formula conforme a lo señalado en los numerales 96, inciso II (julio-octubre) y el 101 del acuerdo que contiene las políticas, Bases y Lineamientos para la administración de los recursos humanos al servicio del Poder Ejecutivo del Estado de Hidalgo.
+            </p>
+            <p>Agradezco de antemano su atención y quedo a su disposición para cualquier aclaración.</p>
+          </div>
+
+          <div class="signatures-section">
+            <div class="signature-row single">
+              <div class="signature-box">
+                <p class="role-title">Solicito</p>
+                <div class="signature-line"></div>
+                <p class="name">{{ form.empleado_nombre }}</p>
+                <p class="position">{{ form.empleado_puesto }}</p>
+              </div>
+            </div>
+
+            <div class="signature-row dual">
+              <div class="signature-box">
+                <p class="role-title">Autorizó</p>
+                <div class="signature-line"></div>
+                <p class="name">Mtra. Isela Guadalupe Espinosa López</p>
+                <p class="position">Directora de Administración y Finanzas</p>
+              </div>
+              <div class="signature-box">
+                <p class="role-title">Autorizó</p>
+                <div class="signature-line"></div>
+                <p class="name">{{ form.jefe_nombre }}</p>
+                <p class="position">{{ form.jefe_puesto }}</p>
+              </div>
+            </div>
+
+            <div class="signature-row single">
+              <div class="signature-box">
+                <p class="role-title">Vo. Bo.</p>
+                <div class="signature-line"></div>
+                <p class="name">LASC. Lorena Barrera Soto</p>
+                <p class="position">Subdirectora Adjunta de Recursos Humanos</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <table class="dataa-tablee">
-          <tr>
-            <td class="label-cell">Mtra. Isela Guadalupe Espinoza Lopez </td>
-          </tr>
-          <tr>
-            <td class="label-cell">Directora de Administración y Finanzas</td>
-          </tr>
-          <tr>
-            <td class="label-cell">PRESENTE</td>
-          </tr>
-        </table>
+        <!-- FORMATO 2 -->
+        <div v-else-if="tipoDocumento === 'vacaciones-f2'" id="pdf-to-print" class="pdf-container">
+          <div class="header-right">
+            <p><strong>Pachuca de Soto, Hgo., a {{ form.fecha_solicitud }}</strong></p>
+            <p><strong>Asunto:</strong> Solicitud de Autorización de Vacaciones</p>
+          </div>
 
+          <div class="recipient-block">
+            <p><strong>Mtra. Isela Guadalupe Espinosa López</strong></p>
+            <p>Directora de Administración y Finanzas</p>
+            <p><strong>PRESENTE</strong></p>
+            <p class="attn">Atn. LASC. Lorena Barrera Soto<br>Subdirectora Adjunta de Recursos Humanos</p>
+          </div>
 
-        <table class="headeer-tablee">
-          <tr>
-            <td class="header-right">
-              <div class="secc-goob">Atn. LASC. Lorena Barrera Soto</div>
-              <div class="rth-texxt">Subdirectora Adjunta de Recursos Humanos </div>
-            </td>
-          </tr>
-        </table>
-       
-        <div class="content-section">
-          <p class="content-text">
-          Por medio del presente, aprovecho la ocasión para saludarlo coordialmente <strong> y a la vez, solicitar su autorización para que me sea otorgado el dia "" de "" del</strong> presente año , a cuenta de mi segundo periodo vacacional del ejercicio 2026,<strong>reanudando mis actividades el dia "" de "" del año 2026</strong>.
-          </p>
+          <div class="body-text">
+            <p>
+              Por medio del presente, aprovecho la ocasión para saludarlo cordialmente y a la vez, 
+              solicitar su autorización para que me sea otorgado <strong>{{ form.dias_solicitados }}</strong>, 
+              a cuenta de mi {{ form.periodo }} periodo vacacional del ejercicio {{ form.ejercicio }}, 
+              reanudando mis actividades el día <strong>{{ form.fecha_reanudacion }}</strong>.
+            </p>
+            <p>
+              Esta solicitud se formula conforme a lo señalado en los numerales 96, inciso II (julio-octubre) y el 101 del acuerdo que contiene las políticas, Bases y Lineamientos para la administración de los recursos humanos al servicio del Poder Ejecutivo del Estado de Hidalgo.
+            </p>
+            <p>Agradezco de antemano su atención y quedo a su disposición para cualquier aclaración.</p>
+          </div>
+
+          <div class="signatures-section">
+            <div class="signature-row single">
+              <div class="signature-box">
+                <p class="role-title">Solicito</p>
+                <p class="name">{{ form.empleado_nombre }}</p>
+                <p class="position">{{ form.empleado_puesto }}</p>
+              </div>
+            </div>
+
+            <div class="signature-row dual">
+              <div class="signature-box">
+                <p class="role-title">Autorizó</p>
+                <p class="name">{{ form.director_area_nombre }}</p>
+                <p class="position">{{ form.director_area_puesto }}</p>
+              </div>
+              <div class="signature-box">
+                <p class="role-title">Autorizó</p>
+                <p class="name">{{ form.jefe_nombre }}</p>
+                <p class="position">{{ form.jefe_puesto }}</p>
+              </div>
+            </div>
+
+            <div class="signature-row dual">
+              <div class="signature-box">
+                <p class="role-title">Vo. Bo.</p>
+                <p class="name">LASC. Lorena Barrera Soto</p>
+                <p class="position">Subdirectora Adjunta de Recursos Humanos</p>
+              </div>
+              <div class="signature-box">
+                <p class="role-title">Vo. Bo.</p>
+                <p class="name">Mtra. Isela Guadalupe Espinosa López</p>
+                <p class="position">Directora de Administración y Finanzas</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="content-section">
-          <p class="content-text">
-          Esta solicitud se formula conforme a lo señalado en los numerales del 96, inciso II <strong> vez, solicitar su autorización para que me sea otorgado el dia "" de "" del</strong> presente año , a cuenta de mi segundo periodo vacacional del ejercicio 2026,<strong>reanudando mis actividades el dia "" de "" del año 2026</strong>.
-          </p>
-        </div>
 
-        
-        <div class="content-section">
-          <p class="content-text">
-          Esta solicitud se formula conforme a lo señalado en los numerales del 96, inciso II <strong> vez, solicitar su autorización para que me sea otorgado el dia "" de "" del</strong> presente año , a cuenta de mi segundo periodo vacacional del ejercicio 2026,<strong>reanudando mis actividades el dia "" de "" del año 2026</strong>.
-          </p>
-        </div>
-
-        <table class="schedule-table">
-          <tr>
-            <td class="schedule-cell">
-              <strong>Salida:</strong> 16:30 hrs.
-            </td>
-          </tr>
-        </table>
-
-        <table class="schedule-table">
-          <tr>
-            <td class="schedule-cell">
-              <strong>Regreso:</strong> 18:00 hrs. Aproximadamente.
-            </td>
-          </tr>
-        </table>
-
-        <div class="farewell-text">
-          Agradeciendo de antemano su apoyo, quedo de usted.
-        </div>
-
-        <table class="signature-table">
-          <tr>
-            <td class="signature-cell">
-              <div class="signature-role">Autorizó</div>
-              <div class="signature-space"></div>
-              <div class="signature-name">Mtra. Isela Guadalupe Espinosa López</div>
-              <div class="signature-title">Directora de Administración y Finanzas</div>
-            </td>
-            <td class="signature-cell">
-              <div class="signature-role">Acepto Comisión</div>
-              <div class="signature-space"></div>
-              <div class="signature-name">Omar Efrén Vázquez Moreno</div>
-              <div class="signature-title">Jefe de Área A</div>
-            </td>
-          </tr>
-        </table>
 
       </div>
+
     </div>
   </div>
 
@@ -262,15 +206,14 @@ import AppTable from "@/components/ui/AppTable.vue";
 import PageHeader from "@/components/shared/PageHeader.vue";
 import RoleActionBar from "@/components/shared/RoleActionBar.vue";
 import StatusBadge from "@/components/shared/StatusBadge.vue";
-import logopdf from "@/assets/logopdf.png"
+
 import html2pdf from 'html2pdf.js';
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, reactive ,watch } from "vue";
 import { getRoleActions } from "@/utils/permissions";
 import { useAuthStore } from "@/store/auth";
 
 
-const logoUrl = logopdf;
-const reporteRef = ref(null);
+
 
 
 const authStore = useAuthStore();
@@ -335,26 +278,53 @@ const rows = ref([
 ]);
 
 
-const exportarPDF = () => {
-  const elemento = reporteRef.value;
+
+const props = defineProps({
+  datosIniciales: {
+    type: Object,
+    default: () => ({})
+  }
+})
+
+const tipoDocumento = ref('vacaciones-f1')
+
+const form = reactive({
+  fecha_solicitud: '17 de julio del 2026',
+  periodo: 'segundo',
+  ejercicio: '2026',
+  dias_solicitados: 'el día 31 de julio del presente año',
+  fecha_reanudacion: '4 de agosto del año 2026',
+  empleado_nombre: 'LA',
+  empleado_puesto: 'Desarrollador Frontend',
+  jefe_nombre: 'Omar Efrén Vázquez Moreno',
+  jefe_puesto: 'Encargado de Tecnologías de la Información',
+  director_area_nombre: 'Nombre (Director de Área)',
+  director_area_puesto: 'Dirección del Área Correspondiente'
+})
+
+watch(() => props.datosIniciales, (nuevosDatos) => {
+  if (nuevosDatos && Object.keys(nuevosDatos).length) {
+    Object.assign(form, nuevosDatos)
+  }
+}, { immediate: true })
+
+const generarPDF = async () => {
+  const elemento = document.getElementById('pdf-to-print')
+  if (!elemento) return
 
   const opciones = {
-    margin:       3, 
-    filename:     'Oficio_de_Comision_Ejemplo_RTH.pdf',
-    image:        { type: 'png', quality: 1.98 },
-    html2canvas:  { 
-      scale: 2,          // Resolución nítida de texto
-      useCORS: true,     // Asegura la carga de imágenes
-      logging: false 
-    },
+    margin:       [10, 10, 10, 10],
+    filename:     `Oficio_Vacaciones_${Date.now()}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 3, useCORS: true, letterRendering: true },
     jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
-  };
+  }
 
-  html2pdf().set(opciones).from(elemento).save();
+  await html2pdf().set(opciones).from(elemento).save()
+
+
+
 };
-
-
-
 
 
 </script>
@@ -380,384 +350,104 @@ const exportarPDF = () => {
   margin-top: 20px;
 }
 
-.test-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: #f3f4f6;
-  min-height: 100vh;
-}
-
-
-.control-panel {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.control-panel h2 {
-  margin-top: 0;
-  color: #1e293b;
-}
-
-.button-group {
+.pdf-editor-layout {
   display: flex;
-  gap: 15px;
-  justify-content: center;
+  height: 100vh;
+  background: #8a3c3c;
+  color: #fff;
+}
+
+.editor-sidebar {
+  width: 380px;
+  background: #f0f0f3;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #f1efef;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #ccc;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #f5ecec;
+  background: #f1eeee;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #ebe7e7;
+  margin: 20px 0;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  background-color: #A02142;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+
+  cursor: pointer;
   margin-top: 15px;
 }
 
-.btn {
-  padding: 10px 20px;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-primary {
-  background-color: #0284c7;
-  color: white;
-}
-
-
 .btn-primary:hover {
-  background-color: #0369a1;
+  background-color: #0b5ed7;
 }
 
-.btn-secondary {
-  background-color: #e2e8f0;
-  color: #334155;
-}
-
-.btn-secondary:hover {
-  background-color: #cbd5e1;
-}
-
-
-
-
-.test-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #f3f4f6;
-  min-height: 100vh;
-}
-
-/* Panel superior de control */
-.control-panel {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-  margin-bottom: 25px;
-  text-align: center;
-}
-
-.control-panel h2 {
-  margin: 0 0 10px 0;
-  color: #1e293b;
-}
-
-.btn {
-  padding: 12px 24px;
-  font-size: 15px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-primary {
-  background-color: #691c32; /* Guinda institucional */
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #4c1222;
-}
-
-/* Área gris de fondo para simular una hoja real */
-.preview-box {
+.preview-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
   display: flex;
   justify-content: center;
-  background-color: #525659;
-  padding: 40px 20px;
-  border-radius: 8px;
-  overflow-x: auto;
+  background: #f4f1f1;
 }
 
-/* HOJA DE DISEÑO EXACTO (Tamaño Carta real) */
-.pdf-document {
-  width: 215.9mm;
-  min-height: 279.4mm;
-  padding: 20mm 15mm;
-  background-color: white;
-  box-sizing: border-box;
-  color: #2b2b2b;
+.paper-sheet {
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.pdf-container {
+  width: 216mm;
+  min-height: 279mm;
+  padding: 18mm 20mm;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 11pt;
-  line-height: 1.6;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-/* Encabezado */
-.header-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.header-tablee {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
-  margin-top: 20px;
-}
-
-.headeer-tablee {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  margin-left: 30%;
-}
-
-.header-left {
-  width: 45%;
-  vertical-align: top;
-  text-align: left;
-  justify-content: left;
-
-}
-
-.pdf-logo {
-  max-height: 140px;
-  width: 140px;
-  vertical-align: top;
-  text-align: center;
-  margin-bottom: 5px;
-  justify-content: left;
-  text-align: left;
-  object-fit: contain;
-  margin-left: 85% ;
-}
-
-.gob-title {
-  font-size: 15pt;
-  font-weight: bold;
-  color: #691c32; /* Guinda Hidalgo */
-  letter-spacing: 0.8px;
-  line-height: 1.1;
-}
-
-.gob-subtitle {
-  font-size: 10pt;
-  font-weight: 600;
-  color: #bc955c; /* Dorado Hidalgo */
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.header-right {
-  width: 55%;
-  vertical-align: middle;
-  text-align: center;
-  padding-left: 15px;
-}
-
-.sec-gob {
-  font-weight: bold;
-  font-size: 11pt;
-  color: #444444;
-}
-
-.secc-goob {
-  font-weight: bold;
-  font-size: 11pt;
-  color: #444444;
-}
-
-.rth-text {
-  font-size: 11pt;
-  color: #666666;
-  font-weight: bold;
-}
-
-
-.rth-texxt {
-  font-size: 11pt;
-  color: #666666;
-  font-weight: bold;
-}
-
-.oficio-title {
-  font-size: 11.5pt;
-  font-weight: bold;
-  color: #2b2b2b;
-  margin-top: 8px;
-}
-
-.oficio-num {
-  font-size: 11pt;
-  font-weight: bold;
+  line-height: 1.5;
   color: #000;
+  box-sizing: border-box;
 }
 
-/* Fecha */
-.date-section {
-  text-align: right;
-  font-size: 10pt;
-  color: #555555;
-  margin-bottom: 25px;
-  font-weight: 600;
-  margin-left: 20px;
-}
-
-/* Tabla de datos del trabajador */
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.data-table td {
-  padding: 6px 0;
-  vertical-align: middle;
-}
-
-.dataa-tablee td {
-  vertical-align: middle;
-}
-
-.label-cell {
-  font-weight: bold;
-  color: #444444;
-  width: 28%;
-  font-size: 10pt;
-}
-
-.value-cell {
-  color: #111111;
-  font-size: 11pt;
-}
-
-.bold-text {
-  font-weight: bold;
-}
-
-/* Checkboxes (Base, Confianza, Honorarios) */
-.checkbox-container {
-  width: 100%;
-  margin: 15px 0 25px 0;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.checkbox-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.checkbox-item {
-  width: 33.33%;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 10pt;
-  font-weight: bold;
-  color: #444444;
-}
-
-.checkbox-box {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  border: 2px solid #000;
-  margin-left: 8px;
-  vertical-align: middle;
-  text-align: center;
-  line-height: 14px;
-  font-weight: bold;
-  color: #691c32;
-}
-
-.checkbox-box.marked {
-  background-color: #691c32;
-  color: white;
-}
-
-/* Cuerpo del oficio */
-.content-section {
-  margin-bottom: 25px;
-  text-align: justify;
-}
-
-.content-text {
-  font-size: 11pt;
-  text-indent: 30px; /* Sangría inicial idéntica al original */
-}
-
-/* Horarios */
-.schedule-table {
-  width: 100%;
-  margin-bottom: 30px;
-  border-collapse: collapse;
-}
-
-.schedule-cell {
-  width: 50%;
-  font-size: 11pt;
-}
-
-.farewell-text {
-  font-size: 11pt;
-  margin-bottom: 50px;
-}
-
-/* Sección de Firmas */
-.signature-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 40px;
-}
-
-.signature-cell {
-  width: 50%;
-  text-align: center;
-  vertical-align: top;
-  padding: 0 15px;
-}
-
-.signature-role {
-  font-size: 10.5pt;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.signature-space {
-  height: 65px; /* Espacio exacto para plasmar la firma */
-}
-
-
-.signature-name {
-  font-size: 10pt;
-  font-weight: bold;
-  color: #2b2b2b;
-}
-
-.signature-title {
-  font-size: 9pt;
-  color: #666666;
-  margin-top: 2px;
-}
+.header-right { text-align: right; margin-bottom: 20px; }
+.recipient-block { margin-bottom: 20px; }
+.recipient-block p { margin: 2px 0; }
+.attn { margin-top: 8px !important; font-size: 10.5pt; }
+.body-text { text-align: justify; margin-bottom: 25px; }
+.body-text p { margin-bottom: 12px; text-indent: 25px; }
+.signatures-section { margin-top: 30px; }
+.signature-row { display: flex; justify-content: center; margin-bottom: 25px; }
+.signature-row.dual { justify-content: space-between; }
+.signature-box { width: 45%; text-align: center; }
+.signature-row.single .signature-box { width: 50%; }
+.role-title { font-weight: bold; margin-bottom: 40px; }
+.name { font-weight: bold; font-size: 9.5pt; margin: 0; }
+.position { font-size: 8.5pt; margin: 0; color: #222; }
 
 </style>
 
