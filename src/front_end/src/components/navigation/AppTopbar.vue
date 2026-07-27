@@ -100,7 +100,7 @@
         <input type="text" id="edit-name" v-model="editForm.nombre" />
       </div>
        <div class="form-group">
-        <label for="edit-area">Departamento:</label>
+        <label for="edit-area">Departamento</label>
         <input type="text" id="edit-departamento" v-model="editForm.departamento" />
       </div>
       <div class="form-group">
@@ -150,7 +150,7 @@ const editForm = ref({ nombre: "", departamento: "", rol: "" });
 watch(() => props.user, (newUser) => {
   if (newUser) {
     localName.value = newUser.nombre || newUser.name || newUser.usuario || "Usuario";
-    localDepartment.value = newUser.departamento || "Departamento";
+    localDepartment.value = newUser.departamento || "Departamento: ";
     localRole.value = newUser.rol || "Administrador";
   }
 }, { immediate: true });

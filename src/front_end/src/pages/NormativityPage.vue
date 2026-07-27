@@ -18,7 +18,7 @@
 
     <BaseCard
       v-if="mostrarFormulario"
-      title="Subir Nueva Normatividad"
+      :title="editar ? 'Actualizar Version de la Normatividad' : 'Subir Nueva Normatividad'"
       class="form-card"
     >
       <form @submit.prevent="subirNormatividad"  class="filter-grid">
@@ -32,13 +32,15 @@
           />
         </label>
 
-        <label class="field">
-          <span>Tipo:</span>
-          <input
-            v-model="formulario.tipo"
-            type="text"
-            placeholder="Ej. Manual, Reglamento, Lineamiento"
-          />
+        <label style="display: grid; border-radius: 15px; gap: 7px; margin-bottom: 14px; font-weight: 700; color: var(--color-text-soft);">
+          Tipo
+          <select
+            v-model="formulario.tipo">
+            <option value="lineamiento">Lineamiento</option>
+            <option value="reglamento">Reglamento</option>
+            <option value="manual">Manual</option>
+
+          </select>
         </label>
 
         <label class="field">
@@ -55,25 +57,27 @@
           <input v-model="formulario.fecha_publicacion" type="date" />
         </label>
 
+
+
         <label class="field">
-          <span>Archivo PDF:</span>
+          <span>{{ editar ? 'Archivo PDF (Nueva Version - Opcional):' : 'Archivo PDF:' }}</span>
           <input
             class="input-pdf"
             type="file"
             accept="application/pdf"
             @change="manejarArchivo"
-            required
-          />
+            :required="!editar" />
         </label>
 
-        <div class="form-actions">
+        <div class="form-actions" style="grid-column: span 2; display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
           <button type="submit" class="primary-button" :disabled="guardando">
-            {{ guardando ? "Guardando..." : "Guardar en Sistema" }}
+            {{ guardando ? "Guardando..." : (editar ? "Actualizar Versión" : "Guardar en Sistema") }}
           </button>
+
           <button
             type="button"
             class="secondary-button"
-            @click="mostrarFormulario = false"
+            @click="mostrarFormulario = false; editar = false;"
           >
             Cancelar
           </button>
@@ -127,7 +131,7 @@ const rows = ref([]); // Inicializa vacío para llenar desde la API
 const guardando = ref(false);// Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
 const mostrarFormulario = ref(false); // Controla la vista del formulario
 const editar = ref(false);
-const editarID = ref(null);
+const editarId = ref(null);
 
 
 // Estado del formulario reactivo para una nueva normatividad - esto es acuerdo a la migracion y modelo de normatividad
@@ -176,10 +180,7 @@ const manejarArchivo = (event) => {
   }
 };
 
-//Función para subir la normatividad al backend y guardar en la base de datos
-// =========================================================================
-// PUNTO 3: Reemplaza tu función subirNormatividad actual por esta versión
-// =========================================================================
+
 const subirNormatividad = async () => {
   guardando.value = true;
 
@@ -197,16 +198,17 @@ const subirNormatividad = async () => {
     }
 
     // 2. Evaluamos si el formulario se abrió para editar o para crear un registro nuevo
-    if (editando.value) {
+    if (editar.value) {
+
       // --- MODO EDICIÓN / ACTUALIZACIÓN ---
-      // Apunta con un PUT al ID guardado al presionar el botón de la fila
-      await axios.put(`http://localhost:8000/api/normatividad/${editandoId.value}`, formData, {
+
+      await axios.put(`http://localhost:8000/api/normatividad/${editarId.value}`, formData, {
         headers: {
           Authorization: `Bearer ${authStore.token}`,
           "Content-Type": "multipart/form-data" // Necesario para que viaje el nuevo archivo PDF
         },
       });
-      notice.value = `¡La Normatividad "${formulario.value.nombre}" ha sido actualizada con éxito a la versión ${formulario.value.version}!`;
+      notice.value = `¡La Normatividad "${formulario.value.nombre}" ha sido Actualizada con éxito a la Versión: ${formulario.value.version}!`;
     } else {
       // --- MODO CREACIÓN NORMAL ---
       // Si no estamos editando, hace el POST tradicional que ya tenías para crear un registro nuevo
@@ -215,13 +217,13 @@ const subirNormatividad = async () => {
           Authorization: `Bearer ${authStore.token}`,
         },
       });
-      notice.value = "¡Normatividad guardada exitosamente en el sistema!";
+      notice.value = "¡Normatividad Guardada Exitosamente en el sistema!";
     }
 
     // 3. Limpieza de estados globales tras una petición exitosa
     mostrarFormulario.value = false;
-    editando.value = false;
-    editandoId.value = null;
+    editar.value = false;
+    editarId.value = null;
 
     // Reseteamos los campos del formulario para que queden completamente vacíos
     formulario.value = {
@@ -271,7 +273,7 @@ const obtenerAccionesPermitidas = (row) => {
     accionesBase.push({ key: 'activateNormativity', label: 'Activar lógica', icon: 'check', operation:'U' });
   } else {
     // Si está activa, se le permite mandarse a Baja Lógica
-    accionesBase.push({ key: 'desactivateNormativity', label: 'Baja Lógica', icon: 'archive', operation:'D' });
+    accionesBase.push({ key: 'desactivateNormativity', label: 'Baja Lógica', icon: 'x', operation:'D' });
   }
 
 
@@ -287,30 +289,25 @@ const selectAction = async (action, row = null) => {
 
   // 2. Botón en fila: Actualizar Documento (Llave del catálogo: updateNormativity)
   if (action.key === "updateNormativity" && row) {
-    try {
-      // Incrementamos la versión de forma automática (+0.1) para la actualización rápida
-      const nuevaVersion = `${parseFloat(row.version || "1.0") + 0.1}`.slice(
-        0,
-        3,
-      );
 
-      await axios.put(
-        `http://localhost:8000/api/normatividad/${row.id}`,
-        {
-          version: nuevaVersion,
-        },
-        {
-          headers: { Authorization: `Bearer ${authStore.token}` },
-        },
-      );
+    editar.value = true;
+    editarId.value = row.id; 
 
-      notice.value = `¡${row.nombre} Ha Sido Actualizado con Éxito a la Versión: ${nuevaVersion}!`;
-      fetchNormatividades(); // Recarga la tabla con los datos de la BD
-    } catch (error) {
-      console.error("Error al actualizar:", error);
-      notice.value = "Error al intentar actualizar el documento.";
+    const versionSugerida = `${parseFloat(row.version || "1.0") + 0.1}` .slice (0, 3);
+    
+    formulario.value = {
+      nombre: row.nombre,
+      tipo: row.tipo,
+      version: versionSugerida,
+      fecha_publicacion: row.fecha_publicacion ? row.fecha_publicacion.split('T')[0] : "",
+      archivoBinario: null
     }
+
+    mostrarFormulario.value = true;
     return;
+
+    
+   
   }
 
   // 3. Botón en fila: Baja Lógica (Llave del catálogo: desactivateNormativity)
@@ -322,17 +319,17 @@ const selectAction = async (action, row = null) => {
     ) {
       try {
         await axios.put(`http://localhost:8000/api/normatividad/${row.id}`, 
-        {
-          nombre: row.nombre,
-          tipo: row.tipo,
-          version: row.version,
-          fecha_publicacion: row.fecha_publicacion,
-          estatus: "inactiva"
-        },
-        {
-          headers: { Authorization: `Bearer ${authStore.token}` },
-        },
-      );
+          {
+            nombre: row.nombre,
+            tipo: row.tipo,
+            version: row.version,
+            fecha_publicacion: row.fecha_publicacion,
+            estatus: "inactiva"
+          },
+          {
+            headers: { Authorization: `Bearer ${authStore.token}` },
+          },
+        );
 
         notice.value = `La Normatividad: "${row.nombre}" ha sido Dada de Baja en el sistema correctamente.`;
         fetchNormatividades(); // Recarga la tabla al instante
@@ -340,9 +337,9 @@ const selectAction = async (action, row = null) => {
         console.error("Error al Aplicar Baja de Lógica", error);
         notice.value = "Error al Intentar Cambiar el Estatus de la Normatividad en el Servidor.";
       }
-    }
+    } 
     return;
-  }
+  } 
 
   // 4. Botón en fila: Activar Normatividad (Llave del catálogo: activateNormativity)
   if (action.key === "activateNormativity" && row) {
@@ -358,7 +355,7 @@ const selectAction = async (action, row = null) => {
             tipo: row.tipo,
             version: row.version,
             fecha_publicacion: row.fecha_publicacion,
-            estatus: "activa" // Volvemos a mandar el estatus vigente
+            estatus: "activa"
           },
           {
             headers: { Authorization: `Bearer ${authStore.token}` },
@@ -366,27 +363,27 @@ const selectAction = async (action, row = null) => {
         );
 
         notice.value = `¡La Normatividad: "${row.nombre}" ha sido Activada con Éxito en el sistema!`;
-        fetchNormatividades(); // Recarga la tabla al instante para ver el badge en verde
+        fetchNormatividades(); 
       } catch (error) {
         console.error("Error al Activar la Normatividad de Forma Lógica:", error);
         notice.value = "Error al Intentar Activar la Normatividad en el Servidor.";
       }
+    } 
+    return;
+  } // <-- Cierre del if (action.key === "activateNormativity")
+
+  // 5. Botón Consultar Repositorio (Llave del catálogo: viewNormativity)
+  if (action.key === "viewNormativity" && row) {
+    if (row.archivo_pdf) {
+
+      window.open(`http://localhost:8000/${row.archivo_pdf}`, "_blank");
+    } else {
+      notice.value = "Este documento no cuenta con un archivo PDF físico adjunto.";
     }
     return;
   }
 
   
-  // 5. Botón Consultar Repositorio (Llave del catálogo: viewNormativity)
-  if (action.key === "viewNormativity" && row) {
-    if (row.archivo_pdf) {
-      // Abre el archivo PDF real en una pestaña nueva del navegador
-      window.open(`http://localhost:8000/${row.archivo_pdf}`, "_blank");
-    } else {
-      notice.value =
-        "Este documento no cuenta con un archivo PDF físico adjunto.";
-    }
-    return;
-  }
 
 
 
@@ -453,6 +450,7 @@ if (action.key === "downloadNormativity" && row) {
 }
 };
 
+
 </script>
 
 <style scoped>
@@ -474,6 +472,8 @@ if (action.key === "downloadNormativity" && row) {
   align-items: flex-end;
 }
 
+
+
 .field {
   display: flex;
   flex-direction: column;
@@ -490,6 +490,17 @@ if (action.key === "downloadNormativity" && row) {
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
+}
+
+.tipo_filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 200px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+
 }
 
 .form-actions {
@@ -571,7 +582,7 @@ if (action.key === "downloadNormativity" && row) {
 }
 
 .icon {
-  width: px;
+  width: 10px;
   height: 20px;
   margin-right: 2px;
   margin-top: 2px;

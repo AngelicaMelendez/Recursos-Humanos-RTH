@@ -27,11 +27,12 @@
 
     <!-- Modal de Aceptación de Normatividades -->
     <ModalNormatividad
-      :isOpen="isNormativityModalOpen"
-      :documentos="normatividades"
-      @close="isNormativityModalOpen = false"
-      @accepted="procederAlFormularioCreacion"
-    />
+  v-if="mostrarModalNormatividad"
+  :isOpen="mostrarModalNormatividad"
+  :documentos="normatividades"
+  @close="mostrarModalNormatividad = false"
+  @accepted="onNormatividadAceptada"
+/>
 
     <!-- Bloque principal con filtros y tabla de datos -->
     <BaseCard v-if="canViewRequests">
@@ -341,15 +342,237 @@
             </button>
           </footer>
         </div>
+
+        
       </section>
+
+      
+
+    </div>
+
+
+  </div>
+
+ <!-- Plantilla del PDF (Colócala al final de tu componente, fuera del AppTable) -->
+<div class="pdf-offscreen-container">
+  <div ref="reporteRef" class="pdf-document">
+    
+    <table class="headeer-tablee">
+      <tr>
+        <td class="header-left">
+          <img :src="logoUrl" alt="Logo Hidalgo" class="pdf-logo" />
+        </td>
+      </tr>
+        </table>
+
+        <table class="header-table">
+          <tr>
+        <td class="header-right">
+          <div class="sec-gob">Secretaría de Gobierno</div>
+          <div class="rth-text">Radio y Televisión de Hidalgo</div>
+          <div class="oficio-title">Oficio de Comisión</div>
+          <!-- DINÁMICO -->
+          <div class="oficio-num">{{ obtenerOficioFormateado(comisionSeleccionada)}}</div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="date-section">
+      Pachuca de Soto, Hgo., a {{ formatearFechaLarga(comisionSeleccionada.fecha_inicio || comisionSeleccionada.created_at)}}
+    </div>
+
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Nombre del trabajador:</td>
+        <td class="value-cell bold-text">{{ comisionSeleccionada.empleado_nombre || comisionSeleccionada.empleado }}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Adscripción:</td>
+        <td class="value-cell">{{ comisionSeleccionada.empleado_adscripcion }}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Tipo de nombramiento:</td>
+        <td class="value-cell">{{ comisionSeleccionada.empleado_nombramiento }}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">No. de Empleado:</td>
+        <td class="value-cell">{{ comisionSeleccionada.No_de_empleado || comisionSeleccionada.empleado_id }}</td>
+      </tr>
+    </table>
+
+    <div class="checkbox-container">
+      <table class="checkbox-table">
+        <tr>
+          <td class="checkbox-item">
+            BASE 
+            <div class="checkbox-box" :class="{ marked: comisionSeleccionada.tipo_personal === 'BASE' }">
+              {{ comisionSeleccionada.tipo_personal === 'BASE' ? 'X' : '' }}
+            </div>
+          </td>
+          <td class="checkbox-item">
+            CONFIANZA 
+            <div class="checkbox-box" :class="{ marked: comisionSeleccionada.tipo_personal === 'CONFIANZA' }">
+              {{ comisionSeleccionada.tipo_personal === 'CONFIANZA' ? 'X' : '' }}
+            </div>
+          </td>
+          <td class="checkbox-item">
+            HONORARIOS 
+            <div class="checkbox-box" :class="{ marked: comisionSeleccionada.tipo_personal === 'HONORARIOS' }">
+              {{ comisionSeleccionada.tipo_personal === 'HONORARIOS' ? 'X' : '' }}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="content-section">
+      <p class="content-text">
+    Por este conducto me permito informarle que ha sido comisionado para el día 
+    <strong>{{ formatearFechaLarga(comisionSeleccionada.fecha_inicio) }}</strong>, 
+    para asistir a {{ comisionSeleccionada.lugar || comisionSeleccionada.destino }}
+    {{ obtenerMotivoLimpio(comisionSeleccionada) }}.
+  </p>
+    </div>
+
+    <table class="schedule-table">
+      <tr>
+        <td class="schedule-cell">
+          <strong>Salida:</strong> {{ comisionSeleccionada.hora_salida || comisionSeleccionada.hora_inicio || '09:00' }} hrs.
+        </td>
+        </tr>
+        <tr>
+        <td class="schedule-cell">
+          <strong>Regreso:</strong> {{ comisionSeleccionada.hora_regreso || comisionSeleccionada.hora_fin || '18:00' }} hrs.
+        </td>
+      </tr>
+    </table>
+
+    <div class="farewell-text">
+      Agradeciendo de antemano su apoyo, quedo de usted.
+    </div>
+
+    <table class="signature-table">
+      <tr>
+        <td class="signature-cell">
+          <div class="signature-role">Autorizó</div>
+          <div class="signature-space"></div> 
+          <div class="signature-line"></div>
+          <div class="signature-name">Mtra. Isela Guadalupe Espinoza Lopez</div>
+          <div class="signature-title">Directora de Administración y Finanzas</div>
+        </td>
+        <td class="signature-cell">
+          <div class="signature-role">Acepto Comisión</div>
+          <div class="signature-space"></div> 
+          <div class="signature-line"></div>
+          <div class="signature-name">{{ comisionSeleccionada.empleado_nombre || comisionSeleccionada.empleado }}</div>
+          <div class="signature-title">{{ comisionSeleccionada.empleado_nombramiento }}</div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+
+
+<div style="display: none; " >
+  <div id="pdf-formato-1" class="pdf-container">
+    <div class="header-right">
+      <p><strong>Pachuca de Soto, Hgo., a {{ form.fecha_solicitud }}</strong></p>
+      <p><strong>Asunto:</strong> Solicitud de Autorización de Vacaciones</p>
+    </div>
+
+    <div class="recipient-block">
+      <p><strong>Mtra Isela Guadalupe Espinosa López</strong></p>
+      <p>Directora de Administración y Finanzas</p>
+      <p><strong>PRESENTE</strong></p>
+      <p class="attn">Atn. LASC. Lorena Barrera Soto <br>Subdirectora Adjunta de Recursos Humanos</p>
+    </div>
+
+    <div class="body-text">
+      <p>
+        Por medio del presente, aprovecho la ocasión para saludarlo coordialmente y a la vez,
+        solicitar su autorización para que me sea otorgado <strong>{{ form.dias_solicitados }}</strong>,
+        a cuenta de mi {{ form.periodo }} periodo vacacional del ejercicio 2026,
+        reanudando mis actividades el dia <strong>{{ form.fecha_reanudacion }}</strong>.
+      </p>
+      <p>
+        Esta solicitud se formula conforme a lo señalado en los numerales 96, Inciso II (julio-octubre) y el 101 del acuerdo
+        que contiene las politicas, Bases y Lineamientos para la administración de los recursos humanos al servicio del Poder Ejecutivo del Estado de Hidalgo.
+      </p>
+      <p>
+        Agradezco de antemano su atención y quedo a su disposición para cualquier aclaración.
+      </p>
+    </div>
+
+    <div class="signatures-section">
+      <div class="signature-row single">
+        <div class="signature-box">
+          <p class="role-title">Solicito</p>
+          <p class="name">{{ form.empleado_nombre }}</p>
+          <p class="position">{{ form.empleado_puesto }}</p>
+        </div>
+
+      </div>
+
+
+      <div class="signature_row dual">
+        <div class="signature-box">
+          <p class="role-title">Autorizó</p>
+          <p class="name">{{ form.director_area_nombre }}</p>
+          <p class="position">{{ form.director_area_puesto }}</p>
+        </div>
+
+        <div class="signature_row dual">
+          <div class="signature_box">
+            <p class="role-title">Vo. Bo.</p>
+            <p class="name">LASC. Lorena Barrera Soto</p>
+            <p class="position">Subdirectora de adjunta de Recursos Humanos </p>
+          </div>
+
+          <div class="signature-box">
+            <p class="role-title">Vo. Bo.</p>
+            <p class="name">Mtra. Isela Guadalupe Espinosa Soto</p>
+            <p class="position"></p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  </div>
+
+
+  
+
+
+ 
 </template>
+
+
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue"; //Importación de funciones reactivas de Vue3
 import { watch } from "vue"; //Importación de función para observar cambios en variables reactivas
 import axios from "axios"; // Axios importado para traer las normatividades
+import { nextTick } from "vue";//Funcion reactiva de Vue3
+import html2pdf from "html2pdf.js"; //Para generar Pdfs
+import logopdf from "@/assets/logopdf.png"//Imagen que se usa en el Pdf del formato de Comision
+
+import BaseCard from "@/components/ui/BaseCard.vue";//Componente de targeta madre para mostrar contenido en secciones
+import AppTable from "@/components/ui/AppTable.vue";//Componente de tabla para mostrar datos en formato tabular
+import IconSymbol from "@/components/ui/IconSymbol.vue";//Componente para mostrar iconos de botones
+
+import PageHeader from "@/components/shared/PageHeader.vue";//Componente de encabezado de pagina con titulo y subtitulos
+
+import StatusBadge from "@/components/shared/StatusBadge.vue";//Componente para mostrar el estatus de un registro con un badge visual
+import requestsService from "@/services/requests.service";//Servicio para gestionar las solicitudes
+import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";//Manejo de permisos, accesos a botones y acciones según el rol del usuario
+import { useAuthStore } from "@/store/auth";//Acceso al store de autenticación para obtener el token y rol del usuario
+import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";//Importación del componente del modal para Leer y aceptar las Normatividades
+import FormularioComision from "@/components/shared/FormularioComision.vue";// Importacion del Componente del Formulario especifico para Comisiones
+
+const logoUrl = logopdf
+const reporteRef = ref(null);
 import BaseCard from "@/components/ui/BaseCard.vue"; //Componente de targeta madre para mostrar contenido en secciones
 import AppTable from "@/components/ui/AppTable.vue"; //Componente de tabla para mostrar datos en formato tabular
 import IconSymbol from "@/components/ui/IconSymbol.vue"; //Componente para mostrar iconos de botones
@@ -364,9 +587,16 @@ import FormularioComision from "@/components/shared/FormularioComision.vue"; // 
 
 const authStore = useAuthStore(); //Acceso al store de Autenticación para obtener el token y el rol del usuario
 
-const rows = ref([]); //Inicializa vacío para llenar desde la API
+const rows = ref([]);//Inicializa vacío para llenar desde la API
 
-const saving = ref(false); // Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
+const mostrarModalNormatividad = ref(true); // Se muestra al inicio
+const solicitudesHabilitadas = ref(false);  // Controla el acceso a las solicitude
+
+const saving = ref(false);// Controla el estado de guardado para deshabilitar el botón y mostrar un mensaje de carga
+const fileInput = ref(null);
+const showSuggestions = ref(false);
+const activeSuggestionIndex = ref(-1);
+let debounceTimeout = null;
 
 // Variables reactivas para las Normatividades
 const isNormativityModalOpen = ref(false);
@@ -375,6 +605,94 @@ const isNormativityModalOpen = ref(false);
 const normatividades = ref([]);
 
 // Variable reactiva para el Toast de notificaciones - el toast es un mensaje emergente que aparece temporalmente para informar al usuario sobre el resultado de una acción.
+const toast = reactive({ visible: false, title: "", message: "", tone: "success" });
+
+
+
+//info react del user-Prueba_PDF
+const comision = ref({
+  oficio_num: 'RTH/DAF/TI/051/2026',
+  nombre: '',
+  puesto: '',
+  motivo: '',
+  fecha_comision: '',
+  hora_salida: '',
+  hora_regreso: ''
+})
+
+const comisionSeleccionada = ref({});
+const pdfArea = ref(null)
+
+const descargarPDFComision = async (row) => {
+  // 1. Inyectamos la información de la fila seleccionada
+  comisionSeleccionada.value = row;
+
+  // 2. Esperamos a que Vue actualice el DOM de la plantilla oculta
+  await nextTick();
+
+  // 3. Generamos el PDF con html2pdf.js
+  const element = reporteRef.value;
+  const opciones = {
+    margin:       [2,0,0,0],
+    filename:     `Oficio_Comision_${row.id || RTH || 'documento'}.pdf`,
+    image:        { type: 'jpeg', quality: 0.60 },
+    html2canvas:  { scale: 3, useCORS: true, letterRendering: true, dpi:300 },
+    jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opciones).from(element).save();
+};
+
+
+
+const formatearFechaLarga = (fechaStr) => {
+  if (!fechaStr) return '';
+  const [year, month, day] = fechaStr.split('T')[0].split('-');
+  const meses = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+  return `${parseInt(day, 10)} de ${meses[parseInt(month, 10) - 1]} de ${year}`;
+};
+
+// Genera el número de oficio con formato (ej: RTH/DAF/TI/015/2026)
+const obtenerOficioFormateado = (comision) => {
+  if (comision.oficio_num || comision.oficio) return comision.oficio_num || comision.oficio;
+  const numPad = String(comision.id || 1).padStart(3, '0');
+  const anio = comision.fecha_inicio ? comision.fecha_inicio.split('-')[0] : '2026';
+  return `RTH/DAF/TI/${numPad}/${anio}`;
+};
+
+
+const obtenerMotivoLimpio = (comision) => {
+  let texto = comision.motivo || comision.actividad || comision.descripcion || '';
+  
+  // Si el texto incluye "Hora de salida", cortamos el texto justo antes de esa frase
+  if (texto.includes('Hora de salida:')) {
+    texto = texto.split('Hora de salida:')[0];
+  }
+  
+  return texto.trim();
+};
+
+/**
+ * ESCUCHA DE FORMULARIO DE COMISIÓN EXTERNO:
+ * Se activa mediante el callback emitido por el subcomponente <FormularioComision>.
+ */
+
+const handleComisionSuccess = (nuevaComision) => {
+  // 1. Agregas la nueva comisión a la tabla
+  rows.value.unshift(normalizeRow(nuevaComision));
+  
+  // 2. Muestras la notificación de éxito
+  showToast("Comisión Creada", "El formato de comisión fue registrado.");
+  
+  // 3. Cierras el modal
+  closeModal();
+};
+
+
+
 const toast = reactive({
   visible: false,
   title: "",
@@ -399,8 +717,8 @@ const form = reactive({
   oficio: "",
   fecha_inicio: "",
   fecha_fin: "",
-  motive: "",
-  archivoBinario: null,
+  motivo: "",
+  archivoBinario: null
 });
 
 // Variables reactivas para los filtros de búsqueda
@@ -647,30 +965,23 @@ const manejarArchivo = (event) => {
   const archivo = event.target.files[0];
 
   if (archivo) {
-    if (archivo.type !== "application/pdf") {
-      // <-- Corregido aquí
-      showToast(
-        "Archivo Invalido: ",
-        "Por Favor suba únicamente un archivo PDF.",
-        "warning",
-      );
-      return;
-    }
-    form.archivoBinario = archivo; // <-- Asegúrate también de asignar el archivo correctamente aquí
+  if (archivo.type !== "application/pdf")  {
+
+    //Mensaje en caso de cargar un formato distinto al requerido o al intentar subir más de un archivo 
+    showToast("Archivo Invalido: ", "Por Favor suba únicamente un archivo PDF.", "warning");
+    form.archivoBinario = null;
+    event.target.value = "";
+
+    //
+    return;
+
+    //
+  }
+  form.archivoBinario = archivo;
   }
 };
 
-/**
- * ESCUCHA DE FORMULARIO DE COMISIÓN EXTERNO:
- * Se activa mediante el callback emitido por el subcomponente <FormularioComision>.
- */
-const handleComisionSuccess = (nuevaComision) => {
-  rows.value.unshift(normalizeRow(nuevaComision));
-  showToast(
-    "Comisión Creada",
-    "El formato de Comisión fue registrado exitosamente.",
-  );
-};
+
 
 /**
  * DISPARADOR DE NOTIFICACIONES TOAST: Muestra un banner temporal auto-ocultable en UI.
@@ -769,15 +1080,19 @@ const fetchNormatividadesVigentes = async () => {
  */
 const evaluarNormatividad = () => {
   if (normatividades.value.length > 0) {
-    isNormativityModalOpen.value = true;
+    mostrarModalNormatividad.value = true;
   } else {
     openCreateModal();
   }
 };
 
-const procederAlFormularioCreacion = () => {
-  isNormativityModalOpen.value = false;
+const onNormatividadAceptada = async () => {
+
+  mostrarModalNormatividad.value = false;
+  solicitudesHabilitadas.value = true;
+  await nextTick();
   openCreateModal();
+
 };
 
 /**
@@ -923,7 +1238,7 @@ const selectAction = (action, row = null) => {
     return;
   }
   if (action.key === "downloadRequestDocument") {
-    showToast("Descargar", `Descargando documento de ${row.id}.`);
+    gestionarDescargarDocumento(row);//Esto permite que descargue el pdf donde corresponda
     return;
   }
   showToast(
@@ -931,6 +1246,33 @@ const selectAction = (action, row = null) => {
     row ? `Seleccionaste ${row.id}.` : "Consulta disponible en la tabla.",
   );
 };
+
+
+const gestionarDescargarDocumento = async (row) => {
+  // Convertimos el tipo a minúsculas para evitar problemas con Mayúsculas/Acentos
+  const tipoSolicitud = (row.tipo || '').toLowerCase();
+
+  // 1. Si es comisión -> Genera el PDF de comisión
+  if (tipoSolicitud.includes('comisi')) {
+    descargarPDFComision(row);
+    return;
+  } 
+  
+  // 2. Si tiene un archivo subido/adjunto -> Abre el archivo en una pestaña nueva
+  if (row.archivo_url || row.documento_path || row.adjunto) {
+    const fileUrl = row.archivo_url || row.documento_path || row.adjunto;
+    window.open(fileUrl, '_blank');
+    return; 
+  } 
+
+  // 3. Si no tiene nada -> Solo muestra el aviso y NO descarga nada
+  showToast(
+    "Aviso", 
+    `La solicitud de tipo "${row.tipo}" no cuenta con un documento para descargar.`
+  );
+  return; 
+};
+
 
 /**
  * CONSTRUCTOR DEL MODAL DE ALTA: Inicializa los estados del formulario a sus valores por defecto.
@@ -1045,6 +1387,7 @@ const submitRequest = async () => {
   }
 };
 
+
 /**
  * PROCESADOR DE RESOLUCIONES (HTTP PATCH/DELETE):
  * Ejecuta la actualización de estatus a nivel de base de datos e impacta localmente
@@ -1083,18 +1426,19 @@ const confirmResolution = async () => {
   }
 };
 
-/**
- * ACTUALIZADOR INTERNO: Intercambia los datos viejos de una fila por su respuesta actualizada.
- */
+
 const replaceRow = (updated) => {
   rows.value = rows.value.map((row) => (row.id === updated.id ? updated : row));
 };
 
-// --- CICLO DE VIDA ---
+
 onMounted(() => {
   loadRequests(); // Al arrancar, monta las solicitudes iniciales.
   fetchNormatividadesVigentes(); // Trae las normatividades desde la base de datos de manera asíncrona.
 });
+
+
+
 </script>
 
 <style scoped>
@@ -1528,4 +1872,382 @@ button:disabled {
     flex: 1 1 140px;
   }
 }
+
+
+
+/*si*/
+.test-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f3f4f6;
+  min-height: 100vh;
+}
+
+/* Panel superior de control */
+.control-panel {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.control-panel h2 {
+  margin: 0 0 10px 0;
+  color: #1e293b;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary {
+  background-color: #691c32; /* Guinda institucional */
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #4c1222;
+}
+
+/* Área gris de fondo para simular una hoja real */
+.preview-box {
+  display: flex;
+  justify-content: center;
+  background-color: #525659;
+  padding: 40px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+/* HOJA DE DISEÑO EXACTO (Tamaño Carta real) */
+.pdf-document {
+  width: 215.9mm;
+  min-height: 279.4mm;
+  padding: 20mm 15mm;
+  background-color: white;
+  box-sizing: border-box;
+  color: #2b2b2b;
+  font-size: 11pt;
+  line-height: 1.6;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Encabezado */
+.header-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.header-tablee {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.headeer-tablee {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.header-left {
+  width: 45%;
+  vertical-align: top;
+  text-align: left;
+  justify-content: left;
+
+}
+
+.pdf-logo {
+  max-height: 240px;
+  width: 240px;
+  vertical-align: top;
+  text-align: center;
+  margin-bottom: 5px;
+  justify-content: left;
+  text-align: left;
+  object-fit: contain;
+  margin-left: 70% ;
+}
+
+.gob-title {
+  font-size: 15pt;
+  font-weight: bold;
+  color: #691c32; /* Guinda Hidalgo */
+  letter-spacing: 0.8px;
+  line-height: 1.1;
+}
+
+.gob-subtitle {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #bc955c; /* Dorado Hidalgo */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header-right {
+  width: 55%;
+  vertical-align: middle;
+  text-align: center;
+  padding-left: 15px;
+}
+
+.sec-gob {
+  font-weight: bold;
+  font-size: 11pt;
+  color: #444444;
+}
+
+.secc-goob {
+  font-weight: bold;
+  font-size: 11pt;
+  color: #444444;
+}
+
+.rth-text {
+  font-size: 11pt;
+  color: #666666;
+  font-weight: bold;
+}
+
+
+.rth-texxt {
+  font-size: 11pt;
+  color: #666666;
+  font-weight: bold;
+}
+
+.oficio-title {
+  font-size: 11.5pt;
+  font-weight: bold;
+  color: #2b2b2b;
+}
+
+.oficio-num {
+  font-size: 11pt;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Fecha */
+.date-section {
+  text-align: right;
+  font-size: 10pt;
+  color: #555555;
+  margin-bottom: 25px;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+/* Tabla de datos del trabajador */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.data-table td {
+  padding: 6px 0;
+  vertical-align: middle;
+}
+
+.dataa-tablee td {
+  vertical-align: middle;
+}
+
+.label-cell {
+  font-weight: bold;
+  color: #444444;
+  width: 28%;
+  font-size: 10pt;
+}
+
+.value-cell {
+  color: #111111;
+  font-size: 11pt;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+/* Checkboxes (Base, Confianza, Honorarios) */
+.checkbox-container {
+  width: 100%;
+  margin: 15px 0 25px 0;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.checkbox-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.checkbox-item {
+  width: 33.33%;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 10pt;
+  font-weight: bold;
+  color: #444444;
+}
+
+.checkbox-box {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  border: 2px solid #000;
+  margin-left: 8px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 14px;
+  font-weight: bold;
+  color: #691c32;
+}
+
+.checkbox-box.marked {
+  background-color: #691c32;
+  color: white;
+}
+
+/* Cuerpo del oficio */
+.content-section {
+  margin-bottom: 25px;
+  text-align: justify;
+}
+
+.content-text {
+  font-size: 11pt;
+  text-indent: 30px; /* Sangría inicial idéntica al original */
+}
+
+/* Horarios */
+.schedule-table {
+  width: 100%;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+}
+
+.schedule-cell {
+  width: 50%;
+  font-size: 11pt;
+}
+
+
+.farewell-text {
+  font-size: 11pt;
+  margin-bottom: 50px;
+}
+
+/* Sección de Firmas */
+.signature-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 40px;
+}
+
+.signature-cell {
+  width: 50%;
+  text-align: center;
+  vertical-align: top;
+  padding: 0 15px;
+}
+
+.signature-role {
+  font-size: 10.5pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.signature-space {
+  height: 65px; /* Espacio exacto para plasmar la firma */
+}
+
+
+.signature-name {
+  font-size: 10pt;
+  font-weight: bold;
+  color: #2b2b2b;
+}
+
+.signature-title {
+  font-size: 9pt;
+  color: #666666;
+  margin-top: 2px;
+}
+
+
+
+/* Oculta la plantilla visualmente de la pantalla sin desactivar su renderizado */
+.pdf-offscreen-container {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+
+/* Hoja Carta para el PDF */
+.pdf-document {
+  width: 215mm;
+  min-height: 279mm;
+  padding: 10mm;
+  background-color: white;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+/* Control de espacios en el encabezado */
+.header-center {
+  text-align: center;
+}
+
+.txt-secretaria {
+  margin: 0;
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.txt-institucion {
+  margin: 0;
+  font-size: 12pt;
+  color: #555;
+}
+
+.txt-titulo {
+  margin-top: 4px; /* Espacio mínimo para evitar el hueco grande */
+  margin-bottom: 2px;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.txt-folio {
+  margin: 0;
+  font-size: 11pt;
+  font-weight: bold;
+}
+
+.body-content {
+  margin-top: 20px;
+  line-height: 1.5;
+}
+
+
+
+
+
 </style>
+

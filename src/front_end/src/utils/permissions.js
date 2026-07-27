@@ -121,13 +121,13 @@ export const roleActionsByModule = { // Acciones por modulo:
     
   },
   directory: {  // Directorio
-    [ROLE_KEYS.SUPER_USER]: ["viewDirectory"],
+    [ROLE_KEYS.SUPER_USER]: ["createEmployee", "editEmployee", "desactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createEmployee", "editEmployee", "desactivateEmployee", "viewDirectory"],
     [ROLE_KEYS.USUARIO]: ["updatePersonalData", "uploadPersonalDocument", "viewWorkHistory"],
     [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
   },
   requests: {   // Solicitudes
-    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
+    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.USUARIO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.DIRECTOR]: ["viewRequests", "downloadRequestDocument"]
@@ -138,9 +138,9 @@ export const roleActionsByModule = { // Acciones por modulo:
     [ROLE_KEYS.USUARIO]: ["viewVacancies"]
   },
   normativity: {
-    [ROLE_KEYS.SUPER_USER]: ["viewNormativity"],
+    [ROLE_KEYS.SUPER_USER]: ["viewNormativity", "downloadNormativity"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["uploadNormativity", "updateNormativity", "desactivateNormativity", "activateNormativity", "viewNormativity"],
-    [ROLE_KEYS.USUARIO]: ["viewNormativity", "downloadNormativity", "updateNormativity", "uploadNormativity", "desactivateNormativity", "activateNormativity"],
+    [ROLE_KEYS.USUARIO]: ["viewNormativity", "downloadNormativity"],
     [ROLE_KEYS.DIRECTOR]: ["viewNormativity"]
   },
   statements: { //Comunicados
