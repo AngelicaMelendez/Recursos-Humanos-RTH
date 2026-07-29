@@ -2,11 +2,14 @@ const db = require('../models');
 
 function getClientIp(req) {
   const forwardedFor = req.headers['x-forwarded-for'];
-  if (forwardedFor) {
-    return String(forwardedFor).split(',')[0].trim();
+  let ip = forwardedFor ? String(forwardedFor).split(',')[0].trim() : (req.ip || req.socket?.remoteAddress || '127.0.0.1');
+
+  // Limpia las notaciones de localhost IPv6 / IPv4-mapped
+  if (ip === '::1' || ip === '::ffff:127.0.0.1') {
+    return '127.0.0.1';
   }
 
-  return req.ip || req.socket?.remoteAddress || null;
+  return ip;
 }
 
 async function getUsername(req) {
@@ -14,11 +17,16 @@ async function getUsername(req) {
     return req.user?.usuario || 'sistema';
   }
 
+  // Si ya viene el usuario en el token JWT / req.user, nos ahorramos la consulta a la BD
+  if (req.user.usuario) {
+    return req.user.usuario;
+  }
+
   const usuario = await db.Usuario.findByPk(req.user.id, {
     attributes: ['usuario'],
   });
 
-  return usuario?.usuario || req.user.usuario || `usuario-${req.user.id}`;
+  return usuario?.usuario || `usuario-${req.user.id}`;
 }
 
 async function registrarAuditoria(req, { accion, modulo, usuario } = {}) {
@@ -28,7 +36,7 @@ async function registrarAuditoria(req, { accion, modulo, usuario } = {}) {
     }
 
     return await db.Log.create({
-      usuario: usuario || await getUsername(req),
+      usuario: usuario || (await getUsername(req)),
       accion,
       modulo,
       ip: getClientIp(req),

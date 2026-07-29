@@ -1,5 +1,6 @@
 const db = require('../models');
 const { Op } = require('sequelize');
+const { registrarAuditoria } = require('../utils/audit');
 
 function obtenerNumeroEmpleado(valor) {
   const texto = String(valor || '').trim().toUpperCase();
@@ -23,6 +24,34 @@ function construirFiltroNumeroEmpleado(valor) {
   ];
 }
 
+exports.listar = async (req, res) => {
+  try {
+    // 📌 REGISTRAS EL ACCESO AL MÓDULO AL INICIO
+    registrarAuditoria(req, {
+      accion: 'Acceso a módulo',
+      modulo: 'Directorio'
+    });
+
+    // ... tu código normal de listar ...
+    const empleados = await db.Empleado.findAll();
+    res.json(empleados);
+  } catch (error) { res.status(500).json({ error: 'Error al listar empleados', details: error.message }); }
+};
+
+exports.actualizar = async (req, res) => {
+  try {
+    // ... tu código de actualizar ...
+    await empleado.update(req.body);
+
+    // 📌 REGISTRAS LA ACCIÓN DE MODIFICACIÓN
+    registrarAuditoria(req, {
+      accion: 'Modificación de empleado',
+      modulo: 'Directorio'
+    });
+
+    res.json({ message: 'Empleado actualizado' });
+  } catch (error) { res.status(500).json({ error: 'Error al actualizar empleado', details: error.message }); }
+};
 // Obtener organigrama completo (árbol jerárquico)
 exports.obtenerOrganigrama = async (req, res) => {
   try {

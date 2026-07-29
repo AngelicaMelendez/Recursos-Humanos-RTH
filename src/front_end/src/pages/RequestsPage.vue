@@ -27,12 +27,12 @@
 
     <!-- Modal de Aceptación de Normatividades -->
     <ModalNormatividad
-  v-if="mostrarModalNormatividad"
-  :isOpen="mostrarModalNormatividad"
-  :documentos="normatividades"
-  @close="mostrarModalNormatividad = false"
-  @accepted="onNormatividadAceptada"
-/>
+      v-if="mostrarModalNormatividad"
+      :isOpen="mostrarModalNormatividad"
+      :documentos="normatividades"
+      @close="mostrarModalNormatividad = false"
+      @accepted="onNormatividadAceptada"
+    />
 
     <!-- Bloque principal con filtros y tabla de datos -->
     <BaseCard v-if="canViewRequests">
@@ -342,192 +342,271 @@
             </button>
           </footer>
         </div>
-
-        
       </section>
-
-      
-
     </div>
-
-
   </div>
 
- <!-- Plantilla del PDF (Colócala al final de tu componente, fuera del AppTable) -->
-<div class="pdf-offscreen-container">
-  <div ref="reporteRef" class="pdf-document">
-    
-    <table class="headeer-tablee">
-      <tr>
-        <td class="header-left">
-          <img :src="logoUrl" alt="Logo Hidalgo" class="pdf-logo" />
-        </td>
-      </tr>
-        </table>
-
-        <table class="header-table">
+  <!-- Plantilla del PDF (Colócala al final de tu componente, fuera del AppTable) -->
+  <div class="pdf-offscreen-container">
+    <div ref="reporteRef" class="pdf-document">
+      <table class="headeer-tablee">
+        <tbody>
           <tr>
-        <td class="header-right">
-          <div class="sec-gob">Secretaría de Gobierno</div>
-          <div class="rth-text">Radio y Televisión de Hidalgo</div>
-          <div class="oficio-title">Oficio de Comisión</div>
-          <!-- DINÁMICO -->
-          <div class="oficio-num">{{ obtenerOficioFormateado(comisionSeleccionada)}}</div>
-        </td>
-      </tr>
-    </table>
-
-    <div class="date-section">
-      Pachuca de Soto, Hgo., a {{ formatearFechaLarga(comisionSeleccionada.fecha_inicio || comisionSeleccionada.created_at)}}
-    </div>
-
-    <table class="data-table">
-      <tr>
-        <td class="label-cell">Nombre del trabajador:</td>
-        <td class="value-cell bold-text">{{ comisionSeleccionada.empleado_nombre || comisionSeleccionada.empleado }}</td>
-      </tr>
-      <tr>
-        <td class="label-cell">Adscripción:</td>
-        <td class="value-cell">{{ comisionSeleccionada.empleado_adscripcion }}</td>
-      </tr>
-      <tr>
-        <td class="label-cell">Tipo de nombramiento:</td>
-        <td class="value-cell">{{ comisionSeleccionada.empleado_nombramiento }}</td>
-      </tr>
-      <tr>
-        <td class="label-cell">No. de Empleado:</td>
-        <td class="value-cell">{{ comisionSeleccionada.No_de_empleado || comisionSeleccionada.empleado_id }}</td>
-      </tr>
-    </table>
-
-    <div class="checkbox-container">
-      <table class="checkbox-table">
-        <tr>
-          <td class="checkbox-item">
-            BASE 
-            <div class="checkbox-box" :class="{ marked: comisionSeleccionada.tipo_personal === 'BASE' }">
-              {{ comisionSeleccionada.tipo_personal === 'BASE' ? 'X' : '' }}
-            </div>
-          </td>
-          <td class="checkbox-item">
-            CONFIANZA 
-            <div class="checkbox-box" :class="{ marked: comisionSeleccionada.tipo_personal === 'CONFIANZA' }">
-              {{ comisionSeleccionada.tipo_personal === 'CONFIANZA' ? 'X' : '' }}
-            </div>
-          </td>
-          <td class="checkbox-item">
-            HONORARIOS 
-            <div class="checkbox-box" :class="{ marked: comisionSeleccionada.tipo_personal === 'HONORARIOS' }">
-              {{ comisionSeleccionada.tipo_personal === 'HONORARIOS' ? 'X' : '' }}
-            </div>
-          </td>
-        </tr>
+            <td class="header-left">
+              <img :src="logoUrl" alt="Logo Hidalgo" class="pdf-logo" />
+            </td>
+          </tr>
+        </tbody>
       </table>
-    </div>
 
-    <div class="content-section">
-      <p class="content-text">
-    Por este conducto me permito informarle que ha sido comisionado para el día 
-    <strong>{{ formatearFechaLarga(comisionSeleccionada.fecha_inicio) }}</strong>, 
-    para asistir a {{ comisionSeleccionada.lugar || comisionSeleccionada.destino }}
-    {{ obtenerMotivoLimpio(comisionSeleccionada) }}.
-  </p>
-    </div>
+      <table class="header-table">
+        <tbody>
+          <tr>
+            <td class="header-right">
+              <div class="sec-gob">Secretaría de Gobierno</div>
+              <div class="rth-text">Radio y Televisión de Hidalgo</div>
+              <div class="oficio-title">Oficio de Comisión</div>
+              <!-- DINÁMICO -->
+              <div class="oficio-num">
+                {{ obtenerOficioFormateado(comisionSeleccionada) }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table class="schedule-table">
-      <tr>
-        <td class="schedule-cell">
-          <strong>Salida:</strong> {{ comisionSeleccionada.hora_salida || comisionSeleccionada.hora_inicio || '09:00' }} hrs.
-        </td>
-        </tr>
-        <tr>
-        <td class="schedule-cell">
-          <strong>Regreso:</strong> {{ comisionSeleccionada.hora_regreso || comisionSeleccionada.hora_fin || '18:00' }} hrs.
-        </td>
-      </tr>
-    </table>
-
-    <div class="farewell-text">
-      Agradeciendo de antemano su apoyo, quedo de usted.
-    </div>
-
-    <table class="signature-table">
-      <tr>
-        <td class="signature-cell">
-          <div class="signature-role">Autorizó</div>
-          <div class="signature-space"></div> 
-          <div class="signature-line"></div>
-          <div class="signature-name">Mtra. Isela Guadalupe Espinoza Lopez</div>
-          <div class="signature-title">Directora de Administración y Finanzas</div>
-        </td>
-        <td class="signature-cell">
-          <div class="signature-role">Acepto Comisión</div>
-          <div class="signature-space"></div> 
-          <div class="signature-line"></div>
-          <div class="signature-name">{{ comisionSeleccionada.empleado_nombre || comisionSeleccionada.empleado }}</div>
-          <div class="signature-title">{{ comisionSeleccionada.empleado_nombramiento }}</div>
-        </td>
-      </tr>
-    </table>
-
-  </div>
-</div>
-
-
-
-<div style="display: none; " >
-  <div id="pdf-formato-1" class="pdf-container">
-    <div class="header-right">
-      <p><strong>Pachuca de Soto, Hgo., a {{ form.fecha_solicitud }}</strong></p>
-      <p><strong>Asunto:</strong> Solicitud de Autorización de Vacaciones</p>
-    </div>
-
-    <div class="recipient-block">
-      <p><strong>Mtra Isela Guadalupe Espinosa López</strong></p>
-      <p>Directora de Administración y Finanzas</p>
-      <p><strong>PRESENTE</strong></p>
-      <p class="attn">Atn. LASC. Lorena Barrera Soto <br>Subdirectora Adjunta de Recursos Humanos</p>
-    </div>
-
-    <div class="body-text">
-      <p>
-        Por medio del presente, aprovecho la ocasión para saludarlo coordialmente y a la vez,
-        solicitar su autorización para que me sea otorgado <strong>{{ form.dias_solicitados }}</strong>,
-        a cuenta de mi {{ form.periodo }} periodo vacacional del ejercicio 2026,
-        reanudando mis actividades el dia <strong>{{ form.fecha_reanudacion }}</strong>.
-      </p>
-      <p>
-        Esta solicitud se formula conforme a lo señalado en los numerales 96, Inciso II (julio-octubre) y el 101 del acuerdo
-        que contiene las politicas, Bases y Lineamientos para la administración de los recursos humanos al servicio del Poder Ejecutivo del Estado de Hidalgo.
-      </p>
-      <p>
-        Agradezco de antemano su atención y quedo a su disposición para cualquier aclaración.
-      </p>
-    </div>
-
-    <div class="signatures-section">
-      <div class="signature-row single">
-        <div class="signature-box">
-          <p class="role-title">Solicito</p>
-          <p class="name">{{ form.empleado_nombre }}</p>
-          <p class="position">{{ form.empleado_puesto }}</p>
-        </div>
-
+      <div class="date-section">
+        Pachuca de Soto, Hgo., a
+        {{
+          formatearFechaLarga(
+            comisionSeleccionada.fecha_inicio || comisionSeleccionada.created_at,
+          )
+        }}
       </div>
 
+      <table class="data-table">
+        <tbody>
+          <tr>
+            <td class="label-cell">Nombre del trabajador:</td>
+            <td class="value-cell bold-text">
+              {{
+                comisionSeleccionada.empleado_nombre ||
+                comisionSeleccionada.empleado
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-cell">Adscripción:</td>
+            <td class="value-cell">
+              {{ comisionSeleccionada.empleado_adscripcion }}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-cell">Tipo de nombramiento:</td>
+            <td class="value-cell">
+              {{ comisionSeleccionada.empleado_nombramiento }}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-cell">No. de Empleado:</td>
+            <td class="value-cell">
+              {{
+                comisionSeleccionada.No_de_empleado ||
+                comisionSeleccionada.empleado_id
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div class="signature_row dual">
-        <div class="signature-box">
-          <p class="role-title">Autorizó</p>
-          <p class="name">{{ form.director_area_nombre }}</p>
-          <p class="position">{{ form.director_area_puesto }}</p>
+      <div class="checkbox-container">
+        <table class="checkbox-table">
+          <tbody>
+            <tr>
+              <td class="checkbox-item">
+                BASE
+                <div
+                  class="checkbox-box"
+                  :class="{
+                    marked: comisionSeleccionada.tipo_personal === 'BASE',
+                  }"
+                >
+                  {{ comisionSeleccionada.tipo_personal === 'BASE' ? 'X' : '' }}
+                </div>
+              </td>
+              <td class="checkbox-item">
+                CONFIANZA
+                <div
+                  class="checkbox-box"
+                  :class="{
+                    marked: comisionSeleccionada.tipo_personal === 'CONFIANZA',
+                  }"
+                >
+                  {{
+                    comisionSeleccionada.tipo_personal === 'CONFIANZA'
+                      ? 'X'
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="checkbox-item">
+                HONORARIOS
+                <div
+                  class="checkbox-box"
+                  :class="{
+                    marked: comisionSeleccionada.tipo_personal === 'HONORARIOS',
+                  }"
+                >
+                  {{
+                    comisionSeleccionada.tipo_personal === 'HONORARIOS'
+                      ? 'X'
+                      : ''
+                  }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="content-section">
+        <p class="content-text">
+          Por este conducto me permito informarle que ha sido comisionado para
+          el día
+          <strong>{{
+            formatearFechaLarga(comisionSeleccionada.fecha_inicio)
+          }}</strong>, para asistir a
+          {{ comisionSeleccionada.lugar || comisionSeleccionada.destino }}
+          {{ obtenerMotivoLimpio(comisionSeleccionada) }}.
+        </p>
+      </div>
+
+      <table class="schedule-table">
+        <tbody>
+          <tr>
+            <td class="schedule-cell">
+              <strong>Salida:</strong>
+              {{
+                comisionSeleccionada.hora_salida ||
+                comisionSeleccionada.hora_inicio ||
+                '09:00'
+              }}
+              hrs.
+            </td>
+          </tr>
+          <tr>
+            <td class="schedule-cell">
+              <strong>Regreso:</strong>
+              {{
+                comisionSeleccionada.hora_regreso ||
+                comisionSeleccionada.hora_fin ||
+                '18:00'
+              }}
+              hrs.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="farewell-text">
+        Agradeciendo de antemano su apoyo, quedo de usted.
+      </div>
+
+      <table class="signature-table">
+        <tbody>
+          <tr>
+            <td class="signature-cell">
+              <div class="signature-role">Autorizó</div>
+              <div class="signature-space"></div>
+              <div class="signature-line"></div>
+              <div class="signature-name">
+                Mtra. Isela Guadalupe Espinoza Lopez
+              </div>
+              <div class="signature-title">
+                Directora de Administración y Finanzas
+              </div>
+            </td>
+            <td class="signature-cell">
+              <div class="signature-role">Acepto Comisión</div>
+              <div class="signature-space"></div>
+              <div class="signature-line"></div>
+              <div class="signature-name">
+                {{
+                  comisionSeleccionada.empleado_nombre ||
+                  comisionSeleccionada.empleado
+                }}
+              </div>
+              <div class="signature-title">
+                {{ comisionSeleccionada.empleado_nombramiento }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display: none">
+    <div id="pdf-formato-1" class="pdf-container">
+      <div class="header-right">
+        <p>
+          <strong>Pachuca de Soto, Hgo., a {{ form.fecha_solicitud }}</strong>
+        </p>
+        <p><strong>Asunto:</strong> Solicitud de Autorización de Vacaciones</p>
+      </div>
+
+      <div class="recipient-block">
+        <p><strong>Mtra Isela Guadalupe Espinosa López</strong></p>
+        <p>Directora de Administración y Finanzas</p>
+        <p><strong>PRESENTE</strong></p>
+        <p class="attn">
+          Atn. LASC. Lorena Barrera Soto <br />Subdirectora Adjunta de Recursos
+          Humanos
+        </p>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Por medio del presente, aprovecho la ocasión para saludarlo
+          coordialmente y a la vez, solicitar su autorización para que me sea
+          otorgado <strong>{{ form.dias_solicitados }}</strong>, a cuenta de mi
+          {{ form.periodo }} periodo vacacional del ejercicio 2026, reanudando
+          mis actividades el dia <strong>{{ form.fecha_reanudacion }}</strong>.
+        </p>
+        <p>
+          Esta solicitud se formula conforme a lo señalado en los numerales 96,
+          Inciso II (julio-octubre) y el 101 del acuerdo que contiene las
+          politicas, Bases y Lineamientos para la administración de los recursos
+          humanos al servicio del Poder Ejecutivo del Estado de Hidalgo.
+        </p>
+        <p>
+          Agradezco de antemano su atención y quedo a su disposición para
+          cualquier aclaración.
+        </p>
+      </div>
+
+      <div class="signatures-section">
+        <div class="signature-row single">
+          <div class="signature-box">
+            <p class="role-title">Solicito</p>
+            <p class="name">{{ form.empleado_nombre }}</p>
+            <p class="position">{{ form.empleado_puesto }}</p>
+          </div>
         </div>
 
-        <div class="signature_row dual">
-          <div class="signature_box">
+        <div class="signature-row dual">
+          <div class="signature-box">
+            <p class="role-title">Autorizó</p>
+            <p class="name">{{ form.director_area_nombre }}</p>
+            <p class="position">{{ form.director_area_puesto }}</p>
+          </div>
+
+          <div class="signature-box">
             <p class="role-title">Vo. Bo.</p>
             <p class="name">LASC. Lorena Barrera Soto</p>
-            <p class="position">Subdirectora de adjunta de Recursos Humanos </p>
+            <p class="position">
+              Subdirectora adjunta de Recursos Humanos
+            </p>
           </div>
 
           <div class="signature-box">
@@ -539,15 +618,7 @@
       </div>
     </div>
   </div>
-  </div>
-
-
-  
-
-
- 
 </template>
-
 
 
 <script setup>
@@ -557,33 +628,19 @@ import axios from "axios"; // Axios importado para traer las normatividades
 import { nextTick } from "vue";//Funcion reactiva de Vue3
 import html2pdf from "html2pdf.js"; //Para generar Pdfs
 import logopdf from "@/assets/logopdf.png"//Imagen que se usa en el Pdf del formato de Comision
-
 import BaseCard from "@/components/ui/BaseCard.vue";//Componente de targeta madre para mostrar contenido en secciones
 import AppTable from "@/components/ui/AppTable.vue";//Componente de tabla para mostrar datos en formato tabular
 import IconSymbol from "@/components/ui/IconSymbol.vue";//Componente para mostrar iconos de botones
-
 import PageHeader from "@/components/shared/PageHeader.vue";//Componente de encabezado de pagina con titulo y subtitulos
-
 import StatusBadge from "@/components/shared/StatusBadge.vue";//Componente para mostrar el estatus de un registro con un badge visual
 import requestsService from "@/services/requests.service";//Servicio para gestionar las solicitudes
 import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions";//Manejo de permisos, accesos a botones y acciones según el rol del usuario
 import { useAuthStore } from "@/store/auth";//Acceso al store de autenticación para obtener el token y rol del usuario
 import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";//Importación del componente del modal para Leer y aceptar las Normatividades
 import FormularioComision from "@/components/shared/FormularioComision.vue";// Importacion del Componente del Formulario especifico para Comisiones
-
 const logoUrl = logopdf
 const reporteRef = ref(null);
-import BaseCard from "@/components/ui/BaseCard.vue"; //Componente de targeta madre para mostrar contenido en secciones
-import AppTable from "@/components/ui/AppTable.vue"; //Componente de tabla para mostrar datos en formato tabular
-import IconSymbol from "@/components/ui/IconSymbol.vue"; //Componente para mostrar iconos de botones
-import PageHeader from "@/components/shared/PageHeader.vue"; //Componente de encabezado de pagina con titulo y subtitulos
-import RoleActionBar from "@/components/shared/RoleActionBar.vue"; //Componente para botones de acción según el rol del usuario
-import StatusBadge from "@/components/shared/StatusBadge.vue"; //Componente para mostrar el estatus de un registro con un badge visual
-import requestsService from "@/services/requests.service"; //Servicio para gestionar las solicitudes
-import { getRoleActions, hasAnyRole, ROLE_GROUPS } from "@/utils/permissions"; //Manejo de permisos, accesos a botones y acciones según el rol del usuario
-import { useAuthStore } from "@/store/auth"; //Acceso al store de autenticación para obtener el token y rol del usuario
-import ModalNormatividad from "@/components/shared/ModalNormatividad.vue"; //Importación del componente del modal para Leer y aceptar las Normatividades
-import FormularioComision from "@/components/shared/FormularioComision.vue"; // Importacion del Componente del Formulario especifico para Comisiones
+
 
 const authStore = useAuthStore(); //Acceso al store de Autenticación para obtener el token y el rol del usuario
 
@@ -690,15 +747,6 @@ const handleComisionSuccess = (nuevaComision) => {
   // 3. Cierras el modal
   closeModal();
 };
-
-
-
-const toast = reactive({
-  visible: false,
-  title: "",
-  message: "",
-  tone: "success",
-});
 
 // Variable reactiva para el modal de creación y resolución de solicitudes
 const modal = reactive({
@@ -913,9 +961,7 @@ const currentEmployeeId = computed(() =>
 const canApproveRequests = computed(() =>
   hasAnyRole(authStore.user, ROLE_GROUPS.APPROVERS),
 );
-const showSuggestions = ref(false); // Controla si se muestra el menú flotante de sugerencias
-const activeSuggestionIndex = ref(-1); // Controla la sugerencia seleccionada con el teclado (flechas)
-let debounceTimeout = null; // Almacena el temporizador para no saturar al servidor al escribir
+
 
 /**
  * CONTADORES RÁPIDOS: Agrupa la suma total por estatus para renderizar tarjetas en el dashboard.

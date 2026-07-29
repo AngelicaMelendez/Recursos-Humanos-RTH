@@ -9,10 +9,27 @@ function formatDate(value) {
   if (!value) return '';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return date.toISOString().slice(0, 19).replace('T', ' ');
+  
+  // Formatea a hora local con estilo legibe (Ej: "29/07/2026, 07:13:56 PM")
+  return new Intl.DateTimeFormat('es-MX', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  }).format(date);
 }
 
-function toFrontendLog(log, usersByUsername) {  //El texto de la auditoria enviado al FRONTEND
+function normalizeIp(ip) {
+  if (!ip) return '127.0.0.1';
+  // Si estás en desarrollo local y Node recibe IPv6 ::1 o ::ffff:127.0.0.1
+  if (ip === '::1' || ip === '::ffff:127.0.0.1') return '127.0.0.1';
+  return ip;
+}
+
+function toFrontendLog(log, usersByUsername) {
   const plain = log.get ? log.get({ plain: true }) : log;
   const usuario = usersByUsername.get(normalizeText(plain.usuario));
   const empleado = usuario?.empleado;
@@ -26,9 +43,9 @@ function toFrontendLog(log, usersByUsername) {  //El texto de la auditoria envia
     departamento: empleado?.departamento?.nombre || 'Sin departamento',
     direccion: empleado?.direccion?.nombre || 'Sin direccion',
     accion: plain.accion,
-    fecha: formatDate(plain.fecha || plain.createdAt),
+    fecha: formatDate(plain.fecha || plain.createdAt), // Ahora sí saldrá en formato de 12 horas AM/PM
     modulo: plain.modulo,
-    ip: plain.ip,
+    ip: normalizeIp(plain.ip), // Limpia el ::1 por 127.0.0.1
   };
 }
 
