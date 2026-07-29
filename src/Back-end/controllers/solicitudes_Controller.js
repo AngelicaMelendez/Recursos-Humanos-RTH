@@ -203,9 +203,12 @@ exports.aprobar = async (req, res) => {
       return res.status(400).json({ error: 'Solo se puede aprobar una pendiente' });
     }
 
+    const rutaPdf = req.file ? `uploads/oficios/${req.file.filename}` : solicitud.documento_adjunto;
+
     solicitud.estatus = 'aprobado';
     solicitud.aprobado_por = req.user.empleado_id;
     solicitud.fecha_resolucion = new Date();
+    solicitud.documento_adjunto = rutaPdf; // Guardamos el PDF definitivo
     await solicitud.save();
 
     await db.Incidencia.create({
@@ -216,7 +219,7 @@ exports.aprobar = async (req, res) => {
       fecha_inicio: solicitud.fecha_inicio,
       fecha_fin: solicitud.fecha_fin,
       estatus: 'aprobado',
-      documento_pdf: solicitud.documento_adjunto,
+      documento_pdf: rutaPdf,
     });
 
     await crearNotificacionSolicitud({
@@ -324,6 +327,48 @@ function toFrontendSolicitud(row) {
     aprobado_por: row.aprobador?.nombre || row.aprobado_por || 'Pendiente',
     fecha_resolucion: row.fecha_resolucion,
   };
-}
+};
+
+exports.descargarDocumento = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const path = require('path');
+    const fs = require('fs');
+
+    // Construye la ruta apuntando a la carpeta uploads/
+    const filePath = path.join(__dirname, '../uploads', filename);
+
+    if (fs.existsSync(filePath)) {
+      return res.download(filePath); // Entrega el PDF al navegador
+    } else {
+      return res.status(404).json({ error: 'El archivo solicitado no existe en el servidor' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error al intentar descargar el archivo', details: error.message });
+  }
+};
+
+// 2. Previsualizar el archivo en una pestaña nueva del navegador
+exports.visualizarDocumento = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const path = require('path');
+    const fs = require('fs');
+    const filePath = path.join(__dirname, '../uploads', filename);
+
+    if (fs.existsSync(filePath)) {
+      return res.sendFile(filePath, {
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': 'inline' // Abre el visor de PDF de Chrome/Edge/Firefox
+        }
+      });
+    } else {
+      return res.status(404).json({ error: 'El archivo solicitado no existe' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error al previsualizar', details: error.message });
+  }
+};
 
 exports.toFrontendSolicitud = toFrontendSolicitud;

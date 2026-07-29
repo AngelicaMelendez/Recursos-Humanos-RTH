@@ -34,15 +34,26 @@
       </form>
     </div>
   </section>
+
+
+  <ModalNormatividad
+    v-if="mostrarModalNormatividad"
+    :isOpen="mostrarModalNormatividad"
+    mensaje="Para poder ingresar al sistema por primera vez en la sesión, debes consultar la normatividad institucional:"
+    @close="mostrarModalNormatividad = false"
+    @accepted="onNormatividadAceptadaLogin"
+  />
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/auth";
+import ModalNormatividad from "@/components/shared/ModalNormatividad.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
+const mostrarModalNormatividad = ref (false);
 
 const loginForm = reactive({
   usuario: "",
@@ -55,12 +66,20 @@ const submitLogin = async () => {
       usuario: loginForm.usuario,
       password: loginForm.password
     });
-    router.push({ name: "dashboard" });
+    mostrarModalNormatividad.value = true;
   } catch (error) {
   console.error("EL ERROR DE AXIOS CRUDO ES:", error); // <-- Pon esto para ver el chisme completo
   alert(error?.response?.data?.error || "No fue posible autenticar...");
   }
 };
+
+
+const onNormatividadAceptadaLogin = () => {
+  mostrarModalNormatividad.value = false;
+  router.push({ name: 'dashboard'})
+}
+
+
 </script>
 
 <style scoped>

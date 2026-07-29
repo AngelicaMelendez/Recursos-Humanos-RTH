@@ -91,6 +91,7 @@ const actionCatalog = {
   rejectRequest: { label: "Rechazar Solicitud", icon: "x", operation: "U" },
   manageIncident: { label: "Gestionar Incidencia", icon: "edit", operation: "U" },
   viewRequests: { label: "Consultar Solicitudes", icon: "file", operation: "R" },
+  viewRequestDocument: {label: "Consultar PDF", icon: "eye", operation: "R" },
   downloadRequestDocument: { label: "Descargar Solicitud", icon: "saveAlt", operation: "R" },
   publishVacancy: { label: "Publicar Vacante", icon: "plus", operation: "C" },
   closeVacancy: { label: "Cerrar Vacante", icon: "archive", operation: "U" },
@@ -127,7 +128,7 @@ export const roleActionsByModule = { // Acciones por modulo:
     [ROLE_KEYS.DIRECTOR]: ["viewDirectory"]
   },
   requests: {   // Solicitudes
-    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
+    [ROLE_KEYS.SUPER_USER]: ["createRequest", "deleteRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument", "viewRequestDocument"],
     [ROLE_KEYS.RECURSOS_HUMANOS]: ["createRequest", "deleteRequest", "approveRequest", "rejectRequest", "manageIncident", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.USUARIO]: ["createRequest", "deleteRequest", "viewRequests", "downloadRequestDocument"],
     [ROLE_KEYS.DIRECTOR]: ["viewRequests", "downloadRequestDocument"]
